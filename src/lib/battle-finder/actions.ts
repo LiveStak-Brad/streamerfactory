@@ -6,6 +6,7 @@ import { effectiveCanUseBattleHubScheduling } from "@/lib/auth/network-view";
 import { getSessionProfile, requireBattleScheduler } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
 import { isValidFormatForCount, normalizeFormatToCanonical } from "@/lib/battle-hub/formats";
+import { sendBattleMatchedEmail, sendBattlePromotedEmail } from "@/lib/email/battle-lifecycle";
 
 import type { BattleRequestType } from "./db";
 
@@ -138,6 +139,20 @@ export async function joinBattleRequestSlotAction(
     return { ok: false, error: error.message };
   }
 
+  const { data: slotRow } = await supabase
+    .from("battle_request_slots")
+    .select("battle_request_id")
+    .eq("id", slotId)
+    .maybeSingle();
+  const requestIdForEmail = slotRow?.battle_request_id as string | undefined;
+  if (requestIdForEmail) {
+    try {
+      await sendBattleMatchedEmail(requestIdForEmail);
+    } catch (e) {
+      console.error("[battle-email] matched after join:", e);
+    }
+  }
+
   revalidatePath("/battle-hub/finder");
   revalidatePath("/battle-hub");
   return { ok: true };
@@ -165,6 +180,13 @@ export async function promoteBattleRequestAction(requestId: string): Promise<Pro
   revalidatePath("/battle-hub/finder");
   revalidatePath(`/battle-hub/finder/${requestId}`);
   revalidatePath("/admin/calendar");
+
+  try {
+    await sendBattlePromotedEmail(eventId);
+  } catch (e) {
+    console.error("[battle-email] promoted:", e);
+  }
+
   return { ok: true, eventId };
 }
 

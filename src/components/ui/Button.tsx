@@ -25,6 +25,7 @@ type ButtonProps = {
   type?: "button" | "submit";
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  title?: string;
 };
 
 export function Button({
@@ -35,6 +36,7 @@ export function Button({
   type = "button",
   disabled,
   onClick,
+  title,
 }: ButtonProps) {
   const classes = `${base} ${variants[variant]} ${className}`;
 
@@ -47,7 +49,7 @@ export function Button({
   }
 
   return (
-    <button type={type} className={classes} disabled={disabled} onClick={onClick}>
+    <button type={type} className={classes} disabled={disabled} onClick={onClick} title={title}>
       {children}
     </button>
   );

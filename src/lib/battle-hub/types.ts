@@ -23,6 +23,10 @@ export type BattleEventRow = {
   status: string;
   created_at: string;
   updated_at: string;
+  /** Set when "battle promoted to calendar" email was sent */
+  promoted_email_sent_at?: string | null;
+  /** Set when upcoming-battle reminder email was sent */
+  reminder_sent_at?: string | null;
 };
 
 export type BattleEventWithParticipants = BattleEventRow & {
