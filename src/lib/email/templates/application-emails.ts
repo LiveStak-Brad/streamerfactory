@@ -102,6 +102,54 @@ ${linkLine(startHereUrl, "Start Here — guided path for TikTok LIVE")}
   };
 }
 
+/** Internal staff alert — minimal styling, not the applicant-facing branded layout. */
+export function buildApplicationAdminNotificationEmail(params: {
+  fullName: string;
+  email: string;
+  tiktokUsername: string;
+  timezone: string | null;
+  adminUrl: string;
+  isResubmit: boolean;
+}): { subject: string; html: string; text: string } {
+  const subject = "New Streamer Factory application";
+  const tzLine =
+    params.timezone && params.timezone.trim() ? `Timezone: ${params.timezone.trim()}` : "Timezone: (not set)";
+  const kind = params.isResubmit ? "Resubmission (previously rejected)" : "New submission";
+
+  const inner = `<div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;color:#18181b;max-width:560px;">
+<p style="margin:0 0 12px 0;font-size:13px;color:#52525b;">${escapeHtml(kind)}</p>
+<p style="margin:0 0 8px 0;"><strong>Name:</strong> ${escapeHtml(params.fullName)}</p>
+<p style="margin:0 0 8px 0;"><strong>Email:</strong> <a href="mailto:${escapeHtml(params.email)}" style="color:#2563eb;">${escapeHtml(params.email)}</a></p>
+<p style="margin:0 0 8px 0;"><strong>TikTok:</strong> @${escapeHtml(params.tiktokUsername.replace(/^@/, ""))}</p>
+<p style="margin:0 0 16px 0;"><strong>${escapeHtml(tzLine)}</strong></p>
+<p style="margin:0;"><a href="${escapeHtml(params.adminUrl)}" style="color:#2563eb;font-weight:600;">Open admin — applications</a></p>
+<p style="margin:12px 0 0 0;font-size:13px;color:#52525b;">${escapeHtml(params.adminUrl)}</p>
+</div>`;
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/></head>
+<body style="margin:0;padding:24px;background:#f4f4f5;">
+${inner}
+</body>
+</html>`;
+
+  const text = [
+    subject,
+    "",
+    kind,
+    `Name: ${params.fullName}`,
+    `Email: ${params.email}`,
+    `TikTok: @${params.tiktokUsername.replace(/^@/, "")}`,
+    tzLine,
+    "",
+    "Admin:",
+    params.adminUrl,
+  ].join("\n");
+
+  return { subject, html, text };
+}
+
 export function buildApplicationApprovedEmail(params: { firstName: string }): {
   subject: string;
   html: string;

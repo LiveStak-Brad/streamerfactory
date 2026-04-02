@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  sendApplicationAdminNotificationEmail,
   sendApplicationRejectedEmail,
   sendApplicationSubmittedEmail,
 } from "@/lib/email/application-lifecycle";
@@ -125,6 +126,9 @@ export async function submitApplication(
 
   const isResubmit = Boolean(existing && existing.status === "rejected");
 
+  const { data: profileRow } = await supabase.from("profiles").select("timezone").eq("id", userId).maybeSingle();
+  const applicantTimezone = profileRow?.timezone?.trim() || null;
+
   await Promise.allSettled([
     notifyNewApplication({
       fullName,
@@ -136,6 +140,13 @@ export async function submitApplication(
     sendApplicationSubmittedEmail({
       to: email,
       fullName,
+      isResubmit,
+    }),
+    sendApplicationAdminNotificationEmail({
+      fullName,
+      email,
+      tiktokUsername,
+      timezone: applicantTimezone,
       isResubmit,
     }),
   ]);
