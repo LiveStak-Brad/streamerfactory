@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { resendApprovalEmailAction } from "@/lib/profiles/actions";
 
 type Props = {
   userId: string;
@@ -17,7 +16,7 @@ export function ResendApprovalEmailButton({ userId }: Props) {
   return (
     <div className="flex flex-col items-end gap-1">
       {error ? (
-        <p className="max-w-[220px] text-right text-xs text-red-600 dark:text-red-400" role="alert">
+        <p className="max-w-[260px] text-right text-xs text-red-600 dark:text-red-400" role="alert">
           {error}
         </p>
       ) : null}
@@ -34,9 +33,14 @@ export function ResendApprovalEmailButton({ userId }: Props) {
           startTransition(async () => {
             setError(null);
             setSuccess(false);
-            const res = await resendApprovalEmailAction(userId);
-            if (!res.ok) {
-              setError(res.error ?? "Could not send.");
+            const res = await fetch("/api/admin/resend-approval-email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userId }),
+            });
+            const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+            if (!res.ok || !data.ok) {
+              setError(data.error ?? "Could not send.");
               return;
             }
             setSuccess(true);

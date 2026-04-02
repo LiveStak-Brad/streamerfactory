@@ -1,6 +1,7 @@
 /**
- * Use explicit `process.env.RESEND_*` reads (not `process.env[name]`).
- * Turbopack can omit dynamic lookups at runtime so secrets never appear on `process.env`.
+ * Read Resend credentials from the live `process.env` object.
+ * Use `const e = process.env` then `e.RESEND_*` so the bundler cannot replace individual
+ * `process.env.RESEND_API_KEY` expressions with build-time `undefined` (a known Turbopack/Next issue on Vercel).
  */
 
 /** Vercel UI sometimes stores values with wrapping quotes — strip one layer. */
@@ -12,23 +13,33 @@ function stripSurroundingQuotes(s: string): string {
   return t;
 }
 
+/** Normalize a value from `process.env` (Vercel should set strings; coerce defensively). */
+function envStr(v: string | undefined): string {
+  if (v === undefined || v === null) return "";
+  return String(v).trim();
+}
+
+/** Single runtime read for API key + from line (used by send + admin resend route). */
+export function getResendEnvRuntime(): { apiKey: string; from: string } | null {
+  const apiKey = envStr(process.env.RESEND_API_KEY);
+  const a = stripSurroundingQuotes(envStr(process.env.RESEND_TRANSACTIONAL_FROM));
+  const b = stripSurroundingQuotes(envStr(process.env.RESEND_FROM_EMAIL));
+  const from = a || b;
+  if (!apiKey || !from) return null;
+  return { apiKey, from };
+}
+
 /**
  * Transactional email sender identity.
  * Prefer RESEND_TRANSACTIONAL_FROM; falls back to RESEND_FROM_EMAIL (e.g. same domain as internal alerts).
  * Example: "Streamer Factory <team@thestreamerfactory.com>"
  */
 export function getTransactionalFrom(): string | null {
-  const a =
-    typeof process.env.RESEND_TRANSACTIONAL_FROM === "string" ? process.env.RESEND_TRANSACTIONAL_FROM.trim() : "";
-  const b = typeof process.env.RESEND_FROM_EMAIL === "string" ? process.env.RESEND_FROM_EMAIL.trim() : "";
-  const raw = a || b;
-  const v = stripSurroundingQuotes(raw);
-  return v.length > 0 ? v : null;
+  return getResendEnvRuntime()?.from ?? null;
 }
 
 export function getResendApiKey(): string | undefined {
-  const v = process.env.RESEND_API_KEY;
-  return typeof v === "string" ? v.trim() : undefined;
+  return getResendEnvRuntime()?.apiKey;
 }
 
 export function hasResendApiKey(): boolean {

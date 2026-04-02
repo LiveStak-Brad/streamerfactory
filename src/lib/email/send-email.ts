@@ -1,13 +1,18 @@
 import { Resend } from "resend";
 
-import { getResendApiKey, getTransactionalFrom, isTransactionalEmailReady } from "@/lib/email/config";
+import { getResendEnvRuntime, getTransactionalFrom, isTransactionalEmailReady } from "@/lib/email/config";
 
 let resendClient: Resend | null = null;
+let resendClientKey: string | null = null;
 
 function getResend(): Resend | null {
-  const key = getResendApiKey();
+  const bundle = getResendEnvRuntime();
+  const key = bundle?.apiKey;
   if (!key) return null;
-  if (!resendClient) resendClient = new Resend(key);
+  if (!resendClient || resendClientKey !== key) {
+    resendClient = new Resend(key);
+    resendClientKey = key;
+  }
   return resendClient;
 }
 
