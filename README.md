@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Streamer Factory
+
+Premium TikTok LIVE creator agency / streamer network website and platform foundation.
+
+## Tech
+
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Supabase (env-based setup; see `.env.example`)
 
 ## Getting Started
 
