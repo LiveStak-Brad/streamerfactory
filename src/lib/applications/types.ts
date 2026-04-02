@@ -8,5 +8,7 @@ export type ApplicationRow = {
   goes_live: string;
   why_join: string;
   contact_consent: boolean;
+  /** Authenticated submitter; null for legacy rows before linkage migration. */
+  user_id: string | null;
   created_at: string;
 };

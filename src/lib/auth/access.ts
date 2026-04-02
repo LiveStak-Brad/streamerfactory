@@ -19,9 +19,10 @@ export function isOwnerRole(role: string | null | undefined): boolean {
   return normalizeRole(role) === "owner";
 }
 
-/** Full admin UI (applications, members, resources): owners only for now. */
+/** Full admin UI (applications, members, resources, admin calendar): site staff only. */
 export function canAccessAdmin(role: string | null | undefined): boolean {
-  return isOwnerRole(role);
+  const r = normalizeRole(role);
+  return r === "owner" || r === "editor" || r === "admin";
 }
 
 /**

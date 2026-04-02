@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { effectiveCanUseBattleHubScheduling } from "@/lib/auth/network-view";
+import { getSessionProfile } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 
@@ -14,14 +16,19 @@ const MAX_BYTES = 5 * 1024 * 1024;
  * Prefer `SUPABASE_SERVICE_ROLE_KEY` on the server so uploads succeed even when Storage RLS is misconfigured.
  */
 export async function POST(request: Request) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authErr,
-  } = await supabase.auth.getUser();
-  if (authErr || !user) {
+  const session = await getSessionProfile();
+  if (!session?.user) {
     return NextResponse.json({ error: "Sign in to upload a photo." }, { status: 401 });
   }
+  if (!(await effectiveCanUseBattleHubScheduling(session))) {
+    return NextResponse.json(
+      { error: "Member access is required to upload flyer photos." },
+      { status: 403 },
+    );
+  }
+
+  const user = session.user;
+  const supabase = await createClient();
 
   const ct = request.headers.get("content-type") ?? "";
   if (!ct.includes("multipart/form-data")) {

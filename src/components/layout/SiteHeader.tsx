@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { canAccessAdmin } from "@/lib/auth/access";
 import type { OwnerNetworkViewMode } from "@/lib/auth/network-view";
 import { mainNav, site } from "@/lib/site";
+import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { NetworkViewToggle } from "@/components/layout/NetworkViewToggle";
 
 type HeaderProps = {
@@ -58,12 +59,11 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
       <Container className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center justify-between">
           <Link href="/" className="group flex items-center gap-3.5">
-            <span
-              className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-accent/35 bg-zinc-950 text-sm font-bold tracking-tight text-white shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_8px_28px_-6px_rgba(99,102,241,0.45)] transition-[box-shadow,transform] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:shadow-[0_0_0_1px_rgba(129,140,248,0.45),0_12px_36px_-8px_rgba(99,102,241,0.55)] dark:border-accent/50 dark:bg-zinc-900 dark:text-accent-muted"
-              aria-hidden
-            >
-              <span className="absolute inset-0 bg-gradient-to-br from-accent/25 via-transparent to-transparent opacity-80" />
-              <span className="relative">SF</span>
+            <span className="transition-[transform,box-shadow] duration-300 ease-out group-hover:-translate-y-0.5">
+              <SfLogoMark
+                size="lg"
+                className="group-hover:shadow-[0_0_0_1px_rgba(129,140,248,0.5),0_12px_36px_-8px_rgba(99,102,241,0.55)]"
+              />
             </span>
             <div className="flex flex-col leading-none">
               <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-xl">

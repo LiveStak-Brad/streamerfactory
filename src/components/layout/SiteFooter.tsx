@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { Container } from "@/components/ui/Container";
 import { footerNav, site } from "@/lib/site";
 
@@ -9,9 +10,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-md space-y-5">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-sm font-bold text-white">
-                SF
-              </span>
+              <SfLogoMark size="md" />
               <p className="text-lg font-bold tracking-tight text-white">{site.name}</p>
             </div>
             <p className="text-base leading-relaxed text-zinc-400">

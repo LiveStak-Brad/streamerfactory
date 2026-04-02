@@ -1,3 +1,4 @@
+import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { Section } from "@/components/ui/Section";
 
 const points = [
@@ -36,9 +37,7 @@ export function WhyStreamerFactory() {
       <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-8">
         {points.map((p) => (
           <div key={p.title} className={cardClass}>
-            <div className="mb-5 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-accent/25 bg-accent-soft text-sm font-bold text-accent dark:border-accent/35 dark:bg-accent-soft dark:text-accent-muted">
-              SF
-            </div>
+            <SfLogoMark size="sm" className="mb-5" />
             <h3 className="text-xl font-semibold tracking-tight text-foreground">{p.title}</h3>
             <p className="mt-4 text-base leading-relaxed text-muted">{p.body}</p>
           </div>

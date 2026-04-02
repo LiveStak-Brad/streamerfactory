@@ -5,7 +5,7 @@ import { getSupabasePublicEnv } from "./env";
 
 /**
  * Refreshes auth session cookies, forwards cache-control headers from Supabase,
- * and restricts `/admin` to users with an owner (or future editor) role in `profiles`.
+ * and restricts `/admin` to staff (`owner`, `editor`, or `admin`) in `profiles`.
  */
 export async function updateSession(request: NextRequest) {
   const supabaseResponse = NextResponse.next({
@@ -54,12 +54,21 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  /* New battle wizard requires auth; applicants are redirected from the page if not yet approved as members. */
+  /* Battle wizard: must be signed in; applicants cannot create events (server actions also enforce). */
   if (pathname.startsWith("/battle-hub/scheduler/new")) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
     if (!user) {
       return NextResponse.redirect(loginUrl);
+    }
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    const role = String(profile?.role ?? "").toLowerCase();
+    if (role === "applicant") {
+      return NextResponse.redirect(new URL("/battle-hub", request.url));
     }
   }
 

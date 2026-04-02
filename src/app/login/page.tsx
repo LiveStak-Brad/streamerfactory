@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { FormEvent } from "react";
 import { Suspense, useState } from "react";
+import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { Container } from "@/components/ui/Container";
+import { site } from "@/lib/site";
 import { safeNextPath } from "@/lib/auth/access";
 import { createClient } from "@/lib/supabase/client";
 
@@ -80,6 +83,15 @@ function LoginContent() {
   return (
     <section className="py-16 sm:py-24">
       <Container className="max-w-md">
+        <Link
+          href="/"
+          className="group mb-10 inline-flex items-center gap-3.5 rounded-xl outline-none ring-offset-2 ring-offset-white transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent dark:ring-offset-zinc-950"
+        >
+          <SfLogoMark size="md" />
+          <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
+            {site.name}
+          </span>
+        </Link>
         <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>

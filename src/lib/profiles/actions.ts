@@ -12,11 +12,7 @@ export async function approveMemberAction(userId: string): Promise<{ ok: boolean
   }
 
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("profiles")
-    .update({ role: "member", updated_at: new Date().toISOString() })
-    .eq("id", userId)
-    .eq("role", "applicant");
+  const { error } = await supabase.rpc("approve_applicant_member", { p_user_id: userId });
 
   if (error) {
     return { ok: false, error: error.message };
@@ -24,5 +20,6 @@ export async function approveMemberAction(userId: string): Promise<{ ok: boolean
 
   revalidatePath("/admin/members");
   revalidatePath("/admin");
+  revalidatePath("/battle-hub");
   return { ok: true };
 }

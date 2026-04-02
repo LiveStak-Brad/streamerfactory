@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ApplicationDeleteButton } from "@/components/admin/ApplicationDeleteButton";
 import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getApplications } from "@/lib/applications/queries";
@@ -134,7 +135,15 @@ export default async function AdminApplicationsPage() {
                   </p>
                 </div>
 
-                <p className="mt-4 font-mono text-xs text-zinc-400 dark:text-zinc-500">ID: {app.id}</p>
+                <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+                  <p className="font-mono text-xs text-zinc-400 dark:text-zinc-500">ID: {app.id}</p>
+                  {app.user_id ? (
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Linked account: <span className="font-mono text-zinc-700 dark:text-zinc-300">{app.user_id}</span>
+                    </p>
+                  ) : null}
+                </div>
+                <ApplicationDeleteButton applicationId={app.id} />
               </li>
             ))}
           </ul>
