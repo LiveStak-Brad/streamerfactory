@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { isOwnerRole } from "@/lib/auth/access";
@@ -31,6 +32,7 @@ export default async function RootLayout({
         <div className="page-backdrop" aria-hidden />
         <div className="relative z-10 flex min-h-full flex-1 flex-col">
           <SiteHeader ownerNetworkViewMode={ownerNetworkViewMode} />
+          <PageViewTracker />
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </div>

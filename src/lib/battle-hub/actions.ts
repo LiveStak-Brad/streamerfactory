@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { requireBattleScheduler } from "@/lib/auth/server";
 import { getSupabasePublicEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
@@ -121,6 +123,12 @@ export async function createBattleEvent(
     await supabase.from("battle_events").delete().eq("id", eventId);
     return { error: partErr.message };
   }
+
+  void trackServerEvent({
+    event: AnalyticsEvents.BATTLE_EVENT_CREATED,
+    route: "/battle-hub/scheduler/new",
+    battleEventId: eventId,
+  });
 
   revalidatePath("/battle-hub/calendar");
   revalidatePath("/battle-hub/scheduler");

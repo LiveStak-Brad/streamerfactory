@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { sendApplicationApprovedEmail } from "@/lib/email/application-lifecycle";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessAdmin } from "@/lib/auth/access";
@@ -30,6 +32,12 @@ export async function approveMemberAction(userId: string): Promise<{ ok: boolean
   if (error) {
     return { ok: false, error: error.message };
   }
+
+  void trackServerEvent({
+    event: AnalyticsEvents.APPLICATION_APPROVED,
+    subjectUserId: userId,
+    route: "/admin/members",
+  });
 
   if (to) {
     const sent = await sendApplicationApprovedEmail({

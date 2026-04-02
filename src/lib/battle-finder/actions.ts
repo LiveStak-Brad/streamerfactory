@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { effectiveCanUseBattleHubScheduling } from "@/lib/auth/network-view";
 import { getSessionProfile, requireBattleScheduler } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
@@ -110,6 +112,12 @@ export async function createBattleRequestAction(
     return { error: slotErr.message };
   }
 
+  void trackServerEvent({
+    event: AnalyticsEvents.BATTLE_REQUEST_CREATED,
+    route: "/battle-hub/finder/new",
+    battleRequestId: requestId,
+  });
+
   revalidatePath("/battle-hub/finder");
   revalidatePath(`/battle-hub/finder/${requestId}`);
   return { success: true, id: requestId };
@@ -146,6 +154,23 @@ export async function joinBattleRequestSlotAction(
     .maybeSingle();
   const requestIdForEmail = slotRow?.battle_request_id as string | undefined;
   if (requestIdForEmail) {
+    void trackServerEvent({
+      event: AnalyticsEvents.BATTLE_REQUEST_JOINED,
+      route: "/battle-hub/finder",
+      battleRequestId: requestIdForEmail,
+    });
+    const { data: br } = await supabase
+      .from("battle_requests")
+      .select("status")
+      .eq("id", requestIdForEmail)
+      .maybeSingle();
+    if (br?.status === "matched") {
+      void trackServerEvent({
+        event: AnalyticsEvents.BATTLE_REQUEST_MATCHED,
+        route: "/battle-hub/finder",
+        battleRequestId: requestIdForEmail,
+      });
+    }
     try {
       await sendBattleMatchedEmail(requestIdForEmail);
     } catch (e) {
@@ -173,6 +198,13 @@ export async function promoteBattleRequestAction(requestId: string): Promise<Pro
   if (!eventId || typeof eventId !== "string") {
     return { ok: false, error: "Promotion did not return an event id." };
   }
+
+  void trackServerEvent({
+    event: AnalyticsEvents.BATTLE_REQUEST_PROMOTED,
+    route: "/battle-hub/finder",
+    battleRequestId: requestId,
+    battleEventId: eventId,
+  });
 
   revalidatePath("/battle-hub/calendar");
   revalidatePath("/battle-hub/scheduler");

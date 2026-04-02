@@ -8,6 +8,8 @@ import {
   sendApplicationSubmittedEmail,
 } from "@/lib/email/application-lifecycle";
 import { notifyNewApplication } from "@/lib/applications/notify";
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackServerEvent } from "@/lib/analytics/server";
 import { canAccessAdmin } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
@@ -151,6 +153,11 @@ export async function submitApplication(
     }),
   ]);
 
+  void trackServerEvent({
+    event: isResubmit ? AnalyticsEvents.APPLICATION_RESUBMITTED : AnalyticsEvents.APPLICATION_SUBMITTED,
+    route: "/apply",
+  });
+
   revalidatePath("/application-status");
   revalidatePath("/apply");
   revalidatePath("/battle-hub");
@@ -176,7 +183,7 @@ export async function setApplicationStatusAction(
   const supabase = await createClient();
   const { data: row, error: fetchErr } = await supabase
     .from("applications")
-    .select("status, email, full_name")
+    .select("status, email, full_name, user_id")
     .eq("id", applicationId)
     .maybeSingle();
 
@@ -203,6 +210,13 @@ export async function setApplicationStatusAction(
     const to = row.email?.trim();
     if (to) {
       void sendApplicationRejectedEmail({ to, fullName: row.full_name }).catch(() => {});
+    }
+    if (row.user_id) {
+      void trackServerEvent({
+        event: AnalyticsEvents.APPLICATION_REJECTED,
+        subjectUserId: row.user_id,
+        route: "/admin/applications",
+      });
     }
   }
 
