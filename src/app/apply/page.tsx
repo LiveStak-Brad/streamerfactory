@@ -17,7 +17,9 @@ export default function ApplyPage() {
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
           Tell us about your TikTok LIVE presence. We review every application and
-          respond when there’s a potential fit.
+          respond when there’s a potential fit. Creating an account does not make you a network member by
+          default—after we verify your TikTok and details, an owner can approve you in the admin panel so
+          Battle Hub and scheduling unlock.
         </p>
         <div className="mt-12 rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-[0_1px_0_0_rgba(255,255,255,0.65)_inset,0_8px_32px_-28px_rgba(15,23,42,0.12)] sm:p-10 dark:border-zinc-800 dark:bg-zinc-950/40 dark:shadow-none">
           <ApplyForm />

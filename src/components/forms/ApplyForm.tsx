@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import type { ApplicationSubmitState } from "@/lib/applications/actions";
+import { submitApplication } from "@/lib/applications/actions";
 import { Button } from "@/components/ui/Button";
 
 const followerOptions = [
@@ -17,16 +20,19 @@ const inputClass =
 
 const labelClass = "text-base font-medium text-foreground";
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" variant="primary" disabled={pending} className="min-h-[48px] w-full sm:w-auto sm:min-w-[200px]">
+      {pending ? "Submitting…" : "Submit application"}
+    </Button>
+  );
+}
+
 export function ApplyForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [state, formAction] = useActionState(submitApplication, {} as ApplicationSubmitState);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    // Placeholder: wire to API / server action later
-    setSubmitted(true);
-  }
-
-  if (submitted) {
+  if (state?.success) {
     return (
       <div
         className="rounded-2xl border border-zinc-200/90 bg-muted-bg p-8 sm:p-10 dark:border-zinc-800"
@@ -34,19 +40,24 @@ export function ApplyForm() {
       >
         <h2 className="text-2xl font-semibold text-foreground">Application received</h2>
         <p className="mt-3 text-base leading-relaxed text-muted">
-          Thanks for applying to Streamer Factory. We review every submission and
-          will follow up by email if we’d like to move forward.
-        </p>
-        <p className="mt-4 text-base text-muted">
-          No data was sent to a server in this preview—hook up your backend when
-          you’re ready.
+          Thanks for applying to Streamer Factory. We review every submission and will follow up using the
+          contact details you provided if we would like to move forward.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+    <form action={formAction} className="space-y-8">
+      {state?.error && (
+        <div
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200"
+          role="alert"
+        >
+          {state.error}
+        </div>
+      )}
+
       <div className="grid gap-8 sm:grid-cols-2">
         <div>
           <label htmlFor="fullName" className={labelClass}>
@@ -112,7 +123,7 @@ export function ApplyForm() {
         <label htmlFor="followerCount" className={labelClass}>
           Current follower count <span className="text-accent">*</span>
         </label>
-        <select id="followerCount" name="followerCount" required className={inputClass}>
+        <select id="followerCount" name="followerCount" required className={inputClass} defaultValue="">
           {followerOptions.map((opt) => (
             <option key={opt.value || "empty"} value={opt.value} disabled={opt.value === ""}>
               {opt.label}
@@ -151,13 +162,28 @@ export function ApplyForm() {
         />
       </div>
 
+      <div className="rounded-2xl border border-zinc-200/90 bg-muted-bg/50 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/40">
+        <label className="flex cursor-pointer gap-3 text-sm leading-relaxed text-foreground">
+          <input
+            type="checkbox"
+            name="contactConsent"
+            required
+            className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-300 accent-accent dark:border-zinc-600"
+          />
+          <span>
+            I agree that Streamer Factory may contact me about my application using the email I provided
+            (and related follow-up), including information about next steps or fit.{" "}
+            <span className="text-accent">*</span>
+          </span>
+        </label>
+      </div>
+
       <div className="flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted">
-          By submitting, you agree we may contact you about your application.
+          We only use your details to evaluate and respond to this application—not for unrelated marketing
+          unless you hear from us and opt in separately.
         </p>
-        <Button type="submit" variant="primary" className="min-h-[48px] w-full sm:w-auto sm:min-w-[200px]">
-          Submit application
-        </Button>
+        <SubmitButton />
       </div>
     </form>
   );
