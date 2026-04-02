@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MemberApproveButton } from "@/components/admin/MemberApproveButton";
+import { ResendApprovalEmailButton } from "@/components/admin/ResendApprovalEmailButton";
 import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getApplicantProfiles, getNetworkMemberProfiles } from "@/lib/profiles/queries";
@@ -34,8 +35,8 @@ export default async function AdminMembersPage() {
               New accounts start as <span className="font-semibold text-zinc-800 dark:text-zinc-200">applicant</span>.
               After you verify TikTok and review their Apply form, use{" "}
               <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Approve as network member</strong>{" "}
-              to promote them — they move to the approved list below, and we send them a confirmation email when
-              Resend is configured.
+              to promote them — they move to the approved list below, and we send a confirmation email when they
+              are approved.
             </p>
           </div>
           <Link
@@ -101,7 +102,8 @@ export default async function AdminMembersPage() {
         <h2 className="mt-14 text-lg font-bold text-zinc-950 dark:text-zinc-50">Approved network members</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Creators and staff roles with Battle Hub access (member, editor, admin). Approving someone from the list
-          above moves them here.
+          above moves them here. Use <span className="font-medium text-zinc-700 dark:text-zinc-300">Resend approval email</span>{" "}
+          to send the welcome message again if needed.
         </p>
 
         {members.length === 0 ? (
@@ -115,7 +117,7 @@ export default async function AdminMembersPage() {
                 key={m.id}
                 className="rounded-2xl border border-zinc-200/90 bg-surface/80 px-5 py-4 dark:border-zinc-800 dark:bg-zinc-950/40"
               >
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                       {m.role}
@@ -137,13 +139,16 @@ export default async function AdminMembersPage() {
                     )}
                     <p className="mt-1 break-all font-mono text-xs text-zinc-500 dark:text-zinc-400">{m.id}</p>
                   </div>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Updated{" "}
-                    {new Intl.DateTimeFormat("en-US", {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    }).format(new Date(m.updated_at))}
-                  </p>
+                  <div className="flex shrink-0 flex-col items-end gap-2 sm:pt-0">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Updated{" "}
+                      {new Intl.DateTimeFormat("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      }).format(new Date(m.updated_at))}
+                    </p>
+                    <ResendApprovalEmailButton userId={m.id} />
+                  </div>
                 </div>
               </li>
             ))}

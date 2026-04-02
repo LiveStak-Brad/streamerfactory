@@ -1,3 +1,4 @@
+import { getResendApiKey, getTransactionalFrom } from "@/lib/email/config";
 import { getPublicSiteUrl } from "@/lib/site-url";
 import { site } from "@/lib/site";
 
@@ -48,9 +49,12 @@ async function notifyDiscord(p: NotifyPayload): Promise<void> {
 }
 
 async function notifyResend(p: NotifyPayload): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY?.trim();
-  const to = process.env.APPLICATION_NOTIFY_EMAIL?.trim();
-  const from = process.env.RESEND_FROM_EMAIL?.trim();
+  const apiKey = getResendApiKey();
+  const to =
+    typeof process.env.APPLICATION_NOTIFY_EMAIL === "string"
+      ? process.env.APPLICATION_NOTIFY_EMAIL.trim()
+      : undefined;
+  const from = getTransactionalFrom();
   if (!apiKey || !to || !from) return;
 
   const adminUrl = `${getPublicSiteUrl()}/admin/applications`;
