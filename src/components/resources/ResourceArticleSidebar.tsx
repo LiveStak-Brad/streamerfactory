@@ -24,6 +24,22 @@ export function ResourceArticleSidebar() {
           </li>
           <li>
             <Link
+              href="/resources/start-here"
+              className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
+            >
+              Start Here path
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/battle-hub"
+              className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
+            >
+              Battle Hub
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/about"
               className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
             >

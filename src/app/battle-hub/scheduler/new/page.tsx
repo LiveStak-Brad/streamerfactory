@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { BattleSchedulerWizard } from "@/components/battle-hub/BattleSchedulerWizard";
 import { Container } from "@/components/ui/Container";
+import { parseSchedulerPrefillFromSearchParams } from "@/lib/battle-finder/scheduler-prefill";
 import { requireBattleScheduler } from "@/lib/auth/server";
 
-export default async function NewBattlePage() {
+export default async function NewBattlePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   await requireBattleScheduler("/battle-hub/scheduler/new");
+  const sp = await searchParams;
+  const initialPrefill = parseSchedulerPrefillFromSearchParams(sp);
 
   return (
     <section className="py-14 sm:py-20">
@@ -22,7 +29,7 @@ export default async function NewBattlePage() {
           Walk through format, creators, schedule, and flyer—then save to the network calendar.
         </p>
         <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-8">
-          <BattleSchedulerWizard />
+          <BattleSchedulerWizard initialPrefill={initialPrefill} />
         </div>
       </Container>
     </section>

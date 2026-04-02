@@ -16,8 +16,9 @@ export function BattleHubPreviewBanner({
     <div className="mb-8 rounded-2xl border border-amber-200/80 bg-amber-50/95 px-4 py-4 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/35">
       <p className="text-sm font-semibold text-amber-950 dark:text-amber-100">{headline}</p>
       <p className="mt-1.5 text-sm leading-relaxed text-amber-900/95 dark:text-amber-100/90">
-        This screen is read-only sample UI. Network members sign in to schedule real battles, publish to the
-        shared calendar, and use the full flyer builder.
+        This screen is read-only sample UI. Approved members sign in to schedule real battles, publish to the
+        shared calendar, and use the full flyer builder — the same path whether you start from the scheduler
+        or the calendar.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
@@ -33,6 +34,23 @@ export function BattleHubPreviewBanner({
           Apply to join
         </Link>
       </div>
+      <p className="mt-4 text-sm leading-relaxed text-amber-900/90 dark:text-amber-200/85">
+        Already submitted an application?{" "}
+        <Link
+          href="/login?next=%2Fapplication-status"
+          className="font-semibold text-amber-950 underline-offset-2 hover:underline dark:text-amber-50"
+        >
+          Sign in
+        </Link>{" "}
+        — then open{" "}
+        <Link
+          href="/application-status"
+          className="font-semibold text-amber-950 underline-offset-2 hover:underline dark:text-amber-50"
+        >
+          Application status
+        </Link>{" "}
+        from the menu (applicants).
+      </p>
     </div>
   );
 }

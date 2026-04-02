@@ -32,21 +32,6 @@ function SubmitButton() {
 export function ApplyForm() {
   const [state, formAction] = useActionState(submitApplication, {} as ApplicationSubmitState);
 
-  if (state?.success) {
-    return (
-      <div
-        className="rounded-2xl border border-zinc-200/90 bg-muted-bg p-8 sm:p-10 dark:border-zinc-800"
-        role="status"
-      >
-        <h2 className="text-2xl font-semibold text-foreground">Application received</h2>
-        <p className="mt-3 text-base leading-relaxed text-muted">
-          Thanks for applying to Streamer Factory. We review every submission and will follow up using the
-          contact details you provided if we would like to move forward.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <form action={formAction} className="space-y-8">
       {state?.error && (
@@ -94,6 +79,10 @@ export function ApplyForm() {
           <label htmlFor="tiktokUsername" className={labelClass}>
             TikTok username <span className="text-accent">*</span>
           </label>
+          <p className="mt-1 text-sm text-muted">
+            For your application review. After you&apos;re approved, you&apos;ll confirm your handle for the
+            network on Getting started.
+          </p>
           <input
             id="tiktokUsername"
             name="tiktokUsername"

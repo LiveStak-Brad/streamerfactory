@@ -1,13 +1,18 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { canAccessAdmin } from "./access";
+import { canAccessAdmin, canScheduleBattles } from "./access";
 import { effectiveCanUseBattleHubScheduling } from "./network-view";
 
 export type Profile = {
   id: string;
   role: string;
   email: string | null;
+  tiktok_username: string | null;
+  timezone: string | null;
+  onboarding_resources_ack_at: string | null;
+  onboarding_calendar_ack_at: string | null;
+  onboarding_completed_at: string | null;
 };
 
 /**
@@ -25,7 +30,9 @@ export async function getSessionProfile(): Promise<{
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, role, email")
+    .select(
+      "id, role, email, tiktok_username, timezone, onboarding_resources_ack_at, onboarding_calendar_ack_at, onboarding_completed_at",
+    )
     .eq("id", user.id)
     .maybeSingle();
 
@@ -54,6 +61,23 @@ export const requireAdmin = cache(async () => {
  * Logged-in users with a member/editor/owner profile can use Battle Hub scheduler.
  * Others are redirected (e.g. to login or hub).
  */
+/**
+ * Network members (owner, editor, member, admin) only. Applicants and guests redirected.
+ */
+export const requireNetworkMember = cache(async () => {
+  const session = await getSessionProfile();
+  if (!session) {
+    redirect("/login?next=/welcome");
+  }
+  if (!session.profile) {
+    redirect("/apply");
+  }
+  if (!canScheduleBattles(session.profile.role)) {
+    redirect("/application-status");
+  }
+  return session;
+});
+
 export const requireBattleScheduler = cache(async (nextPath = "/battle-hub/scheduler") => {
   const session = await getSessionProfile();
   if (!session) {
@@ -63,6 +87,9 @@ export const requireBattleScheduler = cache(async (nextPath = "/battle-hub/sched
     redirect("/apply");
   }
   if (!(await effectiveCanUseBattleHubScheduling(session))) {
+    if (session.profile.role === "applicant") {
+      redirect("/application-status");
+    }
     redirect("/battle-hub");
   }
   return session;

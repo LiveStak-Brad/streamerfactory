@@ -8,6 +8,7 @@ import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { Container } from "@/components/ui/Container";
 import { site } from "@/lib/site";
 import { safeNextPath } from "@/lib/auth/access";
+import { resolvePostLoginRedirect } from "@/lib/auth/post-login";
 import { createClient } from "@/lib/supabase/client";
 
 type Mode = "signin" | "signup";
@@ -52,8 +53,20 @@ function LoginContent() {
         setMessage(error.message);
         return;
       }
-      router.refresh();
-      router.replace(afterAuthPath);
+      await router.refresh();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      let destination = afterAuthPath;
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role, onboarding_completed_at")
+          .eq("id", user.id)
+          .maybeSingle();
+        destination = resolvePostLoginRedirect(afterAuthPath, profile);
+      }
+      router.replace(destination);
       return;
     }
 
@@ -70,8 +83,20 @@ function LoginContent() {
       return;
     }
     if (data.session) {
-      router.refresh();
-      router.replace(afterAuthPath);
+      await router.refresh();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      let destination = afterAuthPath;
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role, onboarding_completed_at")
+          .eq("id", user.id)
+          .maybeSingle();
+        destination = resolvePostLoginRedirect(afterAuthPath, profile);
+      }
+      router.replace(destination);
       return;
     }
     setSuccess(

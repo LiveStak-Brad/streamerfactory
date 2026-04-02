@@ -9,8 +9,10 @@ import { ResourceBreadcrumb } from "@/components/resources/ResourceBreadcrumb";
 import { ResourceMeta } from "@/components/resources/ResourceMeta";
 import { ResourceSupportCallout } from "@/components/resources/ResourceSupportCallout";
 import { Container } from "@/components/ui/Container";
+import { StartHereArticleHint } from "@/components/resources/StartHereArticleHint";
 import { splitIntroAndBody } from "@/lib/resources/content";
 import { getPublishedPostBySlug, getRelatedPublishedPosts } from "@/lib/resources/queries";
+import { isStartHereArticleSlug } from "@/lib/resources/start-here";
 import { site } from "@/lib/site";
 
 type Props = {
@@ -57,6 +59,12 @@ export default async function ResourcePostPage({ params }: Props) {
             { label: post.title },
           ]}
         />
+
+        {isStartHereArticleSlug(post.slug) ? (
+          <div className="mt-6 max-w-2xl">
+            <StartHereArticleHint />
+          </div>
+        ) : null}
 
         <div className="mt-8 lg:grid lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-14">
           <div className="min-w-0 lg:col-span-8">

@@ -1,3 +1,6 @@
+/** Stored on `applications.status`; profile.role still gates product access. */
+export type ApplicationPipelineStatus = "submitted" | "in_review" | "approved" | "rejected";
+
 export type ApplicationRow = {
   id: string;
   full_name: string;
@@ -11,4 +14,5 @@ export type ApplicationRow = {
   /** Authenticated submitter; null for legacy rows before linkage migration. */
   user_id: string | null;
   created_at: string;
+  status: ApplicationPipelineStatus;
 };

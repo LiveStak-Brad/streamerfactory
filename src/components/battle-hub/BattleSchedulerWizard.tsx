@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { CreateBattleState } from "@/lib/battle-hub/actions";
 import { createBattleEvent } from "@/lib/battle-hub/actions";
@@ -10,6 +10,8 @@ import {
   PARTICIPANT_COUNTS,
 } from "@/lib/battle-hub/formats";
 import { uploadBattleFlyerAvatar } from "@/lib/battle-hub/upload-battle-avatar";
+import type { SchedulerWizardPrefill } from "@/lib/battle-finder/scheduler-prefill";
+
 import { BattleFlyerPreview } from "./BattleFlyerPreview";
 
 function SubmitBattleButton() {
@@ -47,7 +49,13 @@ function teamForFlyerLayout(
   return null;
 }
 
-export function BattleSchedulerWizard() {
+type BattleSchedulerWizardProps = {
+  /** Hydrate from Battle Finder or shared links (`/battle-hub/scheduler/new?...`). */
+  initialPrefill?: SchedulerWizardPrefill;
+};
+
+export function BattleSchedulerWizard({ initialPrefill }: BattleSchedulerWizardProps) {
+  const prefillApplied = useRef(false);
   const [step, setStep] = useState(1);
   const [participantCount, setParticipantCount] = useState<number>(2);
   const [formatLabel, setFormatLabel] = useState("");
@@ -108,6 +116,44 @@ export function BattleSchedulerWizard() {
       setFormatLabel(opts[0].value);
     }
   }, [participantCount, formatLabel]);
+
+  useEffect(() => {
+    if (!initialPrefill || prefillApplied.current) return;
+    const p = initialPrefill;
+    const hasAny =
+      Boolean(p.title) ||
+      p.participantCount != null ||
+      Boolean(p.formatLabel) ||
+      Boolean(p.scheduledAtIso) ||
+      Boolean(p.timezone) ||
+      Boolean(p.notes) ||
+      (p.participants != null && p.participants.length > 0);
+    if (!hasAny) return;
+    prefillApplied.current = true;
+    if (p.title) setTitle(p.title);
+    if (p.participantCount != null && p.participantCount >= 2 && p.participantCount <= 4) {
+      setParticipantCount(p.participantCount);
+      const handles = p.participants?.slice(0, p.participantCount) ?? [];
+      const next = [...handles];
+      while (next.length < p.participantCount) next.push("");
+      setParticipants(next.slice(0, p.participantCount));
+    }
+    if (p.formatLabel) {
+      setFormatLabel(p.formatLabel);
+      setLayoutPreviewFormat(p.formatLabel);
+    }
+    if (p.timezone) setTimezone(p.timezone);
+    if (p.notes) setNotes(p.notes);
+    if (p.scheduledAtIso) {
+      const d = new Date(p.scheduledAtIso);
+      if (!Number.isNaN(d.getTime())) {
+        const pad = (n: number) => String(n).padStart(2, "0");
+        setScheduledAt(
+          `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`,
+        );
+      }
+    }
+  }, [initialPrefill]);
 
   const flyerParticipants = useMemo(() => {
     return participants.slice(0, participantCount).map((u, i) => ({

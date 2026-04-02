@@ -1,0 +1,105 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { ApplicationStatusPanel } from "@/components/applications/ApplicationStatusPanel";
+import { Section } from "@/components/ui/Section";
+import { getMyApplication } from "@/lib/applications/queries";
+import { resolveApplicationUi } from "@/lib/applications/status";
+import { getSessionProfile } from "@/lib/auth/server";
+
+export const metadata: Metadata = {
+  title: "Application status",
+  description:
+    "See where your Streamer Factory membership application stands and what to do next.",
+};
+
+export const dynamic = "force-dynamic";
+
+export default async function ApplicationStatusPage() {
+  const session = await getSessionProfile();
+
+  if (!session) {
+    return (
+      <Section className="!pt-12 sm:!pt-16">
+        <div className="mx-auto max-w-2xl">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
+            Membership
+          </p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Application status
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted">
+            Sign in to see your application and next steps. If you haven&apos;t applied yet, you can start from
+            the Apply page after you sign in.
+          </p>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/login?next=%2Fapplication-status"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/apply"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200 px-6 py-3 text-sm font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
+            >
+              Apply
+            </Link>
+          </div>
+        </div>
+      </Section>
+    );
+  }
+
+  let application = null;
+  try {
+    application = await getMyApplication(session.user.id);
+  } catch {
+    application = null;
+  }
+
+  const ui = resolveApplicationUi(session.profile?.role ?? null, application);
+
+  return (
+    <Section className="!pt-12 sm:!pt-16">
+      <div className="mx-auto max-w-2xl">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
+          Membership
+        </p>
+        <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Application status
+        </h1>
+        <p className="mt-5 text-lg leading-relaxed text-muted">
+          One place to see where you stand — from submission to full member access.{" "}
+          <Link href="/resources/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Start Here
+          </Link>{" "}
+          and{" "}
+          <Link href="/resources" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Resources
+          </Link>{" "}
+          stay available before and after approval.
+        </p>
+
+        <div className="mt-10">
+          <ApplicationStatusPanel ui={ui} email={session.user.email} />
+        </div>
+
+        <p className="mt-10 text-center text-sm text-zinc-500 dark:text-zinc-400">
+          <Link href="/" className="font-semibold text-zinc-600 hover:underline dark:text-zinc-300">
+            Home
+          </Link>
+          {" · "}
+          <Link href="/about" className="font-semibold text-zinc-600 hover:underline dark:text-zinc-300">
+            About
+          </Link>
+          {" · "}
+          Questions?{" "}
+          <Link href="/contact" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Contact
+          </Link>
+        </p>
+      </div>
+    </Section>
+  );
+}

@@ -68,7 +68,7 @@ export async function updateSession(request: NextRequest) {
       .maybeSingle();
     const role = String(profile?.role ?? "").toLowerCase();
     if (role === "applicant") {
-      return NextResponse.redirect(new URL("/battle-hub", request.url));
+      return NextResponse.redirect(new URL("/application-status", request.url));
     }
   }
 

@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ApplicationDeleteButton } from "@/components/admin/ApplicationDeleteButton";
+import { ApplicationStatusAdminControls } from "@/components/admin/ApplicationStatusAdminControls";
 import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getApplications } from "@/lib/applications/queries";
+import type { ApplicationPipelineStatus } from "@/lib/applications/types";
 
 const followerLabels: Record<string, string> = {
   "under-1k": "Under 1,000",
@@ -16,6 +18,36 @@ function tiktokProfileUrl(raw: string): string {
   const h = raw.trim().replace(/^@/, "");
   if (!h) return "https://www.tiktok.com/";
   return `https://www.tiktok.com/@${encodeURIComponent(h)}`;
+}
+
+function statusBadgeClass(status: ApplicationPipelineStatus): string {
+  switch (status) {
+    case "submitted":
+      return "border-zinc-200 bg-zinc-50 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-200";
+    case "in_review":
+      return "border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-100";
+    case "approved":
+      return "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100";
+    case "rejected":
+      return "border-rose-200 bg-rose-50 text-rose-950 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-100";
+    default:
+      return "border-zinc-200 bg-zinc-50 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-200";
+  }
+}
+
+function statusLabel(status: ApplicationPipelineStatus): string {
+  switch (status) {
+    case "submitted":
+      return "Received";
+    case "in_review":
+      return "In review";
+    case "approved":
+      return "Approved";
+    case "rejected":
+      return "Rejected";
+    default:
+      return status;
+  }
 }
 
 export default async function AdminApplicationsPage() {
@@ -76,9 +108,16 @@ export default async function AdminApplicationsPage() {
                       {app.full_name}
                     </h2>
                   </div>
-                  <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/50 dark:text-emerald-200">
-                    Consent to contact
-                  </span>
+                  <div className="flex flex-wrap items-center justify-end gap-2">
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${statusBadgeClass(app.status)}`}
+                    >
+                      {statusLabel(app.status)}
+                    </span>
+                    <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/50 dark:text-emerald-200">
+                      Consent to contact
+                    </span>
+                  </div>
                 </div>
 
                 <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
@@ -143,6 +182,7 @@ export default async function AdminApplicationsPage() {
                     </p>
                   ) : null}
                 </div>
+                <ApplicationStatusAdminControls applicationId={app.id} status={app.status} />
                 <ApplicationDeleteButton applicationId={app.id} />
               </li>
             ))}

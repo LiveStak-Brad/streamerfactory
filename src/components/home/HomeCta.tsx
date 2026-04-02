@@ -13,8 +13,8 @@ export function HomeCta() {
             Ready to grow your LIVE business with a real partner?
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-zinc-400 dark:text-zinc-600">
-            Apply now. If you’re a fit, we’ll guide you through onboarding and
-            help you build a sustainable streaming operation.
+            Apply once — we review every submission. If it&apos;s a fit, you&apos;ll onboard into the same tools
+            we use to run battles and support creators: scheduling, calendar, and resources built for LIVE.
           </p>
         </div>
         <Button href="/apply" variant="inverse" className="min-h-[52px] shrink-0 px-8">

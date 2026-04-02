@@ -1,8 +1,19 @@
 import Link from "next/link";
+
+import {
+  BattleHubMemberActivity,
+  type BattleHubMemberActivityProps,
+} from "@/components/battle-hub/BattleHubMemberActivity";
 import { BattleHubFlyerTemplateShowcase } from "@/components/battle-hub/BattleHubFlyerTemplateShowcase";
 import { Container } from "@/components/ui/Container";
 
-export function BattleHubMemberHome() {
+type Props = {
+  /** First-run members who have not finished / dismissed onboarding. */
+  showOnboardingNudge?: boolean;
+  activity: BattleHubMemberActivityProps;
+};
+
+export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: Props) {
   return (
     <div className="relative pb-24 pt-14 sm:pt-20">
       <div
@@ -10,6 +21,21 @@ export function BattleHubMemberHome() {
         aria-hidden
       />
       <Container className="relative max-w-6xl">
+        {showOnboardingNudge ? (
+          <div className="mb-8 rounded-2xl border border-accent/30 bg-accent/5 px-4 py-4 dark:border-accent/40 dark:bg-accent/10 sm:px-6 sm:py-5">
+            <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Finish getting started</p>
+            <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Complete the short member checklist — profile, resources, battles, and calendar — so you get the
+              most from the network.
+            </p>
+            <Link
+              href="/welcome"
+              className="mt-3 inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
+              Open welcome checklist →
+            </Link>
+          </div>
+        ) : null}
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
           Network tools
         </p>
@@ -17,30 +43,33 @@ export function BattleHubMemberHome() {
           Battle Hub
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Schedule LIVE battles with flexible headcounts and formats, drop a branded flyer, and publish to
-          the shared calendar. Built so a future Battle Finder can match creators on the same data.
+          See what&apos;s next on the network calendar, schedule battles, and share polished flyers — one place
+          for TikTok LIVE creators to coordinate.
         </p>
 
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+          <span className="font-semibold text-zinc-500 dark:text-zinc-400">Guides:</span>
           <Link
-            href="/battle-hub/scheduler"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
+            href="/resources#battles"
+            className="font-semibold text-accent hover:underline dark:text-accent-muted"
           >
-            Open scheduler
+            Battle strategy
           </Link>
           <Link
-            href="/battle-hub/calendar"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200 px-6 py-3 text-sm font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
+            href="/resources/structure-your-first-battle-week"
+            className="font-semibold text-zinc-700 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-muted"
           >
-            Network calendar
+            First battle week
           </Link>
           <Link
-            href="/resources"
-            className="inline-flex min-h-[48px] items-center justify-center px-4 py-3 text-sm font-semibold text-zinc-600 hover:text-accent dark:text-zinc-400 dark:hover:text-accent-muted"
+            href="/resources/promote-your-battles-without-spamming"
+            className="font-semibold text-zinc-700 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-muted"
           >
-            Resources
+            Promoting battles
           </Link>
         </div>
+
+        <BattleHubMemberActivity {...activity} />
 
         <BattleHubFlyerTemplateShowcase
           className="mt-16 border-t border-zinc-200/80 pt-14 dark:border-zinc-800/80"

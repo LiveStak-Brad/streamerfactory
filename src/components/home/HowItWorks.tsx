@@ -1,10 +1,26 @@
 import { Section } from "@/components/ui/Section";
 
 const steps = [
-  { step: "01", title: "Apply", body: "Tell us about your LIVE presence, goals, and schedule. It only takes a few minutes." },
-  { step: "02", title: "Get reviewed", body: "Our team evaluates fit, readiness, and alignment—then we follow up with clear next steps." },
-  { step: "03", title: "Get onboarded", body: "If it’s a match, we walk you through onboarding, expectations, and your growth plan." },
-  { step: "04", title: "Start growing", body: "Execute with coaching, check-ins, and ongoing support as you scale your LIVE business." },
+  {
+    step: "01",
+    title: "Apply",
+    body: "Tell us about your LIVE presence, goals, and schedule. A few minutes — tied to your account so nothing gets lost.",
+  },
+  {
+    step: "02",
+    title: "Get reviewed",
+    body: "We evaluate fit and readiness. Your application status stays visible in the app so you always know where things stand.",
+  },
+  {
+    step: "03",
+    title: "Onboard",
+    body: "If it’s a match, we walk you through expectations, resources, and how the network operates — learn, connect, then open the tools.",
+  },
+  {
+    step: "04",
+    title: "Schedule & grow",
+    body: "Use Battle Hub, the shared calendar, and Battle Finder to coordinate LIVE battles — with coaching and check-ins as you scale.",
+  },
 ] as const;
 
 const cardClass =

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { createClient } from "@/lib/supabase/client";
-import { canAccessAdmin } from "@/lib/auth/access";
+import { canAccessAdmin, canScheduleBattles } from "@/lib/auth/access";
 import type { OwnerNetworkViewMode } from "@/lib/auth/network-view";
 import { mainNav, site } from "@/lib/site";
 import { SfLogoMark } from "@/components/brand/SfLogoMark";
@@ -89,19 +89,44 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
           id="site-nav"
           className={`flex flex-col gap-1 sm:flex sm:flex-row sm:items-center sm:gap-2 ${open ? "flex" : "hidden sm:flex"}`}
         >
-          {mainNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="relative rounded-lg px-3 py-2.5 text-[0.95rem] font-semibold text-zinc-600 transition-colors after:absolute after:inset-x-3 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200 hover:text-zinc-950 hover:after:scale-x-100 dark:text-zinc-400 dark:hover:text-zinc-50 dark:after:bg-accent-muted sm:py-2"
-              onClick={() => setOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {mainNav.map((item) => {
+            const isApplyCta = item.href === "/apply" && !user;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative rounded-lg px-3 py-2.5 text-[0.95rem] font-semibold transition-colors after:absolute after:inset-x-3 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200 hover:after:scale-x-100 dark:after:bg-accent-muted sm:py-2 ${
+                  isApplyCta
+                    ? "text-accent hover:text-accent dark:text-accent-muted dark:hover:text-accent-muted"
+                    : "text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+                }`}
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           <div className="mt-2 flex flex-col gap-2 border-t border-zinc-200/90 pt-3 sm:mt-0 sm:ml-2 sm:flex-row sm:items-center sm:gap-2 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0 dark:border-zinc-800/90">
             {user ? (
               <>
+                {profileRole === "applicant" && (
+                  <Link
+                    href="/application-status"
+                    className="rounded-lg px-3 py-2.5 text-center text-[0.95rem] font-semibold text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 sm:py-2"
+                    onClick={() => setOpen(false)}
+                  >
+                    Application status
+                  </Link>
+                )}
+                {profileRole !== null && canScheduleBattles(profileRole) && (
+                  <Link
+                    href="/welcome"
+                    className="rounded-lg px-3 py-2.5 text-center text-[0.95rem] font-semibold text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 sm:py-2"
+                    onClick={() => setOpen(false)}
+                  >
+                    Getting started
+                  </Link>
+                )}
                 {profileRole !== null && canAccessAdmin(profileRole) && (
                   <Link
                     href="/admin"

@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { getMyApplication } from "@/lib/applications/queries";
 import { requireAdmin } from "@/lib/auth/server";
+
+const followerLabels: Record<string, string> = {
+  "under-1k": "Under 1,000",
+  "1k-10k": "1,000 – 10,000",
+  "10k-50k": "10,000 – 50,000",
+  "50k-100k": "50,000 – 100,000",
+  "100k-plus": "100,000+",
+};
 
 const cards = [
   {
@@ -41,6 +50,20 @@ const cards = [
 export default async function AdminHomePage() {
   const session = await requireAdmin();
 
+  let myApplication = null as Awaited<ReturnType<typeof getMyApplication>>;
+  try {
+    myApplication = await getMyApplication(session.user.id);
+  } catch {
+    myApplication = null;
+  }
+
+  const tiktokRaw =
+    session.profile?.tiktok_username?.trim() || myApplication?.tiktok_username?.trim() || "";
+  const tiktokDisplay = tiktokRaw ? (tiktokRaw.startsWith("@") ? tiktokRaw : `@${tiktokRaw}`) : null;
+  const followerDisplay = myApplication?.follower_range
+    ? (followerLabels[myApplication.follower_range] ?? myApplication.follower_range)
+    : null;
+
   return (
     <section className="py-12 sm:py-20">
       <Container className="max-w-5xl">
@@ -52,6 +75,27 @@ export default async function AdminHomePage() {
           . Role:{" "}
           <span className="font-medium text-zinc-900 dark:text-zinc-200">{session?.profile?.role ?? "—"}</span>.
         </p>
+
+        <dl className="mt-6 grid max-w-lg gap-3 rounded-2xl border border-zinc-200/90 bg-muted-bg/50 px-5 py-4 text-sm dark:border-zinc-800 dark:bg-zinc-950/40 sm:grid-cols-2 sm:gap-4">
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              TikTok username
+            </dt>
+            <dd className="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+              {tiktokDisplay ?? <span className="font-normal text-zinc-500 dark:text-zinc-400">Not set</span>}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Follower count
+            </dt>
+            <dd className="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+              {followerDisplay ?? (
+                <span className="font-normal text-zinc-500 dark:text-zinc-400">Not on file</span>
+              )}
+            </dd>
+          </div>
+        </dl>
 
         <ul className="mt-12 grid gap-6 sm:grid-cols-2">
           {cards.map((card) => (

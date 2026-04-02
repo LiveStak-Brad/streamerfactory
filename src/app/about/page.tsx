@@ -28,6 +28,11 @@ export default function AboutPage() {
             website for a real partner network: clear expectations, real coaching, and
             a conversion-focused approach to helping creators win on LIVE.
           </p>
+          <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
+            Approved members use the same platform to learn (resources and onboarding), connect (Battle
+            Finder and coordination), schedule (Battle Hub and the network calendar), and grow — with support
+            that stays aligned to how you actually go live.
+          </p>
         </div>
       </Section>
       <Section variant="muted" className="!py-14 sm:!py-16">

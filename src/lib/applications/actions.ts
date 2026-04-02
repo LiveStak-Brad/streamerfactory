@@ -1,13 +1,18 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import {
+  sendApplicationRejectedEmail,
+  sendApplicationSubmittedEmail,
+} from "@/lib/email/application-lifecycle";
 import { notifyNewApplication } from "@/lib/applications/notify";
 import { canAccessAdmin } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
+import type { ApplicationPipelineStatus } from "@/lib/applications/types";
 
 export type ApplicationSubmitState = {
-  success?: boolean;
   error?: string;
 };
 
@@ -71,7 +76,19 @@ export async function submitApplication(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from("applications").insert({
+  const userId = session.user.id;
+
+  const { data: existing, error: existingErr } = await supabase
+    .from("applications")
+    .select("id, status")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (existingErr) {
+    return { error: existingErr.message };
+  }
+
+  const row = {
     full_name: fullName,
     email,
     tiktok_username: tiktokUsername,
@@ -79,28 +96,108 @@ export async function submitApplication(
     follower_range: followerRange,
     goes_live: goesLive,
     why_join: whyJoin,
-    contact_consent: true,
-    user_id: session.user.id,
-  });
+    contact_consent: true as const,
+    user_id: userId,
+    status: "submitted" as const,
+  };
 
-  if (error) {
-    if (error.code === "23505") {
+  if (existing) {
+    if (existing.status !== "rejected") {
       return {
         error: "You already submitted an application with this account.",
       };
     }
-    return { error: error.message };
+    const { error } = await supabase.from("applications").update(row).eq("id", existing.id);
+    if (error) {
+      return { error: error.message };
+    }
+  } else {
+    const { error } = await supabase.from("applications").insert(row);
+    if (error) {
+      if (error.code === "23505") {
+        return {
+          error: "You already submitted an application with this account.",
+        };
+      }
+      return { error: error.message };
+    }
   }
 
-  await notifyNewApplication({
-    fullName,
-    email,
-    tiktokUsername,
-    country,
-    goesLive,
-  });
+  const isResubmit = Boolean(existing && existing.status === "rejected");
 
-  return { success: true };
+  await Promise.allSettled([
+    notifyNewApplication({
+      fullName,
+      email,
+      tiktokUsername,
+      country,
+      goesLive,
+    }),
+    sendApplicationSubmittedEmail({
+      to: email,
+      fullName,
+      isResubmit,
+    }),
+  ]);
+
+  revalidatePath("/application-status");
+  revalidatePath("/apply");
+  revalidatePath("/battle-hub");
+  redirect("/application-status");
+}
+
+/** Staff can move pipeline for review / rejection; approval is `approve_applicant_member` only. */
+const ADMIN_SETTABLE: ApplicationPipelineStatus[] = ["in_review", "rejected"];
+
+export async function setApplicationStatusAction(
+  applicationId: string,
+  nextStatus: ApplicationPipelineStatus,
+): Promise<{ ok: boolean; error?: string }> {
+  const session = await getSessionProfile();
+  if (!session?.profile || !canAccessAdmin(session.profile.role)) {
+    return { ok: false, error: "Unauthorized" };
+  }
+
+  if (!ADMIN_SETTABLE.includes(nextStatus)) {
+    return { ok: false, error: "Invalid status" };
+  }
+
+  const supabase = await createClient();
+  const { data: row, error: fetchErr } = await supabase
+    .from("applications")
+    .select("status, email, full_name")
+    .eq("id", applicationId)
+    .maybeSingle();
+
+  if (fetchErr) {
+    return { ok: false, error: fetchErr.message };
+  }
+  if (!row) {
+    return { ok: false, error: "Application not found." };
+  }
+
+  if (row.status === nextStatus) {
+    revalidatePath("/admin/applications");
+    revalidatePath("/application-status");
+    return { ok: true };
+  }
+
+  const { error } = await supabase.from("applications").update({ status: nextStatus }).eq("id", applicationId);
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  if (nextStatus === "rejected" && row.status !== "rejected") {
+    const to = row.email?.trim();
+    if (to) {
+      void sendApplicationRejectedEmail({ to, fullName: row.full_name }).catch(() => {});
+    }
+  }
+
+  revalidatePath("/admin/applications");
+  revalidatePath("/application-status");
+  return { ok: true };
 }
 
 export async function deleteApplicationAction(
@@ -120,5 +217,7 @@ export async function deleteApplicationAction(
 
   revalidatePath("/admin/applications");
   revalidatePath("/admin");
+  revalidatePath("/application-status");
+  revalidatePath("/apply");
   return { ok: true };
 }

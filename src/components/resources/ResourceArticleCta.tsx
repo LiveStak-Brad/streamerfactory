@@ -42,6 +42,18 @@ export function ResourceArticleCta() {
             About Streamer Factory
           </Link>
           <Link
+            href="/resources/start-here"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/10"
+          >
+            Start Here
+          </Link>
+          <Link
+            href="/battle-hub"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/10"
+          >
+            Battle Hub
+          </Link>
+          <Link
             href="/resources"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold text-zinc-400 transition-colors hover:text-white"
           >

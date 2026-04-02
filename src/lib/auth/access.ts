@@ -33,6 +33,11 @@ export function canScheduleBattles(role: string | null | undefined): boolean {
   return NETWORK_MEMBER_ROLES.has(normalizeRole(role));
 }
 
+/** True when the user is still in the application pipeline (not yet promoted to a network member role). */
+export function isApplicantRole(role: string | null | undefined): boolean {
+  return normalizeRole(role) === "applicant";
+}
+
 export type SessionLike = { profile: { role: string } | null } | null;
 
 /** True when the user can use real scheduler + calendar (not the public preview). */

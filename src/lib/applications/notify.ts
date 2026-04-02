@@ -1,9 +1,5 @@
+import { getPublicSiteUrl } from "@/lib/site-url";
 import { site } from "@/lib/site";
-
-function publicBaseUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
-  return raw && raw.length > 0 ? raw : site.url;
-}
 
 type NotifyPayload = {
   fullName: string;
@@ -25,7 +21,7 @@ async function notifyDiscord(p: NotifyPayload): Promise<void> {
   const url = process.env.APPLICATION_NOTIFY_DISCORD_WEBHOOK_URL?.trim();
   if (!url) return;
 
-  const adminUrl = `${publicBaseUrl()}/admin/applications`;
+  const adminUrl = `${getPublicSiteUrl()}/admin/applications`;
   const lines = [
     "**New Streamer Factory application**",
     `**Name:** ${p.fullName}`,
@@ -57,7 +53,7 @@ async function notifyResend(p: NotifyPayload): Promise<void> {
   const from = process.env.RESEND_FROM_EMAIL?.trim();
   if (!apiKey || !to || !from) return;
 
-  const adminUrl = `${publicBaseUrl()}/admin/applications`;
+  const adminUrl = `${getPublicSiteUrl()}/admin/applications`;
   const subject = `New application: ${p.fullName}`;
   const text = [
     `New application to Streamer Factory`,

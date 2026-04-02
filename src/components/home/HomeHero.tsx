@@ -35,9 +35,9 @@ export function HomeHero() {
             .
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl sm:leading-relaxed">
-            Streamer Factory recruits, trains, and supports TikTok LIVE creators
-            with structured onboarding, growth coaching, and monetization
-            guidance—so you can focus on your audience while we help you scale.
+            Learn the playbook, connect with the network, schedule battles on a shared calendar, and grow
+            with coaching — one agency layer for TikTok LIVE creators who treat streaming like a business, not
+            a hobby.
           </p>
           <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button href="/apply" variant="primary" className="min-h-[52px] px-8 sm:min-w-[200px]">

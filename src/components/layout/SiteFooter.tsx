@@ -18,6 +18,14 @@ export function SiteFooter() {
               day-to-day management for serious streamers.
             </p>
             <p className="text-sm font-medium text-accent-muted">{site.domain}</p>
+            <p className="text-sm">
+              <a
+                href={`mailto:${encodeURIComponent(site.contactEmail)}`}
+                className="font-semibold text-zinc-400 transition-colors hover:text-white"
+              >
+                {site.contactEmail}
+              </a>
+            </p>
           </div>
           <nav aria-label="Footer">
             <ul className="flex flex-wrap gap-x-8 gap-y-3">

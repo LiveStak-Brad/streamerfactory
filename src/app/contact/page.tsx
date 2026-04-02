@@ -21,13 +21,24 @@ export default function ContactPage() {
         <div className="mt-12 space-y-10 rounded-2xl border border-zinc-200/90 bg-surface p-8 shadow-[0_1px_0_0_rgba(255,255,255,0.65)_inset,0_8px_32px_-28px_rgba(15,23,42,0.1)] sm:p-10 dark:border-zinc-800 dark:bg-zinc-950/40 dark:shadow-none">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-accent dark:text-accent-muted">
+              Email
+            </h2>
+            <a
+              href={`mailto:${encodeURIComponent(site.contactEmail)}`}
+              className="mt-2 block text-xl font-medium text-accent hover:underline dark:text-accent-muted"
+            >
+              {site.contactEmail}
+            </a>
+            <p className="mt-2 text-base text-muted">
+              For partnership questions, application follow-ups, and general inquiries—we route messages to the
+              right person on the team.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-accent dark:text-accent-muted">
               Website
             </h2>
             <p className="mt-2 text-xl font-medium text-foreground">{site.domain}</p>
-            <p className="mt-2 text-base text-muted">
-              Email addresses and phone contact will be added here as operations go
-              live.
-            </p>
           </div>
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-accent dark:text-accent-muted">
