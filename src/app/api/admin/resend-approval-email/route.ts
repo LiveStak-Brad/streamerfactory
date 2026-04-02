@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 import { buildApplicationApprovedEmail } from "@/lib/email/templates/application-emails";
-import { getResendEnvRuntime } from "@/lib/email/config";
 import { canAccessAdmin } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
@@ -18,6 +17,29 @@ function firstNameFromFullName(fullName: string): string {
   return parts[0] ?? "there";
 }
 
+/** Inline env read (no shared module import) so this route never bundles a stale `undefined` for secrets. */
+function stripQuotes(s: string): string {
+  const t = s.trim();
+  if (t.length >= 2 && ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'")))) {
+    return t.slice(1, -1).trim();
+  }
+  return t;
+}
+
+function envStr(v: string | undefined): string {
+  if (v === undefined || v === null) return "";
+  return String(v).trim();
+}
+
+function pickResendEnv(): { apiKey: string; from: string } | null {
+  const apiKey = envStr(process.env.RESEND_API_KEY);
+  const a = stripQuotes(envStr(process.env.RESEND_TRANSACTIONAL_FROM));
+  const b = stripQuotes(envStr(process.env.RESEND_FROM_EMAIL));
+  const from = a || b;
+  if (!apiKey || !from) return null;
+  return { apiKey, from };
+}
+
 /**
  * Resend the membership-approved email (same template as first-time approval).
  * Uses Resend’s HTTP API directly here (no Resend SDK / sendTransactionalEmail chain) so
@@ -27,6 +49,31 @@ export async function POST(request: Request) {
   const session = await getSessionProfile();
   if (!session?.profile || !canAccessAdmin(session.profile.role)) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  let env = pickResendEnv();
+  if (!env) {
+    const apiKey = envStr(process.env.RESEND_API_KEY);
+    const fromEmailOnly = envStr(process.env.RESEND_FROM_EMAIL);
+    if (apiKey && fromEmailOnly) {
+      env = { apiKey, from: fromEmailOnly };
+    }
+  }
+  if (!env) {
+    const checks = {
+      apiKeyPresent: envStr(process.env.RESEND_API_KEY).length > 0,
+      transactionalFromPresent: envStr(process.env.RESEND_TRANSACTIONAL_FROM).length > 0,
+      fromEmailPresent: envStr(process.env.RESEND_FROM_EMAIL).length > 0,
+    };
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Resend is not configured in this environment (missing API key or from address). Add them in your host’s env and redeploy.",
+        checks,
+      },
+      { status: 503 },
+    );
   }
 
   let body: { userId?: string };
@@ -71,18 +118,6 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "No email on file for this account." },
       { status: 400 },
-    );
-  }
-
-  const env = getResendEnvRuntime();
-  if (!env) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error:
-          "Resend is not configured in this environment (missing API key or from address). Add them in your host’s env and redeploy.",
-      },
-      { status: 503 },
     );
   }
 

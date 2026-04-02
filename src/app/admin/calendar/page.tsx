@@ -50,7 +50,8 @@ export default async function AdminCalendarPage() {
               Network calendar
             </h1>
             <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
-              View, edit, cancel, or delete scheduled battles. Changes apply to the public Battle Hub calendar
+              View, edit, cancel, or delete scheduled battles. This table lists past and future rows; the public
+              network calendar only shows future battles with status scheduled. Changes apply to the Battle Hub
               immediately.
             </p>
           </div>

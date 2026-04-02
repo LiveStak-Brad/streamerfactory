@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "secondaryOnDark" | "inverse";
 
@@ -24,6 +24,7 @@ type ButtonProps = {
   href?: string;
   type?: "button" | "submit";
   disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 export function Button({
@@ -33,6 +34,7 @@ export function Button({
   href,
   type = "button",
   disabled,
+  onClick,
 }: ButtonProps) {
   const classes = `${base} ${variants[variant]} ${className}`;
 
@@ -45,7 +47,7 @@ export function Button({
   }
 
   return (
-    <button type={type} className={classes} disabled={disabled}>
+    <button type={type} className={classes} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );

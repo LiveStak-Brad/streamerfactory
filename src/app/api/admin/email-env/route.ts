@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getResendEnvRuntime } from "@/lib/email/config";
+import { readResendEnvFromProcess } from "@/lib/email/resend-env-read";
 import { canAccessAdmin } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
 
@@ -20,7 +20,7 @@ export async function GET() {
   const hasApiKey = envStr(process.env.RESEND_API_KEY).length > 0;
   const hasTransactionalFrom = envStr(process.env.RESEND_TRANSACTIONAL_FROM).length > 0;
   const hasFromEmail = envStr(process.env.RESEND_FROM_EMAIL).length > 0;
-  const bundle = getResendEnvRuntime();
+  const bundle = readResendEnvFromProcess();
 
   return NextResponse.json({
     ready: bundle !== null,

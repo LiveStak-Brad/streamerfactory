@@ -17,7 +17,8 @@ export default async function BattleCalendarPage() {
     if (!canUse) return generatePreviewBattleEvents();
     try {
       return await getUpcomingBattleEvents(80);
-    } catch {
+    } catch (err) {
+      console.error("battle-hub calendar getUpcomingBattleEvents", err);
       return [];
     }
   })();
