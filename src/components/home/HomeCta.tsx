@@ -14,7 +14,7 @@ export function HomeCta() {
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-zinc-400 dark:text-zinc-600">
             Apply once — we review every submission. If it&apos;s a fit, you&apos;ll onboard into the same tools
-            we use to run battles and support creators: scheduling, calendar, and resources built for LIVE.
+            we use to run battles and support creators: scheduling, calendar, and StreamerU training built for LIVE.
           </p>
         </div>
         <Button href="/apply" variant="inverse" className="min-h-[52px] shrink-0 px-8">

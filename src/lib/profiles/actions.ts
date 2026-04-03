@@ -61,7 +61,7 @@ export async function approveMemberAction(userId: string): Promise<{ ok: boolean
   revalidatePath("/admin");
   revalidatePath("/admin/applications");
   revalidatePath("/battle-hub");
-  revalidatePath("/welcome");
+  revalidatePath("/streameru");
   revalidatePath("/application-status");
   return { ok: true };
 }

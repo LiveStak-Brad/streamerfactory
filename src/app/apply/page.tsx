@@ -20,7 +20,7 @@ export default async function ApplyPage() {
   const session = await getSessionProfile();
 
   if (session?.profile && canScheduleBattles(session.profile.role)) {
-    redirect("/welcome");
+    redirect("/streameru");
   }
 
   let existingApplication = null as Awaited<ReturnType<typeof getMyApplication>>;
@@ -48,8 +48,11 @@ export default async function ApplyPage() {
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
           This is your <strong className="font-semibold text-foreground">application</strong> — not member
-          onboarding. After approval, you&apos;ll use <Link href="/welcome" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">Getting started</Link> to set up your
-          profile, resources, and battles.
+          onboarding. After approval, members use{" "}
+          <Link href="/streameru" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
+            StreamerU
+          </Link>{" "}
+          for the training course, plus Battle Hub for scheduling — same tools as the rest of the network.
         </p>
         <p className="mt-4 text-lg leading-relaxed text-muted sm:text-xl">
           Tell us about your TikTok LIVE presence. We review every application and follow up when there’s a

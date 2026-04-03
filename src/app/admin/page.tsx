@@ -33,10 +33,10 @@ const cards = [
     cta: "Review applications",
   },
   {
-    href: "/admin/resources",
-    title: "Resources",
+    href: "/admin/streameru",
+    title: "StreamerU",
     description: "Create and edit resource posts for the public library and homepage.",
-    cta: "Manage resources",
+    cta: "Manage StreamerU",
   },
   {
     href: "/battle-hub",

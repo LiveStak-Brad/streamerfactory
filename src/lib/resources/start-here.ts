@@ -1,7 +1,21 @@
 /**
- * Curated "Start Here" learning path for new TikTok LIVE creators.
- * Edit slugs here as you publish or reorder guides — no CMS changes required.
+ * “Start here” is **lessons 1–4 of the main curriculum** — not a separate program.
+ * Order and titles come only from `curriculum.ts` (see `getStartHereCurriculumLessons`).
  */
+
+import { getStartHereCurriculumLessons } from "@/lib/resources/curriculum";
+
+/** Intros for each of the first four curriculum slugs (Learning section context). */
+const STEP_INTRO_BY_SLUG: Record<string, string> = {
+  "start-strong-on-tiktok-live":
+    "Lock in how LIVE works on TikTok, your profile, audio, and framing — viewers decide in seconds whether to stay.",
+  "your-first-live-structure":
+    "Give every session a beginning, middle, and end so you are never stuck staring at a quiet room without a plan.",
+  "first-10-tiktok-live-sessions":
+    "Treat your first longer sessions as practice reps: one improvement per LIVE until the basics feel automatic.",
+  "first-week-of-lives-consistency":
+    "Stack seven intentional go-lives in one week — rhythm beats random long streams for building a real habit.",
+};
 
 export type StartHereResolvedItem =
   | {
@@ -23,19 +37,8 @@ export type StartHereResolvedItem =
       sectionIntro: string;
       cardTitle: string;
       cardDescription: string;
-      /** Published article missing — link to library instead of a 404. */
       exists: false;
       browseHref: string;
-    }
-  | {
-      kind: "hub";
-      stepLabel: string;
-      sectionTitle: string;
-      sectionIntro: string;
-      cardTitle: string;
-      cardDescription: string;
-      href: string;
-      hrefLabel: string;
     };
 
 export type StartHereSection = {
@@ -46,70 +49,35 @@ export type StartHereSection = {
   items: StartHereResolvedItem[];
 };
 
-/** Slugs that belong to the Start Here path (for article page promos). Keep in sync with START_HERE_PATH article steps. */
-export const START_HERE_ARTICLE_SLUGS = [
-  "first-10-tiktok-live-sessions",
-  "content-loops-repeatable-segments",
-  "gifts-goals-momentum",
-  "structure-your-first-battle-week",
-] as const;
+export type StartHerePathStep = {
+  id: string;
+  stepLabel: string;
+  title: string;
+  intro: string;
+  primarySlug: string;
+  fallbackTitle: string;
+  fallbackDescription: string;
+};
+
+function buildStartHerePath(): StartHerePathStep[] {
+  const four = getStartHereCurriculumLessons();
+  return four.map((lesson, i) => ({
+    id: `curriculum-${lesson.globalOrder}`,
+    stepLabel: `Step ${i + 1}`,
+    title: lesson.title,
+    intro: STEP_INTRO_BY_SLUG[lesson.slug] ?? "",
+    primarySlug: lesson.slug,
+    fallbackTitle: lesson.title,
+    fallbackDescription: "Open this lesson in the StreamerU program once it is published.",
+  }));
+}
+
+/** Resolved at module load from `curriculum.ts` — always aligned with lessons 1–4. */
+export const START_HERE_PATH: readonly StartHerePathStep[] = buildStartHerePath();
+
+/** For lesson-page promos — same four slugs as the start path. */
+export const START_HERE_ARTICLE_SLUGS = getStartHereCurriculumLessons().map((l) => l.slug) as readonly string[];
 
 export function isStartHereArticleSlug(slug: string): boolean {
   return (START_HERE_ARTICLE_SLUGS as readonly string[]).includes(slug);
 }
-
-/**
- * Ordered path: one primary item per step (article slug or hub link).
- * If a slug is missing or unpublished, the resolver shows a soft placeholder using fallback copy.
- */
-export const START_HERE_PATH = [
-  {
-    id: "basics",
-    stepLabel: "Step 1",
-    title: "TikTok LIVE basics",
-    intro:
-      "Lock in audio, framing, and pacing before you chase trends — viewers decide in seconds whether to stay.",
-    primarySlug: "first-10-tiktok-live-sessions",
-    fallbackTitle: "Your first 10 LIVE sessions",
-    fallbackDescription:
-      "A practical checklist for lighting, audio, pacing, and calls-to-action—so early streams feel intentional, not chaotic.",
-  },
-  {
-    id: "consistency",
-    stepLabel: "Step 2",
-    title: "First streams & consistency",
-    intro:
-      "Build repeatable segments and a rhythm viewers recognize — consistency beats random viral attempts.",
-    primarySlug: "content-loops-repeatable-segments",
-    fallbackTitle: "Content loops & repeatable segments",
-    fallbackDescription:
-      "A simple framework for hooks, value, interaction, and callbacks — so every LIVE has structure.",
-  },
-  {
-    id: "battles",
-    stepLabel: "Step 3",
-    title: "Battles & collaboration",
-    intro:
-      "LIVE battles are a core growth lever. Plan the week, lock times, then use Battle Hub and the calendar so everyone sees the same truth.",
-    hubHref: "/battle-hub",
-    hubLabel: "Open Battle Hub",
-    cardTitle: "Schedule & join network battles",
-    cardDescription:
-      "Use Battle Hub to create events, share flyers, and see what’s coming on the shared calendar — coordination beats DMs in group chats.",
-    secondarySlug: "structure-your-first-battle-week",
-    secondaryFallbackTitle: "Structure your first battle week",
-    secondaryFallbackDescription:
-      "Partners, time zones, and promotion — a simple shape for the week so battles feel organized, not chaotic.",
-  },
-  {
-    id: "monetization",
-    stepLabel: "Step 4",
-    title: "Monetization & growth",
-    intro:
-      "Think about gifts and goals as a system: energy, trust, and sustainable schedules — not endless grind sessions.",
-    primarySlug: "gifts-goals-momentum",
-    fallbackTitle: "Gifts, goals, and momentum",
-    fallbackDescription:
-      "How to think about monetization on LIVE: clear goals, recovery, and audience trust.",
-  },
-] as const;

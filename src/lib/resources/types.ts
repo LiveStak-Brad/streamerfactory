@@ -1,4 +1,9 @@
+import type { TrainingSectionsJson } from "./training-sections";
+import type { TrainingTrackId } from "./tracks";
+
 export type ResourceStatus = "draft" | "published";
+
+export type ResourceDifficulty = "beginner" | "intermediate" | "advanced";
 
 export type ResourceCategoryRow = {
   id: string;
@@ -16,6 +21,10 @@ export type ResourcePostRow = {
   content: string;
   cover_image_url: string | null;
   category_id: string | null;
+  /** Program track — see `TRAINING_TRACK_SECTIONS`. */
+  training_track?: TrainingTrackId;
+  difficulty?: ResourceDifficulty | null;
+  training_sections?: TrainingSectionsJson | null;
   author_id: string;
   status: ResourceStatus;
   featured: boolean;

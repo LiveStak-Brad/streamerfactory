@@ -2,7 +2,14 @@ import Link from "next/link";
 import type { ResourcePostWithCategory } from "@/lib/resources/types";
 import { ResourceMeta } from "./ResourceMeta";
 
-export function FeaturedResource({ post }: { post: ResourcePostWithCategory }) {
+export function FeaturedResource({
+  post,
+  curriculumTitle,
+}: {
+  post: ResourcePostWithCategory;
+  /** When set, aligns card with program naming from `curriculum.ts`. */
+  curriculumTitle?: string | null;
+}) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-surface to-surface p-8 shadow-[0_28px_90px_-48px_rgba(99,102,241,0.55)] dark:from-accent/10 dark:via-zinc-950 dark:to-zinc-950 dark:shadow-[0_28px_90px_-48px_rgba(99,102,241,0.35)] sm:p-10">
       <div
@@ -10,16 +17,21 @@ export function FeaturedResource({ post }: { post: ResourcePostWithCategory }) {
         aria-hidden
       />
       <p className="relative text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
-        Featured guide
+        Featured lesson
       </p>
       <p className="relative mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-        Start here—our recommended read this week, chosen to be immediately useful on LIVE.
+        This week&apos;s highlighted training — chosen to be immediately useful on LIVE.
       </p>
       <h2 className="relative mt-5 max-w-2xl text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl sm:leading-snug">
-        {post.title}
+        {curriculumTitle ?? post.title}
       </h2>
       <div className="relative mt-4">
-        <ResourceMeta publishedAt={post.published_at} category={post.resource_categories ?? null} />
+        <ResourceMeta
+          publishedAt={post.published_at}
+          category={post.resource_categories ?? null}
+          trainingTrack={post.training_track ?? "beginner"}
+          difficulty={post.difficulty ?? null}
+        />
       </div>
       {post.excerpt && (
         <p className="relative mt-5 max-w-2xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -28,10 +40,10 @@ export function FeaturedResource({ post }: { post: ResourcePostWithCategory }) {
       )}
       <div className="relative mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <Link
-          href={`/resources/${post.slug}`}
+          href={`/streameru/${post.slug}`}
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-accent/40 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-xl dark:border-accent/50 dark:bg-white dark:text-zinc-950"
         >
-          Read the guide
+          Open lesson
         </Link>
         <Link
           href="/apply"

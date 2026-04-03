@@ -1,19 +1,20 @@
 import Link from "next/link";
 
-/** Subtle promo on resource articles that are part of the Start Here path. */
+/** Subtle promo on lessons that are part of the Start your training path. */
 export function StartHereArticleHint() {
   return (
     <div className="rounded-xl border border-accent/20 bg-accent/[0.06] px-4 py-3 dark:border-accent/30 dark:bg-accent/[0.08]">
       <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-        <span className="font-semibold text-zinc-900 dark:text-zinc-100">Part of Start Here</span>
+        <span className="font-semibold text-zinc-900 dark:text-zinc-100">Lessons 1–4 of the StreamerU program</span>
         {" — "}
-        Follow the full creator path for new TikTok LIVE members.
+        The &quot;Start your training&quot; page walks these first four lessons in curriculum order — same sequence as
+        the main program, not a separate track.
       </p>
       <Link
-        href="/resources/start-here"
+        href="/streameru/start-here"
         className="mt-2 inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
       >
-        View the Start Here path →
+        Open Start training →
       </Link>
     </div>
   );

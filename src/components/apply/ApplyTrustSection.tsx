@@ -23,7 +23,7 @@ export function ApplyTrustSection() {
           <li>Our team reviews fit and readiness; we may follow up by email with questions.</li>
           <li>If we move forward, we promote your account to member and you complete short onboarding.</li>
           <li>
-            Then Battle Hub, scheduling, the shared calendar, Battle Finder, and member resources unlock in the
+            Then Battle Hub, scheduling, the shared calendar, Battle Finder, and StreamerU training unlock in the
             app.
           </li>
         </ul>

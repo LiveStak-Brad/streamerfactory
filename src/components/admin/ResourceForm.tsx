@@ -4,7 +4,16 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import type { ResourceActionState } from "@/lib/resources/actions";
 import { createResourcePost, updateResourcePost } from "@/lib/resources/actions";
+import { TRAINING_TRACK_SECTIONS } from "@/lib/resources/tracks";
+import type { TrainingSectionsJson } from "@/lib/resources/training-sections";
 import type { ResourceCategoryRow, ResourcePostWithCategory } from "@/lib/resources/types";
+
+function trainingField(initial: ResourcePostWithCategory | null | undefined, key: keyof TrainingSectionsJson): string {
+  const s = initial?.training_sections;
+  if (!s || typeof s !== "object") return "";
+  const v = s[key];
+  return typeof v === "string" ? v : "";
+}
 
 function SubmitLabel({ create }: { create: boolean }) {
   const { pending } = useFormStatus();
@@ -96,6 +105,41 @@ export function ResourceForm({ categories, mode, initial }: Props) {
         </div>
 
         <div>
+          <label htmlFor="training_track" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Training track
+          </label>
+          <select
+            id="training_track"
+            name="training_track"
+            defaultValue={initial?.training_track ?? "beginner"}
+            className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-zinc-950 shadow-sm outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/25 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          >
+            {TRAINING_TRACK_SECTIONS.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="difficulty" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            Difficulty (optional)
+          </label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            defaultValue={initial?.difficulty ?? ""}
+            className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-zinc-950 shadow-sm outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/25 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          >
+            <option value="">Not set</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div>
           <label htmlFor="status" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Status
           </label>
@@ -134,7 +178,7 @@ export function ResourceForm({ categories, mode, initial }: Props) {
               defaultChecked={initial?.featured ?? false}
               className="h-4 w-4 rounded border-zinc-300 text-accent focus:ring-accent/30 dark:border-zinc-600"
             />
-            Featured on Resources index
+            Featured on StreamerU index
           </label>
         </div>
 
@@ -149,6 +193,70 @@ export function ResourceForm({ categories, mode, initial }: Props) {
             defaultValue={initial?.excerpt ?? ""}
             className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-zinc-950 shadow-sm outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/25 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
+        </div>
+
+        <div className="sm:col-span-2 rounded-2xl border border-zinc-200/90 bg-muted-bg/40 p-5 dark:border-zinc-800 dark:bg-zinc-950/40">
+          <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Structured lesson (optional)</p>
+          <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+            Plain text; blank paragraphs separate blocks on the public page. Leave empty to show only the main article
+            body below.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">What you&apos;ll learn</label>
+              <textarea
+                name="training_what_youll_learn"
+                rows={3}
+                defaultValue={trainingField(initial, "what_youll_learn")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">Why this matters</label>
+              <textarea
+                name="training_why_it_matters"
+                rows={3}
+                defaultValue={trainingField(initial, "why_it_matters")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">Core strategy</label>
+              <textarea
+                name="training_core_strategy"
+                rows={3}
+                defaultValue={trainingField(initial, "core_strategy")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">Step-by-step breakdown</label>
+              <textarea
+                name="training_step_by_step"
+                rows={4}
+                defaultValue={trainingField(initial, "step_by_step")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">Common mistakes</label>
+              <textarea
+                name="training_common_mistakes"
+                rows={3}
+                defaultValue={trainingField(initial, "common_mistakes")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">Action checklist</label>
+              <textarea
+                name="training_action_checklist"
+                rows={3}
+                defaultValue={trainingField(initial, "action_checklist")}
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="sm:col-span-2">
@@ -183,7 +291,7 @@ export function ResourceForm({ categories, mode, initial }: Props) {
       <div className="flex flex-wrap items-center gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
         <SubmitLabel create={isCreate} />
         <a
-          href="/admin/resources"
+          href="/admin/streameru"
           className="text-sm font-semibold text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
           Cancel

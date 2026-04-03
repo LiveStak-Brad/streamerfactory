@@ -80,8 +80,8 @@ export function ApplyForm() {
             TikTok username <span className="text-accent">*</span>
           </label>
           <p className="mt-1 text-sm text-muted">
-            For your application review. After you&apos;re approved, you&apos;ll confirm your handle for the
-            network on Getting started.
+            For your application review. After approval, you&apos;ll use member tools and StreamerU with the same
+            account.
           </p>
           <input
             id="tiktokUsername"

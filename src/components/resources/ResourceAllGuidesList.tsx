@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getCurriculumLesson } from "@/lib/resources/curriculum";
+import { trainingTrackLabel } from "@/lib/resources/tracks";
 import type { ResourcePostWithCategory } from "@/lib/resources/types";
 
 function formatDate(iso: string | null) {
@@ -22,14 +24,15 @@ export function ResourceAllGuidesList({ posts }: { posts: ResourcePostWithCatego
       {posts.map((post) => (
         <li key={post.id}>
           <Link
-            href={`/resources/${post.slug}`}
+            href={`/streameru/${post.slug}`}
             className="group flex flex-col gap-1 py-4 transition-colors sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
           >
             <span className="text-base font-semibold text-zinc-950 group-hover:text-accent dark:text-zinc-50 dark:group-hover:text-accent-muted">
-              {post.title}
+              {getCurriculumLesson(post.slug)?.title ?? post.title}
             </span>
             <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              {formatDate(post.published_at)}
+              {trainingTrackLabel(post.training_track ?? "beginner")}
+              {post.published_at ? ` · ${formatDate(post.published_at)}` : ""}
             </span>
           </Link>
         </li>

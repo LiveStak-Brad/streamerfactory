@@ -5,7 +5,7 @@ import { Section } from "@/components/ui/Section";
 const unlocks = [
   {
     title: "Learn",
-    body: "Structured onboarding, Start Here, and member resources — so expectations are clear before you go live with the network.",
+    body: "Structured onboarding and StreamerU training — so expectations are clear before you go live with the network.",
   },
   {
     title: "Connect",

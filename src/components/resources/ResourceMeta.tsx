@@ -1,3 +1,8 @@
+import {
+  difficultyLabel,
+  getTrainingTrackSection,
+  trainingTrackLabel,
+} from "@/lib/resources/tracks";
 import type { ResourceCategoryRow } from "@/lib/resources/types";
 
 function formatDate(iso: string | null) {
@@ -16,12 +21,46 @@ function formatDate(iso: string | null) {
 export function ResourceMeta({
   publishedAt,
   category,
+  trainingTrack,
+  difficulty,
+  omitLessonContext = false,
 }: {
   publishedAt: string | null;
   category: Pick<ResourceCategoryRow, "name"> | null | undefined;
+  /** Program track label (beginner, battles, …). */
+  trainingTrack?: string | null;
+  difficulty?: string | null;
+  /** Hide “Lesson in / Part of” when curriculum header already shows placement. */
+  omitLessonContext?: boolean;
 }) {
+  const diff = difficultyLabel(difficulty ?? null);
+  const trackSection = getTrainingTrackSection(trainingTrack ?? null);
+
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="space-y-2">
+      {trackSection && !omitLessonContext ? (
+        <div className="flex flex-col gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <span>
+            <span className="font-medium text-zinc-600 dark:text-zinc-300">Lesson in:</span>{" "}
+            {trackSection.lessonInLabel}
+          </span>
+          <span>
+            <span className="font-medium text-zinc-600 dark:text-zinc-300">Part of:</span>{" "}
+            {trackSection.partOfLabel}
+          </span>
+        </div>
+      ) : null}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+      {trainingTrack && !trackSection ? (
+        <span className="inline-flex items-center rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-violet-800 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-200">
+          {trainingTrackLabel(trainingTrack)} track
+        </span>
+      ) : null}
+      {diff ? (
+        <span className="inline-flex items-center rounded-full border border-zinc-200/90 bg-muted-bg/80 px-3 py-1 text-xs font-semibold text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300">
+          {diff}
+        </span>
+      ) : null}
       {category?.name && (
         <span className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent dark:text-accent-muted">
           {category.name}
@@ -32,6 +71,7 @@ export function ResourceMeta({
           {formatDate(publishedAt)}
         </time>
       )}
+      </div>
     </div>
   );
 }

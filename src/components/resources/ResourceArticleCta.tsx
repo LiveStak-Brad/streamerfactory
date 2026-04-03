@@ -42,10 +42,10 @@ export function ResourceArticleCta() {
             About Streamer Factory
           </Link>
           <Link
-            href="/resources/start-here"
+            href="/streameru/start-here"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/10"
           >
-            Start Here
+            Start your training
           </Link>
           <Link
             href="/battle-hub"
@@ -54,10 +54,10 @@ export function ResourceArticleCta() {
             Battle Hub
           </Link>
           <Link
-            href="/resources"
+            href="/streameru"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold text-zinc-400 transition-colors hover:text-white"
           >
-            More resources
+            StreamerU home
           </Link>
         </div>
       </div>

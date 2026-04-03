@@ -85,16 +85,16 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
         ) : null}
         <p className="mt-5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           While you wait: skim{" "}
-          <Link href="/resources/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Start Here
+          <Link href="/streameru/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Start your training
           </Link>
           , browse{" "}
-          <Link href="/resources" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Resources
+          <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            StreamerU
           </Link>
           , and read{" "}
           <Link
-            href="/resources/what-to-expect-when-you-apply"
+            href="/streameru/what-to-expect-when-you-apply"
             className="font-semibold text-accent hover:underline dark:text-accent-muted"
           >
             what to expect when you apply
@@ -133,19 +133,19 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
         ) : null}
         <p className="mt-5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           While you wait: explore{" "}
-          <Link href="/resources/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Start Here
+          <Link href="/streameru/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Start your training
           </Link>
           ,{" "}
           <Link
-            href="/resources/what-to-expect-when-you-apply"
+            href="/streameru/what-to-expect-when-you-apply"
             className="font-semibold text-accent hover:underline dark:text-accent-muted"
           >
             what to expect when you apply
           </Link>
           , and{" "}
-          <Link href="/resources" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Resources
+          <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            StreamerU
           </Link>{" "}
           so you&apos;re ready when access opens. See{" "}
           <Link href="/about" className="font-semibold text-accent hover:underline dark:text-accent-muted">
@@ -200,15 +200,15 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           You&apos;re in — welcome to the network
         </h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-          Your account has member access. Open the welcome checklist to finish setup, then head to Battle Hub
-          when you&apos;re ready to schedule.
+          Your account has member access. Start with StreamerU training, then open Battle Hub when you&apos;re ready to
+          schedule.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
-            href="/welcome"
+            href="/streameru"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
           >
-            Getting started
+            Open StreamerU
           </Link>
           <Link
             href="/battle-hub"
@@ -235,10 +235,10 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
       </p>
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
-          href="/welcome"
+          href="/streameru"
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
         >
-          Try getting started
+          Open StreamerU
         </Link>
         <Link
           href="/auth/signout"

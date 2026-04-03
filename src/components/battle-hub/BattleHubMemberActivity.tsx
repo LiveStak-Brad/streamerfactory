@@ -314,15 +314,15 @@ function QuickActionsSection() {
       primary: false as const,
     },
     {
-      href: "/resources/start-here",
-      title: "Start Here",
-      description: "Key resources for new members.",
+      href: "/streameru/start-here",
+      title: "Start your training",
+      description: "Foundations → first battles — train before you coordinate.",
       primary: false as const,
     },
     {
-      href: "/welcome",
-      title: "Welcome checklist",
-      description: "Finish onboarding steps when you need them.",
+      href: "/streameru",
+      title: "StreamerU",
+      description: "Full training course — follow lessons in order.",
       primary: false as const,
     },
   ];

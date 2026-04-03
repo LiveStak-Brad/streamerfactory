@@ -2,26 +2,6 @@ import Link from "next/link";
 import type { StartHereResolvedItem } from "@/lib/resources/start-here";
 
 export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
-  if (item.kind === "hub") {
-    return (
-      <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-gradient-to-br from-surface to-muted-bg/50 p-6 shadow-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_48px_-28px_rgba(99,102,241,0.35)] dark:border-zinc-800 dark:from-zinc-950/80 dark:to-zinc-950/40 sm:p-8">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-950 text-sm font-bold text-white dark:bg-white dark:text-zinc-950">
-            {item.stepLabel}
-          </span>
-        </div>
-        <h3 className="mt-4 text-xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">{item.cardTitle}</h3>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{item.cardDescription}</p>
-        <Link
-          href={item.href}
-          className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition-[transform,box-shadow] hover:-translate-y-0.5 dark:bg-white dark:text-zinc-950"
-        >
-          {item.hrefLabel}
-        </Link>
-      </div>
-    );
-  }
-
   if (item.exists) {
     return (
       <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-gradient-to-br from-surface to-muted-bg/50 p-6 shadow-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_48px_-28px_rgba(99,102,241,0.35)] dark:border-zinc-800 dark:from-zinc-950/80 dark:to-zinc-950/40 sm:p-8">
@@ -30,7 +10,7 @@ export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
             {item.stepLabel}
           </span>
           <span className="rounded-full border border-emerald-200/80 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-200">
-            Guide
+            Lesson
           </span>
         </div>
         <h3 className="mt-4 text-xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">{item.cardTitle}</h3>
@@ -39,7 +19,7 @@ export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
           href={item.href}
           className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition-[transform,box-shadow] hover:-translate-y-0.5 dark:bg-white dark:text-zinc-950"
         >
-          Read article
+          Open lesson
         </Link>
       </div>
     );
@@ -58,13 +38,13 @@ export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
       <h3 className="mt-4 text-xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">{item.cardTitle}</h3>
       <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{item.cardDescription}</p>
       <p className="mt-4 text-xs leading-relaxed text-zinc-500 dark:text-zinc-500">
-        This guide isn&apos;t published yet. Browse the resource library for related topics in the meantime.
+        This lesson isn&apos;t published yet. Continue with the next published lesson in the program list on the hub.
       </p>
       <Link
         href={item.browseHref}
         className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-zinc-200 bg-surface px-5 py-2.5 text-sm font-semibold text-zinc-900 shadow-sm transition-colors hover:border-accent/35 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
       >
-        Browse resources
+        StreamerU hub
       </Link>
     </div>
   );

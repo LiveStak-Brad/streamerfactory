@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/server";
 import { createClient } from "@/lib/supabase/server";
 import { isValidSlug, slugify } from "./slug";
-import type { ResourceStatus } from "./types";
+import { isTrainingTrackId } from "./tracks";
+import type { ResourceDifficulty, ResourceStatus } from "./types";
 
 export type ResourceActionState = { error?: string };
 
@@ -34,6 +35,36 @@ function parsePublishedAt(raw: FormDataEntryValue | null): string | null {
   return d.toISOString();
 }
 
+const TRAINING_SECTION_FORM_KEYS = [
+  ["what_youll_learn", "training_what_youll_learn"],
+  ["why_it_matters", "training_why_it_matters"],
+  ["core_strategy", "training_core_strategy"],
+  ["step_by_step", "training_step_by_step"],
+  ["common_mistakes", "training_common_mistakes"],
+  ["action_checklist", "training_action_checklist"],
+] as const;
+
+function parseTrainingTrack(raw: FormDataEntryValue | null): string {
+  const s = String(raw ?? "").trim();
+  if (isTrainingTrackId(s)) return s;
+  return "beginner";
+}
+
+function parseDifficulty(raw: FormDataEntryValue | null): ResourceDifficulty | null {
+  const s = String(raw ?? "").trim();
+  if (s === "beginner" || s === "intermediate" || s === "advanced") return s;
+  return null;
+}
+
+function parseTrainingSectionsFromForm(formData: FormData): Record<string, string> | null {
+  const out: Record<string, string> = {};
+  for (const [jsonKey, formKey] of TRAINING_SECTION_FORM_KEYS) {
+    const v = String(formData.get(formKey) ?? "").trim();
+    if (v) out[jsonKey] = v;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 export async function createResourcePost(
   _prev: ResourceActionState,
   formData: FormData,
@@ -54,6 +85,9 @@ export async function createResourcePost(
   const featured = formData.get("featured") === "on";
   const categoryId = parseCategoryId(formData.get("category_id"));
   const publishedAtInput = parsePublishedAt(formData.get("published_at"));
+  const trainingTrack = parseTrainingTrack(formData.get("training_track"));
+  const difficulty = parseDifficulty(formData.get("difficulty"));
+  const trainingSections = parseTrainingSectionsFromForm(formData);
 
   if (!title) return { error: "Title is required." };
   if (!slug) slug = slugify(title);
@@ -77,6 +111,9 @@ export async function createResourcePost(
     content,
     cover_image_url: cover,
     category_id: categoryId,
+    training_track: trainingTrack,
+    difficulty,
+    training_sections: trainingSections,
     author_id: user.id,
     status,
     featured,
@@ -86,9 +123,10 @@ export async function createResourcePost(
   const { error } = await supabase.from("resource_posts").insert(insertPayload);
   if (error) return { error: error.message };
 
-  revalidatePath("/resources");
+  revalidatePath("/streameru");
+  revalidatePath("/streameru/start-here");
   revalidatePath("/");
-  redirect("/admin/resources");
+  redirect("/admin/streameru");
 }
 
 export async function updateResourcePost(
@@ -110,6 +148,9 @@ export async function updateResourcePost(
   const featured = formData.get("featured") === "on";
   const categoryId = parseCategoryId(formData.get("category_id"));
   const publishedAtInput = parsePublishedAt(formData.get("published_at"));
+  const trainingTrack = parseTrainingTrack(formData.get("training_track"));
+  const difficulty = parseDifficulty(formData.get("difficulty"));
+  const trainingSections = parseTrainingSectionsFromForm(formData);
 
   if (!title) return { error: "Title is required." };
   if (!slug) slug = slugify(title);
@@ -133,6 +174,9 @@ export async function updateResourcePost(
     content,
     cover_image_url: cover,
     category_id: categoryId,
+    training_track: trainingTrack,
+    difficulty,
+    training_sections: trainingSections,
     status,
     featured,
   };
@@ -146,10 +190,11 @@ export async function updateResourcePost(
   const { error } = await supabase.from("resource_posts").update(updatePayload).eq("id", id);
   if (error) return { error: error.message };
 
-  revalidatePath("/resources");
-  revalidatePath(`/resources/${slug}`);
+  revalidatePath("/streameru");
+  revalidatePath("/streameru/start-here");
+  revalidatePath(`/streameru/${slug}`);
   revalidatePath("/");
-  redirect("/admin/resources");
+  redirect("/admin/streameru");
 }
 
 export async function deleteResourcePost(formData: FormData) {
@@ -161,7 +206,8 @@ export async function deleteResourcePost(formData: FormData) {
   const { error } = await supabase.from("resource_posts").delete().eq("id", id);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/resources");
+  revalidatePath("/streameru");
+  revalidatePath("/streameru/start-here");
   revalidatePath("/");
-  redirect("/admin/resources");
+  redirect("/admin/streameru");
 }

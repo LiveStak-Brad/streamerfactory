@@ -1,21 +1,36 @@
-import { getPublishedPostBySlug } from "@/lib/resources/queries";
-import type { ResourcePostWithCategory } from "@/lib/resources/types";
-import { START_HERE_PATH, type StartHereResolvedItem, type StartHereSection } from "@/lib/resources/start-here";
+import "server-only";
 
-async function loadPost(slug: string): Promise<ResourcePostWithCategory | null> {
-  try {
-    return await getPublishedPostBySlug(slug);
-  } catch {
+import { createClient } from "@/lib/supabase/server";
+import type { ResourcePostRow } from "@/lib/resources/types";
+import {
+  START_HERE_PATH,
+  type StartHereResolvedItem,
+  type StartHereSection,
+  type StartHerePathStep,
+} from "@/lib/resources/start-here";
+
+const RESOURCES_BASE = "/streameru";
+
+async function loadPost(slug: string): Promise<ResourcePostRow | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("resource_posts")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[start-here] loadPost", slug, error.message);
     return null;
   }
+
+  return data as ResourcePostRow | null;
 }
 
-type PathStep = (typeof START_HERE_PATH)[number];
-
 function resolveArticleItem(
-  step: PathStep,
+  step: StartHerePathStep,
   slug: string,
-  post: ResourcePostWithCategory | null,
+  post: ResourcePostRow | null,
   fallbackTitle: string,
   fallbackDescription: string,
   browseHref: string,
@@ -27,13 +42,13 @@ function resolveArticleItem(
     sectionIntro: step.intro,
   };
 
-  if (post) {
+  if (post && post.status === "published") {
     return {
       kind: "article",
       ...base,
       cardTitle: post.title,
-      cardDescription: post.excerpt ?? fallbackDescription,
-      href: `/resources/${post.slug}`,
+      cardDescription: post.excerpt ?? post.title,
+      href: `${RESOURCES_BASE}/${post.slug}`,
       exists: true,
     };
   }
@@ -48,69 +63,27 @@ function resolveArticleItem(
   };
 }
 
-/**
- * Resolves curated slugs to published posts; fills fallbacks when a post is missing or still a draft.
- */
 export async function getStartHereSections(): Promise<StartHereSection[]> {
   const sections: StartHereSection[] = [];
 
   for (const step of START_HERE_PATH) {
-    const items: StartHereResolvedItem[] = [];
+    const post = await loadPost(step.primarySlug);
+    const item = resolveArticleItem(
+      step,
+      step.primarySlug,
+      post,
+      step.fallbackTitle,
+      step.fallbackDescription,
+      RESOURCES_BASE,
+    );
 
-    if ("hubHref" in step && step.hubHref) {
-      items.push({
-        kind: "hub",
-        stepLabel: step.stepLabel,
-        sectionTitle: step.title,
-        sectionIntro: step.intro,
-        cardTitle: step.cardTitle,
-        cardDescription: step.cardDescription,
-        href: step.hubHref,
-        hrefLabel: step.hubLabel,
-      });
-    }
-
-    if ("secondarySlug" in step && step.secondarySlug) {
-      const post = await loadPost(step.secondarySlug);
-      const fallbackTitle =
-        "secondaryFallbackTitle" in step ? step.secondaryFallbackTitle : "Guide";
-      const fallbackDescription =
-        "secondaryFallbackDescription" in step ? step.secondaryFallbackDescription : "";
-      items.push(
-        resolveArticleItem(
-          step,
-          step.secondarySlug,
-          post,
-          fallbackTitle,
-          fallbackDescription,
-          "/resources#battles",
-        ),
-      );
-    }
-
-    if ("primarySlug" in step && step.primarySlug) {
-      const post = await loadPost(step.primarySlug);
-      items.push(
-        resolveArticleItem(
-          step,
-          step.primarySlug,
-          post,
-          step.fallbackTitle,
-          step.fallbackDescription,
-          "/resources",
-        ),
-      );
-    }
-
-    if (items.length > 0) {
-      sections.push({
-        id: step.id,
-        stepLabel: step.stepLabel,
-        title: step.title,
-        intro: step.intro,
-        items,
-      });
-    }
+    sections.push({
+      id: step.id,
+      stepLabel: step.stepLabel,
+      title: step.title,
+      intro: step.intro,
+      items: [item],
+    });
   }
 
   return sections;

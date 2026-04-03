@@ -58,8 +58,8 @@ export function buildApplicationSubmittedEmail(params: {
 }): { subject: string; html: string; text: string } {
   const name = escapeHtml(params.firstName);
   const statusUrl = absoluteUrl("/application-status");
-  const startHereUrl = absoluteUrl("/resources/start-here");
-  const resourcesUrl = absoluteUrl("/resources");
+  const startHereUrl = absoluteUrl("/streameru/start-here");
+  const resourcesUrl = absoluteUrl("/streameru");
 
   const intro = params.isResubmit
     ? `<p style="margin:0 0 16px 0;">Hi ${name},</p><p style="margin:0 0 16px 0;">Thanks — we received your <strong>updated</strong> application. Our team will review it using the same process as a first-time submission.</p>`
@@ -69,8 +69,8 @@ export function buildApplicationSubmittedEmail(params: {
 <p style="margin:0 0 16px 0;"><strong>What happens next</strong><br/>
 We review every application. You can always see where things stand in the app — no guessing.</p>
 ${button(statusUrl, "View application status")}
-${linkLine(startHereUrl, "Start Here — guided path for TikTok LIVE")}
-<p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Browse all guides: <a href="${escapeHtml(resourcesUrl)}" style="color:${accent};">${escapeHtml(resourcesUrl)}</a></p>
+${linkLine(startHereUrl, "Start your training — StreamerU")}
+<p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Browse StreamerU (lessons &amp; tracks): <a href="${escapeHtml(resourcesUrl)}" style="color:${accent};">${escapeHtml(resourcesUrl)}</a></p>
 <p style="margin:24px 0 0 0;font-size:14px;color:${muted};">Questions? Email us at <a href="mailto:${escapeHtml(site.contactEmail)}" style="color:${accent};font-weight:600;">${escapeHtml(site.contactEmail)}</a> or visit our <a href="${escapeHtml(absoluteUrl("/contact"))}" style="color:${accent};font-weight:600;">contact page</a>.</p>`;
 
   const text = [
@@ -84,7 +84,7 @@ ${linkLine(startHereUrl, "Start Here — guided path for TikTok LIVE")}
     "We review every application. Track status here:",
     statusUrl,
     "",
-    "While you wait:",
+    "While you wait — training:",
     startHereUrl,
     resourcesUrl,
     "",
@@ -156,15 +156,15 @@ export function buildApplicationApprovedEmail(params: { firstName: string }): {
   text: string;
 } {
   const name = escapeHtml(params.firstName);
-  const welcomeUrl = absoluteUrl("/welcome");
+  const streamerUUrl = absoluteUrl("/streameru");
   const hubUrl = absoluteUrl("/battle-hub");
-  const startHereUrl = absoluteUrl("/resources/start-here");
+  const startHereUrl = absoluteUrl("/streameru/start-here");
 
   const inner = `<p style="margin:0 0 16px 0;">Hi ${name},</p>
-<p style="margin:0 0 16px 0;">Good news — your account is <strong>approved</strong> for ${escapeHtml(site.name)} membership. You can sign in anytime and use the same tools we run battles and coordination on: Battle Hub, scheduler, network calendar, and member resources.</p>
-${button(welcomeUrl, "Open Getting started")}
+<p style="margin:0 0 16px 0;">Good news — your account is <strong>approved</strong> for ${escapeHtml(site.name)} membership. You can sign in anytime and use the same tools we run battles and coordination on: Battle Hub, scheduler, network calendar, and StreamerU.</p>
+${button(streamerUUrl, "Open StreamerU")}
 ${linkLine(hubUrl, "Battle Hub")}
-<p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Learning path: <a href="${escapeHtml(startHereUrl)}" style="color:${accent};">${escapeHtml(startHereUrl)}</a></p>
+<p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Guided intro (lessons 1–4): <a href="${escapeHtml(startHereUrl)}" style="color:${accent};">${escapeHtml(startHereUrl)}</a></p>
 <p style="margin:24px 0 0 0;font-size:14px;color:${muted};">Welcome to the network — we are glad you are here.</p>`;
 
   const text = [
@@ -172,13 +172,13 @@ ${linkLine(hubUrl, "Battle Hub")}
     "",
     `Your Streamer Factory membership is approved. Sign in to open member tools.`,
     "",
-    "Getting started:",
-    welcomeUrl,
+    "StreamerU:",
+    streamerUUrl,
     "",
     "Battle Hub:",
     hubUrl,
     "",
-    "Start Here:",
+    "Start your training:",
     startHereUrl,
     "",
     `— ${site.name}`,

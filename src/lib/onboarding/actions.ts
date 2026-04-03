@@ -43,13 +43,13 @@ export async function saveOnboardingProfileAction(
 
   const normHandle = (s: string | null | undefined) => String(s ?? "").trim().replace(/^@+/, "");
   if (tiktok && normHandle(before?.tiktok_username) !== tiktok) {
-    void trackServerEvent({ event: AnalyticsEvents.TIKTOK_USERNAME_SET, route: "/welcome" });
+    void trackServerEvent({ event: AnalyticsEvents.TIKTOK_USERNAME_SET, route: "/streameru" });
   }
   if (timezone && (before?.timezone?.trim() ?? "") !== timezone) {
-    void trackServerEvent({ event: AnalyticsEvents.TIMEZONE_SET, route: "/welcome" });
+    void trackServerEvent({ event: AnalyticsEvents.TIMEZONE_SET, route: "/streameru" });
   }
 
-  revalidatePath("/welcome");
+  revalidatePath("/streameru");
   revalidatePath("/battle-hub");
   return { ok: true };
 }
@@ -80,10 +80,10 @@ export async function acknowledgeResourcesStepAction(): Promise<OnboardingSaveSt
   }
 
   if (!before?.onboarding_resources_ack_at) {
-    void trackServerEvent({ event: AnalyticsEvents.START_HERE_OPENED, route: "/welcome" });
+    void trackServerEvent({ event: AnalyticsEvents.START_HERE_OPENED, route: "/streameru" });
   }
 
-  revalidatePath("/welcome");
+  revalidatePath("/streameru");
   return { ok: true };
 }
 
@@ -106,7 +106,7 @@ export async function acknowledgeCalendarStepAction(): Promise<OnboardingSaveSta
     return { error: error.message };
   }
 
-  revalidatePath("/welcome");
+  revalidatePath("/streameru");
   return { ok: true };
 }
 
@@ -124,7 +124,7 @@ export async function completeOnboardingAction(): Promise<OnboardingSaveState> {
     .maybeSingle();
 
   if (before?.onboarding_completed_at) {
-    revalidatePath("/welcome");
+    revalidatePath("/streameru");
     revalidatePath("/battle-hub");
     redirect("/battle-hub");
   }
@@ -141,9 +141,9 @@ export async function completeOnboardingAction(): Promise<OnboardingSaveState> {
     return { error: error.message };
   }
 
-  void trackServerEvent({ event: AnalyticsEvents.ONBOARDING_COMPLETED, route: "/welcome" });
+  void trackServerEvent({ event: AnalyticsEvents.ONBOARDING_COMPLETED, route: "/streameru" });
 
-  revalidatePath("/welcome");
+  revalidatePath("/streameru");
   revalidatePath("/battle-hub");
   redirect("/battle-hub");
 }

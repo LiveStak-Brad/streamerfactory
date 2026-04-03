@@ -71,12 +71,12 @@ export default async function ApplicationStatusPage() {
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">
           One place to see where you stand — from submission to full member access.{" "}
-          <Link href="/resources/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Start Here
+          <Link href="/streameru/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Start your training
           </Link>{" "}
           and{" "}
-          <Link href="/resources" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Resources
+          <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            StreamerU
           </Link>{" "}
           stay available before and after approval.
         </p>

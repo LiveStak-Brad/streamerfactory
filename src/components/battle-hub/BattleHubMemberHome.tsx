@@ -5,6 +5,7 @@ import {
   type BattleHubMemberActivityProps,
 } from "@/components/battle-hub/BattleHubMemberActivity";
 import { BattleHubFlyerTemplateShowcase } from "@/components/battle-hub/BattleHubFlyerTemplateShowcase";
+import { BattleHubTrainingGuidance } from "@/components/guidance/BattleHubTrainingGuidance";
 import { Container } from "@/components/ui/Container";
 
 type Props = {
@@ -23,19 +24,22 @@ export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: P
       <Container className="relative max-w-6xl">
         {showOnboardingNudge ? (
           <div className="mb-8 rounded-2xl border border-accent/30 bg-accent/5 px-4 py-4 dark:border-accent/40 dark:bg-accent/10 sm:px-6 sm:py-5">
-            <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Finish getting started</p>
+            <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Finish your StreamerU setup</p>
             <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-              Complete the short member checklist — profile, resources, battles, and calendar — so you get the
-              most from the network.
+              You haven&apos;t marked onboarding complete yet — when you have a moment, continue training in StreamerU
+              and work through the course in order.
             </p>
             <Link
-              href="/welcome"
+              href="/streameru"
               className="mt-3 inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
             >
-              Open welcome checklist →
+              Open StreamerU →
             </Link>
           </div>
         ) : null}
+
+        <BattleHubTrainingGuidance />
+
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
           Network tools
         </p>
@@ -47,27 +51,32 @@ export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: P
           for TikTok LIVE creators to coordinate.
         </p>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-          <span className="font-semibold text-zinc-500 dark:text-zinc-400">Guides:</span>
-          <Link
-            href="/resources#battles"
-            className="font-semibold text-accent hover:underline dark:text-accent-muted"
-          >
-            Battle strategy
+        <p className="mt-6 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+          Quick links — optional anytime:{" "}
+          <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            StreamerU hub
           </Link>
+          <span className="text-zinc-400 dark:text-zinc-600" aria-hidden>
+            {" "}
+            ·{" "}
+          </span>
           <Link
-            href="/resources/structure-your-first-battle-week"
+            href="/streameru/understanding-battles"
             className="font-semibold text-zinc-700 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-muted"
           >
-            First battle week
+            Battles lessons
           </Link>
+          <span className="text-zinc-400 dark:text-zinc-600" aria-hidden>
+            {" "}
+            ·{" "}
+          </span>
           <Link
-            href="/resources/promote-your-battles-without-spamming"
+            href="/streameru/promote-your-battles-without-spamming"
             className="font-semibold text-zinc-700 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-muted"
           >
             Promoting battles
           </Link>
-        </div>
+        </p>
 
         <BattleHubMemberActivity {...activity} />
 

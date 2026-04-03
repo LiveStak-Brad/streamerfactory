@@ -14,7 +14,7 @@ const steps = [
   {
     step: "03",
     title: "Onboard",
-    body: "If it’s a match, we walk you through expectations, resources, and how the network operates — learn, connect, then open the tools.",
+    body: "If it’s a match, we walk you through expectations, StreamerU, and how the network operates — learn, connect, then open the tools.",
   },
   {
     step: "04",

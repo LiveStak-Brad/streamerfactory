@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * Sticky desktop rail: keeps Apply / About / Resources one glance away while reading.
+ * Sticky desktop rail: keeps Apply / About / StreamerU one glance away while reading.
  */
 export function ResourceArticleSidebar() {
   return (
@@ -24,10 +24,10 @@ export function ResourceArticleSidebar() {
           </li>
           <li>
             <Link
-              href="/resources/start-here"
+              href="/streameru/start-here"
               className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
             >
-              Start Here path
+              Start your training
             </Link>
           </li>
           <li>
@@ -48,10 +48,18 @@ export function ResourceArticleSidebar() {
           </li>
           <li>
             <Link
-              href="/resources"
+              href="/streameru"
               className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
             >
-              All resources
+              Course outline (home)
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/streameru"
+              className="block rounded-xl px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800/80 dark:hover:text-white"
+            >
+              StreamerU home
             </Link>
           </li>
           <li>

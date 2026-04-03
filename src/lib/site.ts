@@ -10,7 +10,7 @@ export const site = {
 
 export const mainNav = [
   { label: "About", href: "/about" },
-  { label: "Resources", href: "/resources" },
+  { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
   { label: "Apply", href: "/apply" },
   { label: "Contact", href: "/contact" },
@@ -18,7 +18,7 @@ export const mainNav = [
 
 export const footerNav = [
   { label: "About", href: "/about" },
-  { label: "Resources", href: "/resources" },
+  { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
   { label: "Apply", href: "/apply" },
   { label: "Contact", href: "/contact" },

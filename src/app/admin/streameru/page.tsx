@@ -18,7 +18,7 @@ function statusBadge(status: string) {
   );
 }
 
-export default async function AdminResourcesPage() {
+export default async function AdminStreamerUPage() {
   await requireAdmin();
   const posts = await getAllResourcePosts();
 
@@ -31,14 +31,14 @@ export default async function AdminResourcesPage() {
               Admin
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-              Resources
+              StreamerU
             </h1>
             <p className="mt-2 text-zinc-600 dark:text-zinc-400">
               Create, publish, and manage public resource posts.
             </p>
           </div>
           <Link
-            href="/admin/resources/new"
+            href="/admin/streameru/new"
             className="inline-flex items-center justify-center rounded-xl border border-accent/40 bg-accent/15 px-4 py-2.5 text-sm font-semibold text-accent shadow-sm transition-colors hover:border-accent/55 hover:bg-accent/25 dark:text-accent-muted"
           >
             New resource
@@ -48,8 +48,8 @@ export default async function AdminResourcesPage() {
         <div className="mt-10 overflow-hidden rounded-2xl border border-zinc-200/90 bg-surface shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40">
           {posts.length === 0 ? (
             <p className="px-6 py-12 text-center text-zinc-600 dark:text-zinc-400">
-              No resources yet.{" "}
-              <Link href="/admin/resources/new" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+              No lessons yet.{" "}
+              <Link href="/admin/streameru/new" className="font-semibold text-accent hover:underline dark:text-accent-muted">
                 Create one
               </Link>
               .
@@ -96,7 +96,7 @@ export default async function AdminResourcesPage() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Link
-                          href={`/admin/resources/${post.id}/edit`}
+                          href={`/admin/streameru/${post.id}/edit`}
                           className="font-semibold text-accent hover:underline dark:text-accent-muted"
                         >
                           Edit
@@ -115,8 +115,8 @@ export default async function AdminResourcesPage() {
             ← Admin home
           </Link>
           {" · "}
-          <Link href="/resources" className="font-semibold text-zinc-600 hover:underline dark:text-zinc-400">
-            View public Resources
+          <Link href="/streameru" className="font-semibold text-zinc-600 hover:underline dark:text-zinc-400">
+            View public StreamerU
           </Link>
         </p>
       </Container>

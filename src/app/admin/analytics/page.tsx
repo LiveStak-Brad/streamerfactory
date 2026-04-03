@@ -92,15 +92,15 @@ export default async function AdminAnalyticsPage() {
       keys: [AnalyticsEvents.BATTLE_EVENT_CREATED],
     },
     {
-      label: "Resource article views",
+      label: "Lesson views",
       keys: [AnalyticsEvents.RESOURCE_VIEWED],
     },
     {
-      label: "Resources index views",
+      label: "StreamerU index views",
       keys: [AnalyticsEvents.RESOURCES_PAGE_VIEWED],
     },
     {
-      label: "Start Here views",
+      label: "Start your training views",
       keys: [AnalyticsEvents.START_HERE_VIEWED],
     },
     {

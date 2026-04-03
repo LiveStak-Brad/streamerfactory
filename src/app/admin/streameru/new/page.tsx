@@ -11,7 +11,7 @@ export default async function NewResourcePage() {
     <section className="py-12 sm:py-16">
       <Container className="max-w-3xl">
         <p className="text-sm font-medium uppercase tracking-wider text-accent dark:text-accent-muted">
-          Admin · Resources
+          Admin · StreamerU
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
           New resource

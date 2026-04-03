@@ -8,6 +8,13 @@ import { trackClientEvent } from "@/lib/analytics/client";
 
 const STORAGE_PREFIX = "sf_analytics_pv_";
 
+/** Normalize /resources (rewritten) and /streameru (direct) for analytics. */
+function streameruSlugFromPath(pathname: string): string | null {
+  const m = pathname.match(/^\/(?:resources|streameru)\/([^/]+)/);
+  if (!m || m[1] === "start-here") return null;
+  return m[1];
+}
+
 function resolvePageView(pathname: string): { event: string; resourceSlug?: string } | null {
   if (pathname.startsWith("/admin")) return null;
 
@@ -19,8 +26,9 @@ function resolvePageView(pathname: string): { event: string; resourceSlug?: stri
     "/": AnalyticsEvents.HOMEPAGE_VIEWED,
     "/apply": AnalyticsEvents.APPLY_PAGE_VIEWED,
     "/application-status": AnalyticsEvents.APPLICATION_STATUS_VIEWED,
-    "/welcome": AnalyticsEvents.WELCOME_VIEWED,
+    "/streameru": AnalyticsEvents.RESOURCES_PAGE_VIEWED,
     "/resources": AnalyticsEvents.RESOURCES_PAGE_VIEWED,
+    "/streameru/start-here": AnalyticsEvents.START_HERE_VIEWED,
     "/resources/start-here": AnalyticsEvents.START_HERE_VIEWED,
     "/battle-hub": AnalyticsEvents.BATTLE_HUB_VIEWED,
     "/battle-hub/calendar": AnalyticsEvents.BATTLE_CALENDAR_VIEWED,
@@ -32,12 +40,9 @@ function resolvePageView(pathname: string): { event: string; resourceSlug?: stri
     return { event: exact[pathname] };
   }
 
-  if (pathname.startsWith("/resources/") && pathname !== "/resources/start-here") {
-    const rest = pathname.slice("/resources/".length);
-    const slug = rest.split("/")[0];
-    if (slug && slug.length > 0) {
-      return { event: AnalyticsEvents.RESOURCE_VIEWED, resourceSlug: slug };
-    }
+  const slug = streameruSlugFromPath(pathname);
+  if (slug) {
+    return { event: AnalyticsEvents.RESOURCE_VIEWED, resourceSlug: slug };
   }
 
   return null;

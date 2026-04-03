@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { CURRICULUM, getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
 import type { ResourceCategoryRow, ResourcePostRow, ResourcePostWithCategory } from "./types";
 
 function mapPost(row: ResourcePostWithCategory | null): ResourcePostWithCategory | null {
@@ -82,6 +83,54 @@ export async function getRelatedPublishedPosts(
 
   if (error) throw new Error(error.message);
   return (data ?? []).map((r) => mapPost(r as ResourcePostWithCategory)!);
+}
+
+/** All published curriculum lessons in program order (not by date). */
+export async function getPublishedPostsInCurriculumOrder(): Promise<ResourcePostWithCategory[]> {
+  const all = await getPublishedPosts();
+  const bySlug = new Map(all.map((p) => [p.slug, p]));
+  const ordered: ResourcePostWithCategory[] = [];
+  for (const c of CURRICULUM) {
+    const p = bySlug.get(c.slug);
+    if (p) ordered.push(p);
+  }
+  return ordered;
+}
+
+/**
+ * Related lessons: next → previous → same track in curriculum order.
+ * Omits lessons not in curriculum for the “same track” fill.
+ */
+export async function getCurriculumRelatedPosts(
+  currentSlug: string,
+  trainingTrackFallback: string | null,
+): Promise<ResourcePostWithCategory[]> {
+  const cur = getCurriculumLesson(currentSlug);
+  const track = cur?.trackId ?? trainingTrackFallback ?? "beginner";
+  const neighbors = getCurriculumNeighbors(currentSlug);
+  const out: ResourcePostWithCategory[] = [];
+  const used = new Set<string>([currentSlug]);
+
+  async function pushSlug(slug: string | undefined) {
+    if (!slug || used.has(slug)) return;
+    const p = await getPublishedPostBySlug(slug);
+    if (p) {
+      out.push(p);
+      used.add(slug);
+    }
+  }
+
+  await pushSlug(neighbors.next?.slug);
+  await pushSlug(neighbors.prev?.slug);
+
+  for (const lesson of CURRICULUM) {
+    if (out.length >= 6) break;
+    if (lesson.trackId !== track) continue;
+    if (used.has(lesson.slug)) continue;
+    await pushSlug(lesson.slug);
+  }
+
+  return out;
 }
 
 /** Admin: all posts, newest first */
