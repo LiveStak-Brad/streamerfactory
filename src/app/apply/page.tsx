@@ -20,7 +20,46 @@ export default async function ApplyPage() {
   const session = await getSessionProfile();
 
   if (session?.profile && canScheduleBattles(session.profile.role)) {
-    redirect("/streameru");
+    return (
+      <Section className="!pt-12 sm:!pt-16">
+        <div className="mx-auto max-w-2xl">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
+            Membership
+          </p>
+          <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-foreground sm:text-5xl">
+            You&apos;re already in the network
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
+            This page is for new creators applying to join. Your account already has member access — use{" "}
+            <Link
+              href="/streameru"
+              className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+            >
+              StreamerU
+            </Link>{" "}
+            for training and{" "}
+            <Link
+              href="/battle-hub"
+              className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+            >
+              Battle Hub
+            </Link>{" "}
+            for scheduling and battles.
+          </p>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button href="/streameru" variant="primary" className="min-h-[52px] px-8">
+              Open StreamerU
+            </Button>
+            <Button href="/battle-hub" variant="secondary" className="min-h-[52px] px-8">
+              Open Battle Hub
+            </Button>
+            <Button href="/" variant="secondary" className="min-h-[52px] px-8">
+              Back to home
+            </Button>
+          </div>
+        </div>
+      </Section>
+    );
   }
 
   let existingApplication = null as Awaited<ReturnType<typeof getMyApplication>>;
