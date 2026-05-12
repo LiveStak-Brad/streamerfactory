@@ -53,6 +53,16 @@ export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: P
 
         <p className="mt-6 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           Quick links — optional anytime:{" "}
+          <Link
+            href="/member/dashboard"
+            className="font-semibold text-zinc-700 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-muted"
+          >
+            Member dashboard
+          </Link>
+          <span className="text-zinc-400 dark:text-zinc-600" aria-hidden>
+            {" "}
+            ·{" "}
+          </span>
           <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
             StreamerU hub
           </Link>

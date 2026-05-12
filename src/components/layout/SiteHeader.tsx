@@ -118,6 +118,15 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
                     Application status
                   </Link>
                 )}
+                {profileRole !== null && canScheduleBattles(profileRole) && (
+                  <Link
+                    href="/member/dashboard"
+                    className="rounded-lg px-3 py-2.5 text-center text-[0.95rem] font-semibold text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 sm:py-2"
+                    onClick={() => setOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                )}
                 {profileRole !== null && canAccessAdmin(profileRole) && (
                   <Link
                     href="/admin"
