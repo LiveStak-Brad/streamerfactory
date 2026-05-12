@@ -7,6 +7,10 @@
     {
       "source": "/api/tiktok/webhook/",
       "destination": "/api/tiktok/webhook"
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms"
     }
   ],
   "crons": [
