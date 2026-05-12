@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const rawBody = await request.text();
+  const rawBody = new TextDecoder("utf-8").decode(new Uint8Array(await request.arrayBuffer()));
 
   let clientSecret: string;
   try {
@@ -58,7 +58,10 @@ export async function POST(request: NextRequest) {
       clientSecret,
     });
     if (!ok) {
-      console.warn("[tiktok webhook] invalid or missing signature");
+      console.warn("[tiktok webhook] invalid or missing signature", {
+        hasSignatureHeader: Boolean(sig),
+        bodyLength: rawBody.length,
+      });
       return NextResponse.json({ error: "invalid signature" }, { status: 403 });
     }
   }
