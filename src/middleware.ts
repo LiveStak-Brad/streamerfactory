@@ -2,10 +2,19 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import {
   TIKTOK_PRIVACY_SITE_VERIFICATION_LINE,
+  TIKTOK_ROOT_SITE_VERIFICATION_LINE,
   TIKTOK_SITE_VERIFICATION_LINE,
 } from "@/lib/tiktok/site-verification";
 
+function pathnameMatchesTikTokBase(pathname: string, base: string): boolean {
+  if (base === "/") {
+    return pathname === "/" || pathname === "";
+  }
+  return pathname === base || pathname === `${base}/`;
+}
+
 const LEGAL_PATH_TIKTOK_LINE: readonly [string, string][] = [
+  ["/", TIKTOK_ROOT_SITE_VERIFICATION_LINE],
   ["/terms", TIKTOK_SITE_VERIFICATION_LINE],
   ["/privacy", TIKTOK_PRIVACY_SITE_VERIFICATION_LINE],
 ];
@@ -15,7 +24,7 @@ export async function middleware(request: NextRequest) {
 
   if (request.method === "GET") {
     for (const [base, line] of LEGAL_PATH_TIKTOK_LINE) {
-      if (pathname !== base && pathname !== `${base}/`) continue;
+      if (!pathnameMatchesTikTokBase(pathname, base)) continue;
 
       const accept = request.headers.get("accept") ?? "";
       const secFetchDest = request.headers.get("sec-fetch-dest");

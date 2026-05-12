@@ -8,6 +8,11 @@ export const TIKTOK_SITE_VERIFICATION_LINE =
   process.env.TIKTOK_SITE_VERIFICATION?.trim() ||
   "tiktok-developers-site-verification=Mmonu4QUfZs7q39VI6q6NUQXbZRcblTM";
 
+/** Separate token when TikTok URL-prefix verify targets site root (optional override). */
+export const TIKTOK_ROOT_SITE_VERIFICATION_LINE =
+  process.env.TIKTOK_ROOT_SITE_VERIFICATION?.trim() ||
+  "tiktok-developers-site-verification=AGPwKeIJ4m7208bcapr5oiQF0logQ66y";
+
 /** Separate token when TikTok URL-prefix verify targets /privacy/ (optional override). */
 export const TIKTOK_PRIVACY_SITE_VERIFICATION_LINE =
   process.env.TIKTOK_PRIVACY_SITE_VERIFICATION?.trim() ||
