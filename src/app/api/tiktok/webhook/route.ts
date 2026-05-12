@@ -16,22 +16,18 @@ type TikTokWebhookPayload = {
 
 /**
  * TikTok Products → Webhooks → Callback URL.
- * - GET (no query): URL-prefix verification + portal "Test URL" health check.
+ * - GET: always return URL-prefix verification line (`text/plain`), same as redirect URI checks.
  * - POST: signed JSON events (e.g. authorization.removed, video.*).
  * @see https://developers.tiktok.com/doc/webhooks-overview
  */
-export async function GET(request: NextRequest) {
-  const sp = request.nextUrl.searchParams;
-  if (!sp.get("code") && !sp.get("state") && !sp.get("error") && sp.size === 0) {
-    return new NextResponse(TIKTOK_SITE_VERIFICATION_LINE, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-store",
-      },
-    });
-  }
-  return new NextResponse("OK", { status: 200, headers: { "Cache-Control": "no-store" } });
+export async function GET() {
+  return new NextResponse(TIKTOK_SITE_VERIFICATION_LINE, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
 }
 
 export async function POST(request: NextRequest) {
