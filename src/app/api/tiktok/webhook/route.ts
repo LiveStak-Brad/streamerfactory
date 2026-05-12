@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { deleteTikTokConnectionByOpenId } from "@/lib/tiktok/db";
-import { getTikTokOAuthEnv } from "@/lib/tiktok/config";
+import { getTikTokClientSecret } from "@/lib/tiktok/config";
 import { TIKTOK_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
 import { getTikTokSignatureFromRequest, verifyTikTokWebhookSignature } from "@/lib/tiktok/verify-webhook-signature";
 
@@ -39,9 +39,12 @@ export async function POST(request: NextRequest) {
 
   let clientSecret: string;
   try {
-    clientSecret = getTikTokOAuthEnv().clientSecret;
+    clientSecret = getTikTokClientSecret();
   } catch {
-    return NextResponse.json({ error: "TikTok OAuth not configured" }, { status: 503 });
+    return NextResponse.json(
+      { error: "TIKTOK_CLIENT_SECRET is not set on the server (Vercel → Environment Variables)." },
+      { status: 503 },
+    );
   }
 
   const sig = getTikTokSignatureFromRequest(request.headers);

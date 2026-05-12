@@ -19,6 +19,15 @@ export function getTikTokOAuthEnv(): TikTokOAuthEnv {
   return { clientKey, clientSecret, redirectUri };
 }
 
+/** Webhook signature verification only needs the client secret (not redirect URI). */
+export function getTikTokClientSecret(): string {
+  const clientSecret = process.env.TIKTOK_CLIENT_SECRET?.trim();
+  if (!clientSecret) {
+    throw new Error("Missing TIKTOK_CLIENT_SECRET (required for webhook signature verification).");
+  }
+  return clientSecret;
+}
+
 /** Scopes required for profile + stats sync (comma-separated per TikTok docs). */
 export const TIKTOK_OAUTH_SCOPES = "user.info.basic,user.info.profile,user.info.stats" as const;
 
