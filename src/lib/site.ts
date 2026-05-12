@@ -28,5 +28,5 @@ export const footerNav = [
   { label: "Contact", href: "/contact" },
   { label: "Sign in", href: "/login" },
   { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/legal/terms" },
+  { label: "Terms", href: "/terms" },
 ] as const;

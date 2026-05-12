@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { site } from "@/lib/site";
+import { TIKTOK_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -11,6 +12,10 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <Section className="!pt-12 sm:!pt-16">
+      {/* TikTok URL verification crawlers that receive HTML must still find this exact token in the document. */}
+      <p className="sr-only" aria-hidden="true">
+        {TIKTOK_SITE_VERIFICATION_LINE}
+      </p>
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
           Legal
