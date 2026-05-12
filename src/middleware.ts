@@ -9,7 +9,18 @@ export async function middleware(request: NextRequest) {
     (pathname === "/terms" || pathname === "/terms/")
   ) {
     const accept = request.headers.get("accept") ?? "";
-    if (!accept.includes("text/html")) {
+    const secFetchDest = request.headers.get("sec-fetch-dest");
+    const secFetchMode = request.headers.get("sec-fetch-mode");
+    /**
+     * TikTok's URL verifier often sends Accept: text/html like a browser but not a real
+     * document navigation (no Sec-Fetch-*). Only then serve plain verification text.
+     */
+    const isLikelyBrowserDocumentNavigation =
+      accept.includes("text/html") &&
+      secFetchDest === "document" &&
+      (secFetchMode === "navigate" || secFetchMode === "nested-navigate");
+
+    if (!isLikelyBrowserDocumentNavigation) {
       return new NextResponse(`${TIKTOK_SITE_VERIFICATION_LINE}\n`, {
         status: 200,
         headers: {
