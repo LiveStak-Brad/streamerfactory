@@ -44,5 +44,5 @@ console.log(
   `curl.exe -sS -i -X POST "${url}" -H "Content-Type: application/json" -H "Tiktok-Signature: ${header}" -d @${tmp}`,
 );
 console.log(
-  '\nExpect HTTP/1.1 200 and {"ok":true}. If you get 403, the secret you passed is not the same bytes as TIKTOK_CLIENT_SECRET on the server you hit.\n',
+  '\nExpect HTTP/1.1 200 and {"ok":true,"received":true}. If you get 403, the secret you passed is not the same bytes as TIKTOK_CLIENT_SECRET on the server you hit.\n',
 );
