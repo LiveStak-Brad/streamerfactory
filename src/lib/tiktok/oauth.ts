@@ -9,6 +9,26 @@ function addSecondsIso(seconds: number): string {
   return new Date(Date.now() + seconds * 1000).toISOString();
 }
 
+async function readTikTokJsonBody(res: Response): Promise<
+  { ok: true; json: Record<string, unknown> } | { ok: false; error: string }
+> {
+  const text = await res.text();
+  const trimmed = text.trim();
+  if (!trimmed) {
+    return { ok: false, error: `TikTok returned an empty body (HTTP ${res.status}).` };
+  }
+  try {
+    const json = JSON.parse(trimmed) as Record<string, unknown>;
+    return { ok: true, json };
+  } catch {
+    const preview = trimmed.slice(0, 160).replace(/\s+/g, " ");
+    return {
+      ok: false,
+      error: `TikTok API returned non-JSON (HTTP ${res.status}). Often invalid credentials, redirect_uri mismatch, or wrong Sandbox vs Production keys. Body starts: ${preview}`,
+    };
+  }
+}
+
 export async function exchangeAuthorizationCode(code: string): Promise<
   | { ok: true; open_id: string; tokens: TikTokTokenBundle }
   | { ok: false; error: string }
@@ -37,7 +57,11 @@ export async function exchangeAuthorizationCode(code: string): Promise<
     body: body.toString(),
   });
 
-  const json = (await res.json()) as Record<string, unknown>;
+  const parsed = await readTikTokJsonBody(res);
+  if (!parsed.ok) {
+    return { ok: false, error: parsed.error };
+  }
+  const json = parsed.json;
   if (!res.ok) {
     const desc = typeof json.error_description === "string" ? json.error_description : res.statusText;
     return { ok: false, error: desc || "Token exchange failed." };
@@ -90,7 +114,11 @@ export async function refreshAccessToken(refreshToken: string): Promise<
     body: body.toString(),
   });
 
-  const json = (await res.json()) as Record<string, unknown>;
+  const parsed = await readTikTokJsonBody(res);
+  if (!parsed.ok) {
+    return { ok: false, error: parsed.error };
+  }
+  const json = parsed.json;
   if (!res.ok) {
     const desc = typeof json.error_description === "string" ? json.error_description : res.statusText;
     return { ok: false, error: desc || "Token refresh failed." };
@@ -144,10 +172,19 @@ export async function fetchTikTokUserInfo(accessToken: string): Promise<
     cache: "no-store",
   });
 
-  const json = (await res.json()) as {
+  const parsed = await readTikTokJsonBody(res);
+  if (!parsed.ok) {
+    return { ok: false, error: parsed.error };
+  }
+  const json = parsed.json as {
     data?: { user?: Record<string, unknown> };
     error?: { code?: string; message?: string };
   };
+
+  if (!res.ok) {
+    const errMsg = json.error?.message;
+    return { ok: false, error: errMsg || `TikTok user info request failed (HTTP ${res.status}).` };
+  }
 
   const apiError = json.error;
   if (apiError && apiError.code && apiError.code !== "ok") {
