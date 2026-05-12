@@ -1,6 +1,7 @@
 /**
  * TikTok "URL properties" / site verification line for the redirect URI prefix.
- * TikTok probes GET https://<host>/api/tiktok/oauth/callback (no query) and expects this body.
+ * TikTok probes GET the redirect URI (often without an auth `code`) and expects this body.
+ * Prefer the same canonical host as in the portal (e.g. `www.…`) so probes are not 307-redirected before 200.
  * @see https://developers.tiktok.com/doc/getting-started-create-an-app (Verify URL ownership)
  */
 export const TIKTOK_SITE_VERIFICATION_LINE =

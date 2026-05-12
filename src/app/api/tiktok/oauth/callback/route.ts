@@ -15,14 +15,26 @@ const STATE_COOKIE = "sf_tt_oauth_state";
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
   const searchParams = request.nextUrl.searchParams;
-  const oauthError = searchParams.get("error");
+  const oauthError = searchParams.get("error")?.trim() ?? "";
   const errorDescription = searchParams.get("error_description");
 
+  if (oauthError) {
+    const msg = (errorDescription || oauthError).trim();
+    const res = NextResponse.redirect(
+      `${origin}/member/dashboard?tiktok_error=${encodeURIComponent(msg)}`,
+    );
+    res.cookies.delete(STATE_COOKIE);
+    return res;
+  }
+
+  const code = searchParams.get("code")?.trim() ?? "";
+
   /**
-   * TikTok URL-prefix verification GETs this exact redirect path without OAuth params
-   * and expects the verification signature as plain text (not an HTML page).
+   * TikTok URL-prefix verification GETs this redirect path without an auth `code`
+   * and expects the verification line as `text/plain` (often with extra query keys).
+   * Do not require absence of `state` alone — portal probes may send stray params.
    */
-  if (!searchParams.get("code") && !searchParams.get("state") && !oauthError) {
+  if (!code) {
     return new NextResponse(TIKTOK_SITE_VERIFICATION_LINE, {
       status: 200,
       headers: {
@@ -32,17 +44,7 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  if (oauthError) {
-    const msg = errorDescription || oauthError;
-    const res = NextResponse.redirect(
-      `${origin}/member/dashboard?tiktok_error=${encodeURIComponent(msg)}`,
-    );
-    res.cookies.delete(STATE_COOKIE);
-    return res;
-  }
-
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
+  const state = searchParams.get("state")?.trim() ?? "";
   const cookieStore = await cookies();
   const expected = cookieStore.get(STATE_COOKIE)?.value;
 

@@ -9,9 +9,9 @@ export const config = {
   matcher: [
     /*
      * Match all paths except static assets and images.
-     * Skip Supabase session middleware for TikTok webhooks — Edge middleware
-     * must not touch the POST body stream; signature verification needs the raw bytes.
+     * Skip Supabase session middleware for TikTok webhook + OAuth callback —
+     * webhooks need an untouched POST body; probes hit the callback without session.
      */
-    "/((?!_next/static|_next/image|favicon.ico|api/tiktok/webhook|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/tiktok/webhook|api/tiktok/oauth/callback|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
