@@ -8,10 +8,13 @@ export function verifyTikTokWebhookSignature(params: {
   rawBody: string;
   signatureHeader: string | null;
   clientSecret: string;
-  /** Max age of `t` in seconds (default 10 minutes). */
+  /**
+   * Optional replay window for `t` (seconds). Omit to skip — TikTok portal
+   * "Test event" payloads often use a stale `t` while the HMAC is still valid.
+   */
   maxClockSkewSec?: number;
 }): boolean {
-  const { rawBody, signatureHeader, clientSecret, maxClockSkewSec = 600 } = params;
+  const { rawBody, signatureHeader, clientSecret, maxClockSkewSec } = params;
   if (!signatureHeader || !clientSecret) return false;
 
   let t: string | null = null;
@@ -27,22 +30,27 @@ export function verifyTikTokWebhookSignature(params: {
   }
   if (!t || !s) return false;
 
-  const ts = Number(t);
-  if (!Number.isFinite(ts)) return false;
-  const skew = Math.abs(Date.now() / 1000 - ts);
-  if (skew > maxClockSkewSec) return false;
-
   const signedPayload = `${t}.${rawBody}`;
   const expectedHex = createHmac("sha256", clientSecret).update(signedPayload, "utf8").digest("hex");
 
-  try {
-    const a = Buffer.from(expectedHex, "hex");
-    const b = Buffer.from(s, "hex");
-    if (a.length !== b.length) return false;
-    return timingSafeEqual(a, b);
-  } catch {
+  const sigHex = s.trim().toLowerCase();
+  const expHex = expectedHex.toLowerCase();
+
+  const expectedBuf = Buffer.from(expHex, "hex");
+  const sigBuf = Buffer.from(sigHex, "hex");
+  if (expectedBuf.length !== 32 || sigBuf.length !== 32) {
     return false;
   }
+  if (!timingSafeEqual(expectedBuf, sigBuf)) return false;
+
+  if (maxClockSkewSec !== undefined && maxClockSkewSec > 0) {
+    const ts = Number(t);
+    if (!Number.isFinite(ts)) return false;
+    const skew = Math.abs(Date.now() / 1000 - ts);
+    if (skew > maxClockSkewSec) return false;
+  }
+
+  return true;
 }
 
 export function getTikTokSignatureFromRequest(headers: Headers): string | null {
