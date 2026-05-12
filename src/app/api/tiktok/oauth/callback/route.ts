@@ -6,6 +6,7 @@ import { findProfileIdByTikTokOpenId, upsertTikTokConnection } from "@/lib/tikto
 import { exchangeAuthorizationCode } from "@/lib/tiktok/oauth";
 import { syncTikTokProfileForProfileId } from "@/lib/tiktok/syncProfile";
 import { absoluteUrl } from "@/lib/site-url";
+import { TIKTOK_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,20 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const oauthError = searchParams.get("error");
   const errorDescription = searchParams.get("error_description");
+
+  /**
+   * TikTok URL-prefix verification GETs this exact redirect path without OAuth params
+   * and expects the verification signature as plain text (not an HTML page).
+   */
+  if (!searchParams.get("code") && !searchParams.get("state") && !oauthError) {
+    return new NextResponse(TIKTOK_SITE_VERIFICATION_LINE, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+    });
+  }
 
   if (oauthError) {
     const msg = errorDescription || oauthError;
