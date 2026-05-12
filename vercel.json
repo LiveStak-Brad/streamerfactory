@@ -11,6 +11,10 @@
     {
       "source": "/terms/",
       "destination": "/terms"
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy"
     }
   ],
   "crons": [

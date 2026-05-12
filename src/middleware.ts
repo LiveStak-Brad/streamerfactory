@@ -1,33 +1,45 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { TIKTOK_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
+import {
+  TIKTOK_PRIVACY_SITE_VERIFICATION_LINE,
+  TIKTOK_SITE_VERIFICATION_LINE,
+} from "@/lib/tiktok/site-verification";
+
+const LEGAL_PATH_TIKTOK_LINE: readonly [string, string][] = [
+  ["/terms", TIKTOK_SITE_VERIFICATION_LINE],
+  ["/privacy", TIKTOK_PRIVACY_SITE_VERIFICATION_LINE],
+];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (
-    request.method === "GET" &&
-    (pathname === "/terms" || pathname === "/terms/")
-  ) {
-    const accept = request.headers.get("accept") ?? "";
-    const secFetchDest = request.headers.get("sec-fetch-dest");
-    const secFetchMode = request.headers.get("sec-fetch-mode");
-    /**
-     * TikTok's URL verifier often sends Accept: text/html like a browser but not a real
-     * document navigation (no Sec-Fetch-*). Only then serve plain verification text.
-     */
-    const isLikelyBrowserDocumentNavigation =
-      accept.includes("text/html") &&
-      secFetchDest === "document" &&
-      (secFetchMode === "navigate" || secFetchMode === "nested-navigate");
 
-    if (!isLikelyBrowserDocumentNavigation) {
-      return new NextResponse(`${TIKTOK_SITE_VERIFICATION_LINE}\n`, {
-        status: 200,
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "no-store",
-        },
-      });
+  if (request.method === "GET") {
+    for (const [base, line] of LEGAL_PATH_TIKTOK_LINE) {
+      if (pathname !== base && pathname !== `${base}/`) continue;
+
+      const accept = request.headers.get("accept") ?? "";
+      const secFetchDest = request.headers.get("sec-fetch-dest");
+      const secFetchMode = request.headers.get("sec-fetch-mode");
+      /**
+       * TikTok URL verifiers often send Accept: text/html without a real document navigation
+       * (no Sec-Fetch-*). Serve plain verification only for those; browsers get the HTML page.
+       */
+      const isLikelyBrowserDocumentNavigation =
+        accept.includes("text/html") &&
+        secFetchDest === "document" &&
+        (secFetchMode === "navigate" || secFetchMode === "nested-navigate");
+
+      if (!isLikelyBrowserDocumentNavigation) {
+        return new NextResponse(`${line}\n`, {
+          status: 200,
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8",
+            "Cache-Control": "no-store",
+          },
+        });
+      }
+
+      return await updateSession(request);
     }
   }
 
