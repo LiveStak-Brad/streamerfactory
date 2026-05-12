@@ -117,3 +117,13 @@ export async function updateTikTokConnectionProfile(
   }
   return { ok: true };
 }
+
+export async function deleteTikTokConnectionByOpenId(openId: string): Promise<{ ok: boolean; error?: string }> {
+  const supabase = requireServiceRoleSupabase();
+  const { error } = await supabase.from("tiktok_connections").delete().eq("tiktok_open_id", openId);
+  if (error) {
+    console.error("[tiktok] deleteTikTokConnectionByOpenId", error);
+    return { ok: false, error: error.message };
+  }
+  return { ok: true };
+}
