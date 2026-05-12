@@ -1,4 +1,14 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/tiktok/oauth/callback/",
+      "destination": "/api/tiktok/oauth/callback"
+    },
+    {
+      "source": "/api/tiktok/webhook/",
+      "destination": "/api/tiktok/webhook"
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/battle-reminders",

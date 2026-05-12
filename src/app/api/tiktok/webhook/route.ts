@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getTikTokClientSecret } from "@/lib/tiktok/config";
+import { TIKTOK_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
 import {
   type TikTokWebhookPayload,
   handleVerifiedTikTokWebhookPayload,
@@ -45,15 +46,18 @@ function logTikTokWebhook(request: NextRequest, rawBody: string | null): void {
 
 /**
  * TikTok Products → Webhooks → Callback URL.
- * Always responds 200 + `{ ok: true, received: true }` so Developer Portal tests pass.
- * Verified events only run `handleVerifiedTikTokWebhookPayload` (HMAC in verify-webhook-signature.ts).
+ * - GET: URL-prefix verification expects `TIKTOK_SITE_VERIFICATION_LINE` as `text/plain` (same as OAuth callback).
+ * - POST: always 200 JSON `{ ok, received }`; verified events run `handleVerifiedTikTokWebhookPayload` after HMAC.
  * @see https://developers.tiktok.com/doc/webhooks-overview
  */
 export async function GET(request: NextRequest) {
   logTikTokWebhook(request, null);
-  return NextResponse.json(okBody, {
+  return new NextResponse(TIKTOK_SITE_VERIFICATION_LINE, {
     status: 200,
-    headers: { "Cache-Control": "no-store" },
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
   });
 }
 
