@@ -22,6 +22,8 @@ type ButtonProps = {
   variant?: ButtonVariant;
   className?: string;
   href?: string;
+  /** Use a plain anchor with `target="_blank"` (e.g. TikTok Creator Network). */
+  external?: boolean;
   type?: "button" | "submit";
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -33,6 +35,7 @@ export function Button({
   variant = "primary",
   className = "",
   href,
+  external = false,
   type = "button",
   disabled,
   onClick,
@@ -41,6 +44,13 @@ export function Button({
   const classes = `${base} ${variants[variant]} ${className}`;
 
   if (href) {
+    if (external) {
+      return (
+        <a href={href} className={classes} target="_blank" rel="noopener noreferrer">
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={classes}>
         {children}

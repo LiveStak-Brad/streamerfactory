@@ -71,14 +71,15 @@ export default async function AdminApplicationsPage() {
               Applications
             </h1>
             <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              Submissions from the public Apply form. Only applicants who agreed to be contacted are stored.
+              TikTok Creator Network applications and contact details from the public Join page. Confirm
+              someone is in the Creator Network on TikTok before promoting their account to member here.
             </p>
           </div>
           <Link
             href="/apply"
             className="text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
           >
-            View public form →
+            View public Join page →
           </Link>
         </div>
 
@@ -86,7 +87,7 @@ export default async function AdminApplicationsPage() {
           <div className="mt-10 rounded-2xl border border-dashed border-zinc-300/90 bg-muted-bg/40 px-6 py-14 text-center dark:border-zinc-700 dark:bg-zinc-950/40">
             <p className="font-semibold text-zinc-800 dark:text-zinc-200">No applications yet</p>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              When creators submit the Apply form, they will appear here.
+              When creators submit a website access request, they will appear here.
             </p>
           </div>
         ) : (

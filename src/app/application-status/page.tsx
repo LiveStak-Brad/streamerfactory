@@ -10,7 +10,7 @@ import { getSessionProfile } from "@/lib/auth/server";
 export const metadata: Metadata = {
   title: "Application status",
   description:
-    "See where your Streamer Factory membership application stands and what to do next.",
+    "Track your Streamer Factory website access request after joining the TikTok Creator Network — from submission to member tools.",
 };
 
 export const dynamic = "force-dynamic";
@@ -29,8 +29,14 @@ export default async function ApplicationStatusPage() {
             Application status
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            Sign in to see your application and next steps. If you haven&apos;t applied yet, you can start from
-            the Apply page after you sign in.
+            Sign in to see your website access request and next steps. New to the process? Start on{" "}
+            <Link
+              href="/apply"
+              className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+            >
+              Join
+            </Link>
+            .
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -43,7 +49,7 @@ export default async function ApplicationStatusPage() {
               href="/apply"
               className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200 px-6 py-3 text-sm font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
             >
-              Apply
+              Join &amp; request access
             </Link>
           </div>
         </div>
@@ -70,7 +76,7 @@ export default async function ApplicationStatusPage() {
           Application status
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          One place to see where you stand — from submission to full member access.{" "}
+          From website access request to full tools — training stays available before and after approval.{" "}
           <Link href="/streameru/start-here" className="font-semibold text-accent hover:underline dark:text-accent-muted">
             Start your training
           </Link>{" "}
@@ -78,7 +84,7 @@ export default async function ApplicationStatusPage() {
           <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
             StreamerU
           </Link>{" "}
-          stay available before and after approval.
+          anytime; Battle Hub unlocks once site access is approved.
         </p>
 
         <div className="mt-10">

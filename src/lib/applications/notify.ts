@@ -23,7 +23,7 @@ async function notifyDiscord(p: NotifyPayload): Promise<void> {
 
   const adminUrl = `${getPublicSiteUrl()}/admin/applications`;
   const lines = [
-    "**New Streamer Factory application**",
+    "**New website access request** (TikTok Creator Network → site)",
     `**Name:** ${p.fullName}`,
     `**Email:** ${p.email}`,
     `**TikTok:** ${p.tiktokUsername}`,

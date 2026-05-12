@@ -12,15 +12,14 @@ export default function NotFound() {
           Page not found
         </h1>
         <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">
-          That page doesn’t exist or has moved. Head back to the homepage or apply to
-          join Streamer Factory.
+          That page doesn&apos;t exist or has moved. Head back to the homepage or open the Join page.
         </p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Button href="/" variant="primary" className="min-h-[48px] px-8">
             Back to home
           </Button>
           <Button href="/apply" variant="secondary" className="min-h-[48px] px-8">
-            Apply
+            Join
           </Button>
         </div>
       </Container>

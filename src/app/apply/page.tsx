@@ -9,11 +9,12 @@ import { hasActiveNonRejectedApplication } from "@/lib/applications/helpers";
 import { getMyApplication } from "@/lib/applications/queries";
 import { canScheduleBattles } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Apply",
+  title: "Join",
   description:
-    "Apply to join Streamer Factory — TikTok LIVE creator agency for recruitment, training, and growth.",
+    "Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and StreamerU.",
 };
 
 export default async function ApplyPage() {
@@ -30,7 +31,8 @@ export default async function ApplyPage() {
             You&apos;re already in the network
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-            This page is for new creators applying to join. Your account already has member access — use{" "}
+            This page is for creators who still need TikTok Creator Network or website access. Your account
+            already has member tools — use{" "}
             <Link
               href="/streameru"
               className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
@@ -52,6 +54,9 @@ export default async function ApplyPage() {
             </Button>
             <Button href="/battle-hub" variant="secondary" className="min-h-[52px] px-8">
               Open Battle Hub
+            </Button>
+            <Button href={tiktokCreatorNetworkApplyUrl} external variant="secondary" className="min-h-[52px] px-8">
+              TikTok Creator Network page
             </Button>
             <Button href="/" variant="secondary" className="min-h-[52px] px-8">
               Back to home
@@ -80,36 +85,74 @@ export default async function ApplyPage() {
     <Section className="!pt-12 sm:!pt-16">
       <div className="mx-auto max-w-2xl">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
-          Membership application
+          Join Streamer Factory
         </p>
         <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-foreground sm:text-5xl">
-          Apply to Streamer Factory
+          Creator Network on TikTok, then this site
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-          This is your <strong className="font-semibold text-foreground">application</strong> — not member
-          onboarding. After approval, members use{" "}
+          Membership in the{" "}
+          <strong className="font-semibold text-foreground">TikTok Creator Network</strong> runs through
+          TikTok&apos;s official flow. After you&apos;re in, use the form below so we can match your account and
+          manually grant access to{" "}
+          <Link href="/battle-hub" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
+            Battle Hub
+          </Link>
+          , scheduling, and{" "}
           <Link href="/streameru" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
             StreamerU
           </Link>{" "}
-          for the training course, plus Battle Hub for scheduling — same tools as the rest of the network.
+          on this website.
         </p>
-        <p className="mt-4 text-lg leading-relaxed text-muted sm:text-xl">
-          Tell us about your TikTok LIVE presence. We review every application and follow up when there’s a
-          potential fit. Sign in first so we can tie your submission to your account — then track status on{" "}
-          <Link
-            href="/application-status"
-            className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+
+        <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-muted-bg/50 p-6 dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-8">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
+            Step 1 · TikTok Creator Network
+          </p>
+          <p className="mt-3 text-base leading-relaxed text-muted">
+            Apply on TikTok first — invitations and review happen there. This is the only path to join the
+            Creator Network itself.
+          </p>
+          <Button
+            href={tiktokCreatorNetworkApplyUrl}
+            external
+            variant="primary"
+            className="mt-6 min-h-[52px] px-8"
           >
-            Application status
-          </Link>
-          .
-        </p>
+            Open TikTok Creator Network →
+          </Button>
+          <p className="mt-4 text-sm text-muted">
+            Opens{" "}
+            <span className="break-all font-medium text-foreground">{tiktokCreatorNetworkApplyUrl}</span> in a
+            new tab.
+          </p>
+        </div>
+
+        <div className="mt-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
+            Step 2 · Website access
+          </p>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Send your contact details
+          </h2>
+          <p className="mt-3 text-base leading-relaxed text-muted sm:text-lg">
+            After TikTok accepts you into the network, submit this form (sign in required) so our team can verify
+            you and turn on member tools here. Track progress anytime on{" "}
+            <Link
+              href="/application-status"
+              className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+            >
+              Application status
+            </Link>
+            .
+          </p>
+        </div>
 
         <ApplyTrustSection />
 
         {session?.user && !canScheduleBattles(session.profile?.role) && !isResubmitAfterReject ? (
           <p className="mt-6 text-sm leading-relaxed text-muted">
-            You&apos;re signed in — track where you are anytime on{" "}
+            You&apos;re signed in — track your request on{" "}
             <Link
               href="/application-status"
               className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
@@ -125,10 +168,10 @@ export default async function ApplyPage() {
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
               New submission
             </p>
-            <p className="mt-2 text-base font-medium text-foreground">You&apos;re applying again</p>
+            <p className="mt-2 text-base font-medium text-foreground">You&apos;re submitting again</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              We&apos;ll use the answers below as your updated application. After you submit, you&apos;ll go
-              to{" "}
+              We&apos;ll use the answers below as your updated website access request. After you submit,
+              you&apos;ll go to{" "}
               <Link
                 href="/application-status"
                 className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
@@ -142,10 +185,10 @@ export default async function ApplyPage() {
 
         {!session?.user ? (
           <div className="mt-12 rounded-2xl border border-zinc-200/90 bg-surface p-8 shadow-[0_1px_0_0_rgba(255,255,255,0.65)_inset,0_8px_32px_-28px_rgba(15,23,42,0.12)] dark:border-zinc-800 dark:bg-zinc-950/40 dark:shadow-none">
-            <p className="text-base font-medium text-foreground">Sign in to apply</p>
+            <p className="text-base font-medium text-foreground">Sign in to continue</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Create an account or log in with the email you will use as a creator. The application form
-              opens after you are signed in.
+              Create an account or log in with the email you want tied to website access. The form opens after
+              you&apos;re signed in.
             </p>
             <Button href="/login?next=/apply" variant="primary" className="mt-6">
               Sign in to continue

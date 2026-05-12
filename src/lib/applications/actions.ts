@@ -48,7 +48,7 @@ export async function submitApplication(
   if (!contactConsent) {
     return {
       error:
-        "Please confirm you agree to be contacted about your application (email or similar).",
+        "Please confirm you agree to be contacted about this website access request (email or similar).",
     };
   }
 
@@ -66,11 +66,11 @@ export async function submitApplication(
   if (!country) return { error: "Country is required." };
   if (!FOLLOWER_VALUES.has(followerRange)) return { error: "Please select a follower range." };
   if (goesLive !== "yes" && goesLive !== "no") return { error: "Please answer whether you go live on TikTok." };
-  if (!whyJoin) return { error: "Please tell us why you want to join." };
+  if (!whyJoin) return { error: "Please describe what you need on the site and how we can verify you." };
 
   const session = await getSessionProfile();
   if (!session?.user) {
-    return { error: "Sign in to submit an application." };
+    return { error: "Sign in to submit a website access request." };
   }
 
   const accountEmail = session.user.email?.trim().toLowerCase();
@@ -107,7 +107,7 @@ export async function submitApplication(
   if (existing) {
     if (existing.status !== "rejected") {
       return {
-        error: "You already submitted an application with this account.",
+        error: "You already submitted a website access request with this account.",
       };
     }
     const { error } = await supabase.from("applications").update(row).eq("id", existing.id);
@@ -119,7 +119,7 @@ export async function submitApplication(
     if (error) {
       if (error.code === "23505") {
         return {
-          error: "You already submitted an application with this account.",
+          error: "You already submitted a website access request with this account.",
         };
       }
       return { error: error.message };

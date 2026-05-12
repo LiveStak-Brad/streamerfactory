@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export function HomeHero() {
   return (
@@ -40,17 +42,27 @@ export function HomeHero() {
             a hobby.
           </p>
           <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button href="/apply" variant="primary" className="min-h-[52px] px-8 sm:min-w-[200px]">
-              Apply Now
-            </Button>
             <Button
-              href="/about"
-              variant="secondaryOnDark"
+              href={tiktokCreatorNetworkApplyUrl}
+              external
+              variant="primary"
               className="min-h-[52px] px-8 sm:min-w-[200px]"
             >
-              Learn More
+              Join Creator Network on TikTok
+            </Button>
+            <Button href="/apply" variant="secondaryOnDark" className="min-h-[52px] px-8 sm:min-w-[200px]">
+              Request website access
             </Button>
           </div>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-500">
+            TikTok handles Creator Network membership — then we enable scheduling and training on this site.{" "}
+            <Link
+              href="/about"
+              className="font-semibold text-zinc-300 underline-offset-2 hover:text-white hover:underline"
+            >
+              How it works →
+            </Link>
+          </p>
         </div>
       </Container>
     </section>

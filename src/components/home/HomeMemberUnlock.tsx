@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 const unlocks = [
   {
@@ -53,17 +55,20 @@ export function HomeMemberUnlock() {
       </ul>
 
       <div className="mx-auto mt-12 max-w-2xl rounded-2xl border border-zinc-200/80 bg-gradient-to-b from-surface to-muted-bg/40 px-6 py-6 text-center dark:border-zinc-800 dark:from-zinc-950/60 dark:to-zinc-950/30 sm:px-8">
-        <p className="text-sm font-medium text-foreground">After you apply</p>
+        <p className="text-sm font-medium text-foreground">After TikTok &amp; website access</p>
         <p className="mt-2 text-sm leading-relaxed text-muted">
-          We review every submission. You&apos;ll see clear status in the app, and if it&apos;s a fit,
-          we&apos;ll onboard you into these tools — no fake metrics, just a real pipeline.
+          Join the Creator Network on TikTok first. Then submit your contact details so we can verify you and
+          unlock scheduling and training here — same pipeline for everyone.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
+          <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[44px] px-5">
+            Join on TikTok
+          </Button>
           <Link
             href="/apply"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-900 dark:border-zinc-600 dark:text-zinc-100"
           >
-            Apply
+            Website access
           </Link>
           <Link
             href="/about"

@@ -24,7 +24,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" variant="primary" disabled={pending} className="min-h-[48px] w-full sm:w-auto sm:min-w-[200px]">
-      {pending ? "Submitting…" : "Submit application"}
+      {pending ? "Submitting…" : "Submit website access request"}
     </Button>
   );
 }
@@ -80,8 +80,8 @@ export function ApplyForm() {
             TikTok username <span className="text-accent">*</span>
           </label>
           <p className="mt-1 text-sm text-muted">
-            For your application review. After approval, you&apos;ll use member tools and StreamerU with the same
-            account.
+            Use the same handle as on TikTok / your Creator Network profile so we can verify you before
+            enabling website access.
           </p>
           <input
             id="tiktokUsername"
@@ -139,15 +139,19 @@ export function ApplyForm() {
 
       <div>
         <label htmlFor="whyJoin" className={labelClass}>
-          Why do you want to join Streamer Factory? <span className="text-accent">*</span>
+          What you need on this site &amp; how we should verify you <span className="text-accent">*</span>
         </label>
+        <p className="mt-1 text-sm text-muted">
+          Example: you want Battle Hub and training; you joined Creator Network as @handle on this date; any
+          note that helps our team confirm your TikTok membership.
+        </p>
         <textarea
           id="whyJoin"
           name="whyJoin"
           required
           rows={5}
           className={`${inputClass} resize-y min-h-[120px]`}
-          placeholder="Share your goals, schedule, and what you want to improve on LIVE."
+          placeholder="Goals for scheduling/tools, and details that help us match your Creator Network membership."
         />
       </div>
 
@@ -160,8 +164,8 @@ export function ApplyForm() {
             className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-300 accent-accent dark:border-zinc-600"
           />
           <span>
-            I agree that Streamer Factory may contact me about my application using the email I provided
-            (and related follow-up), including information about next steps or fit.{" "}
+            I agree that Streamer Factory may contact me about this website access request using the email
+            I provided (and related follow-up), including verification or next steps.{" "}
             <span className="text-accent">*</span>
           </span>
         </label>
@@ -169,8 +173,8 @@ export function ApplyForm() {
 
       <div className="flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted">
-          We only use your details to evaluate and respond to this application—not for unrelated marketing
-          unless you hear from us and opt in separately.
+          We use your details only to verify Creator Network membership and enable access here — not for
+          unrelated marketing unless you opt in separately.
         </p>
         <SubmitButton />
       </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -60,9 +61,12 @@ export default function AboutPage() {
               </span>
             </li>
           </ul>
-          <div className="mt-10">
-            <Button href="/apply" variant="primary" className="min-h-[48px] px-8">
-              Apply Now
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[48px] px-8">
+              Join Creator Network on TikTok
+            </Button>
+            <Button href="/apply" variant="secondary" className="min-h-[48px] px-8">
+              Request website access
             </Button>
           </div>
         </div>

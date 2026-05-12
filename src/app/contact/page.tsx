@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
-import { site } from "@/lib/site";
+import { site, tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Contact ${site.name} — questions about partnership, applications, or TikTok LIVE creator support.`,
+  description: `Contact ${site.name} — questions about partnership, website access, or TikTok LIVE creator support.`,
 };
 
 export default function ContactPage() {
@@ -45,14 +45,23 @@ export default function ContactPage() {
               Creators
             </h2>
             <p className="mt-2 text-base leading-relaxed text-muted">
-              Ready to apply? The fastest path is our application—so we can review your
-              LIVE presence and goals in one place.
+              Start with the official{" "}
+              <a
+                href={tiktokCreatorNetworkApplyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted"
+              >
+                TikTok Creator Network application
+              </a>
+              . After you&apos;re in, use our Join page to send contact details so we can enable scheduling and
+              StreamerU on this site.
             </p>
             <a
               href="/apply"
               className="mt-4 inline-flex text-base font-semibold text-accent hover:text-accent-hover"
             >
-              Go to application →
+              Join &amp; request website access →
             </a>
           </div>
         </div>

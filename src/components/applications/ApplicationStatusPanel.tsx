@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 
 import type { ResolvedApplicationUi } from "@/lib/applications/status";
 import { formatApplicationSubmitted } from "@/lib/applications/format-submitted";
+import { Button } from "@/components/ui/Button";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 type Props = {
   ui: ResolvedApplicationUi;
@@ -40,27 +42,35 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           Status · Not submitted
         </p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-          You haven&apos;t applied yet
+          No website request yet
         </h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Member tools — Battle Hub scheduling, the shared calendar, Battle Finder, and onboarding — unlock
-          after the team reviews and approves your application. Read{" "}
+          Join the <strong className="font-semibold text-zinc-800 dark:text-zinc-200">TikTok Creator Network</strong>{" "}
+          through TikTok first — then send your contact details from the Join page so we can manually enable
+          Battle Hub, scheduling, and StreamerU on this site. Read{" "}
           <Link href="/about" className="font-semibold text-accent hover:underline dark:text-accent-muted">
             About
           </Link>{" "}
-          for what &quot;agency&quot; means here before you apply.
+          for how the agency fits together.
         </p>
         {email ? (
           <p className="mt-5 text-sm text-zinc-500 dark:text-zinc-400">
             Signed in as <span className="font-medium text-zinc-700 dark:text-zinc-300">{email}</span>
           </p>
         ) : null}
-        <Link
-          href="/apply"
-          className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
-        >
-          Start your application
-        </Link>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <Button
+            href={tiktokCreatorNetworkApplyUrl}
+            external
+            variant="primary"
+            className="min-h-[48px] px-6"
+          >
+            Join on TikTok →
+          </Button>
+          <Button href="/apply" variant="secondary" className="min-h-[48px] px-6">
+            Request website access
+          </Button>
+        </div>
       </Card>
     );
   }
@@ -72,11 +82,12 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           Status · Received
         </p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-          We have your application
+          We have your website access request
         </h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-          Thanks for applying. Our team reviews every submission. If there&apos;s a fit, we&apos;ll reach out
-          using the email on your account — no need to resubmit unless we ask.
+          Thanks — our team will verify your TikTok Creator Network membership and match you to this
+          account. We&apos;ll use the email on your login if we need anything else — no need to resubmit unless
+          we ask.
         </p>
         {ui.submittedAt ? (
           <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -103,7 +114,7 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           <Link href="/about" className="font-semibold text-accent hover:underline dark:text-accent-muted">
             About
           </Link>{" "}
-          — full network tools unlock after approval.
+          — scheduling and member-only tools unlock after we approve site access.
         </p>
         <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
           Tip: keep an eye on the email tied to your account; that&apos;s where we&apos;ll reach out if we need
@@ -120,11 +131,11 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           Status · In review
         </p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-          Your application is being reviewed
+          Your website access request is in review
         </h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-          The team is actively reviewing your submission. There&apos;s nothing else you need to do unless we
-          contact you with a question.
+          The team is actively reviewing your details and Creator Network verification. There&apos;s nothing
+          else you need to do unless we contact you.
         </p>
         {ui.submittedAt ? (
           <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -171,8 +182,8 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           worth as a creator — timing and fit matter, and we can only take on so many partners at once.
         </p>
         <p className="mt-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-          You&apos;re welcome to apply again later if your channel grows or your goals change. We read every
-          submission.
+          You&apos;re welcome to try again later if your situation changes (TikTok Creator Network first, then
+          a new website access request from the Join page). We read every submission.
         </p>
         {ui.submittedAt ? (
           <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
@@ -183,7 +194,7 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           href="/apply"
           className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-950 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-50"
         >
-          Submit a new application
+          Submit a new website access request
         </Link>
       </Card>
     );
@@ -200,8 +211,8 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
           You&apos;re in — welcome to the network
         </h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-          Your account has member access. Start with StreamerU training, then open Battle Hub when you&apos;re ready to
-          schedule.
+          TikTok Creator Network is separate from this site — you now have member tools here too. Start with
+          StreamerU training, then open Battle Hub when you&apos;re ready to schedule.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
@@ -230,7 +241,7 @@ export function ApplicationStatusPanel({ ui, email }: Props) {
         You&apos;re approved — finishing setup
       </h2>
       <p className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-        Your application shows as approved. If member tools aren&apos;t visible yet, refresh the page or sign
+        Your website access shows as approved. If member tools aren&apos;t visible yet, refresh the page or sign
         out and back in with {email ? <span className="font-medium">{email}</span> : "your account"}.
       </p>
       <div className="mt-6 flex flex-wrap gap-3">

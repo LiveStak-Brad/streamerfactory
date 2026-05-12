@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ResourceBreadcrumb } from "@/components/resources/ResourceBreadcrumb";
 import { StreamerUContinueGuidance } from "@/components/guidance/StreamerUContinueGuidance";
+import { Button } from "@/components/ui/Button";
 import { FIRST_PROGRAM_LESSON_SLUG, getCurriculumLesson } from "@/lib/resources/curriculum";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "StreamerU",
@@ -67,11 +69,14 @@ export default function StreamerUPage() {
       </section>
 
       <div className="mt-12 flex flex-wrap gap-3 border-t border-zinc-200/80 pt-10 dark:border-zinc-800">
+        <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[44px] px-5">
+          Join on TikTok
+        </Button>
         <Link
           href="/apply"
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
+          className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-zinc-200/90 px-5 py-2.5 text-sm font-semibold text-zinc-800 dark:border-zinc-700 dark:text-zinc-200"
         >
-          Apply to Streamer Factory
+          Request website access
         </Link>
         <Link
           href="/about"

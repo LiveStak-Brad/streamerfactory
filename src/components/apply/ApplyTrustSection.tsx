@@ -1,5 +1,5 @@
 /**
- * Concise trust copy for the Apply page — not legal boilerplate.
+ * Concise trust copy for the join / website-access page — not legal boilerplate.
  */
 export function ApplyTrustSection() {
   return (
@@ -9,8 +9,9 @@ export function ApplyTrustSection() {
           Who this is for
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          TikTok LIVE creators who want structure — consistent shows, clear communication, and help thinking
-          about growth and income like a business. We review fit, not just follower count.
+          TikTok LIVE creators who joined (or are joining) the Streamer Factory Creator Network through
+          TikTok — and now need the companion website for scheduling, the shared calendar, Battle Finder, and
+          StreamerU training.
         </p>
       </div>
 
@@ -19,13 +20,13 @@ export function ApplyTrustSection() {
           What happens next
         </p>
         <ul className="mt-3 list-inside list-disc space-y-2 text-sm leading-relaxed text-muted">
-          <li>We confirm we received your answers — you can track status anytime after you sign in.</li>
-          <li>Our team reviews fit and readiness; we may follow up by email with questions.</li>
-          <li>If we move forward, we promote your account to member and you complete short onboarding.</li>
+          <li>TikTok handles Creator Network membership; we don&apos;t replace that step.</li>
           <li>
-            Then Battle Hub, scheduling, the shared calendar, Battle Finder, and StreamerU training unlock in the
-            app.
+            This form tells us who you are so we can match your TikTok profile and turn on website access
+            manually after verification.
           </li>
+          <li>We may follow up by email if we need to confirm details.</li>
+          <li>When we promote your login to member, Battle Hub and the rest of the tools unlock here.</li>
         </ul>
       </div>
 
@@ -35,8 +36,8 @@ export function ApplyTrustSection() {
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted">
           This isn&apos;t a promise of instant growth or guaranteed income. It&apos;s a professional network
-          with real tools — worth it when you&apos;re ready to coordinate LIVE like an operator, not a
-          one‑off experiment.
+          with real tools — worth it when you&apos;re ready to coordinate LIVE like an operator, not a one-off
+          experiment.
         </p>
       </div>
     </div>

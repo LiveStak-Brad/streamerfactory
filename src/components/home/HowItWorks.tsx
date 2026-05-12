@@ -3,23 +3,23 @@ import { Section } from "@/components/ui/Section";
 const steps = [
   {
     step: "01",
-    title: "Apply",
-    body: "Tell us about your LIVE presence, goals, and schedule. A few minutes — tied to your account so nothing gets lost.",
+    title: "Join on TikTok",
+    body: "Apply through TikTok's Creator Network for Streamer Factory — that's where invitations and membership run.",
   },
   {
     step: "02",
-    title: "Get reviewed",
-    body: "We evaluate fit and readiness. Your application status stays visible in the app so you always know where things stand.",
+    title: "Request site access",
+    body: "After TikTok approves you, sign in here and send contact details so we can verify you and turn on tools.",
   },
   {
     step: "03",
-    title: "Onboard",
-    body: "If it’s a match, we walk you through expectations, StreamerU, and how the network operates — learn, connect, then open the tools.",
+    title: "We verify",
+    body: "Our team matches your TikTok profile to your request manually — then promotes your login when it checks out.",
   },
   {
     step: "04",
     title: "Schedule & grow",
-    body: "Use Battle Hub, the shared calendar, and Battle Finder to coordinate LIVE battles — with coaching and check-ins as you scale.",
+    body: "Use Battle Hub, the shared calendar, and Battle Finder to coordinate LIVE battles — with coaching as you scale.",
   },
 ] as const;
 

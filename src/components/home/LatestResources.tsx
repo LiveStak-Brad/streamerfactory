@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { ResourceCard } from "@/components/resources/ResourceCard";
+import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { getPublishedPostsInCurriculumOrder } from "@/lib/resources/queries";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export async function LatestResources() {
   let posts: Awaited<ReturnType<typeof getPublishedPostsInCurriculumOrder>> = [];
@@ -39,6 +41,9 @@ export async function LatestResources() {
       </ul>
 
       <div className="mt-12 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+        <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[48px] px-7">
+          Join Creator Network on TikTok
+        </Button>
         <Link
           href="/streameru"
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200/90 bg-surface px-7 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-accent/35"
@@ -47,9 +52,9 @@ export async function LatestResources() {
         </Link>
         <Link
           href="/apply"
-          className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-zinc-950 px-7 py-3 text-sm font-semibold text-white shadow-md transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-zinc-950"
+          className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200/90 bg-surface px-7 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-accent/35"
         >
-          Apply to join
+          Request website access
         </Link>
         <Link
           href="/about"

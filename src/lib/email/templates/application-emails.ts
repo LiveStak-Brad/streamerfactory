@@ -62,12 +62,12 @@ export function buildApplicationSubmittedEmail(params: {
   const resourcesUrl = absoluteUrl("/streameru");
 
   const intro = params.isResubmit
-    ? `<p style="margin:0 0 16px 0;">Hi ${name},</p><p style="margin:0 0 16px 0;">Thanks — we received your <strong>updated</strong> application. Our team will review it using the same process as a first-time submission.</p>`
-    : `<p style="margin:0 0 16px 0;">Hi ${name},</p><p style="margin:0 0 16px 0;">Thanks for applying to <strong>${escapeHtml(site.name)}</strong>. We have your submission and will review it like a real partnership fit — not a generic form queue.</p>`;
+    ? `<p style="margin:0 0 16px 0;">Hi ${name},</p><p style="margin:0 0 16px 0;">Thanks — we received your <strong>updated</strong> website access request. Our team will review it the same way as a first-time request.</p>`
+    : `<p style="margin:0 0 16px 0;">Hi ${name},</p><p style="margin:0 0 16px 0;">Thanks for your <strong>website access request</strong> to <strong>${escapeHtml(site.name)}</strong>. We have your contact details and will verify Creator Network membership before enabling member tools.</p>`;
 
   const inner = `${intro}
 <p style="margin:0 0 16px 0;"><strong>What happens next</strong><br/>
-We review every application. You can always see where things stand in the app — no guessing.</p>
+We review every request. You can always see where things stand in the app — no guessing.</p>
 ${button(statusUrl, "View application status")}
 ${linkLine(startHereUrl, "Start your training — StreamerU")}
 <p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Browse StreamerU (lessons &amp; tracks): <a href="${escapeHtml(resourcesUrl)}" style="color:${accent};">${escapeHtml(resourcesUrl)}</a></p>
@@ -77,11 +77,11 @@ ${linkLine(startHereUrl, "Start your training — StreamerU")}
     `Hi ${params.firstName},`,
     "",
     params.isResubmit
-      ? "Thanks — we received your updated application. Our team will review it."
-      : `Thanks for applying to ${site.name}. We have your submission and will review it.`,
+      ? "Thanks — we received your updated website access request. Our team will review it."
+      : `Thanks for your website access request to ${site.name}. We have your details and will verify before enabling tools.`,
     "",
     "What happens next:",
-    "We review every application. Track status here:",
+    "We review every request. Track status here:",
     statusUrl,
     "",
     "While you wait — training:",
@@ -95,8 +95,8 @@ ${linkLine(startHereUrl, "Start your training — StreamerU")}
 
   return {
     subject: params.isResubmit
-      ? `We received your updated application — ${site.name}`
-      : `We received your application — ${site.name}`,
+      ? `We received your updated website access request — ${site.name}`
+      : `We received your website access request — ${site.name}`,
     html: wrapBody(inner),
     text,
   };
@@ -111,7 +111,7 @@ export function buildApplicationAdminNotificationEmail(params: {
   adminUrl: string;
   isResubmit: boolean;
 }): { subject: string; html: string; text: string } {
-  const subject = "New Streamer Factory application";
+  const subject = "New website access request — Streamer Factory";
   const tzLine =
     params.timezone && params.timezone.trim() ? `Timezone: ${params.timezone.trim()}` : "Timezone: (not set)";
   const kind = params.isResubmit ? "Resubmission (previously rejected)" : "New submission";
@@ -161,7 +161,7 @@ export function buildApplicationApprovedEmail(params: { firstName: string }): {
   const startHereUrl = absoluteUrl("/streameru/start-here");
 
   const inner = `<p style="margin:0 0 16px 0;">Hi ${name},</p>
-<p style="margin:0 0 16px 0;">Good news — your account is <strong>approved</strong> for ${escapeHtml(site.name)} membership. You can sign in anytime and use the same tools we run battles and coordination on: Battle Hub, scheduler, network calendar, and StreamerU.</p>
+<p style="margin:0 0 16px 0;">Good news — your account is <strong>approved</strong> for ${escapeHtml(site.name)} <strong>website access</strong> (scheduler, Battle Hub, calendar, StreamerU). Sign in anytime to use the same tools the network runs on.</p>
 ${button(streamerUUrl, "Open StreamerU")}
 ${linkLine(hubUrl, "Battle Hub")}
 <p style="margin:8px 0 0 0;font-size:14px;color:${muted};">Guided intro (lessons 1–4): <a href="${escapeHtml(startHereUrl)}" style="color:${accent};">${escapeHtml(startHereUrl)}</a></p>
@@ -170,7 +170,7 @@ ${linkLine(hubUrl, "Battle Hub")}
   const text = [
     `Hi ${params.firstName},`,
     "",
-    `Your Streamer Factory membership is approved. Sign in to open member tools.`,
+    `Your Streamer Factory website access is approved. Sign in to open member tools.`,
     "",
     "StreamerU:",
     streamerUUrl,
@@ -185,7 +185,7 @@ ${linkLine(hubUrl, "Battle Hub")}
   ].join("\n");
 
   return {
-    subject: `You're in — ${site.name} membership approved`,
+    subject: `You're in — ${site.name} website access approved`,
     html: wrapBody(inner),
     text,
   };
@@ -201,19 +201,19 @@ export function buildApplicationRejectedEmail(params: { firstName: string }): {
   const applyUrl = absoluteUrl("/apply");
 
   const inner = `<p style="margin:0 0 16px 0;">Hi ${name},</p>
-<p style="margin:0 0 16px 0;">Thank you for taking the time to apply to <strong>${escapeHtml(site.name)}</strong>. After review, we are <strong>not moving forward</strong> with your application at this time.</p>
+<p style="margin:0 0 16px 0;">Thank you for your website access request to <strong>${escapeHtml(site.name)}</strong>. After review, we are <strong>not moving forward</strong> with access on this site at this time.</p>
 <p style="margin:0 0 16px 0;">That is often about timing, capacity, or fit — not a verdict on you as a creator. We only take on a limited number of partners so we can support them well.</p>
-<p style="margin:0 0 16px 0;">If your channel or goals change down the road, you are welcome to submit a fresh application when you are ready.</p>
+<p style="margin:0 0 16px 0;">If your situation changes, you are welcome to submit a fresh website access request when you are ready (after Creator Network membership on TikTok).</p>
 ${button(statusUrl, "View application status")}
-${linkLine(applyUrl, "Apply again later")}
+${linkLine(applyUrl, "Request website access again later")}
 <p style="margin:24px 0 0 0;font-size:14px;color:${muted};">We appreciate your interest and wish you the best on TikTok LIVE.</p>`;
 
   const text = [
     `Hi ${params.firstName},`,
     "",
-    `Thank you for applying to ${site.name}. We are not able to move forward with your application at this time.`,
+    `Thank you for your website access request to ${site.name}. We are not able to move forward with access on the site at this time.`,
     "",
-    "If your situation changes, you may apply again later:",
+    "If your situation changes, you may request website access again:",
     applyUrl,
     "",
     "Status:",
@@ -223,7 +223,7 @@ ${linkLine(applyUrl, "Apply again later")}
   ].join("\n");
 
   return {
-    subject: `Update on your ${site.name} application`,
+    subject: `Update on your ${site.name} website access request`,
     html: wrapBody(inner),
     text,
   };

@@ -1,3 +1,7 @@
+/** Official TikTok Creator Network application for Streamer Factory (join the network on TikTok first). */
+export const tiktokCreatorNetworkApplyUrl =
+  "https://www.tiktok.com/t/ZTkvnxHmY/" as const;
+
 export const site = {
   name: "Streamer Factory",
   domain: "thestreamerfactory.com",
@@ -12,7 +16,7 @@ export const mainNav = [
   { label: "About", href: "/about" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
-  { label: "Apply", href: "/apply" },
+  { label: "Join", href: "/apply" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -20,7 +24,7 @@ export const footerNav = [
   { label: "About", href: "/about" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
-  { label: "Apply", href: "/apply" },
+  { label: "Join", href: "/apply" },
   { label: "Contact", href: "/contact" },
   { label: "Sign in", href: "/login" },
   { label: "Privacy", href: "/privacy" },
