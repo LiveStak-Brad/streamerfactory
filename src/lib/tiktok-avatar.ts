@@ -11,6 +11,13 @@ export function normalizeTikTokHandle(raw: string): string {
   return raw.trim().replace(/^@+/, "");
 }
 
+/** Public member / API param: TikTok handle segment (letters, digits, `_`, `.`). */
+export const TIKTOK_HANDLE_PARAM_RE = /^[a-zA-Z0-9._]{1,64}$/;
+
+export function isValidPublicTikTokHandle(handle: string): boolean {
+  return Boolean(handle && TIKTOK_HANDLE_PARAM_RE.test(handle));
+}
+
 /** Public profile URL for a handle (no @ in path segment). */
 export function getTikTokProfileUrl(handle: string): string | null {
   const h = normalizeTikTokHandle(handle);
@@ -53,18 +60,55 @@ export function getTikTokUnavatarJsonUrl(handle: string): string | null {
 
 export type UnavatarJsonResponse = {
   url?: string;
+  status?: string;
+  code?: string;
 };
+
+/**
+ * True when `url` points at TikTok's image CDNs (not unavatar.io itself).
+ * Unavatar's <img> URLs often return HTTP 200 with a generic “silhouette” placeholder when
+ * scraping fails — those responses are still `unavatar.io` or non-CDN hosts, so we reject them.
+ */
+export function isTikTokCdnAvatarUrl(url: string | null | undefined): boolean {
+  if (!url || typeof url !== "string") return false;
+  let host: string;
+  try {
+    host = new URL(url).hostname.toLowerCase();
+  } catch {
+    return false;
+  }
+  if (host === "unavatar.io" || host.endsWith(".unavatar.io")) return false;
+  return (
+    host.includes("tiktokcdn") ||
+    host.includes("ibyteimg.com") ||
+    host.includes("byteoversea.com") ||
+    host.includes("tiktokv.com") ||
+    host.includes("muscdn.com")
+  );
+}
 
 /** First successful JSON response wins (tries short path then full profile URL). */
 export async function fetchTikTokAvatarUrlFromUnavatarJson(
   handle: string,
   signal?: AbortSignal,
+  /** Server-only: pass `{ "x-api-key": process.env.UNAVATAR_API_KEY }` to avoid anonymous daily limits. */
+  extraHeaders?: HeadersInit,
 ): Promise<string | null> {
+  const headers = new Headers({ Accept: "application/json" });
+  if (extraHeaders) {
+    new Headers(extraHeaders).forEach((value, key) => {
+      headers.set(key, value);
+    });
+  }
+
   for (const url of getTikTokUnavatarJsonUrls(handle)) {
     try {
-      const r = await fetch(url, { signal });
+      const r = await fetch(url, { signal, headers });
       if (!r.ok) continue;
       const data = (await r.json()) as UnavatarJsonResponse;
+      if (data && typeof data === "object" && data.status === "fail") {
+        continue;
+      }
       if (typeof data?.url === "string" && data.url.startsWith("http")) {
         return data.url;
       }
@@ -73,4 +117,14 @@ export async function fetchTikTokAvatarUrlFromUnavatarJson(
     }
   }
   return null;
+}
+
+/** Like {@link fetchTikTokAvatarUrlFromUnavatarJson} but drops unavatar fallbacks / non-TikTok hosts. */
+export async function fetchTikTokCdnAvatarUrlFromUnavatarJson(
+  handle: string,
+  signal?: AbortSignal,
+  extraHeaders?: HeadersInit,
+): Promise<string | null> {
+  const raw = await fetchTikTokAvatarUrlFromUnavatarJson(handle, signal, extraHeaders);
+  return raw && isTikTokCdnAvatarUrl(raw) ? raw : null;
 }
