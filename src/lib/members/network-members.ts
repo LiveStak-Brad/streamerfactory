@@ -34,6 +34,7 @@ export const NETWORK_MEMBERS: readonly NetworkMember[] = [
   { username: "ciraantequera131", displayName: "Cira 131 {SF}" },
   { username: "sunshine42882", displayName: "SunShine{SF}" },
   { username: "tricioxv3", displayName: "tricioxv3" },
+  { username: "bugzyboy.j", displayName: "bugzyboy.j" },
 ] as const;
 
 export function memberProfileUrl(username: string): string {
