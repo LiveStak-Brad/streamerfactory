@@ -15,7 +15,6 @@ export const NETWORK_MEMBERS: readonly NetworkMember[] = [
   { username: "bigmommagapo", displayName: "BigmommaGapo ☯️ G7" },
   { username: "jennyrn55", displayName: "Jenny {SF}" },
   { username: "deeindabox", displayName: "🕊️ Dee 🕊️" },
-  { username: "skyywalker87", displayName: "Skyy Walker {SF}" },
   { username: "brittanykavanagh09", displayName: "Brittany Kavanagh {SF}" },
   { username: "lilyunginn225", displayName: "Lilyunginn" },
   { username: "blazinbaby420", displayName: "blazinbaby420{SF}" },
