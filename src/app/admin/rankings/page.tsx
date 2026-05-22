@@ -1,5 +1,7 @@
 import { Suspense } from "react";
+import { AdminRankingsDbSetup } from "@/components/admin/AdminRankingsDbSetup";
 import { AdminRankingsForm } from "@/components/rankings/AdminRankingsForm";
+import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/Container";
 import { periodBounds, toDateString } from "@/lib/rankings/periods";
 import { getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
@@ -31,6 +33,13 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
 
   let members: Awaited<ReturnType<typeof getNetworkMemberProfiles>> = [];
   let existingStats: Awaited<ReturnType<typeof getPerformanceStatsForPeriod>> = [];
+  let tablesMissing = false;
+
+  const supabase = await createClient();
+  const { error: tableProbe } = await supabase.from("creator_performance_stats").select("id").limit(1);
+  if (tableProbe?.code === "42P01" || tableProbe?.message?.includes("does not exist")) {
+    tablesMissing = true;
+  }
 
   try {
     members = await getNetworkMemberProfiles();
@@ -39,13 +48,14 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
   }
 
   try {
-    if (periodKind !== "all-time") {
+    if (!tablesMissing && periodKind !== "all-time") {
       existingStats = await getPerformanceStatsForPeriod(periodStart, periodEnd);
     } else {
       existingStats = [];
     }
   } catch {
     existingStats = [];
+    if (!tablesMissing) tablesMissing = true;
   }
 
   return (
@@ -83,6 +93,8 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
             </li>
           </ul>
         </div>
+
+        <AdminRankingsDbSetup tablesMissing={tablesMissing} />
 
         <div className="mt-10">
           <Suspense fallback={<p className="text-sm text-zinc-500">Loading form…</p>}>

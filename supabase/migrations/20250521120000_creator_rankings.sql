@@ -1,4 +1,42 @@
 -- Creator performance stats + leaderboard rankings (manual TikTok Creator Network entry).
+-- Includes RLS helpers if an older migration batch was not applied to this project.
+
+-- ---------------------------------------------------------------------------
+-- RLS helpers (idempotent; required by policies below)
+-- ---------------------------------------------------------------------------
+
+create or replace function public.is_staff ()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select coalesce(
+    (
+      select p.role in ('owner', 'editor', 'admin')
+      from public.profiles p
+      where p.id = auth.uid ()
+    ),
+    false
+  );
+$$;
+
+create or replace function public.can_schedule_battles ()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select auth.uid () is not null
+  and exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid ()
+      and p.role in ('owner', 'editor', 'member', 'admin')
+  );
+$$;
 
 -- ---------------------------------------------------------------------------
 -- creator_performance_stats
