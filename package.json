@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:apply-rankings": "node scripts/apply-rankings-migration.mjs"
+    "db:apply-rankings": "node scripts/apply-rankings-migration.mjs",
+    "db:seed-backstage": "npx tsx scripts/seed-backstage-stats.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0",
@@ -28,6 +29,7 @@
     "eslint-config-next": "16.2.2",
     "pg": "^8.21.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }

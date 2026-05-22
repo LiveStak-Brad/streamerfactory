@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/server";
+import { seedBackstageStatsFromSnapshots } from "@/lib/rankings/seed-backstage";
 import { periodBounds } from "@/lib/rankings/periods";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
 import { getAggregatedAllTimeStats, getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
@@ -26,6 +27,21 @@ export type SaveStatsInput = {
 function parseActiveness(v: string): ActivenessLevel {
   const x = v.trim().toLowerCase();
   return ACTIVENESS_LEVELS.includes(x as ActivenessLevel) ? (x as ActivenessLevel) : "none";
+}
+
+/** Import stats from TikTok Creator Network screenshots (see backstage-seed-data.ts). */
+export async function importBackstageSnapshotAction(): Promise<
+  Awaited<ReturnType<typeof seedBackstageStatsFromSnapshots>>
+> {
+  await requireAdmin();
+  const result = await seedBackstageStatsFromSnapshots();
+  if (result.ok) {
+    revalidatePath("/admin/rankings");
+    revalidatePath("/rankings");
+    revalidatePath("/member/leaderboard");
+    revalidatePath("/member/dashboard");
+  }
+  return result;
 }
 
 export async function savePerformanceStatsAction(

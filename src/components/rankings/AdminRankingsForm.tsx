@@ -2,7 +2,11 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
-import { recalculateRankingsAction, savePerformanceStatsAction } from "@/lib/rankings/actions";
+import {
+  importBackstageSnapshotAction,
+  recalculateRankingsAction,
+  savePerformanceStatsAction,
+} from "@/lib/rankings/actions";
 import { periodBounds, formatPeriodLabel } from "@/lib/rankings/periods";
 import { ACTIVENESS_LEVELS, RANKING_PERIODS, type ActivenessLevel, type RankingPeriod } from "@/lib/rankings/types";
 import type { PerformanceStatsRow } from "@/lib/rankings/types";
@@ -83,6 +87,43 @@ export function AdminRankingsForm({
 
   return (
     <div className="space-y-8">
+      <section className="rounded-2xl border border-accent/30 bg-accent/5 p-6 dark:border-accent/25 dark:bg-accent/10">
+        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Import backstage snapshot</h2>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Loads Creator Network stats from the screenshots you provided (coins, live days, hours, TikTok
+          levels → activeness). Matches members by <code className="text-xs">profiles.tiktok_username</code>{" "}
+          or their application handle, then recalculates the weekly leaderboard.
+        </p>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            startTransition(async () => {
+              setError(null);
+              setMessage(null);
+              const res = await importBackstageSnapshotAction();
+              if (!res.ok) {
+                setError(res.error);
+                return;
+              }
+              setMessage(
+                `Imported ${res.inserted.length} creators for ${res.periodStart} → ${res.periodEnd}. Ranked ${res.rankedCount}.` +
+                  (res.missing.length
+                    ? ` Missing profile for: ${res.missing.slice(0, 8).join(", ")}${res.missing.length > 8 ? "…" : ""}`
+                    : "") +
+                  (res.topFive.length
+                    ? ` Top: ${res.topFive.map((t) => `#${t.rank_position} @${t.handle}`).join(", ")}`
+                    : ""),
+              );
+              router.refresh();
+            })
+          }
+          className="mt-4 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground disabled:opacity-60 dark:text-zinc-950"
+        >
+          {pending ? "Importing…" : "Import backstage stats & rank"}
+        </button>
+      </section>
+
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
         <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Period</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
