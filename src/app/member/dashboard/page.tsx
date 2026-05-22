@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { MemberRankingCard } from "@/components/rankings/MemberRankingCard";
 import { Container } from "@/components/ui/Container";
+import { getMyLeaderboardSummary } from "@/lib/rankings/queries";
 import { getTikTokConnectionPublic } from "@/lib/tiktok/db";
 import { getSessionProfile } from "@/lib/auth/server";
 import { TikTokMemberCard } from "@/components/member/TikTokMemberCard";
@@ -38,6 +40,15 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
   const tiktokStatus = firstString(sp.tiktok);
   const tiktokError = firstString(sp.tiktok_error);
   const tiktokWarn = firstString(sp.tiktok_warn);
+
+  let rankingSummary: Awaited<ReturnType<typeof getMyLeaderboardSummary>> | null = null;
+  if (userId) {
+    try {
+      rankingSummary = await getMyLeaderboardSummary(userId, "weekly");
+    } catch {
+      rankingSummary = null;
+    }
+  }
 
   return (
     <div className="border-b border-zinc-200/80 bg-muted-bg/30 pb-16 pt-12 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-16">
@@ -97,7 +108,20 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
           <TikTokMemberCard connection={connection} />
         </div>
 
+        <div className="mt-10">
+          <MemberRankingCard
+            entry={rankingSummary?.entry ?? null}
+            periodStart={rankingSummary?.periodStart ?? ""}
+            periodEnd={rankingSummary?.periodEnd ?? ""}
+            leaderboardSize={rankingSummary?.leaderboardSize ?? 0}
+          />
+        </div>
+
         <div className="mt-10 flex flex-wrap gap-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+          <Link href="/member/leaderboard" className="text-accent hover:underline dark:text-accent-muted">
+            Leaderboard
+          </Link>
+          <span aria-hidden>·</span>
           <Link href="/battle-hub" className="text-accent hover:underline dark:text-accent-muted">
             Battle Hub
           </Link>
