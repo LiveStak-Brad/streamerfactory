@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { MembersDirectory } from "@/components/members/MembersDirectory";
+import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { NETWORK_MEMBERS } from "@/lib/members/network-members";
 
@@ -28,6 +30,20 @@ export default function MembersPage() {
           <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
             Everyone listed here is part of the Streamer Factory network. Tap through to TikTok, then follow
             each other to grow together on LIVE.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button href="/rankings" variant="primary">
+              View factory rankings
+            </Button>
+            <Button href="/login?next=/member/dashboard" variant="secondary">
+              Sign in for your rank
+            </Button>
+          </div>
+          <p className="mt-4 text-sm text-muted">
+            Rankings use Creator Network stats (coins, hours streamed, activeness).{" "}
+            <Link href="/rankings" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+              Open leaderboard →
+            </Link>
           </p>
         </div>
       </Section>

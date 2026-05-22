@@ -91,6 +91,7 @@ export async function getAggregatedAllTimeStats(): Promise<
   });
 }
 
+/** Uses public RPC when available (works for anon visitors); falls back to direct table reads for members. */
 export async function getLeaderboard(
   kind: RankingPeriod,
   anchorDate?: string,
@@ -98,6 +99,29 @@ export async function getLeaderboard(
   const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();
   const { periodStart, periodEnd } = periodBounds(kind, anchor);
 
+  if (kind !== "all-time") {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_leaderboard_entries", {
+      p_ranking_period: kind,
+      p_period_start: periodStart,
+    });
+    if (!error && Array.isArray(data)) {
+      return data as LeaderboardEntry[];
+    }
+    if (error && !error.message.includes("does not exist")) {
+      console.warn("[rankings] get_leaderboard_entries RPC:", error.message);
+    }
+  }
+
+  return getLeaderboardFromTables(kind, anchor, periodStart, periodEnd);
+}
+
+async function getLeaderboardFromTables(
+  kind: RankingPeriod,
+  anchor: Date,
+  periodStart: string,
+  periodEnd: string,
+): Promise<LeaderboardEntry[]> {
   const supabase = await createClient();
 
   const { data: rankings, error: rankErr } = await supabase

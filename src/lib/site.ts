@@ -15,6 +15,7 @@ export const site = {
 export const mainNav = [
   { label: "About", href: "/about" },
   { label: "Members", href: "/members" },
+  { label: "Rankings", href: "/rankings" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
   { label: "Join", href: "/apply" },
@@ -24,6 +25,7 @@ export const mainNav = [
 export const footerNav = [
   { label: "About", href: "/about" },
   { label: "Members", href: "/members" },
+  { label: "Rankings", href: "/rankings" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
   { label: "Join", href: "/apply" },

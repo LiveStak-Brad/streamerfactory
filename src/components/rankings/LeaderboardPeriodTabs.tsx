@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
 
-export function LeaderboardPeriodTabs() {
+type LeaderboardPeriodTabsProps = {
+  /** Base path for period links (default `/rankings`). */
+  basePath?: string;
+};
+
+export function LeaderboardPeriodTabs({ basePath = "/rankings" }: LeaderboardPeriodTabsProps) {
   const searchParams = useSearchParams();
   const current = (searchParams.get("period") ?? "weekly") as RankingPeriod;
   const anchor = searchParams.get("anchor") ?? "";
@@ -19,7 +24,7 @@ export function LeaderboardPeriodTabs() {
         return (
           <Link
             key={p}
-            href={`/member/leaderboard?${params.toString()}`}
+            href={`${basePath}?${params.toString()}`}
             className={`rounded-xl px-4 py-2 text-sm font-semibold capitalize transition ${
               active
                 ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950"
