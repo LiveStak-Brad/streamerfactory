@@ -4,6 +4,7 @@ import { LeaderboardPeriodTabs } from "@/components/rankings/LeaderboardPeriodTa
 import { LeaderboardTable } from "@/components/rankings/LeaderboardTable";
 import { Button } from "@/components/ui/Button";
 import { formatPeriodLabel, periodBounds, toDateString } from "@/lib/rankings/periods";
+import { createClient } from "@/lib/supabase/server";
 import { getLeaderboard } from "@/lib/rankings/queries";
 import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
 
@@ -33,10 +34,25 @@ export async function RankingsPageView({
   );
 
   let entries: Awaited<ReturnType<typeof getLeaderboard>> = [];
+  let highlightTiktokHandle: string | null = null;
   try {
     entries = await getLeaderboard(periodKind, anchor);
   } catch {
     entries = [];
+  }
+
+  if (highlightProfileId) {
+    try {
+      const supabase = await createClient();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("tiktok_username")
+        .eq("id", highlightProfileId)
+        .maybeSingle();
+      highlightTiktokHandle = profile?.tiktok_username?.replace(/^@+/, "").trim().toLowerCase() ?? null;
+    } catch {
+      highlightTiktokHandle = null;
+    }
   }
 
   return (
@@ -49,8 +65,8 @@ export async function RankingsPageView({
           Factory rankings
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-          Weekly performance leaderboard from TikTok Creator Network stats — coins, stream time, activeness,
-          and battles. Scores are normalized so one stat does not dominate.
+          Weekly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts),
+          stream time, activeness, and battles.
         </p>
         <p className="mt-2 text-sm text-zinc-500">{formatPeriodLabel(periodKind, periodStart, periodEnd)}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
@@ -65,11 +81,11 @@ export async function RankingsPageView({
 
       {showAdminHint && entries.length === 0 ? (
         <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-amber-200/90 bg-amber-50/80 px-5 py-4 text-center text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
-          Rankings are empty until staff enter stats in{" "}
-          <Link href="/admin/rankings" className="font-semibold underline">
-            Admin → Rankings
+          Rankings could not be loaded. Check{" "}
+          <Link href="/rankings" className="font-semibold underline">
+            /rankings
           </Link>{" "}
-          and click <strong>Save & recalculate</strong>.
+          or contact support.
         </div>
       ) : null}
 
@@ -80,7 +96,11 @@ export async function RankingsPageView({
       </div>
 
       <div className="mx-auto mt-10 max-w-4xl">
-        <LeaderboardTable entries={entries} highlightProfileId={highlightProfileId} />
+        <LeaderboardTable
+          entries={entries}
+          highlightProfileId={highlightProfileId}
+          highlightTiktokHandle={highlightTiktokHandle}
+        />
       </div>
     </>
   );

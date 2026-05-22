@@ -167,7 +167,10 @@ export function AdminRankingsForm({
       </section>
 
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Enter stats</h2>
+        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Override one member (optional)</h2>
+        <p className="mt-1 text-sm text-zinc-500">
+          Only needed to fix a single row. Weekly rankings already use the backstage snapshot you provided.
+        </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm sm:col-span-2">
             <span className="font-medium">Search member</span>
@@ -194,7 +197,7 @@ export function AdminRankingsForm({
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium">Coins earned</span>
+            <span className="font-medium">Diamonds earned</span>
             <input
               type="number"
               min={0}
@@ -361,7 +364,7 @@ export function AdminRankingsForm({
                     {m?.tiktok_username ? `@${m.tiktok_username.replace(/^@/, "")}` : m?.email ?? s.profile_id.slice(0, 8)}
                   </span>
                   <span className="text-zinc-500">
-                    {s.coins_earned} coins · {Number(s.hours_streamed).toFixed(1)}h · {s.days_streamed}d · {s.activeness_level}
+                    {s.coins_earned.toLocaleString()} diamonds · {Number(s.hours_streamed).toFixed(1)}h · {s.days_streamed}d · {s.activeness_level}
                   </span>
                 </li>
               );

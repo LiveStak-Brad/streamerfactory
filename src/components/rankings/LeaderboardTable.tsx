@@ -1,4 +1,6 @@
 import { MemberTikTokAvatar } from "@/components/members/MemberTikTokAvatar";
+import { formatDiamondsEarned } from "@/lib/rankings/diamonds";
+import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import { rankingBadge } from "@/lib/rankings/scoring";
 import type { LeaderboardEntry } from "@/lib/rankings/types";
 
@@ -36,18 +38,28 @@ function formatNum(n: number): string {
   return new Intl.NumberFormat("en-US").format(n);
 }
 
+function normalizeHandle(raw: string | null | undefined): string {
+  return (raw ?? "").replace(/^@+/, "").trim().toLowerCase();
+}
+
 type LeaderboardTableProps = {
   entries: LeaderboardEntry[];
   highlightProfileId?: string | null;
+  /** When the board uses TikTok handles as ids, match the signed-in member by @handle. */
+  highlightTiktokHandle?: string | null;
 };
 
-export function LeaderboardTable({ entries, highlightProfileId }: LeaderboardTableProps) {
+export function LeaderboardTable({
+  entries,
+  highlightProfileId,
+  highlightTiktokHandle,
+}: LeaderboardTableProps) {
   if (entries.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300/90 bg-muted-bg/40 px-6 py-16 text-center dark:border-zinc-700 dark:bg-zinc-950/40">
         <p className="font-semibold text-zinc-800 dark:text-zinc-200">No rankings yet</p>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Staff can enter Creator Network stats in Admin → Rankings, then recalculate.
+          Rankings will appear after the latest Creator Network snapshot is loaded.
         </p>
       </div>
     );
@@ -59,7 +71,10 @@ export function LeaderboardTable({ entries, highlightProfileId }: LeaderboardTab
         const handle = e.tiktok_username?.replace(/^@/, "") ?? null;
         const badge = rankingBadge(e.rank_position, true);
         const backdrop = AVATAR_BACKDROPS[index % AVATAR_BACKDROPS.length];
-        const isYou = highlightProfileId === e.profile_id;
+        const entryHandle = normalizeHandle(e.tiktok_username);
+        const isYou =
+          (highlightProfileId != null && highlightProfileId === e.profile_id) ||
+          (highlightTiktokHandle != null && entryHandle === normalizeHandle(highlightTiktokHandle));
 
         return (
           <li
@@ -91,7 +106,10 @@ export function LeaderboardTable({ entries, highlightProfileId }: LeaderboardTab
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold text-zinc-950 dark:text-zinc-50">
-                    {handle ? `@${handle}` : e.email ?? "Member"}
+                    {handle ? displayLabelForHandle(handle) : e.email ?? "Member"}
+                    {handle ? (
+                      <span className="ml-1 font-normal text-zinc-500 dark:text-zinc-400">@{handle}</span>
+                    ) : null}
                     {isYou ? (
                       <span className="ml-2 text-xs font-bold uppercase tracking-wider text-accent dark:text-accent-muted">
                         You
@@ -117,8 +135,10 @@ export function LeaderboardTable({ entries, highlightProfileId }: LeaderboardTab
                   <p className="font-bold text-zinc-900 dark:text-zinc-100">{e.rank_score.toFixed(1)}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Coins</p>
-                  <p className="font-semibold text-zinc-800 dark:text-zinc-200">{formatNum(e.coins_earned)}</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Diamonds</p>
+                  <p className="font-semibold text-zinc-800 dark:text-zinc-200">
+                    {formatDiamondsEarned(e.coins_earned)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Hours</p>

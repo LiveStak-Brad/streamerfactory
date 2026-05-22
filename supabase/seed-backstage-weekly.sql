@@ -1,8 +1,7 @@
--- Seed weekly stats from TikTok Creator Network backstage (screenshots).
+-- Seed weekly stats from TikTok Creator Network → Creator performance (Diamonds column).
 -- Matches profiles by tiktok_username (and applications.tiktok_username).
 -- Run in Supabase SQL Editor after apply-rankings-now.sql + apply-leaderboard-rpc.sql.
 
--- Sync handles from applications where profile is missing @handle
 update public.profiles p
 set
   tiktok_username = trim(a.tiktok_username),
@@ -12,12 +11,8 @@ where
   a.user_id = p.id
   and a.tiktok_username is not null
   and trim(a.tiktok_username) <> ''
-  and (
-    p.tiktok_username is null
-    or trim(p.tiktok_username) = ''
-  );
+  and (p.tiktok_username is null or trim(p.tiktok_username) = '');
 
--- Current week (Monday–Sunday UTC) — adjust dates if your backstage period differs
 do $$
 declare
   v_start date := date_trunc('week', current_date)::date + case when extract(dow from current_date) = 0 then -6 else 1 - extract(dow from current_date)::int end;
@@ -35,60 +30,42 @@ begin
   truncate _backstage_seed;
 
   insert into _backstage_seed (handle, coins_earned, days_streamed, hours_streamed, activeness_level, follower_growth) values
-    ('bugzyboy.j', 5000, 0, 1.72, 'low', 18),
-    ('ruthie8910', 814, 14, 57.02, 'elite', 23),
-    ('cj_allycat93', 0, 0, 0, 'elite', 0),
-    ('daddyslittlemonster87', 0, 0, 0, 'elite', 0),
-    ('sunshine42882', 0, 0, 0, 'medium', 0),
-    ('jasmine_wren', 0, 0, 0, 'high', 0),
-    ('rissa7683', 0, 0, 0, 'high', 0),
-    ('rosysmokes', 0, 0, 0, 'medium', 0),
-    ('high.blondie', 0, 0, 0, 'medium', 0),
-    ('royaltystr8', 0, 0, 0, 'medium', 0),
-    ('robertljterryjr', 0, 0, 0, 'medium', 0),
-    ('silvanita4444', 0, 0, 0, 'low', 0),
-    ('bigmommagapo', 0, 0, 0, 'low', 0),
-    ('kimberly.clarke396', 0, 0, 0, 'medium', 0),
-    ('_sahm_251_2', 0, 0, 0, 'low', 0),
-    ('ciraantequera131', 0, 0, 0, 'none', 0),
-    ('gonx_missouri_mom', 0, 0, 0, 'none', 0),
-    ('deeindabox', 64, 5, 22.32, 'low', 19),
-    ('kaleidoscope_views', 36, 0, 0, 'low', 0),
-    ('tricioxv3', 0, 0, 0, 'none', 0),
-    ('choppaboiofficial45p', 0, 0, 0, 'none', 0),
-    ('nyla.williams8', 0, 0, 0, 'none', 0),
-    ('jennyrn55', 0, 0, 0, 'none', 0),
-    ('brittanykavanagh09', 0, 0, 0, 'none', 0),
-    ('lilyunginn225', 0, 0, 0, 'none', 0),
-    ('blazinbaby420', 0, 0, 0, 'none', 0),
-    ('ashley8178', 0, 0, 0, 'none', 0),
-    ('browneyedbrat6', 0, 0, 0, 'none', 0);
+    ('sunshine42882', 113466, 13, 21.77, 'high', 0),
+    ('high.blondie', 59883, 9, 67.12, 'medium', 0),
+    ('cj_allycat93', 32830, 13, 74.78, 'elite', 0),
+    ('jasmine_wren', 29340, 12, 60.43, 'high', 0),
+    ('ruthie8910', 23403, 14, 58.2, 'elite', 0),
+    ('rosysmokes', 17606, 10, 28.55, 'medium', 0),
+    ('robertljterryjr', 15814, 8, 71.27, 'medium', 0),
+    ('royaltystr8', 13643, 9, 26.45, 'medium', 0),
+    ('browneyedbrat6', 10682, 4, 10.62, 'none', 0),
+    ('lilyunginn225', 7907, 3, 10.53, 'none', 0),
+    ('deeindabox', 6494, 5, 22.32, 'low', 0),
+    ('daddyslittlemonster87', 6838, 13, 45.15, 'elite', 0),
+    ('rissa7683', 3862, 11, 28.85, 'high', 0),
+    ('kaleidoscope_views', 3649, 4, 11.67, 'low', 0),
+    ('kimberly.clarke396', 3144, 7, 21.2, 'medium', 0),
+    ('_sahm_251_2', 4288, 6, 17.05, 'low', 0),
+    ('silvanita4444', 2939, 7, 19, 'low', 0),
+    ('choppaboiofficial45p', 1527, 3, 8.42, 'none', 0),
+    ('tricioxv3', 533, 3, 9.47, 'none', 0),
+    ('gonx_missouri_mom', 426, 5, 10.95, 'none', 0),
+    ('ciraantequera131', 899, 6, 10.5, 'none', 0),
+    ('bugzyboy.j', 212, 1, 1.22, 'low', 0),
+    ('bigmommagapo', 233, 7, 14.98, 'low', 0),
+    ('blazinbaby420', 146, 2, 6.18, 'none', 0),
+    ('jennyrn55', 137, 0, 1.2, 'none', 0),
+    ('nyla.williams8', 10, 1, 1.88, 'none', 0),
+    ('ashley8178', 10, 0, 0.32, 'none', 0),
+    ('brittanykavanagh09', 0, 0, 0, 'none', 0);
 
   insert into public.creator_performance_stats (
-    profile_id,
-    period_start,
-    period_end,
-    coins_earned,
-    days_streamed,
-    hours_streamed,
-    activeness_level,
-    follower_count,
-    follower_growth,
-    battles_played,
-    battles_won
+    profile_id, period_start, period_end, coins_earned, days_streamed, hours_streamed,
+    activeness_level, follower_count, follower_growth, battles_played, battles_won
   )
   select
-    p.id,
-    v_start,
-    v_end,
-    s.coins_earned,
-    s.days_streamed,
-    s.hours_streamed,
-    s.activeness_level,
-    0,
-    s.follower_growth,
-    0,
-    0
+    p.id, v_start, v_end, s.coins_earned, s.days_streamed, s.hours_streamed,
+    s.activeness_level, 0, s.follower_growth, 0, 0
   from _backstage_seed s
   join public.profiles p on lower(trim(replace(coalesce(p.tiktok_username, ''), '@', ''))) = lower(s.handle)
   where p.role in ('member', 'editor', 'admin', 'owner')
@@ -100,8 +77,6 @@ begin
     follower_growth = excluded.follower_growth,
     updated_at = now();
 
-  raise notice 'Period % to % — seeded stats for handles with matching profiles.', v_start, v_end;
+  raise notice 'Period % to % — seeded Creator performance stats.', v_start, v_end;
 end;
 $$;
-
--- Recalculate weekly rankings (run seed-backstage-stats.ts for full scoring, or use Admin → Recalculate)

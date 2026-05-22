@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
 import { periodBounds } from "@/lib/rankings/periods";
 import type {
   ActivenessLevel,
@@ -91,29 +92,29 @@ export async function getAggregatedAllTimeStats(): Promise<
   });
 }
 
-/** Uses public RPC when available (works for anon visitors); falls back to direct table reads for members. */
+/**
+ * Weekly/monthly: uses your backstage snapshot (screenshots) so the board is never empty.
+ * All-time: reads from DB when staff have imported; otherwise falls back to snapshot.
+ */
 export async function getLeaderboard(
   kind: RankingPeriod,
   anchorDate?: string,
 ): Promise<LeaderboardEntry[]> {
+  if (kind === "weekly" || kind === "monthly") {
+    return getLeaderboardFromBackstageSeed();
+  }
+
   const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();
   const { periodStart, periodEnd } = periodBounds(kind, anchor);
 
-  if (kind !== "all-time") {
-    const supabase = await createClient();
-    const { data, error } = await supabase.rpc("get_leaderboard_entries", {
-      p_ranking_period: kind,
-      p_period_start: periodStart,
-    });
-    if (!error && Array.isArray(data)) {
-      return data as LeaderboardEntry[];
-    }
-    if (error && !error.message.includes("does not exist")) {
-      console.warn("[rankings] get_leaderboard_entries RPC:", error.message);
-    }
+  try {
+    const fromDb = await getLeaderboardFromTables(kind, anchor, periodStart, periodEnd);
+    if (fromDb.length > 0) return fromDb;
+  } catch {
+    // tables missing or RLS
   }
 
-  return getLeaderboardFromTables(kind, anchor, periodStart, periodEnd);
+  return getLeaderboardFromBackstageSeed();
 }
 
 async function getLeaderboardFromTables(
@@ -213,7 +214,26 @@ export async function getMyLeaderboardSummary(
   leaderboardSize: number;
 }> {
   const board = await getLeaderboard(kind);
-  const entry = board.find((e) => e.profile_id === profileId) ?? null;
   const { periodStart, periodEnd } = periodBounds(kind);
+
+  const supabase = await createClient();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("tiktok_username")
+    .eq("id", profileId)
+    .maybeSingle();
+
+  const myHandle = profile?.tiktok_username
+    ? profile.tiktok_username.replace(/^@+/, "").trim().toLowerCase()
+    : null;
+
+  const entry =
+    board.find((e) => e.profile_id === profileId) ??
+    (myHandle
+      ? board.find(
+          (e) => (e.tiktok_username ?? "").replace(/^@+/, "").trim().toLowerCase() === myHandle,
+        ) ?? null
+      : null);
+
   return { entry, periodStart, periodEnd, leaderboardSize: board.length };
 }

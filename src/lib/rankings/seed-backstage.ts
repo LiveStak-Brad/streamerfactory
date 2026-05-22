@@ -74,7 +74,7 @@ export async function seedBackstageStatsFromSnapshots(): Promise<SeedBackstageRe
         profile_id: pid,
         period_start: periodStart,
         period_end: periodEnd,
-        coins_earned: seed.coinsCents,
+        coins_earned: seed.diamondsEarned,
         days_streamed: seed.validLiveDays,
         hours_streamed: seed.hoursStreamed,
         activeness_level: seed.activeness,

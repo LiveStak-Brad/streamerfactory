@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatDiamondsEarned } from "@/lib/rankings/diamonds";
 import { nextMilestoneMessage, rankingBadge } from "@/lib/rankings/scoring";
 import { formatPeriodLabel } from "@/lib/rankings/periods";
 import type { LeaderboardEntry } from "@/lib/rankings/types";
@@ -65,9 +66,9 @@ export function MemberRankingCard({
             <dd className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{entry.rank_score.toFixed(1)}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Coins</dt>
+            <dt className="text-xs font-medium uppercase tracking-wider text-zinc-500">Diamonds</dt>
             <dd className="text-lg font-semibold text-zinc-800 dark:text-zinc-200">
-              {new Intl.NumberFormat("en-US").format(entry.coins_earned)}
+              {formatDiamondsEarned(entry.coins_earned)}
             </dd>
           </div>
           <div>
