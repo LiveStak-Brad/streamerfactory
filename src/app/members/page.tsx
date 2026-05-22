@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MembersDirectory } from "@/components/members/MembersDirectory";
+import { MembersLeaderboardPreview } from "@/components/rankings/MembersLeaderboardPreview";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { NETWORK_MEMBERS } from "@/lib/members/network-members";
@@ -15,6 +16,8 @@ export const metadata: Metadata = {
       "Find TikTok profiles for Streamer Factory network members and follow each other on TikTok.",
   },
 };
+
+export const dynamic = "force-dynamic";
 
 export default function MembersPage() {
   return (
@@ -40,7 +43,7 @@ export default function MembersPage() {
             </Button>
           </div>
           <p className="mt-4 text-sm text-muted">
-            Rankings use Creator Network stats (coins, hours streamed, activeness).{" "}
+            Rankings use Creator Network diamonds, stream hours, and activeness.{" "}
             <Link href="/rankings" className="font-semibold text-accent hover:underline dark:text-accent-muted">
               Open leaderboard →
             </Link>
@@ -50,6 +53,7 @@ export default function MembersPage() {
 
       <Section variant="muted" className="!py-14 sm:!py-16" containerClassName="max-w-6xl">
         <MembersDirectory members={NETWORK_MEMBERS} />
+        <MembersLeaderboardPreview />
       </Section>
     </>
   );

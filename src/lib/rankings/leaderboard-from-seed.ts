@@ -28,32 +28,39 @@ export function getLeaderboardFromBackstageSeed(): LeaderboardEntry[] {
 
   const ranked = assignRanks(computeRankings(statsForScoring));
 
-  return ranked
-    .map((r) => {
-      const handle = r.profile_id;
-      const seed = BACKSTAGE_STAT_SEEDS.find(
-        (s) => normalizeHandle(resolveCanonicalHandle(s.handle)) === handle,
-      );
-      return {
-        profile_id: handle,
-        email: null,
-        tiktok_username: seed?.handle ?? handle,
-        rank_position: r.rank_position,
-        rank_score: r.rank_score,
-        coins_rank: r.coins_rank,
-        hours_rank: r.hours_rank,
-        activity_rank: r.activity_rank,
-        battle_rank: r.battle_rank,
-        coins_earned: seed?.diamondsEarned ?? 0,
-        days_streamed: seed?.validLiveDays ?? 0,
-        hours_streamed: seed?.hoursStreamed ?? 0,
-        activeness_level: (seed?.activeness ?? "none") as ActivenessLevel,
-        follower_growth: seed?.followerGrowth ?? 0,
-        battles_played: seed?.battlesPlayed ?? 0,
-        battles_won: seed?.battlesWon ?? 0,
-      } satisfies LeaderboardEntry;
-    })
-    .sort((a, b) => a.rank_position - b.rank_position);
+  const entries = ranked.map((r) => {
+    const handle = r.profile_id;
+    const seed = BACKSTAGE_STAT_SEEDS.find(
+      (s) => normalizeHandle(resolveCanonicalHandle(s.handle)) === handle,
+    );
+    return {
+      profile_id: handle,
+      email: null,
+      tiktok_username: seed?.handle ?? handle,
+      rank_position: r.rank_position,
+      rank_score: r.rank_score,
+      coins_rank: r.coins_rank,
+      hours_rank: r.hours_rank,
+      activity_rank: r.activity_rank,
+      battle_rank: r.battle_rank,
+      coins_earned: seed?.diamondsEarned ?? 0,
+      days_streamed: seed?.validLiveDays ?? 0,
+      hours_streamed: seed?.hoursStreamed ?? 0,
+      activeness_level: (seed?.activeness ?? "none") as ActivenessLevel,
+      follower_growth: seed?.followerGrowth ?? 0,
+      battles_played: seed?.battlesPlayed ?? 0,
+      battles_won: seed?.battlesWon ?? 0,
+    } satisfies LeaderboardEntry;
+  });
+
+  // Public #1, #2, … follow backstage Diamonds column (not composite score alone).
+  return entries
+    .sort((a, b) => b.coins_earned - a.coins_earned)
+    .map((e, index) => ({
+      ...e,
+      rank_position: index + 1,
+      coins_rank: index + 1,
+    }));
 }
 
 export function displayLabelForHandle(handle: string): string {
