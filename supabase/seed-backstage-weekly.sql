@@ -43,7 +43,6 @@ begin
     ('deeindabox', 6494, 5, 22.32, 'low', 0),
     ('daddyslittlemonster87', 6838, 13, 45.15, 'elite', 0),
     ('rissa7683', 3862, 11, 28.85, 'high', 0),
-    ('kaleidoscope_views', 3649, 4, 11.67, 'low', 0),
     ('kimberly.clarke396', 3144, 7, 21.2, 'medium', 0),
     ('_sahm_251_2', 4288, 6, 17.05, 'low', 0),
     ('silvanita4444', 2939, 7, 19, 'low', 0),

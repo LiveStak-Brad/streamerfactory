@@ -61,7 +61,6 @@ export const BACKSTAGE_STAT_SEEDS: BackstageStatSeed[] = [
   { handle: "deeindabox", diamondsEarned: 6_494, validLiveDays: 5, hoursStreamed: liveHours(22, 19), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "daddyslittlemonster87", diamondsEarned: 6_838, validLiveDays: 13, hoursStreamed: liveHours(45, 9), activeness: levelToActiveness(4), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "rissa7683", diamondsEarned: 3_862, validLiveDays: 11, hoursStreamed: liveHours(28, 51), activeness: levelToActiveness(3), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
-  { handle: "kaleidoscope_views", diamondsEarned: 3_649, validLiveDays: 4, hoursStreamed: liveHours(11, 40), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "kimberly.clarke396", diamondsEarned: 3_144, validLiveDays: 7, hoursStreamed: liveHours(21, 12), activeness: levelToActiveness(2), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "_sahm_251_2", diamondsEarned: 4_288, validLiveDays: 6, hoursStreamed: liveHours(17, 3), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "silvanita4444", diamondsEarned: 2_939, validLiveDays: 7, hoursStreamed: liveHours(19, 0), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
