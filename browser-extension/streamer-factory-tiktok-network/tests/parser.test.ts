@@ -7,9 +7,11 @@ import { detectTikTokCreatorNetworkPage } from "../src/parser/detectPage";
 import { parseDurationToSeconds, parseDayCount } from "../src/parser/duration";
 import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "../src/parser/numbers";
 import {
+  cleanTikTokUsername,
   extractUsernameFromText,
   extractUsernameWithConfidence,
   normalizeTikTokUsername,
+  usernameCleanupWasSuspicious,
 } from "../src/parser/username";
 
 function test(name: string, fn: () => void) {
@@ -158,6 +160,53 @@ test("reads diamonds from single mega-cell rows without commas", () => {
   assert.equal(snap.rows.length, 2);
   assert.equal(snap.rows[0]?.diamondsEarned, 8720);
   assert.equal(snap.rows[1]?.diamondsEarned, 5457);
+});
+
+test("cleanTikTokUsername strips No level and badge suffixes", () => {
+  assert.equal(cleanTikTokUsername("jasmine_wren\nNo level"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("jasmine_wren No level"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("jasmine_wrenNo"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("jasmine_wrennolevel"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("jasmine_wrenNolevel"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("cj_allyson93\nNo level"), "cj_allyson93");
+  assert.equal(cleanTikTokUsername("high.blondie\nNo level"), "high.blondie");
+  assert.equal(cleanTikTokUsername("high.blondieEligible"), "high.blondie");
+  assert.equal(cleanTikTokUsername("dealindaboxNotable"), "dealindabox");
+  assert.equal(cleanTikTokUsername("mayamobley\nEligible"), "mayamobley");
+  assert.equal(cleanTikTokUsername("_sahm_251_2nolevel"), "_sahm_251_2");
+  assert.equal(cleanTikTokUsername("_sahm_251_2\nNo level"), "_sahm_251_2");
+  assert.equal(cleanTikTokUsername("user_with_underscores"), "user_with_underscores");
+  assert.equal(cleanTikTokUsername("name.with.periods"), "name.with.periods");
+  assert.equal(usernameCleanupWasSuspicious("jasmine_wrenNo", "jasmine_wren"), true);
+  assert.equal(usernameCleanupWasSuspicious("jasmine_wrennolevel", "jasmine_wren"), true);
+});
+
+test("username badge fixture single-line No level does not append nolevel", () => {
+  assert.equal(cleanTikTokUsername("jasmine_wren No level"), "jasmine_wren");
+  assert.equal(cleanTikTokUsername("jasmine_wrenNo level"), "jasmine_wren");
+});
+
+test("picks creator column avatar not level badge icon", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-avatar-pick.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows[0]?.tiktokUsername, "dealindabox");
+  assert.equal(snap.rows[0]?.avatarUrl?.includes("avatar-correct"), true);
+});
+
+test("username badge fixture captures avatars and clean handles", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/incentives-username-badges.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows.length, 3);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[1]?.tiktokUsername, "cj_allyson93");
+  assert.equal(snap.rows[2]?.tiktokUsername, "high.blondie");
+  assert.equal(snap.rows[0]?.avatarUrl?.includes("avatar-jasmine"), true);
+  assert.equal(snap.rows[0]?.diamondsEarned, 11729);
 });
 
 test("does not treat Level as username", () => {

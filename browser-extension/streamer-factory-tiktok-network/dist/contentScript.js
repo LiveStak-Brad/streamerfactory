@@ -134,23 +134,67 @@
   }
 
   // src/parser/username.ts
-  function normalizeTikTokUsername(raw) {
-    if (!raw) return void 0;
-    const t = raw.trim().replace(/^@+/, "").replace(/\s+/g, "");
-    if (!/^[a-zA-Z0-9._]{2,40}$/.test(t)) return void 0;
-    if (!t) return void 0;
+  var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive)$/i;
+  function stripBadgeText(text) {
+    return text.replace(/\bno\s*level\b/gi, "\n").replace(/\blevel\s*\d+\b/gi, "\n").replace(/\bnotable\b/gi, "\n").replace(/\beligible\b/gi, "\n").replace(/\b(eligible|notable|inactive|invited|removed|following|quit|new|view\s*details?)\b/gi, "\n").replace(/\b(activeness|activity)\s*(incentive|level)?\b/gi, "\n");
+  }
+  var GLUED_SUFFIX_RES = [
+    /^([a-z0-9._]{2,38})nolevel$/i,
+    /^([a-z0-9._]{2,38})no$/i,
+    /^([a-z0-9._]{2,38})level\d*$/i,
+    /^([a-z0-9._]{2,38})(eligible|notable|inactive|invited|removed|following|new|quit)$/i
+  ];
+  function stripGluedBadgeSuffix(compact) {
+    let t = compact;
+    for (const re of GLUED_SUFFIX_RES) {
+      const m = t.match(re);
+      if (m) {
+        t = m[1];
+        break;
+      }
+    }
     return t;
   }
-  var AT_RE = /@([a-zA-Z0-9._]{2,40})/g;
-  var HANDLE_RE = /\b([a-zA-Z0-9._]{2,40})\b/g;
-  var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours)$/i;
+  function finalizeHandle(compact) {
+    let t = stripGluedBadgeSuffix(compact.toLowerCase());
+    if (!/^[a-z0-9._]{2,40}$/.test(t)) return void 0;
+    if (RESERVED_HANDLE_WORDS.test(t)) return void 0;
+    if (/^\d+$/.test(t)) return void 0;
+    if (!/[a-z]/.test(t)) return void 0;
+    if (!/[_.]/.test(t) && !/\d/.test(t) && t.length < 6) return void 0;
+    return t;
+  }
+  function cleanTikTokUsername(raw) {
+    if (!raw) return void 0;
+    let t = raw.trim().replace(/^@+/, "");
+    if (!t) return void 0;
+    t = stripBadgeText(t);
+    const lines = t.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    for (let i = lines.length - 1; i >= 0; i -= 1) {
+      const compact = lines[i].replace(/\s+/g, "");
+      const fromCompact = finalizeHandle(compact);
+      if (fromCompact) return fromCompact;
+      const leading = lines[i].match(/(@?[_]?[a-z0-9][a-z0-9._]{0,37})/i);
+      if (leading) {
+        const fromLeading = finalizeHandle(leading[1].replace(/\s+/g, ""));
+        if (fromLeading) return fromLeading;
+      }
+    }
+    const wholeLeading = t.match(/(@?[_]?[a-z0-9][a-z0-9._]{0,37})/i);
+    if (wholeLeading) {
+      const fromLeading = finalizeHandle(wholeLeading[1].replace(/\s+/g, ""));
+      if (fromLeading) return fromLeading;
+    }
+    return finalizeHandle(t.replace(/\s+/g, ""));
+  }
+  function normalizeTikTokUsername(raw) {
+    return cleanTikTokUsername(raw);
+  }
+  var AT_RE = /@([a-z0-9._]{2,40})/gi;
+  var HANDLE_RE = /(?:^|[^a-z0-9._])(@?[_]?[a-z0-9][a-z0-9._]{0,37})(?=$|[^a-z0-9._])/gi;
   function looksLikeTikTokHandle(line) {
-    if (!/^[a-zA-Z0-9._]{2,40}$/.test(line)) return false;
-    if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(line)) return false;
-    if (RESERVED_HANDLE_WORDS.test(line)) return false;
-    if (/^\d+$/.test(line)) return false;
-    if (!/[_.]/.test(line) && !/\d/.test(line) && line.length < 6) return false;
-    return true;
+    const candidate = cleanTikTokUsername(line);
+    return Boolean(candidate);
   }
   function preferHandle(a, b) {
     const aScore = Number(/[_.\d]/.test(a)) + Number(a === a.toLowerCase());
@@ -158,18 +202,17 @@
     return aScore >= bScore ? a : b;
   }
   function inferUsernameFromDisplayName(displayName) {
-    const normalized = normalizeTikTokUsername(displayName ?? void 0);
-    if (!normalized) return void 0;
-    return normalized;
+    return cleanTikTokUsername(displayName ?? void 0);
   }
   function extractUsernameWithConfidence(text, opts) {
-    const normalizedLines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    const stripped = stripBadgeText(text.trim().replace(/^@+/, ""));
+    const normalizedLines = stripped.split(/\n/).map((l) => l.trim()).filter(Boolean);
     let bestAt;
     for (const line of normalizedLines) {
       AT_RE.lastIndex = 0;
       let m;
       while ((m = AT_RE.exec(line)) !== null) {
-        const candidate = normalizeTikTokUsername(m[1]);
+        const candidate = cleanTikTokUsername(m[1]);
         if (!candidate) continue;
         bestAt = bestAt ? preferHandle(bestAt, candidate) : candidate;
       }
@@ -181,30 +224,27 @@
         source: opts?.fromUsernameColumn ? "username_column" : "at_handle"
       };
     }
-    let bestPattern;
     for (let i = normalizedLines.length - 1; i >= 0; i -= 1) {
       const line = normalizedLines[i];
-      if (looksLikeTikTokHandle(line)) {
-        const candidate = normalizeTikTokUsername(line);
-        if (candidate) {
-          bestPattern = bestPattern ? preferHandle(bestPattern, candidate) : candidate;
-        }
-        continue;
+      const direct = cleanTikTokUsername(line);
+      if (direct && looksLikeTikTokHandle(line)) {
+        return {
+          username: direct,
+          confidence: opts?.fromUsernameColumn ? "high" : "medium",
+          source: opts?.fromUsernameColumn ? "username_column" : "handle_pattern"
+        };
       }
       HANDLE_RE.lastIndex = 0;
       let m;
       while ((m = HANDLE_RE.exec(line)) !== null) {
-        const candidate = normalizeTikTokUsername(m[1]);
-        if (!candidate || !looksLikeTikTokHandle(candidate)) continue;
-        bestPattern = bestPattern ? preferHandle(bestPattern, candidate) : candidate;
+        const candidate = cleanTikTokUsername(m[1]);
+        if (!candidate || !looksLikeTikTokHandle(m[1])) continue;
+        return {
+          username: candidate,
+          confidence: opts?.fromUsernameColumn ? "high" : "medium",
+          source: opts?.fromUsernameColumn ? "username_column" : "handle_pattern"
+        };
       }
-    }
-    if (bestPattern) {
-      return {
-        username: bestPattern,
-        confidence: opts?.fromUsernameColumn ? "high" : "medium",
-        source: opts?.fromUsernameColumn ? "username_column" : "handle_pattern"
-      };
     }
     const fallback = inferUsernameFromDisplayName(opts?.displayName);
     if (fallback) {
@@ -476,6 +516,76 @@
     return best;
   }
 
+  // src/parser/avatar.ts
+  function avatarFromRow(row) {
+    const cells = row.querySelectorAll('[role="cell"], td');
+    const creatorCell = cells[0] ?? row;
+    return pickBestAvatarUrl(creatorCell) ?? pickBestAvatarUrl(row);
+  }
+  function pickBestAvatarUrl(root) {
+    const candidates = [];
+    for (const img of root.querySelectorAll("img")) {
+      const url = bestImgSrc(img);
+      if (!url) continue;
+      candidates.push({ url, score: scoreAvatarImg(img, url, root) });
+    }
+    for (const source of root.querySelectorAll("picture source[srcset], picture source[src]")) {
+      const url = bestImgSrc(source);
+      if (url) candidates.push({ url, score: scoreAvatarImg(source, url, root) + 1 });
+    }
+    const lazyHost = root.querySelector("[data-src], [data-lazy-src], [data-original]");
+    if (lazyHost) {
+      const url = bestImgSrc(lazyHost);
+      if (url) candidates.push({ url, score: scoreAvatarImg(lazyHost, url, root) });
+    }
+    const withBg = root.querySelector("[style*='background-image']");
+    const bg = withBg?.style?.backgroundImage;
+    if (bg) {
+      const m = bg.match(/url\(["']?([^"')]+)["']?\)/i);
+      if (m?.[1] && isUsableAvatarUrl(m[1])) {
+        candidates.push({ url: m[1], score: scoreAvatarImg(withBg, m[1], root) + 2 });
+      }
+    }
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates[0]?.url;
+  }
+  function scoreAvatarImg(el, url, root) {
+    let score = 0;
+    const lowerUrl = url.toLowerCase();
+    const cls = `${el.className ?? ""} ${el.parentElement?.className ?? ""}`.toLowerCase();
+    if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
+    if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
+    if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
+    const w = parseInt(el.getAttribute("width") ?? "", 10);
+    const h = parseInt(el.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && w >= 28 && w <= 96) score += 4;
+    if (!Number.isNaN(h) && h >= 28 && h <= 96) score += 4;
+    if (!Number.isNaN(w) && w > 120 || !Number.isNaN(h) && h > 120) score -= 4;
+    if (root.matches('[role="cell"], td') || root.querySelector('[role="cell"]')?.contains(el)) {
+      score += 3;
+    }
+    if (/tiktokcdn|ibytedapm|byteimg/i.test(lowerUrl)) score += 2;
+    return score;
+  }
+  function bestImgSrc(el) {
+    const attrs = ["src", "data-src", "data-lazy-src", "data-original", "data-url"];
+    for (const attr of attrs) {
+      const v = el.getAttribute(attr)?.trim();
+      if (v && isUsableAvatarUrl(v)) return v;
+    }
+    const srcset = el.getAttribute("srcset");
+    if (srcset) {
+      const first = srcset.split(",")[0]?.trim().split(/\s+/)[0]?.trim();
+      if (first && isUsableAvatarUrl(first)) return first;
+    }
+    return void 0;
+  }
+  function isUsableAvatarUrl(url) {
+    if (!url || url.startsWith("data:") || url.startsWith("blob:") || url.length < 12) return false;
+    if (/placeholder|blank|1x1|sprite|favicon/i.test(url)) return false;
+    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
+  }
+
   // src/parser/extractRows.ts
   function rowLikeElements(doc) {
     const contributionGrid = findCreatorContributionGrid(doc);
@@ -543,12 +653,6 @@
     if (commaMatches.length > 0) return Math.max(...commaMatches);
     return void 0;
   }
-  function avatarFromRow(row) {
-    const img = row.querySelector("img[src]");
-    const src = img?.getAttribute("src") ?? void 0;
-    if (src && !src.startsWith("data:")) return src;
-    return void 0;
-  }
   function displayNameFromRow(row, username) {
     const imgs = Array.from(row.querySelectorAll("img[alt]"));
     for (const img of imgs) {
@@ -582,6 +686,7 @@
     if (cells.length === 0) return null;
     const joined = cells.join("\n");
     const creatorColumn = cellEls[0] ? (cellEls[0].textContent ?? "").trim() : cells[0] ?? joined;
+    const usernameRaw = creatorColumn.trim().slice(0, 200) || void 0;
     const usernameCandidate = extractUsernameWithConfidence(creatorColumn, {
       fromUsernameColumn: true,
       displayName: displayNameFromRow(row)
@@ -592,6 +697,7 @@
     const reasonCell = cells.length >= 3 ? cells[cells.length - 1] : void 0;
     return {
       tiktokUsername: username,
+      tiktokUsernameRaw: usernameRaw,
       usernameConfidence: usernameCandidate.confidence,
       usernameSource: usernameCandidate.source,
       displayName: displayNameFromRow(row, username),
@@ -623,6 +729,7 @@
     const headers = headerTextsForRow(row);
     const columnMap = inferColumnMap(headers);
     const creatorText = columnMap.creator !== void 0 ? cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
+    const usernameRaw = creatorText.trim().slice(0, 200) || void 0;
     const usernameCandidate = extractUsernameWithConfidence(creatorText, {
       fromUsernameColumn: columnMap.creator !== void 0,
       displayName: displayNameFromRow(row)
@@ -703,6 +810,7 @@
     if (!username || username.length < 2) return null;
     return {
       tiktokUsername: username,
+      tiktokUsernameRaw: usernameRaw,
       usernameConfidence: usernameCandidate.confidence,
       usernameSource: usernameCandidate.source,
       displayName: displayNameFromRow(row, username),

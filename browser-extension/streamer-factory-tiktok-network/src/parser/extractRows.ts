@@ -9,6 +9,7 @@ import {
 } from "./gridTable";
 import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "./numbers";
 import type { DetectedPageType, ParsedCreatorRow } from "./types";
+import { avatarFromRow } from "./avatar";
 import { extractUsernameFromText, extractUsernameWithConfidence, normalizeTikTokUsername } from "./username";
 
 function rowLikeElements(doc: Document): Element[] {
@@ -101,13 +102,6 @@ function extractDiamondsFromRowText(rowText: string, username?: string): number 
   return undefined;
 }
 
-function avatarFromRow(row: Element): string | undefined {
-  const img = row.querySelector("img[src]");
-  const src = img?.getAttribute("src") ?? undefined;
-  if (src && !src.startsWith("data:")) return src;
-  return undefined;
-}
-
 function displayNameFromRow(row: Element, username?: string): string | undefined {
   const imgs = Array.from(row.querySelectorAll("img[alt]"));
   for (const img of imgs) {
@@ -145,6 +139,7 @@ function parseRelationshipRow(row: Element, tabStatus?: string): ParsedCreatorRo
 
   const joined = cells.join("\n");
   const creatorColumn = cellEls[0] ? (cellEls[0].textContent ?? "").trim() : cells[0] ?? joined;
+  const usernameRaw = creatorColumn.trim().slice(0, 200) || undefined;
   const usernameCandidate = extractUsernameWithConfidence(creatorColumn, {
     fromUsernameColumn: true,
     displayName: displayNameFromRow(row),
@@ -157,6 +152,7 @@ function parseRelationshipRow(row: Element, tabStatus?: string): ParsedCreatorRo
 
   return {
     tiktokUsername: username,
+    tiktokUsernameRaw: usernameRaw,
     usernameConfidence: usernameCandidate.confidence,
     usernameSource: usernameCandidate.source,
     displayName: displayNameFromRow(row, username),
@@ -202,6 +198,7 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
       ? (cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "")
       : (cellEls[0]?.textContent ?? cells[0] ?? "");
 
+  const usernameRaw = creatorText.trim().slice(0, 200) || undefined;
   const usernameCandidate = extractUsernameWithConfidence(creatorText, {
     fromUsernameColumn: columnMap.creator !== undefined,
     displayName: displayNameFromRow(row),
@@ -295,6 +292,7 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
 
   return {
     tiktokUsername: username,
+    tiktokUsernameRaw: usernameRaw,
     usernameConfidence: usernameCandidate.confidence,
     usernameSource: usernameCandidate.source,
     displayName: displayNameFromRow(row, username),

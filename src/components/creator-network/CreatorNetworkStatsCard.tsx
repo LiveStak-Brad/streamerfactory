@@ -1,3 +1,4 @@
+import { BackstageAvatar } from "@/components/members/BackstageAvatar";
 import type { MemberSafeStatView } from "@/lib/creator-network/types";
 
 type Props = {
@@ -35,10 +36,27 @@ export function CreatorNetworkStatsCard({ stats }: Props) {
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent dark:text-accent-muted">
         Creator Network stats
       </p>
-      <h2 className="mt-1 text-xl font-bold text-zinc-950 dark:text-zinc-50">
-        {stats.tiktok_display_name ?? stats.tiktok_username ?? "Your stats"}
-      </h2>
-      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Last updated {formatWhen(stats.imported_at)}</p>
+      <div className="mt-4 flex items-center gap-4">
+        {stats.tiktok_username ? (
+          <BackstageAvatar
+            backstageImageUrl={stats.avatar_url}
+            fallbackBackdropClass="bg-gradient-to-br from-indigo-500 to-violet-600"
+            fallbackInitial={(stats.tiktok_username.replace(/^@+/, "")[0] ?? "?").toUpperCase()}
+            className="h-16 w-16"
+          />
+        ) : null}
+        <div>
+          <h2 className="text-xl font-bold text-zinc-950 dark:text-zinc-50">
+            {stats.tiktok_display_name ?? stats.tiktok_username ?? "Your stats"}
+          </h2>
+          {stats.tiktok_username ? (
+            <p className="text-sm text-zinc-500">@{stats.tiktok_username.replace(/^@+/, "")}</p>
+          ) : null}
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Last updated {formatWhen(stats.imported_at)}
+          </p>
+        </div>
+      </div>
 
       <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div>

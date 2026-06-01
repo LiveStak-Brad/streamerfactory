@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { cleanCreatorNetworkUsername } from "@/lib/creator-network/clean-username";
 import {
   buildProfileMatchMaps,
   matchProfileId,
@@ -104,14 +105,17 @@ export async function importCreatorNetworkPayload(
       }
     } else {
       for (const row of payload.rows) {
-        const username = row.tiktokUsername?.trim();
-        if (!username) {
+        const usernameRaw = row.tiktokUsernameRaw?.trim() || row.tiktokUsername?.trim();
+        const cleaned =
+          cleanCreatorNetworkUsername(row.tiktokUsername) ??
+          cleanCreatorNetworkUsername(usernameRaw);
+        if (!cleaned) {
           rejectedRows += 1;
           continue;
         }
 
-        const canonical = resolveCanonicalHandle(username);
-        const profileId = matchProfileId(maps, username);
+        const canonical = resolveCanonicalHandle(cleaned);
+        const profileId = matchProfileId(maps, cleaned);
         if (profileId) matchedProfiles += 1;
         if (profileId && normalizeConfidence(row.usernameConfidence) === "low") lowConfidenceMatches += 1;
         else unmatchedUsernames.add(canonical);
@@ -120,6 +124,7 @@ export async function importCreatorNetworkPayload(
           batch_id: batchId,
           profile_id: profileId,
           tiktok_username: canonical,
+          tiktok_username_raw: usernameRaw ?? null,
           tiktok_display_name: row.displayName ?? null,
           username_confidence: normalizeConfidence(row.usernameConfidence),
           username_source: row.usernameSource ?? null,

@@ -2,6 +2,8 @@ export type DetectedPageType = "manage_relationship" | "creator_stats" | "live_n
 
 export type ParsedCreatorRow = {
   tiktokUsername?: string;
+  /** Visible Backstage text before badge cleanup (admin review). */
+  tiktokUsernameRaw?: string;
   usernameConfidence?: "high" | "medium" | "low";
   usernameSource?: "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
   displayName?: string;

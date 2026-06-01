@@ -1,6 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { BackstageAvatar } from "@/components/members/BackstageAvatar";
+import {
+  cleanCreatorNetworkUsername,
+  usernameCleanupWasSuspicious,
+} from "@/lib/creator-network/clean-username";
 import type { AdminMemberStatView, ImportBatchRow, MatchReviewSummary } from "@/lib/creator-network/types";
 
 type Props = {
@@ -127,11 +132,38 @@ export function CreatorNetworkAdminPanel({ batches, stats, matchReview, initialB
                   </td>
                 </tr>
               ) : (
-                stats.map((s) => (
+                stats.map((s) => {
+                  const cleaned =
+                    cleanCreatorNetworkUsername(s.tiktok_username) ?? s.tiktok_username ?? "unknown";
+                  const raw = s.tiktok_username_raw?.trim();
+                  const suspicious = usernameCleanupWasSuspicious(raw, cleaned);
+                  const handle = cleaned.replace(/^@+/, "");
+                  return (
                   <tr key={s.id} className="text-zinc-700 dark:text-zinc-300">
                     <td className="px-3 py-2">
-                      <div className="font-medium">{s.tiktok_display_name ?? s.tiktok_username ?? "—"}</div>
-                      <div className="text-xs text-zinc-500">@{s.tiktok_username ?? "unknown"}</div>
+                      <div className="flex items-center gap-3">
+                        <BackstageAvatar
+                          backstageImageUrl={s.avatar_url}
+                          fallbackBackdropClass="bg-gradient-to-br from-indigo-500 to-violet-600"
+                          fallbackInitial={(handle[0] ?? "?").toUpperCase()}
+                          className="h-10 w-10"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-medium">{s.tiktok_display_name ?? cleaned}</div>
+                          <div className="text-xs text-zinc-500">@{handle}</div>
+                          {raw && raw.toLowerCase().replace(/\s+/g, "") !== handle ? (
+                            <div className="mt-0.5 font-mono text-[10px] text-zinc-400" title="Raw Backstage text">
+                              raw: {raw.slice(0, 48)}
+                              {raw.length > 48 ? "…" : ""}
+                            </div>
+                          ) : null}
+                          {suspicious ? (
+                            <span className="mt-1 inline-block rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
+                              Username cleanup
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
                     </td>
                     <td className="px-3 py-2">
                       {s.profile_id ? (
@@ -166,7 +198,8 @@ export function CreatorNetworkAdminPanel({ batches, stats, matchReview, initialB
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap text-xs">{formatWhen(s.imported_at)}</td>
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>

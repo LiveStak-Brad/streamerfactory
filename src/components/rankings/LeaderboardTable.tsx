@@ -1,4 +1,4 @@
-import { MemberTikTokAvatar } from "@/components/members/MemberTikTokAvatar";
+import { BackstageAvatar } from "@/components/members/BackstageAvatar";
 import { formatDiamondsEarned } from "@/lib/rankings/diamonds";
 import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import { rankingBadge } from "@/lib/rankings/scoring";
@@ -91,8 +91,8 @@ export function LeaderboardTable({
                   {e.rank_position ?? "—"}
                 </div>
                 {handle ? (
-                  <MemberTikTokAvatar
-                    username={handle}
+                  <BackstageAvatar
+                    backstageImageUrl={e.avatar_url}
                     fallbackBackdropClass={backdrop}
                     fallbackInitial={avatarInitial(handle, e.email)}
                     className="h-14 w-14"

@@ -11,6 +11,7 @@ export type DetectedPageType = (typeof DETECTED_PAGE_TYPES)[number];
 
 export type ImportRowPayload = {
   tiktokUsername?: string;
+  tiktokUsernameRaw?: string;
   usernameConfidence?: "high" | "medium" | "low";
   usernameSource?: "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
   displayName?: string;
@@ -75,6 +76,7 @@ export type MemberStatRow = {
   batch_id: string | null;
   profile_id: string | null;
   tiktok_username: string | null;
+  tiktok_username_raw: string | null;
   tiktok_display_name: string | null;
   username_confidence: "high" | "medium" | "low" | null;
   username_source: string | null;
@@ -134,6 +136,7 @@ export type MatchReviewSummary = {
 export type MemberSafeStatView = {
   id: string;
   tiktok_username: string | null;
+  tiktok_username_raw: string | null;
   tiktok_display_name: string | null;
   avatar_url: string | null;
   activeness_level: ActivenessLevel;

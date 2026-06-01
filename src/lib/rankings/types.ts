@@ -40,6 +40,8 @@ export type LeaderboardEntry = {
   profile_id: string;
   email: string | null;
   tiktok_username: string | null;
+  /** Resolved avatar: profile TikTok OAuth → imported Backstage → none. */
+  avatar_url?: string | null;
   rank_position: number | null;
   rank_score: number;
   coins_rank: number | null;

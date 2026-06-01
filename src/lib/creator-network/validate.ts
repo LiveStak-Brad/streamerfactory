@@ -37,6 +37,7 @@ function parseRow(raw: unknown): ImportRowPayload | null {
   if (!isRecord(raw)) return null;
   return {
     tiktokUsername: optionalString(raw.tiktokUsername),
+    tiktokUsernameRaw: optionalString(raw.tiktokUsernameRaw),
     usernameConfidence: optionalUsernameConfidence(raw.usernameConfidence),
     usernameSource: optionalUsernameSource(raw.usernameSource),
     displayName: optionalString(raw.displayName),

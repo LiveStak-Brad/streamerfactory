@@ -286,3 +286,6 @@ create policy creator_network_member_stats_public_leaderboard
   for select
   to anon, authenticated
   using (batch_id = public.latest_creator_network_stats_batch_id ());
+
+alter table public.creator_network_member_stats
+  add column if not exists tiktok_username_raw text;

@@ -1,3 +1,4 @@
+import { cleanCreatorNetworkUsername } from "@/lib/creator-network/clean-username";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
@@ -36,12 +37,20 @@ export async function getLatestCreatorNetworkSyncMeta(): Promise<CreatorNetworkS
 type ImportStatRow = {
   profile_id: string | null;
   tiktok_username: string | null;
+  tiktok_username_raw: string | null;
+  avatar_url: string | null;
   coins_earned: number;
   diamonds_earned: number;
   days_streamed: number;
   hours_streamed: number;
   activeness_level: string;
 };
+
+function backstageAvatarUrl(imported: string | null | undefined): string | null {
+  const url = imported?.trim();
+  if (!url || url.startsWith("data:") || url.startsWith("blob:")) return null;
+  return url;
+}
 
 function diamondsForRow(row: ImportStatRow): number {
   return Math.max(0, row.diamonds_earned ?? 0, row.coins_earned ?? 0);
@@ -79,15 +88,25 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(): Promise<Le
   const { data: rows, error: rowsErr } = await supabase
     .from("creator_network_member_stats")
     .select(
-      "profile_id, tiktok_username, coins_earned, diamonds_earned, days_streamed, hours_streamed, activeness_level",
+      "profile_id, tiktok_username, tiktok_username_raw, avatar_url, coins_earned, diamonds_earned, days_streamed, hours_streamed, activeness_level",
     )
     .eq("batch_id", batch.id);
 
   if (rowsErr || !rows?.length) return null;
 
+  function displayHandle(row: ImportStatRow): string | null {
+    const stored = row.tiktok_username?.trim();
+    const raw = row.tiktok_username_raw?.trim();
+    return (
+      cleanCreatorNetworkUsername(stored) ??
+      cleanCreatorNetworkUsername(raw) ??
+      (stored || null)
+    );
+  }
+
   const byHandle = new Map<string, ImportStatRow>();
   for (const raw of rows as ImportStatRow[]) {
-    const handle = raw.tiktok_username?.trim();
+    const handle = displayHandle(raw);
     if (!handle) continue;
     const key = normalizeHandle(resolveCanonicalHandle(handle));
     const existing = byHandle.get(key);
@@ -130,10 +149,14 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(): Promise<Le
   for (const r of ranked) {
     const row = rowByScoringId.get(r.profile_id);
     if (!row) continue;
+    const cleanedHandle = normalizeHandle(
+      resolveCanonicalHandle(displayHandle(row) ?? row.tiktok_username ?? r.profile_id),
+    );
     entries.push({
       profile_id: r.profile_id,
       email: null,
-      tiktok_username: row.tiktok_username ?? r.profile_id,
+      tiktok_username: cleanedHandle,
+      avatar_url: backstageAvatarUrl(row.avatar_url),
       rank_position: r.rank_position,
       rank_score: r.rank_score,
       coins_rank: r.coins_rank,
