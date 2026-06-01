@@ -1,3 +1,5 @@
+import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { createClient } from "@/lib/supabase/server";
 import type {
   AdminMemberStatView,
@@ -111,14 +113,32 @@ export async function getImportMatchReviewSummary(): Promise<MatchReviewSummary>
   return { matchedProfiles, unmatchedProfiles, lowConfidenceMatches };
 }
 
-/** Latest LIVE now snapshot from the most recent live_now batch (within 6 hours). */
-export async function getLatestLiveNowSnapshots(): Promise<{
+const LIVE_NOW_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+
+function dedupeLiveSnapshots(rows: LiveSnapshotRow[]): LiveSnapshotRow[] {
+  const byHandle = new Map<string, LiveSnapshotRow>();
+  for (const row of rows) {
+    const handle = row.tiktok_username?.trim().toLowerCase();
+    if (!handle || isExcludedNetworkHandle(handle)) continue;
+    if (!byHandle.has(handle)) byHandle.set(handle, row);
+  }
+  return [...byHandle.values()].sort((a, b) =>
+    (a.tiktok_display_name ?? a.tiktok_username ?? "").localeCompare(
+      b.tiktok_display_name ?? b.tiktok_username ?? "",
+      undefined,
+      { sensitivity: "base" },
+    ),
+  );
+}
+
+async function loadLatestLiveNowSnapshots(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+): Promise<{
   batchId: string | null;
   importedAt: string | null;
   entries: LiveSnapshotRow[];
 }> {
-  const supabase = await createClient();
-  const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
+  const sixHoursAgo = new Date(Date.now() - LIVE_NOW_MAX_AGE_MS).toISOString();
 
   const { data: batches, error: batchErr } = await supabase
     .from("creator_network_import_batches")
@@ -146,8 +166,30 @@ export async function getLatestLiveNowSnapshots(): Promise<{
   return {
     batchId: batch.id,
     importedAt: batch.created_at,
-    entries: (entries ?? []) as LiveSnapshotRow[],
+    entries: dedupeLiveSnapshots((entries ?? []) as LiveSnapshotRow[]),
   };
+}
+
+/** Latest LIVE now snapshot (authenticated members / staff). */
+export async function getLatestLiveNowSnapshots(): Promise<{
+  batchId: string | null;
+  importedAt: string | null;
+  entries: LiveSnapshotRow[];
+}> {
+  return loadLatestLiveNowSnapshots(await createClient());
+}
+
+/** Public /members page — uses service role when available (same as rankings). */
+export async function getPublicLiveNowSnapshots(): Promise<{
+  batchId: string | null;
+  importedAt: string | null;
+  entries: LiveSnapshotRow[];
+}> {
+  try {
+    return await loadLatestLiveNowSnapshots(await getLeaderboardSupabase());
+  } catch {
+    return { batchId: null, importedAt: null, entries: [] };
+  }
 }
 
 /** Member's latest imported stat row (includes own financial fields via RLS). */

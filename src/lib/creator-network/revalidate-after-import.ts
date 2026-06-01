@@ -10,6 +10,7 @@ export function revalidateCreatorNetworkSitePages(): void {
 }
 
 export function revalidateCreatorNetworkLivePages(): void {
+  revalidatePath("/members");
   revalidatePath("/member/dashboard");
   revalidatePath("/admin/creator-network");
 }

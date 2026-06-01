@@ -42,5 +42,11 @@ export const NETWORK_MEMBERS: readonly NetworkMember[] = [
 
 export function memberProfileUrl(username: string): string {
   const handle = username.trim().replace(/^@+/, "");
-  return `https://www.tiktok.com/@${handle}`;
+  return `https://www.tiktok.com/@${encodeURIComponent(handle)}`;
+}
+
+/** Open creator LIVE on TikTok (profile live route). */
+export function memberLiveStreamUrl(username: string): string {
+  const handle = username.trim().replace(/^@+/, "");
+  return `https://www.tiktok.com/@${encodeURIComponent(handle)}/live`;
 }
