@@ -1,4 +1,4 @@
-import { isInvalidLiveStreamHandle } from "@/lib/creator-network/live-now-display";
+import { isInvalidLiveStreamHandle } from "@/lib/creator-network/live-handle-validation";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { createClient } from "@/lib/supabase/server";
@@ -144,30 +144,41 @@ async function loadLatestLiveNowSnapshots(
   const { data: batches, error: batchErr } = await supabase
     .from("creator_network_import_batches")
     .select("id, created_at")
-    .eq("detected_page_type", "live_now")
     .eq("status", "completed")
     .gte("created_at", sixHoursAgo)
     .order("created_at", { ascending: false })
-    .limit(1);
+    .limit(30);
 
   if (batchErr) throw new Error(batchErr.message);
-  const batch = batches?.[0] as { id: string; created_at: string } | undefined;
-  if (!batch) {
+  const batchList = (batches ?? []) as { id: string; created_at: string }[];
+  if (batchList.length === 0) {
     return { batchId: null, importedAt: null, entries: [] };
   }
+
+  const batchIds = batchList.map((b) => b.id);
+  const batchAt = new Map(batchList.map((b) => [b.id, b.created_at]));
 
   const { data: entries, error } = await supabase
     .from("creator_network_live_snapshots")
     .select("*")
-    .eq("batch_id", batch.id)
-    .order("tiktok_display_name", { ascending: true });
+    .in("batch_id", batchIds);
 
   if (error) throw new Error(error.message);
 
+  const rows = (entries ?? []) as LiveSnapshotRow[];
+  const sorted = [...rows].sort((a, b) => {
+    const ta = a.batch_id ? (batchAt.get(a.batch_id) ?? "") : "";
+    const tb = b.batch_id ? (batchAt.get(b.batch_id) ?? "") : "";
+    return tb.localeCompare(ta);
+  });
+
+  const latestBatchId = batchList[0]?.id ?? null;
+  const latestImportedAt = batchList[0]?.created_at ?? null;
+
   return {
-    batchId: batch.id,
-    importedAt: batch.created_at,
-    entries: dedupeLiveSnapshots((entries ?? []) as LiveSnapshotRow[]),
+    batchId: latestBatchId,
+    importedAt: latestImportedAt,
+    entries: dedupeLiveSnapshots(sorted),
   };
 }
 

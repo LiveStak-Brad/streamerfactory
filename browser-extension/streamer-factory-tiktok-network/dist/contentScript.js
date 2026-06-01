@@ -595,7 +595,26 @@
     if (/border.*red|red.*ring|live.*border|living/i.test(c)) return true;
     return false;
   }
+  function elementHasLiveAccentStyle(el) {
+    const inline = el.getAttribute("style") ?? "";
+    if (/#fe2c55|#ff2c55|rgb\(\s*25[0-4]\s*,\s*[0-5]?\d\s*,\s*[0-9]{1,2}\s*\)/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
+      return true;
+    }
+    if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
+      try {
+        const style = getComputedStyle(el);
+        const borderW = parseFloat(style.borderTopWidth || "0");
+        const outlineW = parseFloat(style.outlineWidth || "0");
+        if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
+        if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
+        if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
+      } catch {
+      }
+    }
+    return false;
+  }
   function wrapperHasLiveColoredRing(img) {
+    if (elementHasLiveAccentStyle(img)) return true;
     let el = img.parentElement;
     for (let depth = 0; depth < 7 && el; depth++) {
       const cls = elementClassText(el);
@@ -604,15 +623,11 @@
       if (/border[^;]*(?:#fe2c55|#ff[0-9a-f]{3,4}|rgb\(\s*2[0-9]{2})/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
         return true;
       }
-      if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
-        try {
-          const style = getComputedStyle(el);
-          const borderW = parseFloat(style.borderTopWidth || "0") + parseFloat(style.borderRightWidth || "0");
-          const outlineW = parseFloat(style.outlineWidth || "0");
-          if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
-          if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
-          if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
-        } catch {
+      if (elementHasLiveAccentStyle(el)) return true;
+      for (const sib of el.children) {
+        if (sib.tagName === "IMG") continue;
+        if (elementHasLiveAccentStyle(sib) || classHintsLiveRing(elementClassText(sib))) {
+          return true;
         }
       }
       for (const svg of el.querySelectorAll("svg circle, svg path, svg rect")) {
@@ -649,6 +664,21 @@
     const t = line.trim();
     if (t.length < 4 || t.length > 200) return false;
     return /^[a-z0-9._]{2,40}:\s+\S/i.test(t);
+  }
+  function creatorCellShowsLive(cell) {
+    for (const img of cell.querySelectorAll("img[src]")) {
+      const src = img.getAttribute("src") ?? "";
+      if (!src || src.startsWith("data:")) continue;
+      if (imgHasLiveIndicator(img)) return true;
+    }
+    const cls = elementClassText(cell).toLowerCase();
+    if (/living|on-?live|live-?status|avatar.*live/i.test(cls)) return true;
+    for (const el of cell.querySelectorAll("[class], [style]")) {
+      const c = elementClassText(el);
+      if (classHintsLiveRing(c)) return true;
+      if (elementHasLiveAccentStyle(el)) return true;
+    }
+    return false;
   }
   function isLikelyChatOverlay(el) {
     const cls = elementClassText(el).toLowerCase();
@@ -690,8 +720,23 @@
     "stream",
     "inactive",
     "notable",
-    "eligible"
+    "eligible",
+    "assking",
+    "king_reaper5150",
+    "king_reaper"
   ]);
+  function isSuspiciousLiveHandle(handle) {
+    if (handle.length > 24) return true;
+    if (/assking|king_reaper/i.test(handle)) return true;
+    if (/\d{5,}/.test(handle) && handle.length > 18) return true;
+    const chunks = handle.match(/[a-z][a-z0-9_]{4,}/gi) ?? [];
+    const unique = new Set(chunks.map((c) => c.toLowerCase()));
+    if (unique.size >= 2 && handle.length >= 16) return true;
+    for (const chunk of unique) {
+      if (handle.split(chunk).length > 2) return true;
+    }
+    return false;
+  }
   function isInvalidLiveStreamHandle(raw) {
     const handle = cleanTikTokUsername(raw);
     if (!handle) return true;
@@ -701,6 +746,7 @@
     }
     if (handle.startsWith("live") && handle.length <= 14) return true;
     if (handle.startsWith("creator") && handle.length <= 16) return true;
+    if (isSuspiciousLiveHandle(handle)) return true;
     return false;
   }
 
@@ -715,11 +761,41 @@
     if (t === "live now" || t === "live") return true;
     return false;
   }
+  var LIVE_STAT_LINE = /live\s*(?:time|dur(?:ation)?)|diamonds?|gifts?|gifters?|new\s*viewers?|viewers?/i;
   function cardHasLiveStats(text) {
-    const hasDuration = /live\s*(?:dur(?:ation)?)?/i.test(text);
+    const hasDuration = /live\s*(?:time|dur(?:ation)?)/i.test(text);
     const hasEarnings = /diamonds?|gifts?/i.test(text);
-    const hasAudience = /viewers?|watching|current\s*viewers?/i.test(text);
+    const hasAudience = /(?:new\s*)?viewers?|watching|current/i.test(text);
     return hasDuration && hasEarnings && hasAudience;
+  }
+  function dedupeToSmallestLiveCards(elements) {
+    const sorted = [...elements].sort(
+      (a, b) => (a.textContent?.length ?? 0) - (b.textContent?.length ?? 0)
+    );
+    const kept = [];
+    for (const el of sorted) {
+      const contained = kept.findIndex((k) => el.contains(k) && k !== el);
+      if (contained >= 0) {
+        kept[contained] = el;
+        continue;
+      }
+      if (kept.some((k) => k.contains(el) && k !== el)) continue;
+      kept.push(el);
+    }
+    return kept.sort(compareDocumentOrder);
+  }
+  function liveCardRoot(el) {
+    const text = (el.textContent ?? "").trim();
+    const headerText = cardHeaderText(text);
+    if (cardHasCreatorHeader(el, headerText)) return el;
+    const parent = el.parentElement;
+    if (parent) {
+      const pt = (parent.textContent ?? "").trim();
+      if (cardHasLiveStats(pt) && cardHasCreatorHeader(parent, cardHeaderText(pt))) {
+        return parent;
+      }
+    }
+    return el;
   }
   function cardHasCreatorHeader(el, headerText) {
     if (/id\s*\d{4,}/i.test(headerText)) return true;
@@ -734,20 +810,6 @@
     if (pos & DOC_POS_FOLLOWING) return -1;
     if (pos & DOC_POS_PRECEDING) return 1;
     return 0;
-  }
-  function dedupeNested(elements) {
-    const sorted = [...elements].sort(compareDocumentOrder);
-    const kept = [];
-    for (const el of sorted) {
-      if (kept.some((k) => k.contains(el) && k !== el)) continue;
-      if (kept.some((k) => el.contains(k) && k !== el)) {
-        const idx = kept.findIndex((k) => el.contains(k));
-        if (idx >= 0) kept[idx] = el;
-        continue;
-      }
-      kept.push(el);
-    }
-    return kept;
   }
   function imagePixelArea(img) {
     const w = parseInt(img.getAttribute("width") ?? "", 10);
@@ -812,9 +874,13 @@
       if (!el.querySelector("img[src]")) continue;
       const headerText = cardHeaderText(text);
       if (!cardHasCreatorHeader(el, headerText)) continue;
+      if (countChatLines(text) >= 3) continue;
       roots.push(el);
     }
     return roots;
+  }
+  function countChatLines(text) {
+    return text.split(/\n/).filter((l) => isChatCommentLine(l.trim())).length;
   }
   function findLiveCreatorCards(doc) {
     const roots = [];
@@ -836,14 +902,66 @@
         el = el.parentElement;
       }
     }
-    return dedupeNested(roots);
+    return dedupeToSmallestLiveCards(roots);
   }
   function cardHeaderText(fullText) {
-    const idx = fullText.search(/live\s*(?:dur(?:ation)?)?\.?/i);
+    const idx = fullText.search(/live\s*(?:time|dur(?:ation)?)/i);
     if (idx > 20) return fullText.slice(0, idx).trim();
     const idx2 = fullText.search(/\b(?:diamonds?|gifts?)\b/i);
     if (idx2 > 20) return fullText.slice(0, idx2).trim();
-    return fullText.slice(0, Math.min(fullText.length, 500)).trim();
+    const lines = fullText.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    const headerLines = [];
+    for (const line of lines) {
+      if (isChatCommentLine(line)) break;
+      if (LIVE_STAT_LINE.test(line) && /live\s*(?:time|dur)/i.test(line)) break;
+      if (LIVE_STAT_LINE.test(line) && headerLines.length > 2) break;
+      headerLines.push(line);
+      if (headerLines.length >= 8) break;
+    }
+    if (headerLines.length) return headerLines.join("\n");
+    return fullText.slice(0, Math.min(fullText.length, 400)).trim();
+  }
+  function streamCardHeaderElement(card) {
+    for (const img of card.querySelectorAll("img[src]")) {
+      if (isStreamPreviewImage(img, card)) continue;
+      const header = img.closest(
+        '[class*="header"], [class*="Header"], [class*="info"], [class*="creator"], [class*="anchor"]'
+      ) ?? img.parentElement?.parentElement;
+      if (header && !isLikelyChatOverlay(header)) return header;
+    }
+    return null;
+  }
+  function usernameFromStreamCard(card, headerText) {
+    const headerEl = streamCardHeaderElement(card);
+    const scope = headerEl ?? card;
+    const scopeText = (headerEl?.textContent ?? headerText).slice(0, 350);
+    const fromLink = usernameFromLinks(scope);
+    if (fromLink && !isSuspiciousLiveHandle(fromLink)) return fromLink;
+    for (const img of scope.querySelectorAll("img[alt]")) {
+      if (isStreamPreviewImage(img, card)) continue;
+      const alt = cleanTikTokUsername(img.getAttribute("alt"));
+      if (alt && !isInvalidLiveStreamHandle(alt) && !isSuspiciousLiveHandle(alt)) return alt;
+    }
+    for (const line of scopeText.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
+      if (isChatCommentLine(line)) continue;
+      if (/^id\s*\d/i.test(line)) continue;
+      if (LIVE_STAT_LINE.test(line)) continue;
+      const truncated = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
+      if (truncated) {
+        const u = cleanTikTokUsername(truncated[1]);
+        if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+      }
+      const at = line.match(/^@([a-z0-9._]{2,28})/i);
+      if (at) {
+        const u = cleanTikTokUsername(at[1]);
+        if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+      }
+      if (/^[a-z0-9._]{2,28}$/i.test(line)) {
+        const u = cleanTikTokUsername(line);
+        if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+      }
+    }
+    return void 0;
   }
   function avatarFrom(el) {
     for (const img of el.querySelectorAll("img[src]")) {
@@ -887,41 +1005,12 @@
     return void 0;
   }
   function usernameFromHeader(el, headerText, displayName) {
-    const headerRoot = el.querySelector('[class*="header"], [class*="Header"], [class*="creator-info"]') ?? el;
-    const fromLink = usernameFromLinks(el, headerRoot);
-    if (fromLink) return fromLink;
-    for (const img of headerRoot.querySelectorAll("img[alt]")) {
-      if (isStreamPreviewImage(img, el)) continue;
-      const alt = cleanTikTokUsername(img.getAttribute("alt"));
-      if (alt && !isInvalidLiveStreamHandle(alt)) return alt;
-    }
-    const lines = headerText.split(/\n/).map((l) => l.trim()).filter(Boolean);
-    const usable = lines.filter((line) => {
-      if (isChatCommentLine(line)) return false;
-      if (/^id\s*\d/i.test(line)) return false;
-      if (/live\s*dur|diamonds?|gifters?|viewers?|current|new\s*foll|promote|showing/i.test(line)) {
-        return false;
-      }
-      return line.length <= 48;
-    });
-    for (const line of usable) {
-      const at = line.match(/^@([a-z0-9._]{2,40})/i);
-      if (at) {
-        const u = cleanTikTokUsername(at[1]);
-        if (u && !isInvalidLiveStreamHandle(u)) return u;
-      }
-    }
-    for (const line of usable) {
-      const candidate = extractUsernameWithConfidence(line, {
-        fromUsernameColumn: true,
-        displayName
-      });
-      if (candidate.username && !isInvalidLiveStreamHandle(candidate.username)) {
-        return candidate.username;
-      }
-    }
+    const fromCard = usernameFromStreamCard(el, headerText);
+    if (fromCard) return fromCard;
     const inferred = cleanTikTokUsername(displayName);
-    if (inferred && !isInvalidLiveStreamHandle(inferred)) return inferred;
+    if (inferred && !isInvalidLiveStreamHandle(inferred) && !isSuspiciousLiveHandle(inferred)) {
+      return inferred;
+    }
     return void 0;
   }
   function parseStatValue(text, label) {
@@ -941,9 +1030,9 @@
     if (!el.querySelector("img[src]")) return null;
     const headerText = cardHeaderText(text);
     const displayName = displayNameFrom(el, headerText);
-    const username = usernameFromHeader(el, headerText, displayName);
-    if (!username) return null;
-    const liveDuration = parseStatValue(text, /live\s*(?:dur(?:ation)?)?\.?\.?/) ?? text.match(/live\s*(?:dur(?:ation)?)?\.?\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
+    const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
+    if (!username || isSuspiciousLiveHandle(username)) return null;
+    const liveDuration = parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ?? text.match(/live\s*(?:time|dur(?:ation)?)\s*[:.]?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
     const diamonds = parseStatValue(text, /diamonds?/) ?? parseStatValue(text, /gifts?/);
     const viewers = parseStatValue(text, /viewers?(?!\s*count)/);
     const watching = parseStatValue(text, /current\.?\.?/) ?? text.match(/(\d+)\s*(?:watching|viewers?\s*now)/i)?.[1];
@@ -971,7 +1060,9 @@
     const out = [];
     for (const r of rows) {
       const key = normalizeTikTokUsername(r.tiktokUsername) ?? "";
-      if (!key || seen.has(key) || isInvalidLiveStreamHandle(key)) continue;
+      if (!key || seen.has(key) || isInvalidLiveStreamHandle(key) || isSuspiciousLiveHandle(key)) {
+        continue;
+      }
       seen.add(key);
       out.push(r);
     }
@@ -981,7 +1072,7 @@
     const cards = findLiveCreatorCards(doc);
     const rows = [];
     for (const el of cards) {
-      const parsed = parseLiveCard(el);
+      const parsed = parseLiveCard(liveCardRoot(el));
       if (parsed) rows.push(parsed);
     }
     return dedupeLive(rows);
@@ -1008,7 +1099,7 @@
       const avatarImg = Array.from(creatorCell.querySelectorAll("img[src]")).find(
         (img) => !isStreamPreviewImage(img)
       );
-      if (!avatarImg || !imgHasLiveIndicator(avatarImg)) continue;
+      if (!avatarImg || !creatorCellShowsLive(creatorCell)) continue;
       const cellText = (creatorCell.textContent ?? "").trim();
       const displayName = displayNameFrom(creatorCell, cellText);
       const username = usernameFromHeader(creatorCell, cellText, displayName);

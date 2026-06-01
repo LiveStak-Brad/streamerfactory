@@ -1,34 +1,15 @@
 import { cleanCreatorNetworkDisplayName, cleanCreatorNetworkUsername } from "@/lib/creator-network/clean-username";
+import {
+  isInvalidLiveStreamHandle,
+  isSuspiciousLiveHandle,
+} from "@/lib/creator-network/live-handle-validation";
 import { backstageAvatarUrl } from "@/lib/creator-network/leaderboard-from-import";
 import type { LiveSnapshotRow } from "@/lib/creator-network/types";
 import { memberLiveStreamUrl } from "@/lib/members/network-members";
 import type { NetworkMember } from "@/lib/members/network-members";
 import { normalizeHandle } from "@/lib/rankings/backstage-seed-data";
 
-const LIVE_HANDLE_BLOCKLIST = new Set([
-  "creators",
-  "creatorsmanage",
-  "liveduration",
-  "manage",
-  "duration",
-  "diamonds",
-  "gifters",
-  "viewers",
-  "follower",
-  "current",
-  "promote",
-  "showing",
-]);
-
-export function isInvalidLiveStreamHandle(raw: string | undefined | null): boolean {
-  const handle = cleanCreatorNetworkUsername(raw);
-  if (!handle) return true;
-  if (LIVE_HANDLE_BLOCKLIST.has(handle)) return true;
-  if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing/i.test(handle)) {
-    return true;
-  }
-  return false;
-}
+export { isInvalidLiveStreamHandle, isSuspiciousLiveHandle };
 
 function resolveMemberForLiveRow(
   handle: string,
@@ -39,14 +20,15 @@ function resolveMemberForLiveRow(
   const exact = members.find((m) => normalizeHandle(m.username) === key);
   if (exact) return exact;
 
-  if (key.length >= 4) {
-    const prefixMatches = members.filter((m) =>
-      normalizeHandle(m.username).startsWith(key),
-    );
+  if (key.length >= 6) {
+    const prefixMatches = members.filter((m) => {
+      const u = normalizeHandle(m.username);
+      return u.startsWith(key) || key.startsWith(u);
+    });
     if (prefixMatches.length === 1) return prefixMatches[0];
   }
 
-  if (displayHint) {
+  if (displayHint && displayHint.length >= 3) {
     const hint = displayHint.toLowerCase();
     const byName = members.filter(
       (m) =>
@@ -69,6 +51,7 @@ export type LiveNowDisplayEntry = {
   href: string;
 };
 
+/** Public /members LIVE section — network members only, no comment/chat junk. */
 export function enrichLiveNowForDisplay(
   entries: LiveSnapshotRow[],
   members: NetworkMember[],
@@ -84,15 +67,17 @@ export function enrichLiveNowForDisplay(
       row.tiktok_display_name,
       members,
     );
-    const username = member?.username ?? rawHandle;
+    if (!member) continue;
+
+    const username = member.username;
     const displayName = cleanCreatorNetworkDisplayName(
-      member?.displayName ?? row.tiktok_display_name,
+      member.displayName ?? row.tiktok_display_name,
       username,
     );
 
     const avatarUrl =
       backstageAvatarUrl(row.avatar_url) ??
-      member?.avatarUrl ??
+      member.avatarUrl ??
       null;
 
     const liveDuration = row.live_started_text?.trim() || null;

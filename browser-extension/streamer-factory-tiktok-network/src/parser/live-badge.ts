@@ -65,7 +65,33 @@ function classHintsLiveRing(cls: string): boolean {
   return false;
 }
 
+function elementHasLiveAccentStyle(el: Element): boolean {
+  const inline = el.getAttribute("style") ?? "";
+  if (
+    /#fe2c55|#ff2c55|rgb\(\s*25[0-4]\s*,\s*[0-5]?\d\s*,\s*[0-9]{1,2}\s*\)/i.test(inline) ||
+    cssColorLooksLikeLiveRing(inline)
+  ) {
+    return true;
+  }
+
+  if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
+    try {
+      const style = getComputedStyle(el);
+      const borderW = parseFloat(style.borderTopWidth || "0");
+      const outlineW = parseFloat(style.outlineWidth || "0");
+      if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
+      if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
+      if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
+    } catch {
+      /* ignore */
+    }
+  }
+  return false;
+}
+
 function wrapperHasLiveColoredRing(img: Element): boolean {
+  if (elementHasLiveAccentStyle(img)) return true;
+
   let el: Element | null = img.parentElement;
   for (let depth = 0; depth < 7 && el; depth++) {
     const cls = elementClassText(el);
@@ -79,18 +105,12 @@ function wrapperHasLiveColoredRing(img: Element): boolean {
       return true;
     }
 
-    if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
-      try {
-        const style = getComputedStyle(el);
-        const borderW =
-          parseFloat(style.borderTopWidth || "0") +
-          parseFloat(style.borderRightWidth || "0");
-        const outlineW = parseFloat(style.outlineWidth || "0");
-        if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
-        if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
-        if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
-      } catch {
-        /* cross-origin or test env */
+    if (elementHasLiveAccentStyle(el)) return true;
+
+    for (const sib of el.children) {
+      if (sib.tagName === "IMG") continue;
+      if (elementHasLiveAccentStyle(sib) || classHintsLiveRing(elementClassText(sib))) {
+        return true;
       }
     }
 
@@ -144,6 +164,26 @@ export function isChatCommentLine(line: string): boolean {
   const t = line.trim();
   if (t.length < 4 || t.length > 200) return false;
   return /^[a-z0-9._]{2,40}:\s+\S/i.test(t);
+}
+
+/** Creator table cell on incentives / contribution grid is LIVE. */
+export function creatorCellShowsLive(cell: Element): boolean {
+  for (const img of cell.querySelectorAll("img[src]")) {
+    const src = img.getAttribute("src") ?? "";
+    if (!src || src.startsWith("data:")) continue;
+    if (imgHasLiveIndicator(img)) return true;
+  }
+
+  const cls = elementClassText(cell).toLowerCase();
+  if (/living|on-?live|live-?status|avatar.*live/i.test(cls)) return true;
+
+  for (const el of cell.querySelectorAll("[class], [style]")) {
+    const c = elementClassText(el);
+    if (classHintsLiveRing(c)) return true;
+    if (elementHasLiveAccentStyle(el)) return true;
+  }
+
+  return false;
 }
 
 export function isLikelyChatOverlay(el: Element): boolean {

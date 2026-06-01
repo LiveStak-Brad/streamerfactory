@@ -11,6 +11,10 @@ import {
   monthlyPerformanceUpsertFromImportRow,
   upsertMonthlyPerformanceStatsFromImport,
 } from "@/lib/creator-network/sync-performance-from-import";
+import {
+  isInvalidLiveStreamHandle,
+  isSuspiciousLiveHandle,
+} from "@/lib/creator-network/live-handle-validation";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 
@@ -269,10 +273,18 @@ async function insertLiveSnapshotRow(args: {
   if (!username) return { ok: false };
 
   const canonical = resolveCanonicalHandle(username);
-  if (isExcludedNetworkHandle(canonical)) return { ok: false };
+  if (
+    isExcludedNetworkHandle(canonical) ||
+    isInvalidLiveStreamHandle(canonical) ||
+    isSuspiciousLiveHandle(canonical)
+  ) {
+    return { ok: false };
+  }
 
   const profileId = matchProfileId(maps, username);
-  const lowConfidence = !!profileId && normalizeConfidence(live.usernameConfidence) === "low";
+  if (!profileId) return { ok: false };
+
+  const lowConfidence = normalizeConfidence(live.usernameConfidence) === "low";
 
   const { error } = await supabase.from("creator_network_live_snapshots").insert({
     batch_id: batchId,

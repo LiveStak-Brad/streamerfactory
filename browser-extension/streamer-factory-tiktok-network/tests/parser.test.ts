@@ -16,6 +16,7 @@ import {
   parseStreamHoursFromCell,
 } from "../src/parser/duration";
 import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "../src/parser/numbers";
+import { isInvalidLiveStreamHandle } from "../src/parser/live-username";
 import {
   cleanTikTokUsername,
   extractUsernameFromText,
@@ -328,7 +329,13 @@ test("incentives role=grid pink ring detects LIVE on creator row", () => {
   assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
 });
 
-test("live now page accepts Gifts label instead of Diamonds", () => {
+test("rejects glued comment handles like assking king_reaper", () => {
+  assert.equal(isInvalidLiveStreamHandle("king_reaper515025assking_reaper5150the"), true);
+  assert.equal(isInvalidLiveStreamHandle("assking"), true);
+  assert.equal(isInvalidLiveStreamHandle("cj_alleycat93"), false);
+});
+
+test("live now page accepts LIVE time and Gifts labels", () => {
   const html = readFileSync(
     join(import.meta.dirname, "../fixtures/live-now-backstage-gifts.html"),
     "utf8",

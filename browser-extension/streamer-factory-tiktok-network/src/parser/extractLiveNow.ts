@@ -1,10 +1,15 @@
 import { avatarFromRow } from "./avatar";
 import { elementClassText } from "./dom";
 import { dataRowsInContainer, findCreatorContributionGrid } from "./gridTable";
-import { imgHasLiveIndicator, isChatCommentLine, isLikelyChatOverlay } from "./live-badge";
-import { isInvalidLiveStreamHandle } from "./live-username";
+import {
+  creatorCellShowsLive,
+  imgHasLiveIndicator,
+  isChatCommentLine,
+  isLikelyChatOverlay,
+} from "./live-badge";
+import { isInvalidLiveStreamHandle, isSuspiciousLiveHandle } from "./live-username";
 import type { ParsedLiveRow } from "./types";
-import { cleanTikTokUsername, extractUsernameWithConfidence, normalizeTikTokUsername } from "./username";
+import { cleanTikTokUsername, normalizeTikTokUsername } from "./username";
 
 const DOC_POS_FOLLOWING = 4;
 const DOC_POS_PRECEDING = 2;
@@ -18,12 +23,46 @@ function isPageChromeText(text: string): boolean {
   return false;
 }
 
-/** Backstage LIVE cards use "LIVE duration" + "Gifts" (not always "Diamonds") + viewers. */
+const LIVE_STAT_LINE = /live\s*(?:time|dur(?:ation)?)|diamonds?|gifts?|gifters?|new\s*viewers?|viewers?/i;
+
+/** Backstage LIVE cards: "LIVE time" + diamonds/gifts + viewers (labels vary). */
 function cardHasLiveStats(text: string): boolean {
-  const hasDuration = /live\s*(?:dur(?:ation)?)?/i.test(text);
+  const hasDuration = /live\s*(?:time|dur(?:ation)?)/i.test(text);
   const hasEarnings = /diamonds?|gifts?/i.test(text);
-  const hasAudience = /viewers?|watching|current\s*viewers?/i.test(text);
+  const hasAudience = /(?:new\s*)?viewers?|watching|current/i.test(text);
   return hasDuration && hasEarnings && hasAudience;
+}
+
+/** Prefer the tightest card wrapper (parent of stats strip, not whole page). */
+function dedupeToSmallestLiveCards(elements: Element[]): Element[] {
+  const sorted = [...elements].sort(
+    (a, b) => (a.textContent?.length ?? 0) - (b.textContent?.length ?? 0),
+  );
+  const kept: Element[] = [];
+  for (const el of sorted) {
+    const contained = kept.findIndex((k) => el.contains(k) && k !== el);
+    if (contained >= 0) {
+      kept[contained] = el;
+      continue;
+    }
+    if (kept.some((k) => k.contains(el) && k !== el)) continue;
+    kept.push(el);
+  }
+  return kept.sort(compareDocumentOrder);
+}
+
+function liveCardRoot(el: Element): Element {
+  const text = (el.textContent ?? "").trim();
+  const headerText = cardHeaderText(text);
+  if (cardHasCreatorHeader(el, headerText)) return el;
+  const parent = el.parentElement;
+  if (parent) {
+    const pt = (parent.textContent ?? "").trim();
+    if (cardHasLiveStats(pt) && cardHasCreatorHeader(parent, cardHeaderText(pt))) {
+      return parent;
+    }
+  }
+  return el;
 }
 
 function cardHasCreatorHeader(el: Element, headerText: string): boolean {
@@ -134,11 +173,16 @@ function findLiveCardsByStatsPanel(doc: Document): Element[] {
 
     const headerText = cardHeaderText(text);
     if (!cardHasCreatorHeader(el, headerText)) continue;
+    if (countChatLines(text) >= 3) continue;
 
     roots.push(el);
   }
 
   return roots;
+}
+
+function countChatLines(text: string): number {
+  return text.split(/\n/).filter((l) => isChatCommentLine(l.trim())).length;
 }
 
 /** Cards anchored on LIVE-ring avatars, stats panels, or @handle/live links (not chat). */
@@ -171,16 +215,79 @@ function findLiveCreatorCards(doc: Document): Element[] {
     }
   }
 
-  return dedupeNested(roots);
+  return dedupeToSmallestLiveCards(roots);
 }
 
 /** Text above the stats grid — excludes in-stream chat. */
 function cardHeaderText(fullText: string): string {
-  const idx = fullText.search(/live\s*(?:dur(?:ation)?)?\.?/i);
+  const idx = fullText.search(/live\s*(?:time|dur(?:ation)?)/i);
   if (idx > 20) return fullText.slice(0, idx).trim();
   const idx2 = fullText.search(/\b(?:diamonds?|gifts?)\b/i);
   if (idx2 > 20) return fullText.slice(0, idx2).trim();
-  return fullText.slice(0, Math.min(fullText.length, 500)).trim();
+  const lines = fullText.split(/\n/).map((l) => l.trim()).filter(Boolean);
+  const headerLines: string[] = [];
+  for (const line of lines) {
+    if (isChatCommentLine(line)) break;
+    if (LIVE_STAT_LINE.test(line) && /live\s*(?:time|dur)/i.test(line)) break;
+    if (LIVE_STAT_LINE.test(line) && headerLines.length > 2) break;
+    headerLines.push(line);
+    if (headerLines.length >= 8) break;
+  }
+  if (headerLines.length) return headerLines.join("\n");
+  return fullText.slice(0, Math.min(fullText.length, 400)).trim();
+}
+
+function streamCardHeaderElement(card: Element): Element | null {
+  for (const img of card.querySelectorAll("img[src]")) {
+    if (isStreamPreviewImage(img, card)) continue;
+    const header =
+      img.closest(
+        '[class*="header"], [class*="Header"], [class*="info"], [class*="creator"], [class*="anchor"]',
+      ) ?? img.parentElement?.parentElement;
+    if (header && !isLikelyChatOverlay(header)) return header;
+  }
+  return null;
+}
+
+/** Username from card header only — never from chat overlay text. */
+function usernameFromStreamCard(card: Element, headerText: string): string | undefined {
+  const headerEl = streamCardHeaderElement(card);
+  const scope = headerEl ?? card;
+  const scopeText = (headerEl?.textContent ?? headerText).slice(0, 350);
+
+  const fromLink = usernameFromLinks(scope);
+  if (fromLink && !isSuspiciousLiveHandle(fromLink)) return fromLink;
+
+  for (const img of scope.querySelectorAll("img[alt]")) {
+    if (isStreamPreviewImage(img, card)) continue;
+    const alt = cleanTikTokUsername(img.getAttribute("alt"));
+    if (alt && !isInvalidLiveStreamHandle(alt) && !isSuspiciousLiveHandle(alt)) return alt;
+  }
+
+  for (const line of scopeText.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
+    if (isChatCommentLine(line)) continue;
+    if (/^id\s*\d/i.test(line)) continue;
+    if (LIVE_STAT_LINE.test(line)) continue;
+
+    const truncated = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
+    if (truncated) {
+      const u = cleanTikTokUsername(truncated[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+
+    const at = line.match(/^@([a-z0-9._]{2,28})/i);
+    if (at) {
+      const u = cleanTikTokUsername(at[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+
+    if (/^[a-z0-9._]{2,28}$/i.test(line)) {
+      const u = cleanTikTokUsername(line);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+  }
+
+  return undefined;
 }
 
 function avatarFrom(el: Element): string | undefined {
@@ -228,52 +335,13 @@ function usernameFromLinks(el: Element, scope?: Element): string | undefined {
 }
 
 function usernameFromHeader(el: Element, headerText: string, displayName?: string): string | undefined {
-  const headerRoot =
-    el.querySelector('[class*="header"], [class*="Header"], [class*="creator-info"]') ?? el;
-
-  const fromLink = usernameFromLinks(el, headerRoot);
-  if (fromLink) return fromLink;
-
-  for (const img of headerRoot.querySelectorAll("img[alt]")) {
-    if (isStreamPreviewImage(img, el)) continue;
-    const alt = cleanTikTokUsername(img.getAttribute("alt"));
-    if (alt && !isInvalidLiveStreamHandle(alt)) return alt;
-  }
-
-  const lines = headerText
-    .split(/\n/)
-    .map((l) => l.trim())
-    .filter(Boolean);
-
-  const usable = lines.filter((line) => {
-    if (isChatCommentLine(line)) return false;
-    if (/^id\s*\d/i.test(line)) return false;
-    if (/live\s*dur|diamonds?|gifters?|viewers?|current|new\s*foll|promote|showing/i.test(line)) {
-      return false;
-    }
-    return line.length <= 48;
-  });
-
-  for (const line of usable) {
-    const at = line.match(/^@([a-z0-9._]{2,40})/i);
-    if (at) {
-      const u = cleanTikTokUsername(at[1]);
-      if (u && !isInvalidLiveStreamHandle(u)) return u;
-    }
-  }
-
-  for (const line of usable) {
-    const candidate = extractUsernameWithConfidence(line, {
-      fromUsernameColumn: true,
-      displayName,
-    });
-    if (candidate.username && !isInvalidLiveStreamHandle(candidate.username)) {
-      return candidate.username;
-    }
-  }
+  const fromCard = usernameFromStreamCard(el, headerText);
+  if (fromCard) return fromCard;
 
   const inferred = cleanTikTokUsername(displayName);
-  if (inferred && !isInvalidLiveStreamHandle(inferred)) return inferred;
+  if (inferred && !isInvalidLiveStreamHandle(inferred) && !isSuspiciousLiveHandle(inferred)) {
+    return inferred;
+  }
 
   return undefined;
 }
@@ -298,12 +366,12 @@ function parseLiveCard(el: Element): ParsedLiveRow | null {
 
   const headerText = cardHeaderText(text);
   const displayName = displayNameFrom(el, headerText);
-  const username = usernameFromHeader(el, headerText, displayName);
-  if (!username) return null;
+  const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
+  if (!username || isSuspiciousLiveHandle(username)) return null;
 
   const liveDuration =
-    parseStatValue(text, /live\s*(?:dur(?:ation)?)?\.?\.?/) ??
-    text.match(/live\s*(?:dur(?:ation)?)?\.?\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
+    parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ??
+    text.match(/live\s*(?:time|dur(?:ation)?)\s*[:.]?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
   const diamonds =
     parseStatValue(text, /diamonds?/) ?? parseStatValue(text, /gifts?/);
   const viewers = parseStatValue(text, /viewers?(?!\s*count)/);
@@ -338,7 +406,9 @@ function dedupeLive(rows: ParsedLiveRow[]): ParsedLiveRow[] {
   const out: ParsedLiveRow[] = [];
   for (const r of rows) {
     const key = normalizeTikTokUsername(r.tiktokUsername) ?? "";
-    if (!key || seen.has(key) || isInvalidLiveStreamHandle(key)) continue;
+    if (!key || seen.has(key) || isInvalidLiveStreamHandle(key) || isSuspiciousLiveHandle(key)) {
+      continue;
+    }
     seen.add(key);
     out.push(r);
   }
@@ -350,7 +420,7 @@ export function extractLiveNowRowsFromPage(doc: Document = document): ParsedLive
   const cards = findLiveCreatorCards(doc);
   const rows: ParsedLiveRow[] = [];
   for (const el of cards) {
-    const parsed = parseLiveCard(el);
+    const parsed = parseLiveCard(liveCardRoot(el));
     if (parsed) rows.push(parsed);
   }
   return dedupeLive(rows);
@@ -388,7 +458,7 @@ export function extractLiveRowsFromCreatorTable(doc: Document = document): Parse
     const avatarImg = Array.from(creatorCell.querySelectorAll("img[src]")).find(
       (img) => !isStreamPreviewImage(img),
     );
-    if (!avatarImg || !imgHasLiveIndicator(avatarImg)) continue;
+    if (!avatarImg || !creatorCellShowsLive(creatorCell)) continue;
 
     const cellText = (creatorCell.textContent ?? "").trim();
     const displayName = displayNameFrom(creatorCell, cellText);
