@@ -45,7 +45,8 @@ export async function POST(request: Request) {
     parsed.data.detectedPageType === "manage_relationship";
   if (updatesRankings && result.acceptedRows > 0) {
     revalidateCreatorNetworkSitePages();
-  } else if (parsed.data.detectedPageType === "live_now" && (result.liveRowsAccepted ?? 0) > 0) {
+  }
+  if ((result.liveRowsAccepted ?? 0) > 0) {
     revalidateCreatorNetworkLivePages();
   }
 

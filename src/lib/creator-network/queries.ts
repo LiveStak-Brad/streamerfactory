@@ -1,3 +1,4 @@
+import { isInvalidLiveStreamHandle } from "@/lib/creator-network/live-now-display";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { createClient } from "@/lib/supabase/server";
@@ -119,7 +120,7 @@ function dedupeLiveSnapshots(rows: LiveSnapshotRow[]): LiveSnapshotRow[] {
   const byHandle = new Map<string, LiveSnapshotRow>();
   for (const row of rows) {
     const handle = row.tiktok_username?.trim().toLowerCase();
-    if (!handle || isExcludedNetworkHandle(handle)) continue;
+    if (!handle || isExcludedNetworkHandle(handle) || isInvalidLiveStreamHandle(handle)) continue;
     if (!byHandle.has(handle)) byHandle.set(handle, row);
   }
   return [...byHandle.values()].sort((a, b) =>

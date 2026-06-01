@@ -133,63 +133,74 @@
     return { detectedPageType: "unknown" };
   }
 
-  // src/parser/numbers.ts
-  function normalizeNumericText(raw) {
-    return raw.trim().replace(/[\u00a0\u202f]/g, " ").replace(/,/g, "").replace(/(\d)\s+(?=\d)/g, "$1");
+  // src/parser/avatar.ts
+  function avatarFromRow(row) {
+    const cells = row.querySelectorAll('[role="cell"], td');
+    const creatorCell = cells[0] ?? row;
+    return pickBestAvatarUrl(creatorCell) ?? pickBestAvatarUrl(row);
   }
-  function parseCompactNumber(raw) {
-    if (!raw) return void 0;
-    const t = normalizeNumericText(raw);
-    if (!t) return void 0;
-    const m = t.match(/^([+-]?\d+(?:\.\d+)?)\s*([kmb])?$/i);
-    if (!m) {
-      const digits = t.replace(/[^\d.-]/g, "");
-      if (!digits) return void 0;
-      const n = Number(digits);
-      return Number.isFinite(n) ? Math.round(n) : void 0;
+  function pickBestAvatarUrl(root) {
+    const candidates = [];
+    for (const img of root.querySelectorAll("img")) {
+      const url = bestImgSrc(img);
+      if (!url) continue;
+      candidates.push({ url, score: scoreAvatarImg(img, url, root) });
     }
-    const base = Number(m[1]);
-    if (!Number.isFinite(base)) return void 0;
-    const suffix = (m[2] ?? "").toLowerCase();
-    let mult = 1;
-    if (suffix === "k") mult = 1e3;
-    if (suffix === "m") mult = 1e6;
-    if (suffix === "b") mult = 1e9;
-    return Math.round(base * mult);
-  }
-  function isPlainFormattedNumber(text) {
-    return /^[\s$€£+-]*[\d,.\s]+[kmb]?$/i.test(text.trim());
-  }
-  function firstCompactNumber(text) {
-    const trimmed = text.trim();
-    if (!trimmed) return void 0;
-    if (isPlainFormattedNumber(trimmed)) {
-      const direct = parseCompactNumber(trimmed);
-      if (direct !== void 0) return direct;
+    for (const source of root.querySelectorAll("picture source[srcset], picture source[src]")) {
+      const url = bestImgSrc(source);
+      if (url) candidates.push({ url, score: scoreAvatarImg(source, url, root) + 1 });
     }
-    const noCommas = trimmed.replace(/,/g, "");
-    const m = noCommas.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
-    if (!m) return void 0;
-    return parseCompactNumber(`${m[1]}${m[2] ?? ""}`);
+    const lazyHost = root.querySelector("[data-src], [data-lazy-src], [data-original]");
+    if (lazyHost) {
+      const url = bestImgSrc(lazyHost);
+      if (url) candidates.push({ url, score: scoreAvatarImg(lazyHost, url, root) });
+    }
+    const withBg = root.querySelector("[style*='background-image']");
+    const bg = withBg?.style?.backgroundImage;
+    if (bg) {
+      const m = bg.match(/url\(["']?([^"')]+)["']?\)/i);
+      if (m?.[1] && isUsableAvatarUrl(m[1])) {
+        candidates.push({ url: m[1], score: scoreAvatarImg(withBg, m[1], root) + 2 });
+      }
+    }
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates[0]?.url;
   }
-  function isNonDiamondStatCell(cell) {
-    const t = cell.trim();
-    if (!t) return true;
-    if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
-    if (/^\$[\d,.]+$/.test(t)) return true;
-    if (/^\blevel\s*\d/i.test(t)) return true;
-    if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
-    if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
-    return false;
+  function scoreAvatarImg(el, url, root) {
+    let score = 0;
+    const lowerUrl = url.toLowerCase();
+    const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
+    if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
+    if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
+    if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
+    const w = parseInt(el.getAttribute("width") ?? "", 10);
+    const h = parseInt(el.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && w >= 28 && w <= 96) score += 4;
+    if (!Number.isNaN(h) && h >= 28 && h <= 96) score += 4;
+    if (!Number.isNaN(w) && w > 120 || !Number.isNaN(h) && h > 120) score -= 4;
+    if (root.matches('[role="cell"], td') || root.querySelector('[role="cell"]')?.contains(el)) {
+      score += 3;
+    }
+    if (/tiktokcdn|ibytedapm|byteimg/i.test(lowerUrl)) score += 2;
+    return score;
   }
-  function isNumericStatCell(cell) {
-    const t = cell.trim();
-    if (!t || isNonDiamondStatCell(t)) return false;
-    return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
+  function bestImgSrc(el) {
+    const attrs = ["src", "data-src", "data-lazy-src", "data-original", "data-url"];
+    for (const attr of attrs) {
+      const v = el.getAttribute(attr)?.trim();
+      if (v && isUsableAvatarUrl(v)) return v;
+    }
+    const srcset = el.getAttribute("srcset");
+    if (srcset) {
+      const first = srcset.split(",")[0]?.trim().split(/\s+/)[0]?.trim();
+      if (first && isUsableAvatarUrl(first)) return first;
+    }
+    return void 0;
   }
-  function parseStatNumber(cell) {
-    if (isNonDiamondStatCell(cell)) return void 0;
-    return parseCompactNumber(cell) ?? firstCompactNumber(cell);
+  function isUsableAvatarUrl(url) {
+    if (!url || url.startsWith("data:") || url.startsWith("blob:") || url.length < 12) return false;
+    if (/placeholder|blank|1x1|sprite|favicon/i.test(url)) return false;
+    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
   }
 
   // src/parser/username.ts
@@ -315,194 +326,63 @@
     return extractUsernameWithConfidence(text).username;
   }
 
-  // src/parser/extractLiveNow.ts
-  function liveCardElements(doc) {
-    const selectors = [
-      "table tbody tr",
-      '[role="row"]',
-      '[class*="live"][class*="card"]',
-      '[class*="Live"][class*="Card"]',
-      '[class*="live"][class*="item"]',
-      '[class*="Live"][class*="Item"]',
-      "li"
-    ];
-    const found = /* @__PURE__ */ new Set();
-    for (const sel of selectors) {
-      for (const el of Array.from(doc.querySelectorAll(sel))) {
-        const text = (el.textContent ?? "").toLowerCase();
-        if (text.includes("live") || text.includes("@") || el.querySelector("img[src]") || /\d+\s*viewer/i.test(text)) {
-          if ((el.textContent?.length ?? 0) > 8 && (el.textContent?.length ?? 0) < 600) {
-            found.add(el);
-          }
-        }
-      }
-    }
-    return [...found];
+  // src/parser/numbers.ts
+  function normalizeNumericText(raw) {
+    return raw.trim().replace(/[\u00a0\u202f]/g, " ").replace(/,/g, "").replace(/(\d)\s+(?=\d)/g, "$1");
   }
-  function avatarFrom(el) {
-    const img = el.querySelector("img[src]");
-    const src = img?.getAttribute("src");
-    if (src && !src.startsWith("data:")) return src;
-    return void 0;
-  }
-  function parseLiveCard(el) {
-    const text = (el.textContent ?? "").trim();
-    if (!text) return null;
-    const usernameCandidate = extractUsernameWithConfidence(text, {
-      fromUsernameColumn: true,
-      displayName: void 0
-    });
-    const username = usernameCandidate.username;
-    if (!username) return null;
-    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
-    let streamTitle;
-    let viewerCountText;
-    let liveStartedText;
-    let displayName;
-    for (const line of lines) {
-      const lower = line.toLowerCase();
-      if (!viewerCountText && (lower.includes("viewer") || lower.includes("watching"))) {
-        viewerCountText = line;
-      } else if (!liveStartedText && (lower.includes("started") || lower.includes("duration") || /^live\s+\d+/i.test(line) || /started\s+\d+\s*h/i.test(line) || /started\s+\d+\s*m/i.test(line) || /\blive\s+\d+\s*h/i.test(line) || /\blive\s+\d+\s*m/i.test(line))) {
-        liveStartedText = line;
-      } else if (!streamTitle && line !== username && !line.includes("@") && line.length > 3 && line.length < 100 && !/^\d+$/.test(line)) {
-        if (!displayName && !lower.includes("live")) displayName = line;
-        else if (!streamTitle) streamTitle = line;
-      }
-    }
-    if (!displayName) {
-      displayName = lines.find((l) => l !== username && !l.startsWith("@") && l.length < 60);
-    }
-    const viewerNum = firstCompactNumber(viewerCountText ?? text);
-    if (viewerNum !== void 0 && !viewerCountText) {
-      viewerCountText = `${viewerNum} viewers`;
-    }
-    const liveBadgeDetected = /\blive\b/i.test(text) || Boolean(el.querySelector('[class*="live"], [class*="Live"], [aria-label*="live" i]'));
-    return {
-      tiktokUsername: username,
-      usernameConfidence: usernameCandidate.confidence,
-      usernameSource: usernameCandidate.source,
-      displayName,
-      avatarUrl: avatarFrom(el),
-      streamTitle,
-      viewerCountText,
-      liveStartedText,
-      liveBadgeDetected,
-      rawTextPreview: text.slice(0, 180)
-    };
-  }
-  function dedupeLive(rows) {
-    const seen = /* @__PURE__ */ new Set();
-    const out = [];
-    for (const r of rows) {
-      const key = normalizeTikTokUsername(r.tiktokUsername) ?? "";
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      out.push(r);
-    }
-    return out;
-  }
-  function extractLiveNowRowsFromPage(doc = document) {
-    const cards = liveCardElements(doc);
-    const rows = [];
-    for (const el of cards) {
-      const parsed = parseLiveCard(el);
-      if (parsed) rows.push(parsed);
-    }
-    return dedupeLive(rows);
-  }
-
-  // src/parser/duration.ts
-  function progressActualSegment(raw) {
-    const t = raw.trim();
-    const slash = t.search(/\s*[\/／]\s*/);
-    if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
-    return t.slice(0, slash).replace(/\(level\s*\d+\)/gi, "").trim();
-  }
-  function parseLiveDaysFromCell(raw) {
+  function parseCompactNumber(raw) {
     if (!raw) return void 0;
-    const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
-    if (progress) return Number(progress[1]);
-    const segment = progressActualSegment(raw);
-    const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
-    if (dayMatch) {
-      const n = Number(dayMatch[1]);
-      if (n >= 30) return 0;
-      return n;
-    }
-    if (/^\d+$/.test(segment)) {
-      const n = Number(segment);
-      return n >= 30 ? 0 : n;
-    }
-    if (!raw.includes("/") && !raw.includes("\uFF0F")) {
-      const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
-      if (m) {
-        const n = Number(m[1]);
-        return n >= 30 ? 0 : n;
-      }
-      const compact = parseCompactNumber(raw);
-      if (compact !== void 0 && compact <= 7) return compact;
-      if (compact !== void 0 && compact > 7) return 0;
-      return void 0;
-    }
-    return void 0;
-  }
-  function parseStreamHoursFromCell(raw) {
-    if (!raw) return void 0;
-    const segment = progressActualSegment(raw);
-    if (!segment) {
-      if (/^0\s*h/i.test(raw.trim())) return 0;
-      return void 0;
-    }
-    const seconds = parseDurationToSeconds(segment);
-    if (seconds !== void 0) return Math.round(seconds / 3600 * 10) / 10;
-    if (/^0\s*h/i.test(segment)) return 0;
-    if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
-      const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
-      if (Number.isFinite(h)) return h;
-    }
-    return void 0;
-  }
-  function parseDurationToSeconds(raw) {
-    if (!raw) return void 0;
-    const t = progressActualSegment(raw).toLowerCase();
+    const t = normalizeNumericText(raw);
     if (!t) return void 0;
-    let total = 0;
-    let matched = false;
-    const dayMatch = t.match(/(\d+(?:\.\d+)?)\s*d(?:ays?)?/);
-    if (dayMatch) {
-      total += Number(dayMatch[1]) * 86400;
-      matched = true;
+    const m = t.match(/^([+-]?\d+(?:\.\d+)?)\s*([kmb])?$/i);
+    if (!m) {
+      const digits = t.replace(/[^\d.-]/g, "");
+      if (!digits) return void 0;
+      const n = Number(digits);
+      return Number.isFinite(n) ? Math.round(n) : void 0;
     }
-    const hourMatch = t.match(/(\d+(?:\.\d+)?)\s*h(?:ours?|rs?)?/);
-    if (hourMatch) {
-      total += Number(hourMatch[1]) * 3600;
-      matched = true;
-    } else if (/^\d+(?:\.\d+)?\s*h?$/.test(t) && t.includes("h")) {
-      const n = Number(t.replace(/h/g, ""));
-      if (Number.isFinite(n)) {
-        total += n * 3600;
-        matched = true;
-      }
+    const base = Number(m[1]);
+    if (!Number.isFinite(base)) return void 0;
+    const suffix = (m[2] ?? "").toLowerCase();
+    let mult = 1;
+    if (suffix === "k") mult = 1e3;
+    if (suffix === "m") mult = 1e6;
+    if (suffix === "b") mult = 1e9;
+    return Math.round(base * mult);
+  }
+  function isPlainFormattedNumber(text) {
+    return /^[\s$€£+-]*[\d,.\s]+[kmb]?$/i.test(text.trim());
+  }
+  function firstCompactNumber(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return void 0;
+    if (isPlainFormattedNumber(trimmed)) {
+      const direct = parseCompactNumber(trimmed);
+      if (direct !== void 0) return direct;
     }
-    const minMatch = t.match(/(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?/);
-    if (minMatch) {
-      total += Number(minMatch[1]) * 60;
-      matched = true;
-    }
-    const secMatch = t.match(/(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?/);
-    if (secMatch) {
-      total += Number(secMatch[1]);
-      matched = true;
-    }
-    if (!matched) {
-      const plainHours = t.match(/^(\d+(?:\.\d+)?)$/);
-      if (plainHours && t.length <= 6) {
-        return Math.round(Number(plainHours[1]) * 3600);
-      }
-      return void 0;
-    }
-    return Math.round(total);
+    const noCommas = trimmed.replace(/,/g, "");
+    const m = noCommas.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
+    if (!m) return void 0;
+    return parseCompactNumber(`${m[1]}${m[2] ?? ""}`);
+  }
+  function isNonDiamondStatCell(cell) {
+    const t = cell.trim();
+    if (!t) return true;
+    if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
+    if (/^\$[\d,.]+$/.test(t)) return true;
+    if (/^\blevel\s*\d/i.test(t)) return true;
+    if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
+    if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
+    return false;
+  }
+  function isNumericStatCell(cell) {
+    const t = cell.trim();
+    if (!t || isNonDiamondStatCell(t)) return false;
+    return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
+  }
+  function parseStatNumber(cell) {
+    if (isNonDiamondStatCell(cell)) return void 0;
+    return parseCompactNumber(cell) ?? firstCompactNumber(cell);
   }
 
   // src/parser/gridTable.ts
@@ -659,74 +539,584 @@
     return best;
   }
 
-  // src/parser/avatar.ts
-  function avatarFromRow(row) {
-    const cells = row.querySelectorAll('[role="cell"], td');
-    const creatorCell = cells[0] ?? row;
-    return pickBestAvatarUrl(creatorCell) ?? pickBestAvatarUrl(row);
+  // src/parser/live-badge.ts
+  function isStandaloneLiveBadgeText(text) {
+    const t = text.trim();
+    if (!/^live$/i.test(t)) return false;
+    return t.length <= 6;
   }
-  function pickBestAvatarUrl(root) {
-    const candidates = [];
-    for (const img of root.querySelectorAll("img")) {
-      const url = bestImgSrc(img);
-      if (!url) continue;
-      candidates.push({ url, score: scoreAvatarImg(img, url, root) });
-    }
-    for (const source of root.querySelectorAll("picture source[srcset], picture source[src]")) {
-      const url = bestImgSrc(source);
-      if (url) candidates.push({ url, score: scoreAvatarImg(source, url, root) + 1 });
-    }
-    const lazyHost = root.querySelector("[data-src], [data-lazy-src], [data-original]");
-    if (lazyHost) {
-      const url = bestImgSrc(lazyHost);
-      if (url) candidates.push({ url, score: scoreAvatarImg(lazyHost, url, root) });
-    }
-    const withBg = root.querySelector("[style*='background-image']");
-    const bg = withBg?.style?.backgroundImage;
-    if (bg) {
-      const m = bg.match(/url\(["']?([^"')]+)["']?\)/i);
-      if (m?.[1] && isUsableAvatarUrl(m[1])) {
-        candidates.push({ url: m[1], score: scoreAvatarImg(withBg, m[1], root) + 2 });
+  var LIVE_ACCENT_RGB = [
+    [254, 44, 85],
+    [255, 23, 68],
+    [255, 0, 80],
+    [238, 29, 82],
+    [255, 59, 92]
+  ];
+  function parseCssColorChannels(css) {
+    const t = css.trim().toLowerCase();
+    if (!t || t === "transparent" || t === "none") return null;
+    const hex = t.match(/#([0-9a-f]{3,8})\b/i)?.[1];
+    if (hex) {
+      if (hex.length === 3) {
+        return [
+          parseInt(hex[0] + hex[0], 16),
+          parseInt(hex[1] + hex[1], 16),
+          parseInt(hex[2] + hex[2], 16)
+        ];
+      }
+      if (hex.length >= 6) {
+        return [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
       }
     }
-    candidates.sort((a, b) => b.score - a.score);
-    return candidates[0]?.url;
+    const rgb = t.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (rgb) return [Number(rgb[1]), Number(rgb[2]), Number(rgb[3])];
+    return null;
   }
-  function scoreAvatarImg(el, url, root) {
-    let score = 0;
-    const lowerUrl = url.toLowerCase();
-    const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
-    if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
-    if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
-    if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
-    const w = parseInt(el.getAttribute("width") ?? "", 10);
-    const h = parseInt(el.getAttribute("height") ?? "", 10);
-    if (!Number.isNaN(w) && w >= 28 && w <= 96) score += 4;
-    if (!Number.isNaN(h) && h >= 28 && h <= 96) score += 4;
-    if (!Number.isNaN(w) && w > 120 || !Number.isNaN(h) && h > 120) score -= 4;
-    if (root.matches('[role="cell"], td') || root.querySelector('[role="cell"]')?.contains(el)) {
-      score += 3;
+  function cssColorLooksLikeLiveRing(css) {
+    const rgb = parseCssColorChannels(css ?? "");
+    if (!rgb) return false;
+    const [r, g, b] = rgb;
+    if (r < 200 || g > 120 || b > 140) return false;
+    for (const accent of LIVE_ACCENT_RGB) {
+      const dist = Math.abs(r - accent[0]) + Math.abs(g - accent[1]) + Math.abs(b - accent[2]);
+      if (dist < 80) return true;
     }
-    if (/tiktokcdn|ibytedapm|byteimg/i.test(lowerUrl)) score += 2;
-    return score;
+    if (r > 220 && g < 90 && b < 120) return true;
+    return false;
   }
-  function bestImgSrc(el) {
-    const attrs = ["src", "data-src", "data-lazy-src", "data-original", "data-url"];
-    for (const attr of attrs) {
-      const v = el.getAttribute(attr)?.trim();
-      if (v && isUsableAvatarUrl(v)) return v;
+  function classHintsLiveRing(cls) {
+    const c = cls.toLowerCase();
+    if (/\blive-ring\b|\blive-badge\b|\bgoing-live\b|\bis-live\b|\bon-live\b|\blive-avatar\b/.test(c)) {
+      return true;
     }
-    const srcset = el.getAttribute("srcset");
-    if (srcset) {
-      const first = srcset.split(",")[0]?.trim().split(/\s+/)[0]?.trim();
-      if (first && isUsableAvatarUrl(first)) return first;
+    if (/\blive\b/.test(c) && /ring|badge|avatar|status|dot|indicator|border|living|streaming/.test(c)) {
+      return true;
+    }
+    if (/border.*red|red.*ring|live.*border|living/i.test(c)) return true;
+    return false;
+  }
+  function wrapperHasLiveColoredRing(img) {
+    let el = img.parentElement;
+    for (let depth = 0; depth < 7 && el; depth++) {
+      const cls = elementClassText(el);
+      if (classHintsLiveRing(cls)) return true;
+      const inline = el.getAttribute("style") ?? "";
+      if (/border[^;]*(?:#fe2c55|#ff[0-9a-f]{3,4}|rgb\(\s*2[0-9]{2})/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
+        return true;
+      }
+      if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
+        try {
+          const style = getComputedStyle(el);
+          const borderW = parseFloat(style.borderTopWidth || "0") + parseFloat(style.borderRightWidth || "0");
+          const outlineW = parseFloat(style.outlineWidth || "0");
+          if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
+          if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
+          if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
+        } catch {
+        }
+      }
+      for (const svg of el.querySelectorAll("svg circle, svg path, svg rect")) {
+        const stroke = svg.getAttribute("stroke") ?? svg.getAttribute("fill") ?? svg.style?.stroke ?? "";
+        if (cssColorLooksLikeLiveRing(stroke)) return true;
+      }
+      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
+      el = el.parentElement;
+    }
+    return false;
+  }
+  function imgHasLiveIndicator(img) {
+    if (wrapperHasLiveColoredRing(img)) return true;
+    let el = img;
+    for (let depth = 0; depth < 8 && el; depth++) {
+      const cls = elementClassText(el);
+      if (classHintsLiveRing(cls)) return true;
+      const label = el.getAttribute("aria-label") ?? "";
+      if (/\b(is\s+)?live(?!.*\bdur)/i.test(label) && !/go\s*live|duration/i.test(label)) {
+        return true;
+      }
+      for (const node of el.querySelectorAll("span, div, label, p, strong")) {
+        if ((node.textContent ?? "").length > 12) continue;
+        const direct = Array.from(node.childNodes).filter((n) => n.nodeType === 3).map((n) => (n.textContent ?? "").trim()).join("");
+        const own = direct || (node.childNodes.length <= 2 ? (node.textContent ?? "").trim() : "");
+        if (isStandaloneLiveBadgeText(own)) return true;
+      }
+      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
+      el = el.parentElement;
+    }
+    return false;
+  }
+  function isChatCommentLine(line) {
+    const t = line.trim();
+    if (t.length < 4 || t.length > 200) return false;
+    return /^[a-z0-9._]{2,40}:\s+\S/i.test(t);
+  }
+  function isLikelyChatOverlay(el) {
+    const cls = elementClassText(el).toLowerCase();
+    if (/chat|comment|message|danmaku|bullet|im-message/i.test(cls)) return true;
+    const text = el.textContent ?? "";
+    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    if (lines.length < 2) return false;
+    const chatLines = lines.filter(isChatCommentLine);
+    return chatLines.length >= 2 && chatLines.length / lines.length >= 0.25;
+  }
+
+  // src/parser/live-username.ts
+  var LIVE_HANDLE_BLOCKLIST = /* @__PURE__ */ new Set([
+    "creators",
+    "creatorsmanage",
+    "creatorsmanagement",
+    "creator",
+    "manage",
+    "management",
+    "live",
+    "liveduration",
+    "livedur",
+    "duration",
+    "diamonds",
+    "diamond",
+    "gifters",
+    "gifter",
+    "viewers",
+    "viewer",
+    "follower",
+    "followers",
+    "current",
+    "promote",
+    "showing",
+    "estimated",
+    "bonus",
+    "ratio",
+    "streaming",
+    "stream",
+    "inactive",
+    "notable",
+    "eligible"
+  ]);
+  function isInvalidLiveStreamHandle(raw) {
+    const handle = cleanTikTokUsername(raw);
+    if (!handle) return true;
+    if (LIVE_HANDLE_BLOCKLIST.has(handle)) return true;
+    if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing|estimated|bonus|ratio/i.test(handle)) {
+      return true;
+    }
+    if (handle.startsWith("live") && handle.length <= 14) return true;
+    if (handle.startsWith("creator") && handle.length <= 16) return true;
+    return false;
+  }
+
+  // src/parser/extractLiveNow.ts
+  var DOC_POS_FOLLOWING = 4;
+  var DOC_POS_PRECEDING = 2;
+  function isPageChromeText(text) {
+    const t = text.trim().toLowerCase();
+    if (t.length < 8) return true;
+    if (/^promote their live/i.test(t)) return true;
+    if (/^showing\s+\d+-\d+\s+of\s+\d+/i.test(t)) return true;
+    if (t === "live now" || t === "live") return true;
+    return false;
+  }
+  function cardHasLiveStats(text) {
+    const hasDuration = /live\s*(?:dur(?:ation)?)?/i.test(text);
+    const hasEarnings = /diamonds?|gifts?/i.test(text);
+    const hasAudience = /viewers?|watching|current\s*viewers?/i.test(text);
+    return hasDuration && hasEarnings && hasAudience;
+  }
+  function cardHasCreatorHeader(el, headerText) {
+    if (/id\s*\d{4,}/i.test(headerText)) return true;
+    if (usernameFromLinks(el)) return true;
+    for (const img of el.querySelectorAll("img[src]")) {
+      if (!isStreamPreviewImage(img, el)) return true;
+    }
+    return /^@?[a-z0-9._]{2,}/i.test(headerText.split(/\n/)[0] ?? "");
+  }
+  function compareDocumentOrder(a, b) {
+    const pos = a.compareDocumentPosition(b);
+    if (pos & DOC_POS_FOLLOWING) return -1;
+    if (pos & DOC_POS_PRECEDING) return 1;
+    return 0;
+  }
+  function dedupeNested(elements) {
+    const sorted = [...elements].sort(compareDocumentOrder);
+    const kept = [];
+    for (const el of sorted) {
+      if (kept.some((k) => k.contains(el) && k !== el)) continue;
+      if (kept.some((k) => el.contains(k) && k !== el)) {
+        const idx = kept.findIndex((k) => el.contains(k));
+        if (idx >= 0) kept[idx] = el;
+        continue;
+      }
+      kept.push(el);
+    }
+    return kept;
+  }
+  function imagePixelArea(img) {
+    const w = parseInt(img.getAttribute("width") ?? "", 10);
+    const h = parseInt(img.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && !Number.isNaN(h) && w > 0 && h > 0) return w * h;
+    return 0;
+  }
+  function isStreamPreviewImage(img, cardRoot) {
+    const cls = `${elementClassText(img)} ${elementClassText(img.parentElement ?? img)}`.toLowerCase();
+    if (/preview|cover|video|player|stream|thumb|room/i.test(cls)) return true;
+    const w = parseInt(img.getAttribute("width") ?? "", 10);
+    const h = parseInt(img.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && w > 100) return true;
+    if (!Number.isNaN(h) && h > 100) return true;
+    const root = cardRoot ?? img.closest("li, article, section, div");
+    if (root) {
+      const imgs = [...root.querySelectorAll("img[src]")].filter((i) => {
+        const src = i.getAttribute("src") ?? "";
+        return src && !src.startsWith("data:");
+      });
+      if (imgs.length >= 2) {
+        const areas = imgs.map(imagePixelArea);
+        const max = Math.max(...areas);
+        const mine = imagePixelArea(img);
+        if (max > 0 && mine === max && max >= 12e3) return true;
+      }
+    }
+    return false;
+  }
+  function liveBadgeImagesIn(root) {
+    const imgs = [];
+    for (const img of root.querySelectorAll("img[src]")) {
+      const src = img.getAttribute("src") ?? "";
+      if (!src || src.startsWith("data:") || src.includes("emoji")) continue;
+      if (isStreamPreviewImage(img)) continue;
+      if (imgHasLiveIndicator(img)) imgs.push(img);
+    }
+    return imgs;
+  }
+  function climbToLiveCard(img) {
+    let el = img.parentElement;
+    for (let depth = 0; depth < 12 && el; depth += 1) {
+      if (isLikelyChatOverlay(el)) {
+        el = el.parentElement;
+        continue;
+      }
+      const text = (el.textContent ?? "").trim();
+      if (text.length >= 30 && text.length <= 2800 && cardHasLiveStats(text) && !isPageChromeText(text)) {
+        return el;
+      }
+      el = el.parentElement;
+    }
+    return null;
+  }
+  function findLiveCardsByStatsPanel(doc) {
+    const roots = [];
+    const candidates = doc.querySelectorAll("div, li, article, section");
+    for (const el of candidates) {
+      const text = (el.textContent ?? "").trim();
+      if (text.length < 40 || text.length > 2800) continue;
+      if (!cardHasLiveStats(text) || isPageChromeText(text) || isLikelyChatOverlay(el)) continue;
+      if (!el.querySelector("img[src]")) continue;
+      const headerText = cardHeaderText(text);
+      if (!cardHasCreatorHeader(el, headerText)) continue;
+      roots.push(el);
+    }
+    return roots;
+  }
+  function findLiveCreatorCards(doc) {
+    const roots = [];
+    for (const img of liveBadgeImagesIn(doc)) {
+      const card = climbToLiveCard(img);
+      if (card) roots.push(card);
+    }
+    roots.push(...findLiveCardsByStatsPanel(doc));
+    for (const a of doc.querySelectorAll('a[href*="/live"], a[href*="LiveRoom"], a[href*="live_room"]')) {
+      const href = a.getAttribute("href") ?? "";
+      if (!/@[a-z0-9._]+/i.test(href) && !/live/i.test(href)) continue;
+      let el = a;
+      for (let depth = 0; depth < 12 && el; depth += 1) {
+        const text = (el.textContent ?? "").trim();
+        if (text.length >= 30 && cardHasLiveStats(text) && !isPageChromeText(text) && !isLikelyChatOverlay(el)) {
+          roots.push(el);
+          break;
+        }
+        el = el.parentElement;
+      }
+    }
+    return dedupeNested(roots);
+  }
+  function cardHeaderText(fullText) {
+    const idx = fullText.search(/live\s*(?:dur(?:ation)?)?\.?/i);
+    if (idx > 20) return fullText.slice(0, idx).trim();
+    const idx2 = fullText.search(/\b(?:diamonds?|gifts?)\b/i);
+    if (idx2 > 20) return fullText.slice(0, idx2).trim();
+    return fullText.slice(0, Math.min(fullText.length, 500)).trim();
+  }
+  function avatarFrom(el) {
+    for (const img of el.querySelectorAll("img[src]")) {
+      if (isStreamPreviewImage(img, el)) continue;
+      if (imgHasLiveIndicator(img)) {
+        const src = img.getAttribute("src");
+        if (src && !src.startsWith("data:")) return src;
+      }
+    }
+    return avatarFromRow(el);
+  }
+  function displayNameFrom(el, headerText) {
+    for (const img of el.querySelectorAll("img[alt]")) {
+      if (isStreamPreviewImage(img, el)) continue;
+      const alt = img.getAttribute("alt")?.trim();
+      if (alt && alt.length > 1 && alt.length < 80 && !/^level\s*\d/i.test(alt)) {
+        const asHandle = cleanTikTokUsername(alt);
+        if (!asHandle || asHandle !== alt.replace(/\s+/g, "").toLowerCase()) return alt;
+      }
+    }
+    for (const line of headerText.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
+      if (isChatCommentLine(line)) continue;
+      if (/^id\s*\d/i.test(line)) continue;
+      if (line.startsWith("@")) continue;
+      if (line.length > 3 && line.length < 64 && !/live|diamond|viewer|gifter/i.test(line)) {
+        return line;
+      }
     }
     return void 0;
   }
-  function isUsableAvatarUrl(url) {
-    if (!url || url.startsWith("data:") || url.startsWith("blob:") || url.length < 12) return false;
-    if (/placeholder|blank|1x1|sprite|favicon/i.test(url)) return false;
-    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
+  function usernameFromLinks(el, scope) {
+    const root = scope ?? el;
+    for (const a of root.querySelectorAll("a[href]")) {
+      const href = a.getAttribute("href") ?? "";
+      const m = href.match(/tiktok\.com\/@([a-z0-9._]+)/i);
+      if (m) {
+        const u = cleanTikTokUsername(m[1]);
+        if (u && !isInvalidLiveStreamHandle(u)) return u;
+      }
+    }
+    return void 0;
+  }
+  function usernameFromHeader(el, headerText, displayName) {
+    const headerRoot = el.querySelector('[class*="header"], [class*="Header"], [class*="creator-info"]') ?? el;
+    const fromLink = usernameFromLinks(el, headerRoot);
+    if (fromLink) return fromLink;
+    for (const img of headerRoot.querySelectorAll("img[alt]")) {
+      if (isStreamPreviewImage(img, el)) continue;
+      const alt = cleanTikTokUsername(img.getAttribute("alt"));
+      if (alt && !isInvalidLiveStreamHandle(alt)) return alt;
+    }
+    const lines = headerText.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    const usable = lines.filter((line) => {
+      if (isChatCommentLine(line)) return false;
+      if (/^id\s*\d/i.test(line)) return false;
+      if (/live\s*dur|diamonds?|gifters?|viewers?|current|new\s*foll|promote|showing/i.test(line)) {
+        return false;
+      }
+      return line.length <= 48;
+    });
+    for (const line of usable) {
+      const at = line.match(/^@([a-z0-9._]{2,40})/i);
+      if (at) {
+        const u = cleanTikTokUsername(at[1]);
+        if (u && !isInvalidLiveStreamHandle(u)) return u;
+      }
+    }
+    for (const line of usable) {
+      const candidate = extractUsernameWithConfidence(line, {
+        fromUsernameColumn: true,
+        displayName
+      });
+      if (candidate.username && !isInvalidLiveStreamHandle(candidate.username)) {
+        return candidate.username;
+      }
+    }
+    const inferred = cleanTikTokUsername(displayName);
+    if (inferred && !isInvalidLiveStreamHandle(inferred)) return inferred;
+    return void 0;
+  }
+  function parseStatValue(text, label) {
+    const m = text.match(
+      new RegExp(
+        `${label.source}\\s*[:.\\s]*([\\d,.]+\\s*[kmb]?|\\d+\\s*[hm](?:\\s*\\d+\\s*m)?)`,
+        "i"
+      )
+    );
+    if (m?.[1]) return m[1].trim();
+    return void 0;
+  }
+  function parseLiveCard(el) {
+    if (isLikelyChatOverlay(el)) return null;
+    const text = (el.textContent ?? "").trim();
+    if (!text || isPageChromeText(text) || !cardHasLiveStats(text)) return null;
+    if (!el.querySelector("img[src]")) return null;
+    const headerText = cardHeaderText(text);
+    const displayName = displayNameFrom(el, headerText);
+    const username = usernameFromHeader(el, headerText, displayName);
+    if (!username) return null;
+    const liveDuration = parseStatValue(text, /live\s*(?:dur(?:ation)?)?\.?\.?/) ?? text.match(/live\s*(?:dur(?:ation)?)?\.?\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
+    const diamonds = parseStatValue(text, /diamonds?/) ?? parseStatValue(text, /gifts?/);
+    const viewers = parseStatValue(text, /viewers?(?!\s*count)/);
+    const watching = parseStatValue(text, /current\.?\.?/) ?? text.match(/(\d+)\s*(?:watching|viewers?\s*now)/i)?.[1];
+    let viewerCountText;
+    const parts = [];
+    if (watching) parts.push(`${watching} watching now`);
+    if (viewers) parts.push(`${viewers} viewers`);
+    if (diamonds) parts.push(`${diamonds} diamonds`);
+    if (parts.length) viewerCountText = parts.join(" \xB7 ");
+    const badgeSeen = liveBadgeImagesIn(el).length > 0 || !!usernameFromLinks(el);
+    return {
+      tiktokUsername: username,
+      usernameConfidence: "high",
+      usernameSource: "username_column",
+      displayName: displayName ?? void 0,
+      avatarUrl: avatarFrom(el),
+      viewerCountText,
+      liveStartedText: liveDuration ?? void 0,
+      liveBadgeDetected: badgeSeen,
+      rawTextPreview: headerText.slice(0, 200)
+    };
+  }
+  function dedupeLive(rows) {
+    const seen = /* @__PURE__ */ new Set();
+    const out = [];
+    for (const r of rows) {
+      const key = normalizeTikTokUsername(r.tiktokUsername) ?? "";
+      if (!key || seen.has(key) || isInvalidLiveStreamHandle(key)) continue;
+      seen.add(key);
+      out.push(r);
+    }
+    return out;
+  }
+  function extractLiveNowRowsFromPage(doc = document) {
+    const cards = findLiveCreatorCards(doc);
+    const rows = [];
+    for (const el of cards) {
+      const parsed = parseLiveCard(el);
+      if (parsed) rows.push(parsed);
+    }
+    return dedupeLive(rows);
+  }
+  function creatorTableRows(doc) {
+    const grid = findCreatorContributionGrid(doc);
+    if (grid) {
+      const rows = dataRowsInContainer(grid);
+      if (rows.length > 0) return rows;
+    }
+    const gridRows = Array.from(doc.querySelectorAll('[role="row"]')).filter(
+      (el) => !el.querySelector('[role="columnheader"]') && (el.querySelector('[role="cell"]') || el.querySelector("td")) && (el.textContent?.length ?? 0) > 15
+    );
+    const fromTable = Array.from(doc.querySelectorAll("table tbody tr")).filter(
+      (tr) => (tr.textContent?.length ?? 0) > 15
+    );
+    if (gridRows.length >= Math.max(fromTable.length, 1)) return gridRows;
+    return fromTable;
+  }
+  function extractLiveRowsFromCreatorTable(doc = document) {
+    const rows = [];
+    for (const row of creatorTableRows(doc)) {
+      const creatorCell = row.querySelector('[role="cell"], td') ?? row;
+      const avatarImg = Array.from(creatorCell.querySelectorAll("img[src]")).find(
+        (img) => !isStreamPreviewImage(img)
+      );
+      if (!avatarImg || !imgHasLiveIndicator(avatarImg)) continue;
+      const cellText = (creatorCell.textContent ?? "").trim();
+      const displayName = displayNameFrom(creatorCell, cellText);
+      const username = usernameFromHeader(creatorCell, cellText, displayName);
+      if (!username) continue;
+      rows.push({
+        tiktokUsername: username,
+        usernameConfidence: "high",
+        usernameSource: "username_column",
+        displayName: displayName ?? void 0,
+        avatarUrl: avatarFromRow(creatorCell) ?? avatarFrom(creatorCell),
+        liveBadgeDetected: true,
+        rawTextPreview: cellText.slice(0, 200)
+      });
+    }
+    return dedupeLive(rows);
+  }
+
+  // src/parser/duration.ts
+  function progressActualSegment(raw) {
+    const t = raw.trim();
+    const slash = t.search(/\s*[\/／]\s*/);
+    if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
+    return t.slice(0, slash).replace(/\(level\s*\d+\)/gi, "").trim();
+  }
+  function parseLiveDaysFromCell(raw) {
+    if (!raw) return void 0;
+    const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
+    if (progress) return Number(progress[1]);
+    const segment = progressActualSegment(raw);
+    const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
+    if (dayMatch) {
+      const n = Number(dayMatch[1]);
+      if (n >= 30) return 0;
+      return n;
+    }
+    if (/^\d+$/.test(segment)) {
+      const n = Number(segment);
+      return n >= 30 ? 0 : n;
+    }
+    if (!raw.includes("/") && !raw.includes("\uFF0F")) {
+      const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
+      if (m) {
+        const n = Number(m[1]);
+        return n >= 30 ? 0 : n;
+      }
+      const compact = parseCompactNumber(raw);
+      if (compact !== void 0 && compact <= 7) return compact;
+      if (compact !== void 0 && compact > 7) return 0;
+      return void 0;
+    }
+    return void 0;
+  }
+  function parseStreamHoursFromCell(raw) {
+    if (!raw) return void 0;
+    const segment = progressActualSegment(raw);
+    if (!segment) {
+      if (/^0\s*h/i.test(raw.trim())) return 0;
+      return void 0;
+    }
+    const seconds = parseDurationToSeconds(segment);
+    if (seconds !== void 0) return Math.round(seconds / 3600 * 10) / 10;
+    if (/^0\s*h/i.test(segment)) return 0;
+    if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
+      const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
+      if (Number.isFinite(h)) return h;
+    }
+    return void 0;
+  }
+  function parseDurationToSeconds(raw) {
+    if (!raw) return void 0;
+    const t = progressActualSegment(raw).toLowerCase();
+    if (!t) return void 0;
+    let total = 0;
+    let matched = false;
+    const dayMatch = t.match(/(\d+(?:\.\d+)?)\s*d(?:ays?)?/);
+    if (dayMatch) {
+      total += Number(dayMatch[1]) * 86400;
+      matched = true;
+    }
+    const hourMatch = t.match(/(\d+(?:\.\d+)?)\s*h(?:ours?|rs?)?/);
+    if (hourMatch) {
+      total += Number(hourMatch[1]) * 3600;
+      matched = true;
+    } else if (/^\d+(?:\.\d+)?\s*h?$/.test(t) && t.includes("h")) {
+      const n = Number(t.replace(/h/g, ""));
+      if (Number.isFinite(n)) {
+        total += n * 3600;
+        matched = true;
+      }
+    }
+    const minMatch = t.match(/(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?/);
+    if (minMatch) {
+      total += Number(minMatch[1]) * 60;
+      matched = true;
+    }
+    const secMatch = t.match(/(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?/);
+    if (secMatch) {
+      total += Number(secMatch[1]);
+      matched = true;
+    }
+    if (!matched) {
+      const plainHours = t.match(/^(\d+(?:\.\d+)?)$/);
+      if (plainHours && t.length <= 6) {
+        return Math.round(Number(plainHours[1]) * 3600);
+      }
+      return void 0;
+    }
+    return Math.round(total);
   }
 
   // src/parser/extractRows.ts
@@ -1018,6 +1408,7 @@
         liveRows: extractLiveNowRowsFromPage(doc)
       };
     }
+    const liveFromTable = detection.detectedPageType === "creator_stats" || detection.detectedPageType === "manage_relationship" ? extractLiveRowsFromCreatorTable(doc) : [];
     return {
       sourcePageUrl: url,
       detectedPageType: detection.detectedPageType,
@@ -1026,7 +1417,7 @@
       statPeriodStart: detection.statPeriodStart,
       statPeriodEnd: detection.statPeriodEnd,
       rows: extractCreatorRowsFromPage(doc, detection.detectedPageType, detection.relationshipTab),
-      liveRows: []
+      liveRows: liveFromTable
     };
   }
 

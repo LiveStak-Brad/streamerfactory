@@ -5,6 +5,7 @@ import { MembersLiveNowSection } from "@/components/members/MembersLiveNowSectio
 import { MembersLeaderboardPreview } from "@/components/rankings/MembersLeaderboardPreview";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
+import { enrichLiveNowForDisplay } from "@/lib/creator-network/live-now-display";
 import { getPublicLiveNowSnapshots } from "@/lib/creator-network/queries";
 import { getNetworkMembersForDirectory } from "@/lib/members/members-directory-data";
 
@@ -27,6 +28,7 @@ export default async function MembersPage() {
     getNetworkMembersForDirectory(),
     getPublicLiveNowSnapshots(),
   ]);
+  const liveEntries = enrichLiveNowForDisplay(liveNow.entries, members);
 
   return (
     <>
@@ -60,7 +62,7 @@ export default async function MembersPage() {
       </Section>
 
       <Section variant="muted" className="!py-14 sm:!py-16" containerClassName="max-w-6xl">
-        <MembersLiveNowSection importedAt={liveNow.importedAt} entries={liveNow.entries} />
+        <MembersLiveNowSection importedAt={liveNow.importedAt} entries={liveEntries} />
         <MembersDirectory members={members} importedAt={importedAt} fromImport={fromImport} />
         <MembersLeaderboardPreview />
       </Section>

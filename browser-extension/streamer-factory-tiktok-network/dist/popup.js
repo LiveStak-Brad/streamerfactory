@@ -152,7 +152,8 @@
       const liveRows = snapshot.liveRows?.length ? snapshot.liveRows : payload.liveRows ?? [];
       pageTypeEl.textContent = `Page: ${snapshot.detectedPageType}${snapshot.relationshipTab ? ` \xB7 ${snapshot.relationshipTab}` : ""}`;
       const count = snapshot.detectedPageType === "live_now" ? liveRows.length : statRows.length;
-      rowCountEl.textContent = `Rows: ${count}`;
+      const liveExtra = snapshot.detectedPageType !== "live_now" && liveRows.length > 0 ? ` \xB7 ${liveRows.length} LIVE (ring)` : "";
+      rowCountEl.textContent = `Rows: ${count}${liveExtra}`;
       const previewLines = snapshot.detectedPageType === "live_now" ? liveRows.slice(0, 5).map(
         (r) => `@${r.tiktokUsername} [${(r.usernameConfidence ?? "low").toUpperCase()}] \xB7 ${r.displayName ?? ""}`
       ) : statRows.slice(0, 5).map((r) => {
@@ -161,7 +162,10 @@
         return `@${r.tiktokUsername} \xB7 ${diamonds} \xB7 ${conf} confidence`;
       });
       if (previewLines.length > 0) {
-        previewEl.textContent = previewLines.join("\n");
+        const liveNote = snapshot.detectedPageType !== "live_now" && liveRows.length > 0 ? `
+
+LIVE ring: ${liveRows.slice(0, 3).map((r) => `@${r.tiktokUsername}`).join(", ")}` : "";
+        previewEl.textContent = previewLines.join("\n") + liveNote;
       } else if (snapshot.detectedPageType === "live_now") {
         previewEl.textContent = "Page detected: LIVE now \xB7 0 creators on screen.\n(Empty state is OK \u2014 sync when someone is live, or try Manage Relationship / stats pages.)";
       } else {

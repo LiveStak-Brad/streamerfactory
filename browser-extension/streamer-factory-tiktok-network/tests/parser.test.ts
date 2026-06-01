@@ -279,6 +279,67 @@ test("defaultBoundsForKind uses calendar month", () => {
   assert.equal(bounds.end, "2025-06-30");
 });
 
+test("live now backstage cards parse real handles not UI labels", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-backstage.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 2);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "bettsmart633");
+  assert.equal(snap.liveRows[1]?.tiktokUsername, "cj_allycat93");
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "creatorsmanage"), false);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "liveduration"), false);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "king_reaper5150"), false);
+  assert.equal(snap.liveRows[0]?.liveStartedText, "13m");
+  assert.equal(snap.liveRows[0]?.liveBadgeDetected, true);
+});
+
+test("creator stats table LIVE ring exports liveRows alongside stats", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/creator-stats-live-ring.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/data/performance",
+    document,
+  );
+  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.liveRows.length, 1);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
+  assert.equal(snap.liveRows[0]?.liveBadgeDetected, true);
+});
+
+test("incentives role=grid pink ring detects LIVE on creator row", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/incentives-grid-live-ring.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/revenue/task",
+    document,
+  );
+  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.liveRows.length, 1);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
+});
+
+test("live now page accepts Gifts label instead of Diamonds", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-backstage-gifts.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 2);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
+  assert.equal(snap.liveRows[1]?.tiktokUsername, "jasmine_won");
+});
+
 test("does not treat Level as username", () => {
   const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
   const { document } = parseHTML(html);

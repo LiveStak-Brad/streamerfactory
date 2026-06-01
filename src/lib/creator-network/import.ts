@@ -75,10 +75,9 @@ export async function importCreatorNetworkPayload(
     importedAt: new Date(),
   });
 
-  try {
-    if (payload.detectedPageType === "live_now") {
-      const liveRows: LiveRowPayload[] =
-        payload.liveRows ??
+  const liveRowsForImport: LiveRowPayload[] =
+    payload.detectedPageType === "live_now"
+      ? (payload.liveRows ??
         payload.rows.map((r) => ({
           tiktokUsername: r.tiktokUsername,
           displayName: r.displayName,
@@ -88,41 +87,28 @@ export async function importCreatorNetworkPayload(
           liveStartedText: r.liveDurationText,
           usernameConfidence: r.usernameConfidence,
           usernameSource: r.usernameSource,
-        }));
+        })))
+      : (payload.liveRows ?? []);
 
-      for (const live of liveRows) {
-        const username = live.tiktokUsername?.trim();
-        if (!username) {
-          rejectedRows += 1;
-          continue;
-        }
-        const canonical = resolveCanonicalHandle(username);
-        const profileId = matchProfileId(maps, username);
-        if (profileId) matchedProfiles += 1;
-        if (profileId && normalizeConfidence(live.usernameConfidence) === "low") lowConfidenceMatches += 1;
-        else unmatchedUsernames.add(canonical);
-
-        const { error } = await supabase.from("creator_network_live_snapshots").insert({
-          batch_id: batchId,
-          profile_id: profileId,
-          tiktok_username: canonical,
-          tiktok_display_name: live.displayName ?? null,
-          username_confidence: normalizeConfidence(live.usernameConfidence),
-          username_source: live.usernameSource ?? null,
-          avatar_url: live.avatarUrl ?? null,
-          stream_title: live.streamTitle ?? null,
-          viewer_count_text: live.viewerCountText ?? null,
-          live_started_text: live.liveStartedText ?? null,
-          live_badge_detected: live.liveBadgeDetected === true,
-          source_page_url: payload.sourcePageUrl,
-          imported_by_profile_id: importedByProfileId,
+  try {
+    if (payload.detectedPageType === "live_now") {
+      for (const live of liveRowsForImport) {
+        const inserted = await insertLiveSnapshotRow({
+          supabase,
+          batchId,
+          payload,
+          live,
+          maps,
+          importedByProfileId,
         });
-
-        if (error) {
-          rejectedRows += 1;
-        } else {
+        if (inserted.ok) {
           acceptedRows += 1;
           liveRowsAccepted += 1;
+          if (inserted.profileId) matchedProfiles += 1;
+          if (inserted.profileId && inserted.lowConfidence) lowConfidenceMatches += 1;
+          else if (inserted.canonical) unmatchedUsernames.add(inserted.canonical);
+        } else {
+          rejectedRows += 1;
         }
       }
     } else {
@@ -201,6 +187,28 @@ export async function importCreatorNetworkPayload(
           }
         }
       }
+
+      if (liveRowsForImport.length > 0) {
+        for (const live of liveRowsForImport) {
+          const inserted = await insertLiveSnapshotRow({
+            supabase,
+            batchId,
+            payload,
+            live,
+            maps,
+            importedByProfileId,
+          });
+          if (inserted.ok) {
+            acceptedRows += 1;
+            liveRowsAccepted += 1;
+            if (inserted.profileId) matchedProfiles += 1;
+            if (inserted.profileId && inserted.lowConfidence) lowConfidenceMatches += 1;
+            else if (inserted.canonical) unmatchedUsernames.add(inserted.canonical);
+          } else {
+            rejectedRows += 1;
+          }
+        }
+      }
     }
 
     if (
@@ -234,13 +242,56 @@ export async function importCreatorNetworkPayload(
       matchedProfiles,
       lowConfidenceMatches,
       unmatchedUsernames: [...unmatchedUsernames],
-      liveRowsAccepted: payload.detectedPageType === "live_now" ? liveRowsAccepted : undefined,
+      liveRowsAccepted: liveRowsAccepted > 0 ? liveRowsAccepted : undefined,
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Import failed.";
     await failBatch(supabase, batchId, msg);
     return { ok: false, error: msg };
   }
+}
+
+async function insertLiveSnapshotRow(args: {
+  supabase: Awaited<ReturnType<typeof createClient>>;
+  batchId: string;
+  payload: ImportPayload;
+  live: LiveRowPayload;
+  maps: Awaited<ReturnType<typeof buildProfileMatchMaps>>["maps"];
+  importedByProfileId: string;
+}): Promise<{
+  ok: boolean;
+  profileId?: string | null;
+  canonical?: string;
+  lowConfidence?: boolean;
+}> {
+  const { supabase, batchId, payload, live, maps, importedByProfileId } = args;
+  const username = live.tiktokUsername?.trim();
+  if (!username) return { ok: false };
+
+  const canonical = resolveCanonicalHandle(username);
+  if (isExcludedNetworkHandle(canonical)) return { ok: false };
+
+  const profileId = matchProfileId(maps, username);
+  const lowConfidence = !!profileId && normalizeConfidence(live.usernameConfidence) === "low";
+
+  const { error } = await supabase.from("creator_network_live_snapshots").insert({
+    batch_id: batchId,
+    profile_id: profileId,
+    tiktok_username: canonical,
+    tiktok_display_name: live.displayName ?? null,
+    username_confidence: normalizeConfidence(live.usernameConfidence),
+    username_source: live.usernameSource ?? null,
+    avatar_url: live.avatarUrl ?? null,
+    stream_title: live.streamTitle ?? null,
+    viewer_count_text: live.viewerCountText ?? null,
+    live_started_text: live.liveStartedText ?? null,
+    live_badge_detected: live.liveBadgeDetected === true,
+    source_page_url: payload.sourcePageUrl,
+    imported_by_profile_id: importedByProfileId,
+  });
+
+  if (error) return { ok: false };
+  return { ok: true, profileId, canonical, lowConfidence };
 }
 
 async function failBatch(
