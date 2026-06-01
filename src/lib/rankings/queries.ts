@@ -1,3 +1,4 @@
+import { getLeaderboardFromAllTimeCreatorNetworkImports } from "@/lib/creator-network/all-time-from-import";
 import {
   getLatestCreatorNetworkSyncMeta,
   getLeaderboardFromLatestCreatorNetworkImport,
@@ -49,7 +50,7 @@ export async function getPerformanceStatForProfile(
   return (data as PerformanceStatsRow | null) ?? null;
 }
 
-/** Aggregate all stat rows per profile for all-time view. */
+/** Aggregate all-time stats (imports first, else creator_performance_stats). */
 export async function getAggregatedAllTimeStats(): Promise<
   Array<{
     profile_id: string;
@@ -63,6 +64,11 @@ export async function getAggregatedAllTimeStats(): Promise<
     battles_won: number;
   }>
 > {
+  const { getAllTimeScoringRowsFromImports } =
+    await import("@/lib/creator-network/all-time-from-import");
+  const fromImports = await getAllTimeScoringRowsFromImports();
+  if (fromImports.length > 0) return fromImports;
+
   const supabase = await createClient();
   const { data, error } = await supabase.from("creator_performance_stats").select("*");
 
@@ -197,6 +203,27 @@ export async function getLeaderboardWithMeta(
     };
   }
 
+  if (kind === "all-time") {
+    try {
+      const fromImport = await getLeaderboardFromAllTimeCreatorNetworkImports();
+      if (fromImport && fromImport.entries.length > 0) {
+        return {
+          entries: fromImport.entries,
+          syncMeta: {
+            importedAt: fromImport.importedAt ?? new Date().toISOString(),
+            acceptedRows: fromImport.acceptedRowsCount,
+            batchId: fromImport.batchId ?? "",
+            periodStart: fromImport.periodStart,
+            periodEnd: fromImport.periodEnd,
+            statPeriodLabel: fromImport.statPeriodLabel,
+          },
+        };
+      }
+    } catch {
+      // fall through to DB / seed
+    }
+  }
+
   const entries = await mergeImportAvatarsIntoEntries(await getLeaderboard(kind, anchorDate));
   return { entries, syncMeta: null };
 }
@@ -208,6 +235,15 @@ export async function getLeaderboard(
   if (kind === "monthly") {
     const { entries } = await getLeaderboardWithMeta(kind, anchorDate);
     return entries;
+  }
+
+  if (kind === "all-time") {
+    try {
+      const fromImport = await getLeaderboardFromAllTimeCreatorNetworkImports();
+      if (fromImport && fromImport.entries.length > 0) return fromImport.entries;
+    } catch {
+      // fall through
+    }
   }
 
   const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();

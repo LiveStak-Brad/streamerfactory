@@ -7,6 +7,10 @@ import {
 } from "@/lib/creator-network/match-profiles";
 import type { ImportPayload, ImportResult, LiveRowPayload } from "@/lib/creator-network/types";
 import { resolveImportPeriodBounds, sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import {
+  monthlyPerformanceUpsertFromImportRow,
+  upsertMonthlyPerformanceStatsFromImport,
+} from "@/lib/creator-network/sync-performance-from-import";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 
@@ -58,6 +62,7 @@ export async function importCreatorNetworkPayload(
   let lowConfidenceMatches = 0;
   const unmatchedUsernames = new Set<string>();
   let liveRowsAccepted = 0;
+  const performanceUpserts: ReturnType<typeof monthlyPerformanceUpsertFromImportRow>[] = [];
 
   const importPeriod = resolveImportPeriodBounds({
     statPeriodLabel: payload.statPeriodLabel ?? null,
@@ -180,7 +185,35 @@ export async function importCreatorNetworkPayload(
           }
         } else {
           acceptedRows += 1;
+          if (
+            profileId &&
+            importPeriod.periodStart &&
+            importPeriod.periodEnd
+          ) {
+            performanceUpserts.push(
+              monthlyPerformanceUpsertFromImportRow(
+                profileId,
+                row,
+                importPeriod.periodStart,
+                importPeriod.periodEnd,
+              ),
+            );
+          }
         }
+      }
+    }
+
+    if (
+      payload.detectedPageType !== "live_now" &&
+      performanceUpserts.length > 0
+    ) {
+      const { error: perfErr } = await upsertMonthlyPerformanceStatsFromImport(
+        supabase,
+        performanceUpserts,
+      );
+      if (perfErr) {
+        await failBatch(supabase, batchId, perfErr);
+        return { ok: false, error: perfErr };
       }
     }
 
