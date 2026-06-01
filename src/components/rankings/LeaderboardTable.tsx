@@ -1,4 +1,5 @@
 import { BackstageAvatar } from "@/components/members/BackstageAvatar";
+import { memberProfileUrl } from "@/lib/members/network-members";
 import { formatDiamondsEarned } from "@/lib/rankings/diamonds";
 import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import { rankingBadge } from "@/lib/rankings/scoring";
@@ -75,16 +76,20 @@ export function LeaderboardTable({
         const isYou =
           (highlightProfileId != null && highlightProfileId === e.profile_id) ||
           (highlightTiktokHandle != null && entryHandle === normalizeHandle(highlightTiktokHandle));
+        const profileUrl = handle ? memberProfileUrl(handle) : null;
 
-        return (
-          <li
-            key={e.profile_id}
-            className={`rounded-2xl border bg-surface/90 p-4 shadow-sm transition dark:bg-zinc-950/65 sm:p-5 ${
-              isYou
-                ? "border-accent/50 ring-2 ring-accent/20 dark:border-accent/40"
-                : "border-zinc-200/90 dark:border-zinc-800"
-            }`}
-          >
+        const cardClass = `block rounded-2xl border bg-surface/90 p-4 shadow-sm outline-none ring-accent/0 transition dark:bg-zinc-950/65 sm:p-5 ${
+          isYou
+            ? "border-accent/50 ring-2 ring-accent/20 dark:border-accent/40"
+            : "border-zinc-200/90 dark:border-zinc-800"
+        }${
+          profileUrl
+            ? " hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_40px_-12px_var(--accent-glow)] focus-visible:ring-4 focus-visible:ring-accent/20 dark:hover:border-accent/30"
+            : ""
+        }`;
+
+        const cardBody = (
+          <>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="flex min-w-0 flex-1 items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-lg font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
@@ -174,6 +179,33 @@ export function LeaderboardTable({
                 </span>
               ) : null}
             </div>
+          </>
+        );
+
+        return (
+          <li key={e.profile_id}>
+            {profileUrl ? (
+              <a
+                href={profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group ${cardClass}`}
+                aria-label={`Open @${handle} on TikTok`}
+              >
+                {cardBody}
+                <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-accent dark:text-accent-muted">
+                  <span>Open in TikTok</span>
+                  <span
+                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    aria-hidden
+                  >
+                    →
+                  </span>
+                </span>
+              </a>
+            ) : (
+              <div className={cardClass}>{cardBody}</div>
+            )}
           </li>
         );
       })}
