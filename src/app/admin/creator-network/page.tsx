@@ -1,11 +1,9 @@
 import {
   getImportedStatsForAdmin,
   getImportMatchReviewSummary,
-  getLatestLiveNowSnapshots,
   getRecentImportBatches,
 } from "@/lib/creator-network/queries";
 import { CreatorNetworkAdminPanel } from "@/components/admin/CreatorNetworkAdminPanel";
-import { LiveNowSection } from "@/components/creator-network/LiveNowSection";
 import { Container } from "@/components/ui/Container";
 
 export const metadata = {
@@ -27,11 +25,6 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
 
   let batches: Awaited<ReturnType<typeof getRecentImportBatches>> = [];
   let stats: Awaited<ReturnType<typeof getImportedStatsForAdmin>> = [];
-  let liveNow: Awaited<ReturnType<typeof getLatestLiveNowSnapshots>> = {
-    batchId: null,
-    importedAt: null,
-    entries: [],
-  };
   let tablesMissing = false;
   let matchReview = { matchedProfiles: 0, unmatchedProfiles: 0, lowConfidenceMatches: 0 };
 
@@ -46,12 +39,6 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
     matchReview = await getImportMatchReviewSummary();
   } catch {
     if (!tablesMissing) tablesMissing = true;
-  }
-
-  try {
-    liveNow = await getLatestLiveNowSnapshots();
-  } catch {
-    /* live table may not exist yet */
   }
 
   return (
@@ -74,15 +61,6 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
             Supabase, then refresh.
           </p>
         ) : null}
-
-        <div className="mt-10">
-          <LiveNowSection
-            importedAt={liveNow.importedAt}
-            entries={liveNow.entries}
-            showAdminMeta
-            batchId={liveNow.batchId}
-          />
-        </div>
 
         <div className="mt-10">
           <CreatorNetworkAdminPanel

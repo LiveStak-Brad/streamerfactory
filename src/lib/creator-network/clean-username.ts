@@ -49,7 +49,24 @@ export function cleanCreatorNetworkUsername(raw: string | undefined | null): str
 }
 
 const BAD_DISPLAY =
-  /^(no\s*level|level\s*\d+|eligible|notable|inactive|none|unknown|creator|member)$/i;
+  /^(no\s*level|level\s*\d+|eligible|notable|inactive|none|unknown|creator|member|name)$/i;
+
+/** Chart / table chrome scraped from Backstage (not a creator display name). */
+export function isBackstageStatsUiText(text: string | undefined | null): boolean {
+  const t = text?.trim() ?? "";
+  if (!t) return true;
+  const lower = t.toLowerCase();
+  if (
+    /same\s+period|last\s+month|vs\.?|compared\s+to|month\s+over|period\s+over|year\s+over|previous\s+period/i.test(
+      lower,
+    )
+  ) {
+    return true;
+  }
+  if (/^\$[\s\d,.%-]+$/.test(t) || /^[\d,.]+%\s*$/.test(t)) return true;
+  if (/^name\s*[\$%\-–—]/.test(lower)) return true;
+  return false;
+}
 
 /** Strip badge text from Backstage display names (e.g. "Name No level" → use fallback). */
 export function cleanCreatorNetworkDisplayName(
@@ -60,9 +77,13 @@ export function cleanCreatorNetworkDisplayName(
   const lines = stripBadgeText(raw.trim())
     .split(/\n/)
     .map((l) => l.trim())
-    .filter((l) => l.length > 0 && !BAD_DISPLAY.test(l));
+    .filter(
+      (l) => l.length > 0 && !BAD_DISPLAY.test(l) && !isBackstageStatsUiText(l),
+    );
   const first = lines[0];
-  if (!first || BAD_DISPLAY.test(first)) return fallback?.trim() || "";
+  if (!first || BAD_DISPLAY.test(first) || isBackstageStatsUiText(first)) {
+    return fallback?.trim() || "";
+  }
   return first;
 }
 

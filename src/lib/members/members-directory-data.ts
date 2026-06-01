@@ -3,12 +3,16 @@ import {
   getDirectoryMembersFromLatestCreatorNetworkImport,
   backstageAvatarUrl,
 } from "@/lib/creator-network/leaderboard-from-import";
-import { cleanCreatorNetworkDisplayName } from "@/lib/creator-network/clean-username";
+import {
+  cleanCreatorNetworkDisplayName,
+  isBackstageStatsUiText,
+} from "@/lib/creator-network/clean-username";
 import {
   NETWORK_MEMBERS,
   type NetworkMember,
 } from "@/lib/members/network-members";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
+import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import { normalizeHandle } from "@/lib/rankings/backstage-seed-data";
 
 const staticDisplayByHandle = new Map(
@@ -45,13 +49,20 @@ export async function getNetworkMembersForDirectory(): Promise<MembersDirectoryL
     const key = normalizeHandle(row.username);
     if (seen.has(key) || isExcludedNetworkHandle(key)) continue;
     seen.add(key);
+    const rosterName = staticDisplayByHandle.get(key);
+    const importedName = cleanCreatorNetworkDisplayName(
+      row.displayName,
+      rosterName || row.username,
+    );
+    const displayName =
+      rosterName ??
+      ((!isBackstageStatsUiText(importedName) ? importedName : "") ||
+        displayLabelForHandle(key).replace(/^@/, "") ||
+        row.username);
+
     members.push({
       username: row.username,
-      displayName:
-        cleanCreatorNetworkDisplayName(
-          row.displayName,
-          staticDisplayByHandle.get(key) || row.username,
-        ) || row.username,
+      displayName,
       avatarUrl:
         backstageAvatarUrl(row.avatar_url) ?? avatarMap.get(key) ?? null,
     });

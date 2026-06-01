@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MembersDirectory } from "@/components/members/MembersDirectory";
-import { MembersLiveNowSection } from "@/components/members/MembersLiveNowSection";
 import { MembersLeaderboardPreview } from "@/components/rankings/MembersLeaderboardPreview";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
-import { enrichLiveNowForDisplay } from "@/lib/creator-network/live-now-display";
-import { getPublicLiveNowSnapshots } from "@/lib/creator-network/queries";
 import { getNetworkMembersForDirectory } from "@/lib/members/members-directory-data";
 
 export const metadata: Metadata = {
@@ -24,11 +21,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function MembersPage() {
-  const [{ members, importedAt, fromImport }, liveNow] = await Promise.all([
-    getNetworkMembersForDirectory(),
-    getPublicLiveNowSnapshots(),
-  ]);
-  const liveEntries = enrichLiveNowForDisplay(liveNow.entries, members);
+  const { members, importedAt, fromImport } = await getNetworkMembersForDirectory();
 
   return (
     <>
@@ -62,7 +55,6 @@ export default async function MembersPage() {
       </Section>
 
       <Section variant="muted" className="!py-14 sm:!py-16" containerClassName="max-w-6xl">
-        <MembersLiveNowSection importedAt={liveNow.importedAt} entries={liveEntries} />
         <MembersDirectory members={members} importedAt={importedAt} fromImport={fromImport} />
         <MembersLeaderboardPreview />
       </Section>

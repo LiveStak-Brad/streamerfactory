@@ -118,11 +118,10 @@ export function MembersDirectory({ members, importedAt, fromImport }: MembersDir
                     />
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-                        @{m.username}
+                        {m.displayName}
                       </p>
-                      <p className="mt-0.5 line-clamp-2 text-sm leading-snug text-zinc-500 dark:text-zinc-400">
-                        <span className="text-zinc-400 dark:text-zinc-500">Name </span>
-                        <span className="text-zinc-700 dark:text-zinc-300">{m.displayName}</span>
+                      <p className="mt-0.5 truncate text-sm text-zinc-500 dark:text-zinc-400">
+                        @{m.username}
                       </p>
                     </div>
                   </div>
