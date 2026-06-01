@@ -5,7 +5,7 @@ const HANDLE_IN_TEXT = /@?([a-z0-9._]{2,24})/i;
 const TRUNCATED_HANDLE = /^([a-z0-9._]{4,28})\.{2,3}$/i;
 const PLAIN_HANDLE = /^@?([a-z0-9._]{2,24})$/i;
 
-function handleFromRawText(raw: string | null | undefined): string | undefined {
+export function handleFromRawText(raw: string | null | undefined): string | undefined {
   if (!raw) return undefined;
   const trimmed = raw.trim();
   if (!trimmed || trimmed.length > 80) return undefined;

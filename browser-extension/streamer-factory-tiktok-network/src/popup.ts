@@ -173,7 +173,12 @@ async function refreshPreview() {
       previewEl.textContent = previewLines.join("\n") + liveNote;
     } else if (snapshot.detectedPageType === "live_now") {
       previewEl.textContent =
-        "Page detected: LIVE now · 0 creators on screen.\n(Empty state is OK — sync when someone is live, or try Manage Relationship / stats pages.)";
+        "Page: LIVE now · 0 creators parsed.\n\n" +
+        "If streams are visible on the page:\n" +
+        "1. Scroll so every LIVE card (with LIVE dur / Diamonds) is on screen\n" +
+        "2. Hover each truncated blue name once (loads title=\"fullhandle\")\n" +
+        "3. Click Refresh preview again\n\n" +
+        "Or sync LIVE from Incentives when you see the pink ring on a creator.";
     } else {
       previewEl.textContent = "No rows detected on this page yet. Scroll the table into view or try another Backstage tab.";
     }

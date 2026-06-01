@@ -7,7 +7,7 @@ import {
   isChatCommentLine,
   isLikelyChatOverlay,
 } from "./live-badge";
-import { usernameFromLiveHeaderHints } from "./live-header-hints";
+import { handleFromRawText, usernameFromLiveHeaderHints } from "./live-header-hints";
 import { isInvalidLiveStreamHandle, isSuspiciousLiveHandle } from "./live-username";
 import type { ParsedLiveRow } from "./types";
 import { cleanTikTokUsername, normalizeTikTokUsername } from "./username";
@@ -26,12 +26,19 @@ function isPageChromeText(text: string): boolean {
 
 const LIVE_STAT_LINE = /live\s*(?:time|dur(?:ation)?)|diamonds?|gifts?|gifters?|new\s*viewers?|viewers?/i;
 
-/** Backstage LIVE cards: "LIVE time" + diamonds/gifts + viewers (labels vary). */
+/** Backstage LIVE cards: "LIVE time/dur" + diamonds (labels vary). */
 function cardHasLiveStats(text: string): boolean {
   const hasDuration = /live\s*(?:time|dur(?:ation)?)/i.test(text);
   const hasEarnings = /diamonds?|gifts?/i.test(text);
   const hasAudience = /(?:new\s*)?viewers?|watching|current/i.test(text);
   return hasDuration && hasEarnings && hasAudience;
+}
+
+/** Looser check for climbing from title/stat nodes to a stream card. */
+function isLiveStreamScope(text: string): boolean {
+  const t = text.trim();
+  if (t.length < 20 || t.length > 5000) return false;
+  return /live\s*(?:time|dur(?:ation)?)/i.test(t) && /diamonds?|gifts?/i.test(t);
 }
 
 /** Prefer the tightest card wrapper (parent of stats strip, not whole page). */
@@ -164,22 +171,56 @@ function climbToLiveCard(img: Element): Element | null {
 
 function findLiveCardsByStatsPanel(doc: Document): Element[] {
   const roots: Element[] = [];
-  const candidates = doc.querySelectorAll("div, li, article, section");
 
-  for (const el of candidates) {
+  for (const el of doc.querySelectorAll("div, section, article, li, span")) {
     const text = (el.textContent ?? "").trim();
-    if (text.length < 40 || text.length > 2800) continue;
-    if (!cardHasLiveStats(text) || isPageChromeText(text) || isLikelyChatOverlay(el)) continue;
-    if (!el.querySelector("img[src]")) continue;
+    if (text.length < 15 || text.length > 900) continue;
+    if (!/live\s*(?:time|dur(?:ation)?)/i.test(text)) continue;
+    if (!/diamonds?|gifts?/i.test(text)) continue;
 
-    const headerText = cardHeaderText(text);
-    if (!cardHasCreatorHeader(el, headerText)) continue;
-    if (countChatLines(text) >= 3) continue;
-
-    roots.push(el);
+    let scope: Element | null = el;
+    for (let depth = 0; depth < 12 && scope; depth += 1) {
+      const block = (scope.textContent ?? "").trim();
+      if (isLiveStreamScope(block) && scope.querySelector("img[src]")) {
+        roots.push(scope);
+        break;
+      }
+      scope = scope.parentElement;
+    }
   }
 
   return roots;
+}
+
+/**
+ * Primary LIVE now strategy: title="cj_allycat93" on truncated name, stats in ancestor.
+ */
+function extractLiveNowFromTitleAnchors(doc: Document): ParsedLiveRow[] {
+  const rows: ParsedLiveRow[] = [];
+
+  for (const el of doc.querySelectorAll("[title], [aria-label]")) {
+    const username =
+      handleFromRawText(el.getAttribute("title")) ??
+      handleFromRawText(el.getAttribute("aria-label"));
+    if (!username) continue;
+
+    let scope: Element | null = el;
+    let card: Element | null = null;
+    for (let depth = 0; depth < 18 && scope; depth += 1) {
+      const block = (scope.textContent ?? "").trim();
+      if (isLiveStreamScope(block)) {
+        card = scope;
+        break;
+      }
+      scope = scope.parentElement;
+    }
+    if (!card) continue;
+
+    const parsed = buildLiveRowFromScope(card, username);
+    if (parsed) rows.push(parsed);
+  }
+
+  return rows;
 }
 
 function countChatLines(text: string): number {
@@ -365,21 +406,18 @@ function parseStatValue(text: string, label: RegExp): string | undefined {
   return undefined;
 }
 
-function parseLiveCard(el: Element): ParsedLiveRow | null {
-  if (isLikelyChatOverlay(el)) return null;
+function buildLiveRowFromScope(card: Element, username: string): ParsedLiveRow | null {
+  if (!username || isSuspiciousLiveHandle(username)) return null;
 
-  const text = (el.textContent ?? "").trim();
-  if (!text || isPageChromeText(text) || !cardHasLiveStats(text)) return null;
-  if (!el.querySelector("img[src]")) return null;
+  const text = (card.textContent ?? "").trim();
+  if (!text || !isLiveStreamScope(text)) return null;
 
   const headerText = cardHeaderText(text);
-  const displayName = displayNameFrom(el, headerText);
-  const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
-  if (!username || isSuspiciousLiveHandle(username)) return null;
+  const displayName = displayNameFrom(card, headerText);
 
   const liveDuration =
     parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ??
-    text.match(/live\s*(?:time|dur(?:ation)?)\s*[:.]?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
+    text.match(/live\s*(?:time|dur(?:ation)?)\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
   const diamonds =
     parseStatValue(text, /diamonds?/) ?? parseStatValue(text, /gifts?/);
   const viewers = parseStatValue(text, /viewers?(?!\s*count)/);
@@ -394,19 +432,34 @@ function parseLiveCard(el: Element): ParsedLiveRow | null {
   if (diamonds) parts.push(`${diamonds} diamonds`);
   if (parts.length) viewerCountText = parts.join(" · ");
 
-  const badgeSeen = liveBadgeImagesIn(el).length > 0 || !!usernameFromLinks(el);
+  const badgeSeen = liveBadgeImagesIn(card).length > 0 || !!usernameFromLinks(card);
 
   return {
     tiktokUsername: username,
     usernameConfidence: "high",
     usernameSource: "username_column",
     displayName: displayName ?? undefined,
-    avatarUrl: avatarFrom(el),
+    avatarUrl: avatarFrom(card),
     viewerCountText,
     liveStartedText: liveDuration ?? undefined,
     liveBadgeDetected: badgeSeen,
     rawTextPreview: headerText.slice(0, 200),
   };
+}
+
+function parseLiveCard(el: Element): ParsedLiveRow | null {
+  if (isLikelyChatOverlay(el)) return null;
+
+  const text = (el.textContent ?? "").trim();
+  if (!text || isPageChromeText(text) || !cardHasLiveStats(text)) return null;
+  if (!el.querySelector("img[src]")) return null;
+
+  const headerText = cardHeaderText(text);
+  const displayName = displayNameFrom(el, headerText);
+  const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
+  if (!username) return null;
+
+  return buildLiveRowFromScope(el, username);
 }
 
 function dedupeLive(rows: ParsedLiveRow[]): ParsedLiveRow[] {
@@ -425,13 +478,79 @@ function dedupeLive(rows: ParsedLiveRow[]): ParsedLiveRow[] {
 
 /** Extract visible LIVE now creators from backstage LIVE page DOM. */
 export function extractLiveNowRowsFromPage(doc: Document = document): ParsedLiveRow[] {
-  const cards = findLiveCreatorCards(doc);
   const rows: ParsedLiveRow[] = [];
+
+  rows.push(...extractLiveNowFromTitleAnchors(doc));
+
+  const cards = findLiveCreatorCards(doc);
   for (const el of cards) {
     const parsed = parseLiveCard(liveCardRoot(el));
     if (parsed) rows.push(parsed);
   }
+
+  if (rows.length === 0) {
+    rows.push(...extractLiveNowFromInnerText(doc));
+  }
+
   return dedupeLive(rows);
+}
+
+/** Last resort: page innerText blocks (header line + ID + LIVE dur stats). */
+function extractLiveNowFromInnerText(doc: Document): ParsedLiveRow[] {
+  const text = doc.body?.innerText ?? "";
+  if (!/live\s*dur/i.test(text) && !/live\s*time/i.test(text)) return [];
+
+  const rows: ParsedLiveRow[] = [];
+  const chunks = text.split(/(?=\n\s*LIVE\s*(?:time|dur))/i);
+
+  for (const chunk of chunks) {
+    if (!/live\s*(?:time|dur)/i.test(chunk)) continue;
+
+    const headerPart = chunk.split(/LIVE\s*(?:time|dur)/i)[0] ?? "";
+    let username: string | undefined;
+
+    for (const line of headerPart.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
+      if (isChatCommentLine(line) || /^id\s*\d/i.test(line)) continue;
+      const fromDom = doc.querySelector(`[title="${line}"], [title^="${line.replace(/\.\.\.$/, "")}"]`);
+      if (fromDom) {
+        username = handleFromRawText(fromDom.getAttribute("title"));
+        if (username) break;
+      }
+      const trunc = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
+      if (trunc) {
+        username = handleFromRawText(
+          doc.querySelector(`[title^="${trunc[1]}"]`)?.getAttribute("title"),
+        );
+        if (username) break;
+      }
+    }
+
+    if (!username) {
+      const at = headerPart.match(/@([a-z0-9._]{2,24})/i);
+      if (at) username = cleanTikTokUsername(at[1]);
+    }
+    if (!username || isSuspiciousLiveHandle(username)) continue;
+
+    const liveDuration =
+      chunk.match(/live\s*(?:time|dur)\.?\s*(\d+\s*[hm])/i)?.[1]?.trim();
+    const diamonds = chunk.match(/diamonds?\s*(\d+)/i)?.[1];
+    const viewers = chunk.match(/viewers?\s*(\d+)/i)?.[1];
+    const parts: string[] = [];
+    if (viewers) parts.push(`${viewers} viewers`);
+    if (diamonds) parts.push(`${diamonds} diamonds`);
+
+    rows.push({
+      tiktokUsername: username,
+      usernameConfidence: "high",
+      usernameSource: "username_column",
+      viewerCountText: parts.length ? parts.join(" · ") : undefined,
+      liveStartedText: liveDuration,
+      liveBadgeDetected: false,
+      rawTextPreview: headerPart.slice(0, 120),
+    });
+  }
+
+  return rows;
 }
 
 function creatorTableRows(doc: Document): Element[] {

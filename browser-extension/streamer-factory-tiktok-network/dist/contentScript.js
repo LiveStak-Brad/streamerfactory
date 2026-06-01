@@ -850,6 +850,11 @@
     const hasAudience = /(?:new\s*)?viewers?|watching|current/i.test(text);
     return hasDuration && hasEarnings && hasAudience;
   }
+  function isLiveStreamScope(text) {
+    const t = text.trim();
+    if (t.length < 20 || t.length > 5e3) return false;
+    return /live\s*(?:time|dur(?:ation)?)/i.test(t) && /diamonds?|gifts?/i.test(t);
+  }
   function dedupeToSmallestLiveCards(elements) {
     const sorted = [...elements].sort(
       (a, b) => (a.textContent?.length ?? 0) - (b.textContent?.length ?? 0)
@@ -948,21 +953,43 @@
   }
   function findLiveCardsByStatsPanel(doc) {
     const roots = [];
-    const candidates = doc.querySelectorAll("div, li, article, section");
-    for (const el of candidates) {
+    for (const el of doc.querySelectorAll("div, section, article, li, span")) {
       const text = (el.textContent ?? "").trim();
-      if (text.length < 40 || text.length > 2800) continue;
-      if (!cardHasLiveStats(text) || isPageChromeText(text) || isLikelyChatOverlay(el)) continue;
-      if (!el.querySelector("img[src]")) continue;
-      const headerText = cardHeaderText(text);
-      if (!cardHasCreatorHeader(el, headerText)) continue;
-      if (countChatLines(text) >= 3) continue;
-      roots.push(el);
+      if (text.length < 15 || text.length > 900) continue;
+      if (!/live\s*(?:time|dur(?:ation)?)/i.test(text)) continue;
+      if (!/diamonds?|gifts?/i.test(text)) continue;
+      let scope = el;
+      for (let depth = 0; depth < 12 && scope; depth += 1) {
+        const block = (scope.textContent ?? "").trim();
+        if (isLiveStreamScope(block) && scope.querySelector("img[src]")) {
+          roots.push(scope);
+          break;
+        }
+        scope = scope.parentElement;
+      }
     }
     return roots;
   }
-  function countChatLines(text) {
-    return text.split(/\n/).filter((l) => isChatCommentLine(l.trim())).length;
+  function extractLiveNowFromTitleAnchors(doc) {
+    const rows = [];
+    for (const el of doc.querySelectorAll("[title], [aria-label]")) {
+      const username = handleFromRawText(el.getAttribute("title")) ?? handleFromRawText(el.getAttribute("aria-label"));
+      if (!username) continue;
+      let scope = el;
+      let card = null;
+      for (let depth = 0; depth < 18 && scope; depth += 1) {
+        const block = (scope.textContent ?? "").trim();
+        if (isLiveStreamScope(block)) {
+          card = scope;
+          break;
+        }
+        scope = scope.parentElement;
+      }
+      if (!card) continue;
+      const parsed = buildLiveRowFromScope(card, username);
+      if (parsed) rows.push(parsed);
+    }
+    return rows;
   }
   function findLiveCreatorCards(doc) {
     const roots = [];
@@ -1111,16 +1138,13 @@
     if (m?.[1]) return m[1].trim();
     return void 0;
   }
-  function parseLiveCard(el) {
-    if (isLikelyChatOverlay(el)) return null;
-    const text = (el.textContent ?? "").trim();
-    if (!text || isPageChromeText(text) || !cardHasLiveStats(text)) return null;
-    if (!el.querySelector("img[src]")) return null;
-    const headerText = cardHeaderText(text);
-    const displayName = displayNameFrom(el, headerText);
-    const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
+  function buildLiveRowFromScope(card, username) {
     if (!username || isSuspiciousLiveHandle(username)) return null;
-    const liveDuration = parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ?? text.match(/live\s*(?:time|dur(?:ation)?)\s*[:.]?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
+    const text = (card.textContent ?? "").trim();
+    if (!text || !isLiveStreamScope(text)) return null;
+    const headerText = cardHeaderText(text);
+    const displayName = displayNameFrom(card, headerText);
+    const liveDuration = parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ?? text.match(/live\s*(?:time|dur(?:ation)?)\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
     const diamonds = parseStatValue(text, /diamonds?/) ?? parseStatValue(text, /gifts?/);
     const viewers = parseStatValue(text, /viewers?(?!\s*count)/);
     const watching = parseStatValue(text, /current\.?\.?/) ?? text.match(/(\d+)\s*(?:watching|viewers?\s*now)/i)?.[1];
@@ -1130,18 +1154,29 @@
     if (viewers) parts.push(`${viewers} viewers`);
     if (diamonds) parts.push(`${diamonds} diamonds`);
     if (parts.length) viewerCountText = parts.join(" \xB7 ");
-    const badgeSeen = liveBadgeImagesIn(el).length > 0 || !!usernameFromLinks(el);
+    const badgeSeen = liveBadgeImagesIn(card).length > 0 || !!usernameFromLinks(card);
     return {
       tiktokUsername: username,
       usernameConfidence: "high",
       usernameSource: "username_column",
       displayName: displayName ?? void 0,
-      avatarUrl: avatarFrom(el),
+      avatarUrl: avatarFrom(card),
       viewerCountText,
       liveStartedText: liveDuration ?? void 0,
       liveBadgeDetected: badgeSeen,
       rawTextPreview: headerText.slice(0, 200)
     };
+  }
+  function parseLiveCard(el) {
+    if (isLikelyChatOverlay(el)) return null;
+    const text = (el.textContent ?? "").trim();
+    if (!text || isPageChromeText(text) || !cardHasLiveStats(text)) return null;
+    if (!el.querySelector("img[src]")) return null;
+    const headerText = cardHeaderText(text);
+    const displayName = displayNameFrom(el, headerText);
+    const username = usernameFromStreamCard(el, headerText) ?? usernameFromHeader(el, headerText, displayName);
+    if (!username) return null;
+    return buildLiveRowFromScope(el, username);
   }
   function dedupeLive(rows) {
     const seen = /* @__PURE__ */ new Set();
@@ -1157,13 +1192,64 @@
     return out;
   }
   function extractLiveNowRowsFromPage(doc = document) {
-    const cards = findLiveCreatorCards(doc);
     const rows = [];
+    rows.push(...extractLiveNowFromTitleAnchors(doc));
+    const cards = findLiveCreatorCards(doc);
     for (const el of cards) {
       const parsed = parseLiveCard(liveCardRoot(el));
       if (parsed) rows.push(parsed);
     }
+    if (rows.length === 0) {
+      rows.push(...extractLiveNowFromInnerText(doc));
+    }
     return dedupeLive(rows);
+  }
+  function extractLiveNowFromInnerText(doc) {
+    const text = doc.body?.innerText ?? "";
+    if (!/live\s*dur/i.test(text) && !/live\s*time/i.test(text)) return [];
+    const rows = [];
+    const chunks = text.split(/(?=\n\s*LIVE\s*(?:time|dur))/i);
+    for (const chunk of chunks) {
+      if (!/live\s*(?:time|dur)/i.test(chunk)) continue;
+      const headerPart = chunk.split(/LIVE\s*(?:time|dur)/i)[0] ?? "";
+      let username;
+      for (const line of headerPart.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
+        if (isChatCommentLine(line) || /^id\s*\d/i.test(line)) continue;
+        const fromDom = doc.querySelector(`[title="${line}"], [title^="${line.replace(/\.\.\.$/, "")}"]`);
+        if (fromDom) {
+          username = handleFromRawText(fromDom.getAttribute("title"));
+          if (username) break;
+        }
+        const trunc = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
+        if (trunc) {
+          username = handleFromRawText(
+            doc.querySelector(`[title^="${trunc[1]}"]`)?.getAttribute("title")
+          );
+          if (username) break;
+        }
+      }
+      if (!username) {
+        const at = headerPart.match(/@([a-z0-9._]{2,24})/i);
+        if (at) username = cleanTikTokUsername(at[1]);
+      }
+      if (!username || isSuspiciousLiveHandle(username)) continue;
+      const liveDuration = chunk.match(/live\s*(?:time|dur)\.?\s*(\d+\s*[hm])/i)?.[1]?.trim();
+      const diamonds = chunk.match(/diamonds?\s*(\d+)/i)?.[1];
+      const viewers = chunk.match(/viewers?\s*(\d+)/i)?.[1];
+      const parts = [];
+      if (viewers) parts.push(`${viewers} viewers`);
+      if (diamonds) parts.push(`${diamonds} diamonds`);
+      rows.push({
+        tiktokUsername: username,
+        usernameConfidence: "high",
+        usernameSource: "username_column",
+        viewerCountText: parts.length ? parts.join(" \xB7 ") : void 0,
+        liveStartedText: liveDuration,
+        liveBadgeDetected: false,
+        rawTextPreview: headerPart.slice(0, 120)
+      });
+    }
+    return rows;
   }
   function creatorTableRows(doc) {
     const grid = findCreatorContributionGrid(doc);
