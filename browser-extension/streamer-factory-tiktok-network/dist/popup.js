@@ -143,12 +143,20 @@
         return;
       }
       const snapshot = res.snapshot;
-      latestPayload = res.payload;
+      const payload = res.payload;
+      latestPayload = payload;
       latestSnapshot = snapshot;
+      const statRows = snapshot.rows?.length ? snapshot.rows : payload.rows ?? [];
+      const liveRows = snapshot.liveRows?.length ? snapshot.liveRows : payload.liveRows ?? [];
       pageTypeEl.textContent = `Page: ${snapshot.detectedPageType}${snapshot.relationshipTab ? ` \xB7 ${snapshot.relationshipTab}` : ""}`;
-      const count = snapshot.detectedPageType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
+      const count = snapshot.detectedPageType === "live_now" ? liveRows.length : statRows.length;
       rowCountEl.textContent = `Rows: ${count}`;
-      const previewLines = snapshot.detectedPageType === "live_now" ? snapshot.liveRows.slice(0, 5).map((r) => `@${r.tiktokUsername} [${(r.usernameConfidence ?? "low").toUpperCase()}] \xB7 ${r.displayName ?? ""}`) : snapshot.rows.slice(0, 5).map((r) => `@${r.tiktokUsername} [${(r.usernameConfidence ?? "low").toUpperCase()}] \xB7 ${r.displayName ?? ""}`);
+      const previewLines = snapshot.detectedPageType === "live_now" ? liveRows.slice(0, 5).map(
+        (r) => `@${r.tiktokUsername} [${(r.usernameConfidence ?? "low").toUpperCase()}] \xB7 ${r.displayName ?? ""}`
+      ) : statRows.slice(0, 5).map((r) => {
+        const diamonds = r.diamondsEarned != null ? `${r.diamondsEarned.toLocaleString()} diamonds` : "diamonds: \u2014";
+        return `@${r.tiktokUsername} \xB7 ${diamonds} \xB7 ${(r.usernameConfidence ?? "low").toUpperCase()} confidence`;
+      });
       if (previewLines.length > 0) {
         previewEl.textContent = previewLines.join("\n");
       } else if (snapshot.detectedPageType === "live_now") {
@@ -156,7 +164,7 @@
       } else {
         previewEl.textContent = "No rows detected on this page yet. Scroll the table into view or try another Backstage tab.";
       }
-      const lowConfidence = snapshot.detectedPageType === "live_now" ? snapshot.liveRows.filter((r) => r.usernameConfidence === "low").length : snapshot.rows.filter((r) => r.usernameConfidence === "low").length;
+      const lowConfidence = snapshot.detectedPageType === "live_now" ? liveRows.filter((r) => r.usernameConfidence === "low").length : statRows.filter((r) => r.usernameConfidence === "low").length;
       captureMetaEl.textContent = `Capture: ${snapshot.detectedPageType} \xB7 low-confidence usernames: ${lowConfidence}`;
       syncBtn.disabled = !canImport || count === 0;
     } catch {

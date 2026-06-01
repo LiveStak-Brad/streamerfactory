@@ -13,11 +13,16 @@ export function normalizeTikTokUsername(raw: string | undefined | null): string 
 const AT_RE = /@([a-zA-Z0-9._]{2,40})/g;
 const HANDLE_RE = /\b([a-zA-Z0-9._]{2,40})\b/g;
 
+const RESERVED_HANDLE_WORDS =
+  /^(level|elite|high|medium|low|none|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours)$/i;
+
 function looksLikeTikTokHandle(line: string): boolean {
   if (!/^[a-zA-Z0-9._]{2,40}$/.test(line)) return false;
   if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(line)) return false;
-  if (/^(invited|removed|quit|following|creator|member|network|live|viewers?)$/i.test(line)) return false;
-  return line === line.toLowerCase() || /[_.\d]/.test(line);
+  if (RESERVED_HANDLE_WORDS.test(line)) return false;
+  if (/^\d+$/.test(line)) return false;
+  if (!/[_.]/.test(line) && !/\d/.test(line) && line.length < 6) return false;
+  return true;
 }
 
 function preferHandle(a: string, b: string): string {

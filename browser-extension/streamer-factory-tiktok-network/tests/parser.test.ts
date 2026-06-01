@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { parseHTML } from "linkedom";
+import { buildPageSnapshot } from "../src/parser/index";
 import { detectTikTokCreatorNetworkPage } from "../src/parser/detectPage";
 import { parseDurationToSeconds, parseDayCount } from "../src/parser/duration";
-import { parseCompactNumber, firstCompactNumber } from "../src/parser/numbers";
+import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "../src/parser/numbers";
 import {
   extractUsernameFromText,
   extractUsernameWithConfidence,
@@ -80,6 +84,66 @@ test("detectTikTokCreatorNetworkPage creator stats", () => {
 
 test("firstCompactNumber in mixed text", () => {
   assert.equal(firstCompactNumber("Gifts 413.2K"), 413_200);
+});
+
+test("firstCompactNumber handles thousands commas", () => {
+  assert.equal(firstCompactNumber("8,729"), 8729);
+  assert.equal(firstCompactNumber("6,768"), 6768);
+  assert.equal(parseCompactNumber("2,671"), 2671);
+});
+
+test("isNonDiamondStatCell rejects day and level cells", () => {
+  assert.equal(isNonDiamondStatCell("1d / 8d (Level 1)"), true);
+  assert.equal(isNonDiamondStatCell("Level 1"), true);
+  assert.equal(isNonDiamondStatCell("8,729"), false);
+});
+
+test("parseStatNumber does not return 1 from live day cells", () => {
+  assert.equal(parseStatNumber("1d / 8d (Level 1)"), undefined);
+  assert.equal(parseStatNumber("8,729"), 8729);
+});
+
+test("incentives table reads full diamond counts", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.rows.length, 3);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[0]?.diamondsEarned, 8729);
+  assert.equal(snap.rows[1]?.diamondsEarned, 5457);
+  assert.equal(snap.rows[2]?.diamondsEarned, 268);
+});
+
+test("incentives role=grid reads diamonds without comma", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-grid.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.diamondsEarned, 8729);
+  assert.equal(snap.rows[1]?.diamondsEarned, 248);
+});
+
+test("prefers role=grid over stale table rows", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/incentives-table-and-grid.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows.length, 1);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[0]?.diamondsEarned, 8729);
+});
+
+test("does not treat Level as username", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(
+    snap.rows.some((r) => r.tiktokUsername === "level"),
+    false,
+  );
 });
 
 console.log("\nAll parser tests passed.");

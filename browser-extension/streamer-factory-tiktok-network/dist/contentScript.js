@@ -48,7 +48,14 @@
     }
     const title = doc.title.toLowerCase();
     const bodyText = (doc.body?.innerText ?? "").slice(0, 4e3).toLowerCase();
-    if (path.includes("/relation") || path.includes("/relationship") || title.includes("manage relationship") || bodyText.includes("manage relationship")) {
+    if (path.includes("/revenue") || path.includes("/incentive") || path.includes("/performance") || path.includes("/contribution") || path.includes("/data/") || path.includes("/analytics") || title.includes("incentive") || title.includes("performance") || title.includes("contribution") || bodyText.includes("contribution details") || bodyText.includes("estimated bonus") || bodyText.includes("valid go live") || bodyText.includes("activeness incentive")) {
+      return {
+        detectedPageType: "creator_stats",
+        statPeriodLabel: readPeriodLabel(doc),
+        relationshipTab: readActiveRelationshipTab(doc)
+      };
+    }
+    if (path.includes("/relation") || path.includes("/relationship") || title.includes("manage relationship")) {
       return {
         detectedPageType: "manage_relationship",
         relationshipTab: readActiveRelationshipTab(doc)
@@ -57,19 +64,23 @@
     if (path.includes("/anchor/live") || path.includes("/live-now") || path.includes("livenow") || path.includes("/live") && !path.includes("/relation") || title.includes("live now") || bodyText.includes("creators who are live now")) {
       return { detectedPageType: "live_now" };
     }
-    if (path.includes("/performance") || path.includes("/contribution") || path.includes("/data/") || path.includes("/analytics") || path.includes("/creator") || title.includes("performance") || title.includes("contribution") || bodyText.includes("coins earned") || bodyText.includes("diamonds") || bodyText.includes("valid go live") || bodyText.includes("activeness")) {
+    if (path.includes("/creator") || bodyText.includes("coins earned") || bodyText.includes("diamonds")) {
       return {
         detectedPageType: "creator_stats",
-        statPeriodLabel: readPeriodLabel(doc)
+        statPeriodLabel: readPeriodLabel(doc),
+        relationshipTab: readActiveRelationshipTab(doc)
       };
     }
     return { detectedPageType: "unknown" };
   }
 
   // src/parser/numbers.ts
+  function normalizeNumericText(raw) {
+    return raw.trim().replace(/[\u00a0\u202f]/g, " ").replace(/,/g, "").replace(/(\d)\s+(?=\d)/g, "$1");
+  }
   function parseCompactNumber(raw) {
     if (!raw) return void 0;
-    const t = raw.trim().replace(/,/g, "");
+    const t = normalizeNumericText(raw);
     if (!t) return void 0;
     const m = t.match(/^([+-]?\d+(?:\.\d+)?)\s*([kmb])?$/i);
     if (!m) {
@@ -87,11 +98,33 @@
     if (suffix === "b") mult = 1e9;
     return Math.round(base * mult);
   }
+  function isPlainFormattedNumber(text) {
+    return /^[\s$€£+-]*[\d,.\s]+[kmb]?$/i.test(text.trim());
+  }
   function firstCompactNumber(text) {
-    const cleaned = text.replace(/,/g, " ");
-    const m = cleaned.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
+    const trimmed = text.trim();
+    if (!trimmed) return void 0;
+    if (isPlainFormattedNumber(trimmed)) {
+      const direct = parseCompactNumber(trimmed);
+      if (direct !== void 0) return direct;
+    }
+    const noCommas = trimmed.replace(/,/g, "");
+    const m = noCommas.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
     if (!m) return void 0;
     return parseCompactNumber(`${m[1]}${m[2] ?? ""}`);
+  }
+  function isNonDiamondStatCell(cell) {
+    const t = cell.trim();
+    if (!t) return true;
+    if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
+    if (/\blevel\s*\d/i.test(t)) return true;
+    if (/\d+\s*h(?:\s*\d*m)?(?:\s*\/|\s)/i.test(t) || /\d+h\s*\/\s*\d+h/i.test(t)) return true;
+    if (/\d+\s*d(?:ays?)?(?:\s*\/|\s)/i.test(t) && !/\d,\d{3}/.test(t)) return true;
+    return false;
+  }
+  function parseStatNumber(cell) {
+    if (isNonDiamondStatCell(cell)) return void 0;
+    return parseCompactNumber(cell) ?? firstCompactNumber(cell);
   }
 
   // src/parser/username.ts
@@ -104,11 +137,14 @@
   }
   var AT_RE = /@([a-zA-Z0-9._]{2,40})/g;
   var HANDLE_RE = /\b([a-zA-Z0-9._]{2,40})\b/g;
+  var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours)$/i;
   function looksLikeTikTokHandle(line) {
     if (!/^[a-zA-Z0-9._]{2,40}$/.test(line)) return false;
     if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(line)) return false;
-    if (/^(invited|removed|quit|following|creator|member|network|live|viewers?)$/i.test(line)) return false;
-    return line === line.toLowerCase() || /[_.\d]/.test(line);
+    if (RESERVED_HANDLE_WORDS.test(line)) return false;
+    if (/^\d+$/.test(line)) return false;
+    if (!/[_.]/.test(line) && !/\d/.test(line) && line.length < 6) return false;
+    return true;
   }
   function preferHandle(a, b) {
     const aScore = Number(/[_.\d]/.test(a)) + Number(a === a.toLowerCase());
@@ -322,12 +358,14 @@
 
   // src/parser/extractRows.ts
   function rowLikeElements(doc) {
-    const fromTable = Array.from(doc.querySelectorAll("table tbody tr"));
-    if (fromTable.length > 0) return fromTable;
     const gridRows = Array.from(doc.querySelectorAll('[role="row"]')).filter(
-      (el) => !el.querySelector('[role="columnheader"]')
+      (el) => !el.querySelector('[role="columnheader"]') && (el.querySelector('[role="cell"]') || el.querySelector("td")) && (el.textContent?.length ?? 0) > 15
     );
-    if (gridRows.length > 0) return gridRows;
+    const fromTable = Array.from(doc.querySelectorAll("table tbody tr")).filter(
+      (tr) => (tr.textContent?.length ?? 0) > 15
+    );
+    if (gridRows.length >= Math.max(fromTable.length, 1)) return gridRows;
+    if (fromTable.length > 0) return fromTable;
     const semiRows = Array.from(
       doc.querySelectorAll('[class*="table"] [class*="row"], [class*="Table"] [class*="Row"]')
     );
@@ -336,10 +374,18 @@
       (el) => (el.textContent?.length ?? 0) > 10 && (el.textContent?.length ?? 0) < 500
     );
   }
+  function readCellText(cell) {
+    const bits = [];
+    const aria = cell.getAttribute("aria-label")?.trim();
+    const text = (cell.textContent ?? "").trim();
+    if (text) bits.push(text);
+    if (aria && aria !== text) bits.push(aria);
+    return bits.join(" ").trim();
+  }
   function cellTexts(row) {
     const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
     if (cells.length > 0) {
-      return cells.map((c) => (c.textContent ?? "").trim()).filter(Boolean);
+      return cells.map(readCellText).filter(Boolean);
     }
     return (row.textContent ?? "").split(/\n/).map((s) => s.trim()).filter(Boolean);
   }
@@ -351,6 +397,65 @@
     if (!table) return [];
     const headers = Array.from(table.querySelectorAll("thead th, thead td, [role='columnheader']"));
     return headers.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+  }
+  function headerTextsForRow(row, doc) {
+    const fromTable = headerTextsForTable(row);
+    if (fromTable.length >= 3) return fromTable;
+    const containers = [
+      row.closest('[role="grid"]'),
+      row.closest('[role="table"]'),
+      row.closest("table")
+    ].filter(Boolean);
+    for (const container of containers) {
+      const headerCells = Array.from(container.querySelectorAll('[role="columnheader"]'));
+      if (headerCells.length >= 3) {
+        return headerCells.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+      }
+    }
+    const docHeaders = Array.from(doc.querySelectorAll('[role="columnheader"], thead th'));
+    const texts = docHeaders.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+    if (texts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h))) return texts;
+    return fromTable;
+  }
+  function diamondsColIndexFromAria(doc) {
+    for (const h of doc.querySelectorAll('[role="columnheader"]')) {
+      if (!/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) continue;
+      const idx = parseInt(h.getAttribute("aria-colindex") ?? "", 10);
+      if (!Number.isNaN(idx)) return idx;
+    }
+    return void 0;
+  }
+  function cellTextAtColIndex(row, colIndex) {
+    const direct = row.querySelector(`[role="cell"][aria-colindex="${colIndex}"]`);
+    if (direct) return readCellText(direct);
+    for (const cell of row.querySelectorAll('[role="cell"], td')) {
+      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+      if (idx === colIndex) return readCellText(cell);
+    }
+    return void 0;
+  }
+  function extractDiamondsFromRowText(rowText) {
+    const commaMatches = [...rowText.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 10);
+    if (commaMatches.length > 0) return Math.max(...commaMatches);
+    return void 0;
+  }
+  function resolveDiamondsColumnIndex(row, doc, headers, columnMap) {
+    if (columnMap.coins !== void 0) return columnMap.coins;
+    const headerIdx = headers.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
+    if (headerIdx >= 0) return headerIdx;
+    const scopes = [row.closest('[role="grid"]'), row.closest('[role="table"]'), doc.body].filter(
+      Boolean
+    );
+    for (const scope of scopes) {
+      const headerCells = Array.from(scope.querySelectorAll('[role="columnheader"], thead th'));
+      const idx = headerCells.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? ""));
+      if (idx >= 0) return idx;
+    }
+    if (headers.some((h) => /bonus|contribution/i.test(h)) && (headers.some((h) => /\bratio\b/i.test(h)) || headers.some((h) => /live.*day/i.test(h)))) {
+      const explicit = headers.findIndex((h) => /\bdiamonds?\b/i.test(h));
+      return explicit >= 0 ? explicit : 3;
+    }
+    return void 0;
   }
   function avatarFromRow(row) {
     const img = row.querySelector("img[src]");
@@ -366,9 +471,13 @@
     }
     const cells = cellTexts(row);
     for (const cell of cells) {
+      if (isNonDiamondStatCell(cell) || /%|bonus/i.test(cell) && /^\$?\d/.test(cell)) continue;
+      if (/^\d[\d,.]*$/.test(cell.replace(/\s/g, ""))) continue;
       const u = extractUsernameFromText(cell);
       const withoutUser = u ? cell.replace(`@${u}`, "").replace(u, "").trim() : cell;
-      if (withoutUser.length > 1 && withoutUser.length < 80) return withoutUser;
+      if (withoutUser.length > 1 && withoutUser.length < 80 && !/\blevel\s*\d/i.test(withoutUser)) {
+        return withoutUser;
+      }
     }
     return void 0;
   }
@@ -408,24 +517,44 @@
       rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
     };
   }
+  function pickDiamondsFromCells(cells, coinsColumnIndex) {
+    if (coinsColumnIndex !== void 0 && cells[coinsColumnIndex]) {
+      const mapped = parseStatNumber(cells[coinsColumnIndex]);
+      if (mapped !== void 0) return mapped;
+    }
+    let best;
+    for (const cell of cells) {
+      if (isNonDiamondStatCell(cell)) continue;
+      if (extractUsernameFromText(cell)) continue;
+      const n = parseStatNumber(cell);
+      if (n === void 0 || n < 10) continue;
+      if (n <= 100 && /%/.test(cell)) continue;
+      if (best === void 0 || n > best) best = n;
+    }
+    return best;
+  }
   function inferColumnMap(headers) {
     const map = {};
     headers.forEach((h, idx) => {
       if (/(creator|username|handle)/i.test(h)) map.creator = idx;
-      if (/(gifts?|diamonds?|coins?)/i.test(h)) map.coins = idx;
-      if (/(engagements?|interactions?|activity)/i.test(h)) map.engagements = idx;
+      if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.coins = idx;
+      else if (/\bcoins?\b/i.test(h) && !/incentive|contribution|bonus/i.test(h)) map.coins = idx;
+      if (/(engagements?|interactions?)/i.test(h) && !/incentive/i.test(h)) map.engagements = idx;
       if (/(valid.*live.*days?|days? streamed|live days)/i.test(h)) map.days = idx;
-      if (/(stream duration|hours?|live duration)/i.test(h)) map.hours = idx;
+      if (/(stream duration|live duration)/i.test(h) || /\bhours?\b/.test(h)) map.hours = idx;
       if (/(activeness|activity level|active level)/i.test(h)) map.activeness = idx;
     });
     return map;
   }
-  function parseStatsRow(row) {
+  function parseStatsRow(row, doc = document) {
     const cells = cellTexts(row);
     const cellEls = tableCells(row);
     if (cells.length === 0) return null;
-    const headers = headerTextsForTable(row);
+    const headers = headerTextsForRow(row, doc);
     const columnMap = inferColumnMap(headers);
+    const diamondsCol = resolveDiamondsColumnIndex(row, doc, headers, columnMap);
+    if (diamondsCol !== void 0) columnMap.coins = diamondsCol;
+    const ariaDiamondsCol = diamondsColIndexFromAria(doc);
     const creatorText = columnMap.creator !== void 0 ? cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
     const usernameCandidate = extractUsernameWithConfidence(creatorText, {
       fromUsernameColumn: columnMap.creator !== void 0,
@@ -443,18 +572,28 @@
     let liveDurationText;
     let liveDurationSeconds;
     let riskFlag;
-    if (columnMap.coins !== void 0 && cells[columnMap.coins]) {
-      const n = firstCompactNumber(cells[columnMap.coins]);
+    if (ariaDiamondsCol !== void 0) {
+      const ariaCell = cellTextAtColIndex(row, ariaDiamondsCol);
+      if (ariaCell) {
+        const n = parseStatNumber(ariaCell);
+        if (n !== void 0) {
+          coins = n;
+          diamonds = n;
+        }
+      }
+    }
+    if (diamonds === void 0 && columnMap.coins !== void 0 && cells[columnMap.coins]) {
+      const n = parseStatNumber(cells[columnMap.coins]);
       if (n !== void 0) {
         coins = n;
         diamonds = n;
       }
     }
     if (columnMap.engagements !== void 0 && cells[columnMap.engagements]) {
-      engagements = parseCompactNumber(cells[columnMap.engagements]) ?? firstCompactNumber(cells[columnMap.engagements]);
+      engagements = parseStatNumber(cells[columnMap.engagements]);
     }
     if (columnMap.days !== void 0 && cells[columnMap.days]) {
-      days = parseDayCount(cells[columnMap.days]) ?? firstCompactNumber(cells[columnMap.days]);
+      days = parseDayCount(cells[columnMap.days]);
     }
     if (columnMap.hours !== void 0 && cells[columnMap.hours]) {
       const seconds = parseDurationToSeconds(cells[columnMap.hours]);
@@ -471,16 +610,15 @@
     }
     for (const cell of cells) {
       const lower = cell.toLowerCase();
-      if (!diamonds && (lower.includes("gift") || lower.includes("diamond"))) {
-        diamonds = firstCompactNumber(cell);
-        coins = diamonds;
-      }
-      if (!coins && (lower.includes("coin") || /^\d/.test(cell))) {
-        const n = firstCompactNumber(cell);
-        if (n !== void 0 && n > 0) coins = n;
+      if (!diamonds && /\bdiamonds?\b/i.test(cell)) {
+        const n = parseStatNumber(cell);
+        if (n !== void 0) {
+          diamonds = n;
+          coins = n;
+        }
       }
       if (!days && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\b/i.test(cell))) {
-        days = parseDayCount(cell) ?? firstCompactNumber(cell);
+        days = parseDayCount(cell);
       }
       if (!hours && (lower.includes("hour") || /\d+h\b/i.test(cell) || /\d+\s*h\s*\d*m/i.test(cell))) {
         hours = parseDurationToSeconds(cell);
@@ -500,8 +638,16 @@
         riskFlag = cell.slice(0, 120);
       }
     }
-    if (coins === void 0) coins = firstCompactNumber(joined);
-    if (diamonds === void 0) diamonds = coins;
+    if (diamonds === void 0) {
+      diamonds = pickDiamondsFromCells(cells, diamondsCol ?? columnMap.coins);
+      if (diamonds !== void 0) coins = diamonds;
+    }
+    if (diamonds === void 0) {
+      diamonds = extractDiamondsFromRowText(joined);
+      if (diamonds !== void 0) coins = diamonds;
+    }
+    if (coins === void 0 && diamonds !== void 0) coins = diamonds;
+    if (!username || username.length < 2) return null;
     return {
       tiktokUsername: username,
       usernameConfidence: usernameCandidate.confidence,
@@ -539,7 +685,7 @@
         const parsed = parseRelationshipRow(el, relationshipTab);
         if (parsed) rows.push(parsed);
       } else if (pageType === "creator_stats" || pageType === "unknown") {
-        const parsed = parseStatsRow(el);
+        const parsed = parseStatsRow(el, doc);
         if (parsed) rows.push(parsed);
       }
     }

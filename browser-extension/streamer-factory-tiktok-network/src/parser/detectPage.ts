@@ -61,11 +61,33 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
   const title = doc.title.toLowerCase();
   const bodyText = (doc.body?.innerText ?? "").slice(0, 4000).toLowerCase();
 
+  /* Revenue / incentives / stats — before manage_relationship (sidebar often mentions "Manage relationship"). */
+  if (
+    path.includes("/revenue") ||
+    path.includes("/incentive") ||
+    path.includes("/performance") ||
+    path.includes("/contribution") ||
+    path.includes("/data/") ||
+    path.includes("/analytics") ||
+    title.includes("incentive") ||
+    title.includes("performance") ||
+    title.includes("contribution") ||
+    bodyText.includes("contribution details") ||
+    bodyText.includes("estimated bonus") ||
+    bodyText.includes("valid go live") ||
+    bodyText.includes("activeness incentive")
+  ) {
+    return {
+      detectedPageType: "creator_stats",
+      statPeriodLabel: readPeriodLabel(doc),
+      relationshipTab: readActiveRelationshipTab(doc),
+    };
+  }
+
   if (
     path.includes("/relation") ||
     path.includes("/relationship") ||
-    title.includes("manage relationship") ||
-    bodyText.includes("manage relationship")
+    title.includes("manage relationship")
   ) {
     return {
       detectedPageType: "manage_relationship",
@@ -85,21 +107,14 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
   }
 
   if (
-    path.includes("/performance") ||
-    path.includes("/contribution") ||
-    path.includes("/data/") ||
-    path.includes("/analytics") ||
     path.includes("/creator") ||
-    title.includes("performance") ||
-    title.includes("contribution") ||
     bodyText.includes("coins earned") ||
-    bodyText.includes("diamonds") ||
-    bodyText.includes("valid go live") ||
-    bodyText.includes("activeness")
+    bodyText.includes("diamonds")
   ) {
     return {
       detectedPageType: "creator_stats",
       statPeriodLabel: readPeriodLabel(doc),
+      relationshipTab: readActiveRelationshipTab(doc),
     };
   }
 
