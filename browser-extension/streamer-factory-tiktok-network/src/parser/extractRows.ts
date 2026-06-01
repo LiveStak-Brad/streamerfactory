@@ -1,15 +1,23 @@
 import { parseDayCount, parseDurationToSeconds } from "./duration";
 import {
-  firstCompactNumber,
-  isNonDiamondStatCell,
-  isNumericStatCell,
-  parseCompactNumber,
-  parseStatNumber,
-} from "./numbers";
+  dataRowsInContainer,
+  diamondsFromRowGrid,
+  findCreatorContributionGrid,
+  pickLargestDiamondLikeValue,
+  readCellText,
+  splitCellLines,
+} from "./gridTable";
+import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "./numbers";
 import type { DetectedPageType, ParsedCreatorRow } from "./types";
 import { extractUsernameFromText, extractUsernameWithConfidence, normalizeTikTokUsername } from "./username";
 
 function rowLikeElements(doc: Document): Element[] {
+  const contributionGrid = findCreatorContributionGrid(doc);
+  if (contributionGrid) {
+    const rows = dataRowsInContainer(contributionGrid);
+    if (rows.length > 0) return rows;
+  }
+
   const gridRows = Array.from(doc.querySelectorAll('[role="row"]')).filter(
     (el) =>
       !el.querySelector('[role="columnheader"]') &&
@@ -20,7 +28,6 @@ function rowLikeElements(doc: Document): Element[] {
     (tr) => (tr.textContent?.length ?? 0) > 15,
   );
 
-  /* TikTok Incentives uses role=grid; a legacy <table> often has wrong/empty rows. */
   if (gridRows.length >= Math.max(fromTable.length, 1)) return gridRows;
   if (fromTable.length > 0) return fromTable;
 
@@ -32,23 +39,6 @@ function rowLikeElements(doc: Document): Element[] {
   return Array.from(doc.querySelectorAll("li, [class*='list-item'], [class*='ListItem']")).filter(
     (el) => (el.textContent?.length ?? 0) > 10 && (el.textContent?.length ?? 0) < 500,
   );
-}
-
-function readCellText(cell: Element): string {
-  const bits: string[] = [];
-  const aria = cell.getAttribute("aria-label")?.trim();
-  const text = (cell.textContent ?? "").trim();
-  if (text) bits.push(text);
-  if (aria && aria !== text) bits.push(aria);
-  return bits.join(" ").trim();
-}
-
-/** Split row/cell text into lines (TikTok often packs a row into one cell). */
-function splitCellLines(text: string): string[] {
-  return text
-    .split(/\n/)
-    .map((s) => s.trim())
-    .filter(Boolean);
 }
 
 function cellTexts(row: Element): string[] {
@@ -74,51 +64,23 @@ function headerTextsForTable(row: Element): string[] {
   return headers.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
 }
 
-/** TikTok often uses role=grid with columnheader row separate from tbody table. */
-function headerTextsForRow(row: Element, doc: Document): string[] {
+/** Headers from the same grid/table as this row only (never whole document). */
+function headerTextsForRow(row: Element): string[] {
   const fromTable = headerTextsForTable(row);
   if (fromTable.length >= 3) return fromTable;
 
-  const containers = [
-    row.closest('[role="grid"]'),
-    row.closest('[role="table"]'),
-    row.closest("table"),
-  ].filter(Boolean) as Element[];
-
-  for (const container of containers) {
-    const headerCells = Array.from(container.querySelectorAll('[role="columnheader"]'));
-    if (headerCells.length >= 3) {
-      return headerCells.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-    }
+  const grid = row.closest('[role="grid"], table');
+  if (grid) {
+    const headers = [...grid.querySelectorAll('[role="columnheader"], thead th')]
+      .map((h) => (h.textContent ?? "").trim().toLowerCase())
+      .filter(Boolean);
+    if (headers.length >= 3) return headers;
   }
-
-  const docHeaders = Array.from(doc.querySelectorAll('[role="columnheader"], thead th'));
-  const texts = docHeaders.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-  if (texts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h))) return texts;
 
   return fromTable;
 }
 
-function diamondsColIndexFromAria(doc: Document): number | undefined {
-  for (const h of doc.querySelectorAll('[role="columnheader"]')) {
-    if (!/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) continue;
-    const idx = parseInt(h.getAttribute("aria-colindex") ?? "", 10);
-    if (!Number.isNaN(idx)) return idx;
-  }
-  return undefined;
-}
-
-function cellTextAtColIndex(row: Element, colIndex: number): string | undefined {
-  const direct = row.querySelector(`[role="cell"][aria-colindex="${colIndex}"]`);
-  if (direct) return readCellText(direct);
-  for (const cell of row.querySelectorAll('[role="cell"], td')) {
-    const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
-    if (idx === colIndex) return readCellText(cell);
-  }
-  return undefined;
-}
-
-/** Diamond counts from row text (DOM may omit commas: "8720" vs displayed "8,720"). */
+/** Diamond counts from row text when column mapping fails. */
 function extractDiamondsFromRowText(rowText: string, username?: string): number | undefined {
   let text = rowText;
   if (username) {
@@ -128,54 +90,13 @@ function extractDiamondsFromRowText(rowText: string, username?: string): number 
     );
   }
 
+  const fromLines = pickLargestDiamondLikeValue(splitCellLines(text), username);
+  if (fromLines !== undefined) return fromLines;
+
   const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)]
     .map((m) => parseCompactNumber(m[1]))
-    .filter((n): n is number => n !== undefined && n >= 10);
+    .filter((n): n is number => n !== undefined && n >= 100);
   if (commaMatches.length > 0) return Math.max(...commaMatches);
-
-  const plain: number[] = [];
-  for (const line of splitCellLines(text)) {
-    if (isNumericStatCell(line)) {
-      const n = parseStatNumber(line);
-      if (n !== undefined && n >= 10) plain.push(n);
-    }
-  }
-  for (const m of text.matchAll(/\b(\d{3,7})\b/g)) {
-    const n = Number(m[1]);
-    if (n >= 100 && n <= 50_000_000) plain.push(n);
-  }
-  if (plain.length === 0) return undefined;
-  return Math.max(...plain);
-}
-
-function resolveDiamondsColumnIndex(
-  row: Element,
-  doc: Document,
-  headers: string[],
-  columnMap: ReturnType<typeof inferColumnMap>,
-): number | undefined {
-  if (columnMap.coins !== undefined) return columnMap.coins;
-
-  const headerIdx = headers.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
-  if (headerIdx >= 0) return headerIdx;
-
-  const scopes = [row.closest('[role="grid"]'), row.closest('[role="table"]'), doc.body].filter(
-    Boolean,
-  ) as Element[];
-  for (const scope of scopes) {
-    const headerCells = Array.from(scope.querySelectorAll('[role="columnheader"], thead th'));
-    const idx = headerCells.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? ""));
-    if (idx >= 0) return idx;
-  }
-
-  /* Incentives “by creator”: Creator · bonus · ratio · Diamonds · live days · duration … */
-  if (
-    headers.some((h) => /bonus|contribution/i.test(h)) &&
-    (headers.some((h) => /\bratio\b/i.test(h)) || headers.some((h) => /live.*day/i.test(h)))
-  ) {
-    const explicit = headers.findIndex((h) => /\bdiamonds?\b/i.test(h));
-    return explicit >= 0 ? explicit : 3;
-  }
 
   return undefined;
 }
@@ -248,35 +169,6 @@ function parseRelationshipRow(row: Element, tabStatus?: string): ParsedCreatorRo
   };
 }
 
-/** Best-effort diamonds when header map fails — never "1d / 8d" or "$0.00". */
-function pickDiamondsFromCells(cells: string[], coinsColumnIndex?: number): number | undefined {
-  if (coinsColumnIndex !== undefined && cells[coinsColumnIndex]) {
-    const mapped = parseStatNumber(cells[coinsColumnIndex]);
-    if (mapped !== undefined) return mapped;
-  }
-
-  let best: number | undefined;
-  for (const cell of cells) {
-    const parts = splitCellLines(cell);
-    for (const part of parts.length > 0 ? parts : [cell]) {
-      if (isNonDiamondStatCell(part)) continue;
-      if (extractUsernameFromText(part)) continue;
-      if (isNumericStatCell(part)) {
-        const n = parseStatNumber(part);
-        if (n !== undefined && n >= 10) {
-          if (best === undefined || n > best) best = n;
-        }
-        continue;
-      }
-      const n = parseStatNumber(part);
-      if (n === undefined || n < 10) continue;
-      if (n <= 100 && /%/.test(part)) continue;
-      if (best === undefined || n > best) best = n;
-    }
-  }
-  return best;
-}
-
 function inferColumnMap(headers: string[]): {
   coins?: number;
   engagements?: number;
@@ -298,16 +190,13 @@ function inferColumnMap(headers: string[]): {
   return map;
 }
 
-function parseStatsRow(row: Element, doc: Document = document): ParsedCreatorRow | null {
+function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRow | null {
   const cells = cellTexts(row);
   const cellEls = tableCells(row);
   if (cells.length === 0) return null;
 
-  const headers = headerTextsForRow(row, doc);
+  const headers = headerTextsForRow(row);
   const columnMap = inferColumnMap(headers);
-  const diamondsCol = resolveDiamondsColumnIndex(row, doc, headers, columnMap);
-  if (diamondsCol !== undefined) columnMap.coins = diamondsCol;
-  const ariaDiamondsCol = diamondsColIndexFromAria(doc);
   const creatorText =
     columnMap.creator !== undefined
       ? (cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "")
@@ -331,24 +220,8 @@ function parseStatsRow(row: Element, doc: Document = document): ParsedCreatorRow
   let liveDurationSeconds: number | undefined;
   let riskFlag: string | undefined;
 
-  if (ariaDiamondsCol !== undefined) {
-    const ariaCell = cellTextAtColIndex(row, ariaDiamondsCol);
-    if (ariaCell) {
-      const n = parseStatNumber(ariaCell);
-      if (n !== undefined) {
-        coins = n;
-        diamonds = n;
-      }
-    }
-  }
-
-  if (diamonds === undefined && columnMap.coins !== undefined && cells[columnMap.coins]) {
-    const n = parseStatNumber(cells[columnMap.coins]);
-    if (n !== undefined) {
-      coins = n;
-      diamonds = n;
-    }
-  }
+  diamonds = diamondsFromRowGrid(row);
+  if (diamonds !== undefined) coins = diamonds;
   if (columnMap.engagements !== undefined && cells[columnMap.engagements]) {
     engagements = parseStatNumber(cells[columnMap.engagements]);
   }
@@ -408,11 +281,12 @@ function parseStatsRow(row: Element, doc: Document = document): ParsedCreatorRow
   }
 
   if (diamonds === undefined) {
-    diamonds = pickDiamondsFromCells(cells, diamondsCol ?? columnMap.coins);
+    diamonds = pickLargestDiamondLikeValue(cells, username);
     if (diamonds !== undefined) coins = diamonds;
   }
   if (diamonds === undefined) {
-    diamonds = extractDiamondsFromRowText(joined, username);
+    const inner = (row as HTMLElement).innerText?.trim() ?? joined;
+    diamonds = extractDiamondsFromRowText(inner, username);
     if (diamonds !== undefined) coins = diamonds;
   }
   if (coins === undefined && diamonds !== undefined) coins = diamonds;

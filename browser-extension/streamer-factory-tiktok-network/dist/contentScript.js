@@ -362,8 +362,127 @@
     return parseCompactNumber(raw);
   }
 
+  // src/parser/gridTable.ts
+  function readCellText(cell) {
+    const bits = [];
+    for (const attr of ["aria-label", "title"]) {
+      const v = cell.getAttribute(attr)?.trim();
+      if (v) bits.push(v);
+    }
+    const text = (cell.textContent ?? "").trim();
+    if (text) bits.push(text);
+    return [...new Set(bits)].join(" ").trim();
+  }
+  function splitCellLines(text) {
+    return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
+  }
+  function findCreatorContributionGrid(doc) {
+    const candidates = [...doc.querySelectorAll('[role="grid"], table')];
+    let best = null;
+    let bestRows = 0;
+    for (const container of candidates) {
+      const headerEls = [...container.querySelectorAll('[role="columnheader"], thead th')];
+      const headerTexts = headerEls.map((h) => (h.textContent ?? "").trim().toLowerCase());
+      const hasDiamonds = headerTexts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
+      const hasCreator = headerTexts.some((h) => /creator|username/i.test(h));
+      if (!hasDiamonds || !hasCreator) continue;
+      const dataRows = [...container.querySelectorAll('[role="row"], tbody tr')].filter(
+        (r) => !r.querySelector('[role="columnheader"]') && (r.textContent?.length ?? 0) > 20 && /\d/.test(r.textContent ?? "")
+      );
+      if (dataRows.length > bestRows) {
+        bestRows = dataRows.length;
+        best = container;
+      }
+    }
+    return best;
+  }
+  function dataRowsInContainer(container) {
+    return [...container.querySelectorAll('[role="row"], tbody tr')].filter(
+      (r) => !r.querySelector('[role="columnheader"]') && (r.textContent?.length ?? 0) > 15
+    );
+  }
+  function headerElementsForContainer(container) {
+    return [...container.querySelectorAll('[role="columnheader"], thead th')];
+  }
+  function cellTextAtColIndex(row, colIndex) {
+    for (const sel of [
+      `[role="cell"][aria-colindex="${colIndex}"]`,
+      `[aria-colindex="${colIndex}"]`
+    ]) {
+      const direct = row.querySelector(sel);
+      if (direct) return readCellText(direct);
+    }
+    for (const cell of row.querySelectorAll('[role="cell"], td')) {
+      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+      if (idx === colIndex) return readCellText(cell);
+    }
+    return void 0;
+  }
+  function parseDiamondValue(text) {
+    if (!text) return void 0;
+    const n = parseStatNumber(text);
+    if (n === void 0 || n < 50) return void 0;
+    if (/^\$/.test(text.trim()) || /%$/.test(text.trim())) return void 0;
+    return n;
+  }
+  function diamondsFromRowGrid(row) {
+    const grid = row.closest('[role="grid"], table');
+    if (!grid) return void 0;
+    const headerEls = headerElementsForContainer(grid);
+    let diamondsHeaderEl;
+    let diamondsHeaderPos = -1;
+    headerEls.forEach((h, i) => {
+      if (/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) {
+        diamondsHeaderEl = h;
+        diamondsHeaderPos = i;
+      }
+    });
+    if (!diamondsHeaderEl && diamondsHeaderPos < 0) return void 0;
+    const ariaRaw = parseInt(diamondsHeaderEl?.getAttribute("aria-colindex") ?? "", 10);
+    const tryColIndexes = /* @__PURE__ */ new Set();
+    if (!Number.isNaN(ariaRaw)) {
+      tryColIndexes.add(ariaRaw);
+      tryColIndexes.add(ariaRaw + 1);
+      tryColIndexes.add(ariaRaw - 1);
+    }
+    if (diamondsHeaderPos >= 0) tryColIndexes.add(diamondsHeaderPos);
+    for (const idx of tryColIndexes) {
+      const n = parseDiamondValue(cellTextAtColIndex(row, idx));
+      if (n !== void 0) return n;
+    }
+    const rowCells = [...row.querySelectorAll('[role="cell"], td')];
+    if (diamondsHeaderPos >= 0 && diamondsHeaderPos < rowCells.length) {
+      const n = parseDiamondValue(readCellText(rowCells[diamondsHeaderPos]));
+      if (n !== void 0) return n;
+    }
+    return void 0;
+  }
+  function pickLargestDiamondLikeValue(cellLines, username) {
+    let best;
+    for (const part of cellLines) {
+      if (username && part.toLowerCase().includes(username.toLowerCase())) continue;
+      if (isNonDiamondStatCell(part)) continue;
+      if (/^\$/.test(part) || /%$/.test(part)) continue;
+      if (extractUsernameFromText(part)) continue;
+      let n;
+      if (isNumericStatCell(part)) {
+        n = parseStatNumber(part);
+      } else {
+        n = parseStatNumber(part);
+      }
+      if (n === void 0 || n < 100) continue;
+      if (best === void 0 || n > best) best = n;
+    }
+    return best;
+  }
+
   // src/parser/extractRows.ts
   function rowLikeElements(doc) {
+    const contributionGrid = findCreatorContributionGrid(doc);
+    if (contributionGrid) {
+      const rows = dataRowsInContainer(contributionGrid);
+      if (rows.length > 0) return rows;
+    }
     const gridRows = Array.from(doc.querySelectorAll('[role="row"]')).filter(
       (el) => !el.querySelector('[role="columnheader"]') && (el.querySelector('[role="cell"]') || el.querySelector("td")) && (el.textContent?.length ?? 0) > 15
     );
@@ -379,17 +498,6 @@
     return Array.from(doc.querySelectorAll("li, [class*='list-item'], [class*='ListItem']")).filter(
       (el) => (el.textContent?.length ?? 0) > 10 && (el.textContent?.length ?? 0) < 500
     );
-  }
-  function readCellText(cell) {
-    const bits = [];
-    const aria = cell.getAttribute("aria-label")?.trim();
-    const text = (cell.textContent ?? "").trim();
-    if (text) bits.push(text);
-    if (aria && aria !== text) bits.push(aria);
-    return bits.join(" ").trim();
-  }
-  function splitCellLines(text) {
-    return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
   }
   function cellTexts(row) {
     const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
@@ -411,41 +519,15 @@
     const headers = Array.from(table.querySelectorAll("thead th, thead td, [role='columnheader']"));
     return headers.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
   }
-  function headerTextsForRow(row, doc) {
+  function headerTextsForRow(row) {
     const fromTable = headerTextsForTable(row);
     if (fromTable.length >= 3) return fromTable;
-    const containers = [
-      row.closest('[role="grid"]'),
-      row.closest('[role="table"]'),
-      row.closest("table")
-    ].filter(Boolean);
-    for (const container of containers) {
-      const headerCells = Array.from(container.querySelectorAll('[role="columnheader"]'));
-      if (headerCells.length >= 3) {
-        return headerCells.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-      }
+    const grid = row.closest('[role="grid"], table');
+    if (grid) {
+      const headers = [...grid.querySelectorAll('[role="columnheader"], thead th')].map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+      if (headers.length >= 3) return headers;
     }
-    const docHeaders = Array.from(doc.querySelectorAll('[role="columnheader"], thead th'));
-    const texts = docHeaders.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-    if (texts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h))) return texts;
     return fromTable;
-  }
-  function diamondsColIndexFromAria(doc) {
-    for (const h of doc.querySelectorAll('[role="columnheader"]')) {
-      if (!/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) continue;
-      const idx = parseInt(h.getAttribute("aria-colindex") ?? "", 10);
-      if (!Number.isNaN(idx)) return idx;
-    }
-    return void 0;
-  }
-  function cellTextAtColIndex(row, colIndex) {
-    const direct = row.querySelector(`[role="cell"][aria-colindex="${colIndex}"]`);
-    if (direct) return readCellText(direct);
-    for (const cell of row.querySelectorAll('[role="cell"], td')) {
-      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
-      if (idx === colIndex) return readCellText(cell);
-    }
-    return void 0;
   }
   function extractDiamondsFromRowText(rowText, username) {
     let text = rowText;
@@ -455,38 +537,10 @@
         " "
       );
     }
-    const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 10);
+    const fromLines = pickLargestDiamondLikeValue(splitCellLines(text), username);
+    if (fromLines !== void 0) return fromLines;
+    const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 100);
     if (commaMatches.length > 0) return Math.max(...commaMatches);
-    const plain = [];
-    for (const line of splitCellLines(text)) {
-      if (isNumericStatCell(line)) {
-        const n = parseStatNumber(line);
-        if (n !== void 0 && n >= 10) plain.push(n);
-      }
-    }
-    for (const m of text.matchAll(/\b(\d{3,7})\b/g)) {
-      const n = Number(m[1]);
-      if (n >= 100 && n <= 5e7) plain.push(n);
-    }
-    if (plain.length === 0) return void 0;
-    return Math.max(...plain);
-  }
-  function resolveDiamondsColumnIndex(row, doc, headers, columnMap) {
-    if (columnMap.coins !== void 0) return columnMap.coins;
-    const headerIdx = headers.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
-    if (headerIdx >= 0) return headerIdx;
-    const scopes = [row.closest('[role="grid"]'), row.closest('[role="table"]'), doc.body].filter(
-      Boolean
-    );
-    for (const scope of scopes) {
-      const headerCells = Array.from(scope.querySelectorAll('[role="columnheader"], thead th'));
-      const idx = headerCells.findIndex((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? ""));
-      if (idx >= 0) return idx;
-    }
-    if (headers.some((h) => /bonus|contribution/i.test(h)) && (headers.some((h) => /\bratio\b/i.test(h)) || headers.some((h) => /live.*day/i.test(h)))) {
-      const explicit = headers.findIndex((h) => /\bdiamonds?\b/i.test(h));
-      return explicit >= 0 ? explicit : 3;
-    }
     return void 0;
   }
   function avatarFromRow(row) {
@@ -549,32 +603,6 @@
       rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
     };
   }
-  function pickDiamondsFromCells(cells, coinsColumnIndex) {
-    if (coinsColumnIndex !== void 0 && cells[coinsColumnIndex]) {
-      const mapped = parseStatNumber(cells[coinsColumnIndex]);
-      if (mapped !== void 0) return mapped;
-    }
-    let best;
-    for (const cell of cells) {
-      const parts = splitCellLines(cell);
-      for (const part of parts.length > 0 ? parts : [cell]) {
-        if (isNonDiamondStatCell(part)) continue;
-        if (extractUsernameFromText(part)) continue;
-        if (isNumericStatCell(part)) {
-          const n2 = parseStatNumber(part);
-          if (n2 !== void 0 && n2 >= 10) {
-            if (best === void 0 || n2 > best) best = n2;
-          }
-          continue;
-        }
-        const n = parseStatNumber(part);
-        if (n === void 0 || n < 10) continue;
-        if (n <= 100 && /%/.test(part)) continue;
-        if (best === void 0 || n > best) best = n;
-      }
-    }
-    return best;
-  }
   function inferColumnMap(headers) {
     const map = {};
     headers.forEach((h, idx) => {
@@ -588,15 +616,12 @@
     });
     return map;
   }
-  function parseStatsRow(row, doc = document) {
+  function parseStatsRow(row, _doc = document) {
     const cells = cellTexts(row);
     const cellEls = tableCells(row);
     if (cells.length === 0) return null;
-    const headers = headerTextsForRow(row, doc);
+    const headers = headerTextsForRow(row);
     const columnMap = inferColumnMap(headers);
-    const diamondsCol = resolveDiamondsColumnIndex(row, doc, headers, columnMap);
-    if (diamondsCol !== void 0) columnMap.coins = diamondsCol;
-    const ariaDiamondsCol = diamondsColIndexFromAria(doc);
     const creatorText = columnMap.creator !== void 0 ? cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
     const usernameCandidate = extractUsernameWithConfidence(creatorText, {
       fromUsernameColumn: columnMap.creator !== void 0,
@@ -614,23 +639,8 @@
     let liveDurationText;
     let liveDurationSeconds;
     let riskFlag;
-    if (ariaDiamondsCol !== void 0) {
-      const ariaCell = cellTextAtColIndex(row, ariaDiamondsCol);
-      if (ariaCell) {
-        const n = parseStatNumber(ariaCell);
-        if (n !== void 0) {
-          coins = n;
-          diamonds = n;
-        }
-      }
-    }
-    if (diamonds === void 0 && columnMap.coins !== void 0 && cells[columnMap.coins]) {
-      const n = parseStatNumber(cells[columnMap.coins]);
-      if (n !== void 0) {
-        coins = n;
-        diamonds = n;
-      }
-    }
+    diamonds = diamondsFromRowGrid(row);
+    if (diamonds !== void 0) coins = diamonds;
     if (columnMap.engagements !== void 0 && cells[columnMap.engagements]) {
       engagements = parseStatNumber(cells[columnMap.engagements]);
     }
@@ -681,11 +691,12 @@
       }
     }
     if (diamonds === void 0) {
-      diamonds = pickDiamondsFromCells(cells, diamondsCol ?? columnMap.coins);
+      diamonds = pickLargestDiamondLikeValue(cells, username);
       if (diamonds !== void 0) coins = diamonds;
     }
     if (diamonds === void 0) {
-      diamonds = extractDiamondsFromRowText(joined, username);
+      const inner = row.innerText?.trim() ?? joined;
+      diamonds = extractDiamondsFromRowText(inner, username);
       if (diamonds !== void 0) coins = diamonds;
     }
     if (coins === void 0 && diamonds !== void 0) coins = diamonds;
