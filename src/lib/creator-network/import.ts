@@ -63,7 +63,10 @@ export async function importCreatorNetworkPayload(
     statPeriodLabel: payload.statPeriodLabel ?? null,
     statPeriodStart: payload.statPeriodStart ?? null,
     statPeriodEnd: payload.statPeriodEnd ?? null,
-    statPeriodKind: payload.statPeriodKind ?? null,
+    statPeriodKind:
+      payload.statPeriodKind === "weekly" || payload.statPeriodKind === "monthly"
+        ? "monthly"
+        : null,
     importedAt: new Date(),
   });
 
@@ -151,7 +154,7 @@ export async function importCreatorNetworkPayload(
           coins_earned: Math.max(0, Math.round(row.coinsEarned ?? row.diamondsEarned ?? 0)),
           diamonds_earned: Math.max(0, Math.round(row.diamondsEarned ?? row.coinsEarned ?? 0)),
           engagements: Math.max(0, Math.round(row.engagements ?? 0)),
-          days_streamed: sanitizeLiveDaysForPeriod(row.daysStreamed, importPeriod.kind),
+          days_streamed: sanitizeLiveDaysForPeriod(row.daysStreamed),
           hours_streamed: sanitizeImportedHours(row.hoursStreamed),
           activeness_level: normalizeActiveness(row.activenessLevel),
           live_duration_seconds: Math.max(0, Math.round(row.liveDurationSeconds ?? 0)),

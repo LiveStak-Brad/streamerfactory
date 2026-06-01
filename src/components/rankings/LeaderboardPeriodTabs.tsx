@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
+import { parseRankingPeriod, RANKING_PERIODS } from "@/lib/rankings/types";
 
 type LeaderboardPeriodTabsProps = {
   /** Base path for period links (default `/rankings`). */
@@ -11,7 +11,7 @@ type LeaderboardPeriodTabsProps = {
 
 export function LeaderboardPeriodTabs({ basePath = "/rankings" }: LeaderboardPeriodTabsProps) {
   const searchParams = useSearchParams();
-  const current = (searchParams.get("period") ?? "weekly") as RankingPeriod;
+  const current = parseRankingPeriod(searchParams.get("period") ?? undefined);
   const anchor = searchParams.get("anchor") ?? "";
 
   return (

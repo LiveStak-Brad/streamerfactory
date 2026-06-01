@@ -51,7 +51,8 @@ export type ImportPayload = {
   statPeriodLabel?: string;
   statPeriodStart?: string;
   statPeriodEnd?: string;
-  statPeriodKind?: "weekly" | "monthly";
+  /** Extension always sends monthly; legacy payloads may still say weekly. */
+  statPeriodKind?: "monthly" | "weekly";
   rows: ImportRowPayload[];
   liveRows?: LiveRowPayload[];
 };

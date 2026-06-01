@@ -36,10 +36,10 @@ export function MemberRankingCard({
             Factory ranking
           </p>
           <h2 className="mt-2 text-2xl font-bold text-zinc-950 dark:text-zinc-50">
-            {entry?.rank_position != null ? `#${entry.rank_position}` : "—"} this week
+            {entry?.rank_position != null ? `#${entry.rank_position}` : "—"} this month
           </h2>
           <p className="mt-1 text-sm text-zinc-500">
-            {formatPeriodLabel("weekly", periodStart, periodEnd)}
+            {formatPeriodLabel("monthly", periodStart, periodEnd)}
           </p>
           <p className="mt-2 inline-flex rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent dark:text-accent-muted">
             {badge === "Factory Champion"

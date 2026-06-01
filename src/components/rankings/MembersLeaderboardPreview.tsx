@@ -5,7 +5,7 @@ import { getLeaderboard } from "@/lib/rankings/queries";
 
 /** Top of member directory — same source as /rankings (extension import or seed fallback). */
 export async function MembersLeaderboardPreview() {
-  const board = await getLeaderboard("weekly");
+  const board = await getLeaderboard("monthly");
   const top = board.slice(0, 10);
 
   return (

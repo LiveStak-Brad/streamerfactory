@@ -271,10 +271,10 @@ test("parses ISO stat period bounds from page text", () => {
   assert.equal(bounds?.end, "2025-05-31");
 });
 
-test("defaultBoundsForKind uses Monday week start", () => {
-  const bounds = defaultBoundsForKind("weekly", new Date("2025-06-01T12:00:00Z"));
-  assert.equal(bounds.start, "2025-05-26");
-  assert.equal(bounds.end, "2025-06-01");
+test("defaultBoundsForKind uses calendar month", () => {
+  const bounds = defaultBoundsForKind("monthly", new Date("2025-06-01T12:00:00Z"));
+  assert.equal(bounds.start, "2025-06-01");
+  assert.equal(bounds.end, "2025-06-30");
 });
 
 test("does not treat Level as username", () => {

@@ -1,21 +1,15 @@
-/** UTC period bounds aligned with site rankings (Monday week start). */
+/** UTC period bounds aligned with site rankings (calendar month). */
 function toDateString(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-function startOfWeekMonday(d: Date): Date {
-  const x = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
-  const day = x.getUTCDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  x.setUTCDate(x.getUTCDate() + diff);
-  return x;
-}
-
 import { elementLooksSelected } from "./dom";
 
-export type StatPeriodKind = "weekly" | "monthly";
+/** Site rankings use monthly only — extension always syncs as monthly. */
+export type StatPeriodKind = "monthly";
 
-export function inferPeriodKindFromLabel(label: string | undefined): StatPeriodKind | undefined {
+/** Label detection (weekly labels are ignored for sync bounds). */
+export function inferPeriodKindFromLabel(label: string | undefined): "weekly" | "monthly" | undefined {
   if (!label?.trim()) return undefined;
   const t = label.toLowerCase();
   if (/\bmonth(ly)?\b/.test(t)) return "monthly";
@@ -30,7 +24,6 @@ export function readActiveStatPeriodKind(doc: Document): StatPeriodKind | undefi
     if (!elementLooksSelected(tab)) continue;
     const t = (tab.textContent ?? "").toLowerCase();
     if (/\bmonth/.test(t)) return "monthly";
-    if (/\bweek/.test(t)) return "weekly";
   }
   return undefined;
 }
@@ -54,17 +47,11 @@ export function readStatPeriodBounds(doc: Document): { start: string; end: strin
 }
 
 export function defaultBoundsForKind(
-  kind: StatPeriodKind,
+  kind: StatPeriodKind = "monthly",
   anchor: Date = new Date(),
 ): { start: string; end: string } {
-  if (kind === "monthly") {
-    const start = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth(), 1));
-    const end = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth() + 1, 0));
-    return { start: toDateString(start), end: toDateString(end) };
-  }
-  const start = startOfWeekMonday(anchor);
-  const end = new Date(start);
-  end.setUTCDate(end.getUTCDate() + 6);
+  const start = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth(), 1));
+  const end = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth() + 1, 0));
   return { start: toDateString(start), end: toDateString(end) };
 }
 
@@ -77,20 +64,24 @@ export function resolveStatPeriodForSync(
   statPeriodStart?: string;
   statPeriodEnd?: string;
 } {
-  const tabKind = readActiveStatPeriodKind(doc);
-  const labelKind = inferPeriodKindFromLabel(label);
-  const kind = tabKind ?? labelKind;
   const parsed = readStatPeriodBounds(doc);
-  const bounds = parsed ?? (kind ? defaultBoundsForKind(kind) : undefined);
+  const monthBounds = defaultBoundsForKind("monthly");
+  const bounds =
+    parsed &&
+    parsed.start.slice(0, 7) === monthBounds.start.slice(0, 7) &&
+    parsed.end.slice(0, 7) === monthBounds.end.slice(0, 7)
+      ? parsed
+      : monthBounds;
 
   const statPeriodLabel =
-    label ??
-    (kind ? `Contribution details · ${kind === "weekly" ? "Weekly" : "Monthly"}` : undefined);
+    label && /\bmonth/i.test(label)
+      ? label
+      : "Contribution details · Monthly";
 
   return {
     statPeriodLabel,
-    statPeriodKind: kind,
-    statPeriodStart: bounds?.start,
-    statPeriodEnd: bounds?.end,
+    statPeriodKind: "monthly",
+    statPeriodStart: bounds.start,
+    statPeriodEnd: bounds.end,
   };
 }

@@ -54,7 +54,7 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
 
   if (userId) {
     try {
-      rankingSummary = await getMyLeaderboardSummary(userId, "weekly");
+      rankingSummary = await getMyLeaderboardSummary(userId, "monthly");
     } catch {
       rankingSummary = null;
     }

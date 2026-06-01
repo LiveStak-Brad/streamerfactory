@@ -1,8 +1,17 @@
 export const ACTIVENESS_LEVELS = ["none", "low", "medium", "high", "elite"] as const;
 export type ActivenessLevel = (typeof ACTIVENESS_LEVELS)[number];
 
-export const RANKING_PERIODS = ["weekly", "monthly", "all-time"] as const;
+export const RANKING_PERIODS = ["monthly", "all-time"] as const;
 export type RankingPeriod = (typeof RANKING_PERIODS)[number];
+
+/** Legacy URLs and old data may still say weekly — treat as monthly. */
+export function parseRankingPeriod(raw: string | undefined): RankingPeriod {
+  if (raw === "weekly") return "monthly";
+  if (raw && (RANKING_PERIODS as readonly string[]).includes(raw)) {
+    return raw as RankingPeriod;
+  }
+  return "monthly";
+}
 
 export type PerformanceStatsRow = {
   id: string;

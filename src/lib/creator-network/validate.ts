@@ -148,7 +148,7 @@ export function validateImportPayload(body: unknown): ValidationResult {
       statPeriodEnd,
       statPeriodKind:
         body.statPeriodKind === "weekly" || body.statPeriodKind === "monthly"
-          ? body.statPeriodKind
+          ? "monthly"
           : undefined,
       rows,
       liveRows,

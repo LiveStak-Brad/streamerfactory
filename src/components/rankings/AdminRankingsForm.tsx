@@ -92,7 +92,7 @@ export function AdminRankingsForm({
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Loads Creator Network stats from the screenshots you provided (coins, live days, hours, TikTok
           levels → activeness). Matches members by <code className="text-xs">profiles.tiktok_username</code>{" "}
-          or their application handle, then recalculates the weekly leaderboard.
+          or their application handle, then recalculates the monthly leaderboard.
         </p>
         <button
           type="button"
@@ -127,7 +127,7 @@ export function AdminRankingsForm({
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
         <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Period</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Match TikTok Creator Network backstage dates. Weekly uses Monday–Sunday (UTC).
+          Match TikTok Creator Network backstage dates. Monthly uses the calendar month (UTC).
         </p>
         <div className="mt-4 flex flex-wrap gap-4">
           <label className="flex flex-col gap-1 text-sm">
@@ -169,7 +169,7 @@ export function AdminRankingsForm({
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
         <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Override one member (optional)</h2>
         <p className="mt-1 text-sm text-zinc-500">
-          Only needed to fix a single row. Weekly rankings already use the backstage snapshot you provided.
+          Only needed to fix a single row. Monthly rankings use the latest Chrome extension sync when available.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm sm:col-span-2">

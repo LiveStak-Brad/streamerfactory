@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { formatPeriodLabel, periodBounds, toDateString } from "@/lib/rankings/periods";
 import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardWithMeta } from "@/lib/rankings/queries";
-import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
+import { parseRankingPeriod, type RankingPeriod } from "@/lib/rankings/types";
 
 type RankingsPageViewProps = {
   periodKind: RankingPeriod;
@@ -14,11 +14,6 @@ type RankingsPageViewProps = {
   highlightProfileId?: string | null;
   showAdminHint?: boolean;
 };
-
-function parsePeriod(raw: string | undefined): RankingPeriod {
-  if (raw && RANKING_PERIODS.includes(raw as RankingPeriod)) return raw as RankingPeriod;
-  return "weekly";
-}
 
 export async function RankingsPageView({
   periodKind: periodKindProp,
@@ -85,9 +80,7 @@ export async function RankingsPageView({
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
           {periodKind === "all-time"
             ? "All-time performance from TikTok Creator Network backstage — diamonds, stream time, and activeness."
-            : periodKind === "monthly"
-              ? "Monthly performance leaderboard from TikTok Creator Network backstage."
-              : "Weekly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts), stream time, activeness, and battles."}
+            : "Monthly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts), stream time, and activeness."}
         </p>
         <p className="mt-2 text-sm text-zinc-500">
           {formatPeriodLabel(periodKind, periodStart, periodEnd)}
@@ -101,11 +94,10 @@ export async function RankingsPageView({
           <p className="mt-3 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2 text-sm text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
             Live from TikTok Backstage · last extension sync {lastSyncedLabel}
             {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}
-            {periodKind === "weekly" || periodKind === "monthly"
-              ? ` · ${periodKind} view (${periodStart} → ${periodEnd})`
+            {periodKind === "monthly"
+              ? ` · monthly view (${periodStart} → ${periodEnd})`
               : ""}
-            . Open Backstage, select the matching {periodKind === "monthly" ? "Monthly" : periodKind === "weekly" ? "Weekly" : ""}{" "}
-            tab, sync, then reload.
+            . Open Backstage, select the Monthly tab, sync, then reload.
           </p>
         ) : loadIssue === "wrong_period" && wrongPeriodHint ? (
           <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
@@ -122,7 +114,7 @@ export async function RankingsPageView({
             Latest import has no diamond values. Reload the Chrome extension, refresh preview on TikTok
             Backstage (confirm diamond counts show), then sync again.
           </p>
-        ) : periodKind === "weekly" || periodKind === "monthly" ? (
+        ) : periodKind === "monthly" ? (
           <p className="mt-3 text-sm text-zinc-500">
             Showing snapshot data until staff sync from the Chrome extension.
           </p>
@@ -167,7 +159,7 @@ export async function RankingsPageView({
 export function parseRankingsSearchParams(
   sp: Record<string, string | string[] | undefined>,
 ): { periodKind: RankingPeriod; anchor: string } {
-  const periodKind = parsePeriod(typeof sp.period === "string" ? sp.period : undefined);
+  const periodKind = parseRankingPeriod(typeof sp.period === "string" ? sp.period : undefined);
   const anchor = typeof sp.anchor === "string" ? sp.anchor : toDateString(new Date());
   return { periodKind, anchor };
 }

@@ -1,5 +1,5 @@
 /**
- * Seed Creator Network backstage stats and recalculate weekly rankings.
+ * Seed Creator Network backstage stats and recalculate monthly rankings.
  *
  * Requires in .env.local:
  *   NEXT_PUBLIC_SUPABASE_URL
@@ -54,7 +54,7 @@ const supabase = createClient(url, serviceKey, {
 const NETWORK_ROLES = ["member", "editor", "admin", "owner"] as const;
 
 async function main() {
-  const { periodStart, periodEnd } = periodBounds("weekly");
+  const { periodStart, periodEnd } = periodBounds("monthly");
 
   const { data: profiles, error: profErr } = await supabase
     .from("profiles")
@@ -143,13 +143,13 @@ async function main() {
 
   const ranked = assignRanks(computeRankings(statsForScoring));
 
-  await supabase.from("creator_rankings").delete().eq("ranking_period", "weekly").eq("period_start", periodStart);
+  await supabase.from("creator_rankings").delete().eq("ranking_period", "monthly").eq("period_start", periodStart);
 
   if (ranked.length > 0) {
     const { error: rankInsertErr } = await supabase.from("creator_rankings").insert(
       ranked.map((r) => ({
         profile_id: r.profile_id,
-        ranking_period: "weekly",
+        ranking_period: "monthly",
         period_start: periodStart,
         period_end: periodEnd,
         rank_score: r.rank_score,

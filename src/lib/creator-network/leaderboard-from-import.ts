@@ -10,6 +10,7 @@ import {
   inferPeriodKindFromLabel,
   periodKindForRanking,
   sanitizeLiveDaysForPeriod,
+  type DetectedStatPeriodLabel,
   type StatPeriodKind,
 } from "@/lib/creator-network/stat-period";
 import { periodBounds } from "@/lib/rankings/periods";
@@ -159,7 +160,7 @@ async function loadLatestImportStatRows(): Promise<LoadedImportBatch | null> {
 export type WrongPeriodImportHint = {
   requestedKind: StatPeriodKind;
   importLabel: string | null;
-  importKind: StatPeriodKind | null;
+  importKind: DetectedStatPeriodLabel | null;
   importedAt: string;
 };
 
@@ -306,7 +307,7 @@ export type LeaderboardImportLoad = {
 };
 
 export async function getLeaderboardFromLatestCreatorNetworkImport(
-  kind: RankingPeriod = "weekly",
+  kind: RankingPeriod = "monthly",
   anchorDate?: string,
 ): Promise<LeaderboardImportLoad | null> {
   const periodKind = periodKindForRanking(kind);
@@ -317,9 +318,6 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
   if (!loaded) return null;
 
   const { batch, rows } = loaded;
-  const daysKind = periodKind ?? inferPeriodKindFromLabel(
-    rows.find((r) => r.stat_period_label)?.stat_period_label ?? null,
-  );
 
   const byHandle = dedupeImportRowsByHandle(rows);
 
@@ -346,7 +344,7 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
     return {
       profile_id: scoringId,
       coins_earned: diamondsForRow(row),
-      days_streamed: sanitizeLiveDaysForPeriod(row.days_streamed, daysKind),
+      days_streamed: sanitizeLiveDaysForPeriod(row.days_streamed),
       hours_streamed: Number(row.hours_streamed ?? 0),
       activeness_level: (row.activeness_level ?? "none") as ActivenessLevel,
       battles_played: 0,
@@ -375,7 +373,7 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
       activity_rank: r.activity_rank,
       battle_rank: r.battle_rank,
       coins_earned: diamondsForRow(row),
-      days_streamed: sanitizeLiveDaysForPeriod(row.days_streamed, daysKind),
+      days_streamed: sanitizeLiveDaysForPeriod(row.days_streamed),
       hours_streamed: Number(row.hours_streamed ?? 0),
       activeness_level: (row.activeness_level ?? "none") as ActivenessLevel,
       follower_growth: 0,

@@ -7,7 +7,7 @@ export type PageDetection = {
   detectedPageType: DetectedPageType;
   relationshipTab?: string;
   statPeriodLabel?: string;
-  statPeriodKind?: "weekly" | "monthly";
+  statPeriodKind?: "monthly";
   statPeriodStart?: string;
   statPeriodEnd?: string;
 };

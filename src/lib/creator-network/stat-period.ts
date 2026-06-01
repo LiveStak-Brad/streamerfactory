@@ -1,9 +1,15 @@
 import { periodBounds, toDateString } from "@/lib/rankings/periods";
 import type { RankingPeriod } from "@/lib/rankings/types";
 
-export type StatPeriodKind = "weekly" | "monthly";
+/** Backstage import period — site uses monthly only (weekly tab syncs map to monthly). */
+export type StatPeriodKind = "monthly";
 
-export function inferPeriodKindFromLabel(label: string | null | undefined): StatPeriodKind | null {
+/** Label detection only (weekly label → needs re-sync on Monthly tab). */
+export type DetectedStatPeriodLabel = "weekly" | "monthly";
+
+export function inferPeriodKindFromLabel(
+  label: string | null | undefined,
+): DetectedStatPeriodLabel | null {
   if (!label?.trim()) return null;
   const t = label.toLowerCase();
   if (/\bmonth(ly)?\b/.test(t)) return "monthly";
@@ -23,25 +29,17 @@ export function resolveImportPeriodBounds(payload: {
   periodEnd: string | null;
 } {
   const anchor = payload.importedAt ?? new Date();
-  const kind =
-    payload.statPeriodKind ??
-    inferPeriodKindFromLabel(payload.statPeriodLabel) ??
-    null;
 
   if (payload.statPeriodStart && payload.statPeriodEnd) {
     return {
-      kind,
+      kind: "monthly",
       periodStart: payload.statPeriodStart,
       periodEnd: payload.statPeriodEnd,
     };
   }
 
-  if (!kind) {
-    return { kind: null, periodStart: null, periodEnd: null };
-  }
-
-  const { periodStart, periodEnd } = periodBounds(kind, anchor);
-  return { kind, periodStart, periodEnd };
+  const { periodStart, periodEnd } = periodBounds("monthly", anchor);
+  return { kind: "monthly", periodStart, periodEnd };
 }
 
 export type ImportPeriodFields = {
@@ -51,28 +49,17 @@ export type ImportPeriodFields = {
   days_streamed: number;
 };
 
-export function isPlausibleDaysStreamed(days: number, kind: StatPeriodKind): boolean {
-  const n = Math.max(0, Math.floor(days));
-  if (kind === "weekly") return n <= 7;
-  return n <= 31;
+export function isPlausibleDaysStreamed(days: number): boolean {
+  return Math.max(0, Math.floor(days)) <= 31;
 }
 
-/** Fix stored/imported day counts (monthly targets like 30 leaking into weekly). */
-export function sanitizeLiveDaysForPeriod(
-  days: number | undefined | null,
-  kind: StatPeriodKind | null,
-): number {
+/** Cap impossible monthly day counts (e.g. target 30 mis-read as achievement). */
+export function sanitizeLiveDaysForPeriod(days: number | undefined | null): number {
   const n = Math.max(0, Math.round(days ?? 0));
-  if (!kind) return n;
-  if (kind === "weekly") {
-    if (n > 7) return 0;
-    return n;
-  }
-  if (n > 31) return 0;
-  return n;
+  return n > 31 ? 0 : n;
 }
 
-/** Whether an import batch is for the requested weekly/monthly period (ignore day counts). */
+/** Whether an import batch matches the current monthly period (label or date range). */
 export function importBatchMatchesRankingPeriod(
   rows: ImportPeriodFields[],
   kind: StatPeriodKind,
@@ -112,6 +99,6 @@ export function rowMatchesRankingPeriod(
 }
 
 export function periodKindForRanking(kind: RankingPeriod): StatPeriodKind | null {
-  if (kind === "weekly" || kind === "monthly") return kind;
+  if (kind === "monthly") return "monthly";
   return null;
 }

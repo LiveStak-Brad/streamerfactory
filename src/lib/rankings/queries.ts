@@ -112,7 +112,7 @@ export type LeaderboardLoadIssue =
 
 export type LeaderboardLoadResult = {
   entries: LeaderboardEntry[];
-  /** Set when weekly/monthly board is built from the latest extension import. */
+  /** Set when the monthly board is built from the latest extension import. */
   syncMeta: {
     importedAt: string;
     acceptedRows: number;
@@ -122,7 +122,7 @@ export type LeaderboardLoadResult = {
     statPeriodLabel?: string | null;
   } | null;
   loadIssue?: LeaderboardLoadIssue;
-  /** Shown when the latest sync is Monthly but the Weekly tab is selected (or vice versa). */
+  /** Shown when the latest sync is not for the current monthly period (e.g. old Weekly tab sync). */
   wrongPeriodHint?: string | null;
 };
 
@@ -134,7 +134,7 @@ export async function getLeaderboardWithMeta(
   kind: RankingPeriod,
   anchorDate?: string,
 ): Promise<LeaderboardLoadResult> {
-  if (kind === "weekly" || kind === "monthly") {
+  if (kind === "monthly") {
     const statKind = periodKindForRanking(kind)!;
     try {
       const fromImport = await getLeaderboardFromLatestCreatorNetworkImport(kind, anchorDate);
@@ -162,16 +162,16 @@ export async function getLeaderboardWithMeta(
       const wrong = await getWrongPeriodImportHint(statKind);
       if (wrong) {
         const other =
-          wrong.importKind === "monthly"
-            ? "Monthly"
-            : wrong.importKind === "weekly"
-              ? "Weekly"
+          wrong.importKind === "weekly"
+            ? "Weekly"
+            : wrong.importKind === "monthly"
+              ? "Monthly"
               : "a different period";
         return {
           entries: await seedBoardWithImportAvatars(),
           syncMeta: null,
           loadIssue: "wrong_period",
-          wrongPeriodHint: `Latest sync looks like ${other} data (e.g. 30-day stats on Weekly). In TikTok Backstage, open Creator stats, select the ${kind === "weekly" ? "Weekly" : "Monthly"} tab for this period, then sync again.`,
+          wrongPeriodHint: `Latest sync looks like ${other} data. In TikTok Backstage, open Creator stats, select the Monthly tab for this period, then sync again.`,
         };
       }
 
@@ -205,7 +205,7 @@ export async function getLeaderboard(
   kind: RankingPeriod,
   anchorDate?: string,
 ): Promise<LeaderboardEntry[]> {
-  if (kind === "weekly" || kind === "monthly") {
+  if (kind === "monthly") {
     const { entries } = await getLeaderboardWithMeta(kind, anchorDate);
     return entries;
   }
@@ -312,7 +312,7 @@ async function getLeaderboardFromTables(
 
 export async function getMyLeaderboardSummary(
   profileId: string,
-  kind: RankingPeriod = "weekly",
+  kind: RankingPeriod = "monthly",
 ): Promise<{
   entry: LeaderboardEntry | null;
   periodStart: string;

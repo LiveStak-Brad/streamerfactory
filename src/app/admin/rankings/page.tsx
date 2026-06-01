@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/Container";
 import { periodBounds, toDateString } from "@/lib/rankings/periods";
 import { getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
-import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
+import { parseRankingPeriod } from "@/lib/rankings/types";
 import { getNetworkMemberProfiles } from "@/lib/profiles/queries";
 
 export const metadata = {
@@ -20,14 +20,9 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function parsePeriod(raw: string | undefined): RankingPeriod {
-  if (raw && RANKING_PERIODS.includes(raw as RankingPeriod)) return raw as RankingPeriod;
-  return "weekly";
-}
-
 export default async function AdminRankingsPage({ searchParams }: PageProps) {
   const sp = await searchParams;
-  const periodKind = parsePeriod(typeof sp.period === "string" ? sp.period : undefined);
+  const periodKind = parseRankingPeriod(typeof sp.period === "string" ? sp.period : undefined);
   const anchorRaw = typeof sp.anchor === "string" ? sp.anchor : toDateString(new Date());
   const anchor = anchorRaw || toDateString(new Date());
   const { periodStart, periodEnd } = periodBounds(periodKind, new Date(`${anchor}T12:00:00Z`));
