@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { CreatorNetworkStatsCard } from "@/components/creator-network/CreatorNetworkStatsCard";
+import { LiveNowSection } from "@/components/creator-network/LiveNowSection";
 import { MemberRankingCard } from "@/components/rankings/MemberRankingCard";
 import { Container } from "@/components/ui/Container";
+import { getLatestLiveNowSnapshots, getMyLatestImportedStats } from "@/lib/creator-network/queries";
 import { getMyLeaderboardSummary } from "@/lib/rankings/queries";
 import { getTikTokConnectionPublic } from "@/lib/tiktok/db";
 import { getSessionProfile } from "@/lib/auth/server";
@@ -42,12 +45,30 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
   const tiktokWarn = firstString(sp.tiktok_warn);
 
   let rankingSummary: Awaited<ReturnType<typeof getMyLeaderboardSummary>> | null = null;
+  let myImportedStats: Awaited<ReturnType<typeof getMyLatestImportedStats>> | null = null;
+  let liveNow: Awaited<ReturnType<typeof getLatestLiveNowSnapshots>> = {
+    batchId: null,
+    importedAt: null,
+    entries: [],
+  };
+
   if (userId) {
     try {
       rankingSummary = await getMyLeaderboardSummary(userId, "weekly");
     } catch {
       rankingSummary = null;
     }
+    try {
+      myImportedStats = await getMyLatestImportedStats(userId);
+    } catch {
+      myImportedStats = null;
+    }
+  }
+
+  try {
+    liveNow = await getLatestLiveNowSnapshots();
+  } catch {
+    liveNow = { batchId: null, importedAt: null, entries: [] };
   }
 
   return (
@@ -106,6 +127,14 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
 
         <div className="mt-10">
           <TikTokMemberCard connection={connection} />
+        </div>
+
+        <div className="mt-10">
+          <LiveNowSection importedAt={liveNow.importedAt} entries={liveNow.entries} />
+        </div>
+
+        <div className="mt-10">
+          <CreatorNetworkStatsCard stats={myImportedStats} />
         </div>
 
         <div className="mt-10">

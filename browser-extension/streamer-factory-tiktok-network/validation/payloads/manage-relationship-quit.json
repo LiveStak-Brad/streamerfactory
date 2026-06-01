@@ -1,0 +1,16 @@
+{
+  "sourcePageUrl": "https://live-backstage.tiktok.com/portal/anchor/relation?tab=quit",
+  "detectedPageType": "manage_relationship",
+  "relationshipTab": "Quit",
+  "rows": [
+    {
+      "tiktokUsername": "Former",
+      "displayName": "Former Creator",
+      "avatarUrl": "https://example.com/q1.jpg",
+      "creatorNetworkStatus": "Quit",
+      "inviteStatus": "Quit",
+      "relationshipRequestDate": "03/10/2025",
+      "relationshipReason": "left network voluntarily"
+    }
+  ]
+}

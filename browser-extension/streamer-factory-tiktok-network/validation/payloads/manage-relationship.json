@@ -1,0 +1,25 @@
+{
+  "sourcePageUrl": "https://live-backstage.tiktok.com/portal/anchor/relation?tab=removed",
+  "detectedPageType": "manage_relationship",
+  "relationshipTab": "Removed",
+  "rows": [
+    {
+      "tiktokUsername": "Peppatice45",
+      "displayName": "Peppatice45",
+      "avatarUrl": "https://example.com/a1.jpg",
+      "creatorNetworkStatus": "Removed",
+      "inviteStatus": "Removed",
+      "relationshipRequestDate": "05/23/2024",
+      "relationshipReason": "problem"
+    },
+    {
+      "tiktokUsername": "kaleidoscope",
+      "displayName": "kaleidoscope views",
+      "avatarUrl": "https://example.com/a2.jpg",
+      "creatorNetworkStatus": "Removed",
+      "inviteStatus": "Removed",
+      "relationshipRequestDate": "05/23/2024",
+      "relationshipReason": "trying to poach within the network"
+    }
+  ]
+}

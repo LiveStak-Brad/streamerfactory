@@ -1,0 +1,20 @@
+{
+  "name": "streamer-factory-tiktok-network-extension",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "watch": "tsc --watch",
+    "test": "tsx tests/parser.test.ts",
+    "validate:parser": "tsx scripts/generate-validation-report.ts",
+    "analyze:captures": "node scripts/analyze-live-captures.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.304",
+    "esbuild": "^0.25.0",
+    "linkedom": "^0.18.12",
+    "tsx": "^4.22.3",
+    "typescript": "^5"
+  }
+}

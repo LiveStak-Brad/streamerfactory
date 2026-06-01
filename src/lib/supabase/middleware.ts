@@ -51,6 +51,22 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  /* Extension import: staff only (session cookie from Streamer Factory login). */
+  if (pathname.startsWith("/api/extension/tiktok-network/import")) {
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const { data: extProfile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (!extProfile || !canAccessAdmin(extProfile.role as string)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  }
+
   if (pathname.startsWith("/admin")) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);

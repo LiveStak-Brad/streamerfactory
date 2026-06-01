@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Streamer Factory — TikTok Network Sync",
+  "version": "0.1.0",
+  "description": "Staff tool to sync visible TikTok Creator Network Backstage data to Streamer Factory. Manual sync only.",
+  "permissions": ["storage", "activeTab", "scripting", "cookies"],
+  "host_permissions": [
+    "https://live-backstage.tiktok.com/*",
+    "https://seller-us.tiktok.com/*",
+    "https://seller.tiktok.com/*",
+    "https://thestreamerfactory.com/*",
+    "https://www.thestreamerfactory.com/*",
+    "http://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://live-backstage.tiktok.com/*",
+        "https://seller-us.tiktok.com/*",
+        "https://seller.tiktok.com/*"
+      ],
+      "js": ["dist/contentScript.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://thestreamerfactory.com/*",
+        "https://www.thestreamerfactory.com/*",
+        "http://localhost:3000/*"
+      ],
+      "js": ["dist/sf-bridge.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Streamer Factory TikTok Sync",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}

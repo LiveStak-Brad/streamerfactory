@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streamer Factory Sync</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 14px;
+        width: 360px;
+        color: #111;
+        background: #fafafa;
+      }
+      h1 {
+        font-size: 15px;
+        margin: 0 0 4px;
+      }
+      .muted {
+        color: #666;
+        font-size: 12px;
+      }
+      .status {
+        margin: 10px 0;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        background: #eef2ff;
+      }
+      .status.error {
+        background: #fef2f2;
+        color: #991b1b;
+      }
+      .status.ok {
+        background: #ecfdf5;
+        color: #065f46;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        border: 0;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #111;
+        color: #fff;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      pre {
+        font-size: 10px;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 8px;
+        max-height: 160px;
+        overflow: auto;
+        white-space: pre-wrap;
+      }
+      .row-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin: 8px 0;
+      }
+      a {
+        color: #4338ca;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Streamer Factory · TikTok Network</h1>
+    <p class="muted">Reads visible Backstage data only. Manual sync — no TikTok cookies stored.</p>
+
+    <div id="connection" class="status">Checking Streamer Factory login…</div>
+
+    <div class="row-meta">
+      <span id="pageType">Page: —</span>
+      <span id="rowCount">Rows: 0</span>
+    </div>
+
+    <pre id="preview">Open a TikTok Backstage page and click Refresh preview.</pre>
+
+    <button type="button" id="refreshPreview" style="margin-bottom: 8px; background: #4338ca">
+      Refresh preview
+    </button>
+    <button type="button" id="syncBtn" disabled>Sync to Streamer Factory</button>
+    <button type="button" id="copyCapture" style="margin-top: 8px; background: #0f766e">
+      Copy capture JSON
+    </button>
+
+    <p id="syncResult" class="muted" style="margin-top: 10px"></p>
+    <pre id="captureMeta">Capture mode: refresh preview to inspect fields/confidence.</pre>
+    <p><a href="options.html" target="_blank">Options (API URL / dev mode)</a></p>
+
+    <script src="dist/popup.js"></script>
+  </body>
+</html>

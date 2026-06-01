@@ -1,0 +1,21 @@
+{
+  "sourcePageUrl": "https://live-backstage.tiktok.com/portal/anchor/live",
+  "detectedPageType": "live_now",
+  "rows": [],
+  "liveRows": [
+    {
+      "tiktokUsername": "sunshine_live",
+      "displayName": "SunShine",
+      "avatarUrl": "https://example.com/live1.jpg",
+      "streamTitle": "Morning chat & battles",
+      "viewerCountText": "128 viewers"
+    },
+    {
+      "tiktokUsername": "creator_two",
+      "displayName": "Creator Two",
+      "avatarUrl": "https://example.com/live2.jpg",
+      "viewerCountText": "45 viewers",
+      "liveStartedText": "Started 1h 20m ago"
+    }
+  ]
+}

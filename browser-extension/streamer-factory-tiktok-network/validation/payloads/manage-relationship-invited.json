@@ -1,0 +1,25 @@
+{
+  "sourcePageUrl": "https://live-backstage.tiktok.com/portal/anchor/relation?tab=invited",
+  "detectedPageType": "manage_relationship",
+  "relationshipTab": "Invited",
+  "rows": [
+    {
+      "tiktokUsername": "SunShine",
+      "displayName": "SunShine",
+      "avatarUrl": "https://p16-sign.tiktokcdn.com/avatar1.jpeg",
+      "creatorNetworkStatus": "Invited",
+      "inviteStatus": "Invited",
+      "relationshipRequestDate": "05/28/2026",
+      "relationshipReason": "Pending scan"
+    },
+    {
+      "tiktokUsername": "Jenny",
+      "displayName": "Jenny RN",
+      "avatarUrl": "https://p16-sign.tiktokcdn.com/avatar2.jpeg",
+      "creatorNetworkStatus": "Invited",
+      "inviteStatus": "Invited",
+      "relationshipRequestDate": "05/15/2026",
+      "relationshipReason": "Invited"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "sourcePageUrl": "https://live-backstage.tiktok.com/portal/data/performance",
+  "detectedPageType": "creator_stats",
+  "statPeriodLabel": "Contribution details · Weekly",
+  "rows": [
+    {
+      "tiktokUsername": "sunshine_live_09",
+      "displayName": "SunShine",
+      "avatarUrl": "https://example.com/s1.jpg",
+      "coinsEarned": 413200,
+      "diamondsEarned": 413200,
+      "daysStreamed": 21,
+      "hoursStreamed": 90.2,
+      "liveDurationText": "90h 12m",
+      "liveDurationSeconds": 324720,
+      "activenessLevel": "high"
+    },
+    {
+      "tiktokUsername": "Jenny",
+      "displayName": "Jenny RN",
+      "avatarUrl": "https://example.com/s2.jpg",
+      "coinsEarned": 107100,
+      "diamondsEarned": 107100,
+      "daysStreamed": 17,
+      "hoursStreamed": 1.0966666666666667,
+      "liveDurationText": "1h 5m 48s",
+      "liveDurationSeconds": 3948,
+      "activenessLevel": "medium"
+    }
+  ]
+}

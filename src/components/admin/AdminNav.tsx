@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/applications", label: "Applications" },
   { href: "/admin/members", label: "Members" },
   { href: "/admin/rankings", label: "Rankings" },
+  { href: "/admin/creator-network", label: "CN imports" },
   { href: "/admin/streameru", label: "StreamerU" },
 ] as const;
 
