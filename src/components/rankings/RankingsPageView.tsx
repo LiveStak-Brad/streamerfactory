@@ -28,7 +28,7 @@ export async function RankingsPageView({
 }: RankingsPageViewProps) {
   const periodKind = periodKindProp;
   const anchor = anchorProp ?? toDateString(new Date());
-  const { periodStart, periodEnd } = periodBounds(
+  const calendarPeriod = periodBounds(
     periodKind,
     anchor ? new Date(`${anchor}T12:00:00Z`) : new Date(),
   );
@@ -37,14 +37,19 @@ export async function RankingsPageView({
   let highlightTiktokHandle: string | null = null;
   let syncMeta: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["syncMeta"] = null;
   let loadIssue: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["loadIssue"];
+  let wrongPeriodHint: string | null = null;
   try {
     const board = await getLeaderboardWithMeta(periodKind, anchor);
     entries = board.entries;
     syncMeta = board.syncMeta;
     loadIssue = board.loadIssue;
+    wrongPeriodHint = board.wrongPeriodHint ?? null;
   } catch {
     entries = [];
   }
+
+  const periodStart = syncMeta?.periodStart ?? calendarPeriod.periodStart;
+  const periodEnd = syncMeta?.periodEnd ?? calendarPeriod.periodEnd;
 
   const lastSyncedLabel =
     syncMeta?.importedAt != null
@@ -78,15 +83,33 @@ export async function RankingsPageView({
           Factory rankings
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-          Weekly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts),
-          stream time, activeness, and battles.
+          {periodKind === "all-time"
+            ? "All-time performance from TikTok Creator Network backstage — diamonds, stream time, and activeness."
+            : periodKind === "monthly"
+              ? "Monthly performance leaderboard from TikTok Creator Network backstage."
+              : "Weekly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts), stream time, activeness, and battles."}
         </p>
-        <p className="mt-2 text-sm text-zinc-500">{formatPeriodLabel(periodKind, periodStart, periodEnd)}</p>
+        <p className="mt-2 text-sm text-zinc-500">
+          {formatPeriodLabel(periodKind, periodStart, periodEnd)}
+          {syncMeta?.statPeriodLabel ? (
+            <span className="block text-xs text-zinc-400 dark:text-zinc-500">
+              Backstage: {syncMeta.statPeriodLabel}
+            </span>
+          ) : null}
+        </p>
         {lastSyncedLabel ? (
           <p className="mt-3 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2 text-sm text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
             Live from TikTok Backstage · last extension sync {lastSyncedLabel}
-            {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}. Open TikTok Backstage
-            (extension auto-sync) or use manual sync, then reload this page.
+            {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}
+            {periodKind === "weekly" || periodKind === "monthly"
+              ? ` · ${periodKind} view (${periodStart} → ${periodEnd})`
+              : ""}
+            . Open Backstage, select the matching {periodKind === "monthly" ? "Monthly" : periodKind === "weekly" ? "Weekly" : ""}{" "}
+            tab, sync, then reload.
+          </p>
+        ) : loadIssue === "wrong_period" && wrongPeriodHint ? (
+          <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+            {wrongPeriodHint}
           </p>
         ) : loadIssue === "import_not_readable" ? (
           <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">

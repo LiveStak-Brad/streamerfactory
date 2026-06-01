@@ -146,6 +146,10 @@ export function validateImportPayload(body: unknown): ValidationResult {
       statPeriodLabel: optionalString(body.statPeriodLabel),
       statPeriodStart,
       statPeriodEnd,
+      statPeriodKind:
+        body.statPeriodKind === "weekly" || body.statPeriodKind === "monthly"
+          ? body.statPeriodKind
+          : undefined,
       rows,
       liveRows,
     },

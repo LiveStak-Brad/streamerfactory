@@ -51,6 +51,7 @@ export type ImportPayload = {
   statPeriodLabel?: string;
   statPeriodStart?: string;
   statPeriodEnd?: string;
+  statPeriodKind?: "weekly" | "monthly";
   rows: ImportRowPayload[];
   liveRows?: LiveRowPayload[];
 };

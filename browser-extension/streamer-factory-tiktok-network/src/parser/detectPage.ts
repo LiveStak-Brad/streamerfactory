@@ -1,3 +1,4 @@
+import { resolveStatPeriodForSync } from "./statPeriod";
 import type { DetectedPageType } from "./types";
 
 const BACKSTAGE_HOSTS = ["live-backstage.tiktok.com", "seller-us.tiktok.com", "seller.tiktok.com"];
@@ -6,6 +7,9 @@ export type PageDetection = {
   detectedPageType: DetectedPageType;
   relationshipTab?: string;
   statPeriodLabel?: string;
+  statPeriodKind?: "weekly" | "monthly";
+  statPeriodStart?: string;
+  statPeriodEnd?: string;
 };
 
 export function isTikTokCreatorNetworkHost(url: string): boolean {
@@ -45,6 +49,20 @@ function readPeriodLabel(doc: Document): string | undefined {
   return undefined;
 }
 
+function withStatPeriod(doc: Document, base: PageDetection): PageDetection {
+  if (base.detectedPageType !== "creator_stats" && base.detectedPageType !== "manage_relationship") {
+    return base;
+  }
+  const period = resolveStatPeriodForSync(doc, base.statPeriodLabel);
+  return {
+    ...base,
+    statPeriodLabel: period.statPeriodLabel ?? base.statPeriodLabel,
+    statPeriodKind: period.statPeriodKind,
+    statPeriodStart: period.statPeriodStart,
+    statPeriodEnd: period.statPeriodEnd,
+  };
+}
+
 /** Detect TikTok Creator Network backstage page type from URL + visible DOM. */
 export function detectTikTokCreatorNetworkPage(url: string, doc: Document = document): PageDetection {
   if (!isTikTokCreatorNetworkHost(url)) {
@@ -77,11 +95,11 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
     bodyText.includes("valid go live") ||
     bodyText.includes("activeness incentive")
   ) {
-    return {
+    return withStatPeriod(doc, {
       detectedPageType: "creator_stats",
       statPeriodLabel: readPeriodLabel(doc),
       relationshipTab: readActiveRelationshipTab(doc),
-    };
+    });
   }
 
   if (
@@ -111,11 +129,11 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
     bodyText.includes("coins earned") ||
     bodyText.includes("diamonds")
   ) {
-    return {
+    return withStatPeriod(doc, {
       detectedPageType: "creator_stats",
       statPeriodLabel: readPeriodLabel(doc),
       relationshipTab: readActiveRelationshipTab(doc),
-    };
+    });
   }
 
   return { detectedPageType: "unknown" };

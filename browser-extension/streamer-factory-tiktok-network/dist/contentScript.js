@@ -1,5 +1,90 @@
 "use strict";
 (() => {
+  // src/parser/dom.ts
+  function elementClassText(el) {
+    const raw = el.className;
+    if (typeof raw === "string") return raw;
+    if (raw && typeof raw.baseVal === "string") {
+      return raw.baseVal;
+    }
+    return el.getAttribute("class") ?? "";
+  }
+  function elementLooksSelected(el) {
+    if (el.getAttribute("aria-selected") === "true") return true;
+    if (el.classList?.contains("active")) return true;
+    if (el.classList?.contains("semi-tabs-tab-active")) return true;
+    return elementClassText(el).toLowerCase().includes("active");
+  }
+
+  // src/parser/statPeriod.ts
+  function toDateString(d) {
+    return d.toISOString().slice(0, 10);
+  }
+  function startOfWeekMonday(d) {
+    const x = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    const day = x.getUTCDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    x.setUTCDate(x.getUTCDate() + diff);
+    return x;
+  }
+  function inferPeriodKindFromLabel(label) {
+    if (!label?.trim()) return void 0;
+    const t = label.toLowerCase();
+    if (/\bmonth(ly)?\b/.test(t)) return "monthly";
+    if (/\bweek(ly)?\b/.test(t)) return "weekly";
+    return void 0;
+  }
+  function readActiveStatPeriodKind(doc) {
+    if (typeof doc.querySelectorAll !== "function") return void 0;
+    const tabs = Array.from(doc.querySelectorAll('[role="tab"], [class*="tab"]'));
+    for (const tab of tabs) {
+      if (!elementLooksSelected(tab)) continue;
+      const t = (tab.textContent ?? "").toLowerCase();
+      if (/\bmonth/.test(t)) return "monthly";
+      if (/\bweek/.test(t)) return "weekly";
+    }
+    return void 0;
+  }
+  function readStatPeriodBounds(doc) {
+    const text = (doc.body?.innerText ?? doc.body?.textContent ?? "").slice(0, 12e3);
+    const iso = text.match(/(\d{4}-\d{2}-\d{2})\s*[–—\-]\s*(\d{4}-\d{2}-\d{2})/);
+    if (iso) return { start: iso[1], end: iso[2] };
+    const us = text.match(
+      /(\d{1,2})\/(\d{1,2})\/(\d{4})\s*[–—\-]\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/
+    );
+    if (us) {
+      const start = `${us[3]}-${us[1].padStart(2, "0")}-${us[2].padStart(2, "0")}`;
+      const end = `${us[6]}-${us[4].padStart(2, "0")}-${us[5].padStart(2, "0")}`;
+      return { start, end };
+    }
+    return void 0;
+  }
+  function defaultBoundsForKind(kind, anchor = /* @__PURE__ */ new Date()) {
+    if (kind === "monthly") {
+      const start2 = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth(), 1));
+      const end2 = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth() + 1, 0));
+      return { start: toDateString(start2), end: toDateString(end2) };
+    }
+    const start = startOfWeekMonday(anchor);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 6);
+    return { start: toDateString(start), end: toDateString(end) };
+  }
+  function resolveStatPeriodForSync(doc, label) {
+    const tabKind = readActiveStatPeriodKind(doc);
+    const labelKind = inferPeriodKindFromLabel(label);
+    const kind = tabKind ?? labelKind;
+    const parsed = readStatPeriodBounds(doc);
+    const bounds = parsed ?? (kind ? defaultBoundsForKind(kind) : void 0);
+    const statPeriodLabel = label ?? (kind ? `Contribution details \xB7 ${kind === "weekly" ? "Weekly" : "Monthly"}` : void 0);
+    return {
+      statPeriodLabel,
+      statPeriodKind: kind,
+      statPeriodStart: bounds?.start,
+      statPeriodEnd: bounds?.end
+    };
+  }
+
   // src/parser/detectPage.ts
   var BACKSTAGE_HOSTS = ["live-backstage.tiktok.com", "seller-us.tiktok.com", "seller.tiktok.com"];
   function isTikTokCreatorNetworkHost(url) {
@@ -36,6 +121,19 @@
     }
     return void 0;
   }
+  function withStatPeriod(doc, base) {
+    if (base.detectedPageType !== "creator_stats" && base.detectedPageType !== "manage_relationship") {
+      return base;
+    }
+    const period = resolveStatPeriodForSync(doc, base.statPeriodLabel);
+    return {
+      ...base,
+      statPeriodLabel: period.statPeriodLabel ?? base.statPeriodLabel,
+      statPeriodKind: period.statPeriodKind,
+      statPeriodStart: period.statPeriodStart,
+      statPeriodEnd: period.statPeriodEnd
+    };
+  }
   function detectTikTokCreatorNetworkPage(url, doc = document) {
     if (!isTikTokCreatorNetworkHost(url)) {
       return { detectedPageType: "unknown" };
@@ -49,11 +147,11 @@
     const title = doc.title.toLowerCase();
     const bodyText = (doc.body?.innerText ?? "").slice(0, 4e3).toLowerCase();
     if (path.includes("/revenue") || path.includes("/incentive") || path.includes("/performance") || path.includes("/contribution") || path.includes("/data/") || path.includes("/analytics") || title.includes("incentive") || title.includes("performance") || title.includes("contribution") || bodyText.includes("contribution details") || bodyText.includes("estimated bonus") || bodyText.includes("valid go live") || bodyText.includes("activeness incentive")) {
-      return {
+      return withStatPeriod(doc, {
         detectedPageType: "creator_stats",
         statPeriodLabel: readPeriodLabel(doc),
         relationshipTab: readActiveRelationshipTab(doc)
-      };
+      });
     }
     if (path.includes("/relation") || path.includes("/relationship") || title.includes("manage relationship")) {
       return {
@@ -65,11 +163,11 @@
       return { detectedPageType: "live_now" };
     }
     if (path.includes("/creator") || bodyText.includes("coins earned") || bodyText.includes("diamonds")) {
-      return {
+      return withStatPeriod(doc, {
         detectedPageType: "creator_stats",
         statPeriodLabel: readPeriodLabel(doc),
         relationshipTab: readActiveRelationshipTab(doc)
-      };
+      });
     }
     return { detectedPageType: "unknown" };
   }
@@ -354,9 +452,49 @@
   }
 
   // src/parser/duration.ts
+  function progressActualSegment(raw) {
+    const t = raw.trim();
+    const slash = t.search(/\s*[\/／]\s*/);
+    if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
+    return t.slice(0, slash).replace(/\(level\s*\d+\)/gi, "").trim();
+  }
+  function parseLiveDaysFromCell(raw) {
+    if (!raw) return void 0;
+    const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
+    if (progress) return Number(progress[1]);
+    const segment = progressActualSegment(raw);
+    const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
+    if (dayMatch) return Number(dayMatch[1]);
+    if (/^\d+$/.test(segment)) return Number(segment);
+    if (!raw.includes("/") && !raw.includes("\uFF0F")) {
+      const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
+      if (m) return Number(m[1]);
+      const compact = parseCompactNumber(raw);
+      if (compact !== void 0 && compact <= 7) return compact;
+      if (compact !== void 0 && compact > 7) return 0;
+      return void 0;
+    }
+    return void 0;
+  }
+  function parseStreamHoursFromCell(raw) {
+    if (!raw) return void 0;
+    const segment = progressActualSegment(raw);
+    if (!segment) {
+      if (/^0\s*h/i.test(raw.trim())) return 0;
+      return void 0;
+    }
+    const seconds = parseDurationToSeconds(segment);
+    if (seconds !== void 0) return Math.round(seconds / 3600 * 10) / 10;
+    if (/^0\s*h/i.test(segment)) return 0;
+    if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
+      const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
+      if (Number.isFinite(h)) return h;
+    }
+    return void 0;
+  }
   function parseDurationToSeconds(raw) {
     if (!raw) return void 0;
-    const t = raw.trim().toLowerCase();
+    const t = progressActualSegment(raw).toLowerCase();
     if (!t) return void 0;
     let total = 0;
     let matched = false;
@@ -395,12 +533,6 @@
     }
     return Math.round(total);
   }
-  function parseDayCount(raw) {
-    if (!raw) return void 0;
-    const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
-    if (m) return Number(m[1]);
-    return parseCompactNumber(raw);
-  }
 
   // src/parser/gridTable.ts
   function readCellText(cell) {
@@ -412,6 +544,11 @@
     const text = (cell.textContent ?? "").trim();
     if (text) bits.push(text);
     return [...new Set(bits)].join(" ").trim();
+  }
+  function readStatCellText(cell) {
+    const visible = (cell.textContent ?? "").trim();
+    if (visible) return visible;
+    return cell.getAttribute("aria-label")?.trim() ?? cell.getAttribute("title")?.trim() ?? "";
   }
   function splitCellLines(text) {
     return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
@@ -443,6 +580,41 @@
   }
   function headerElementsForContainer(container) {
     return [...container.querySelectorAll('[role="columnheader"], thead th')];
+  }
+  function statTextFromRowColumn(row, headerIndex, cellEls) {
+    const grid = row.closest('[role="grid"], table');
+    if (grid) {
+      const headerEls = headerElementsForContainer(grid);
+      const headerEl = headerEls[headerIndex];
+      const ariaRaw = parseInt(headerEl?.getAttribute("aria-colindex") ?? "", 10);
+      const tryIndexes = /* @__PURE__ */ new Set();
+      if (!Number.isNaN(ariaRaw)) {
+        tryIndexes.add(ariaRaw);
+        tryIndexes.add(ariaRaw + 1);
+      }
+      tryIndexes.add(headerIndex + 1);
+      tryIndexes.add(headerIndex);
+      for (const idx of tryIndexes) {
+        const text = statCellTextAtColIndex(row, idx);
+        if (text?.trim()) return text;
+      }
+    }
+    const el = cellEls[headerIndex];
+    return el ? readStatCellText(el) : void 0;
+  }
+  function statCellTextAtColIndex(row, colIndex) {
+    for (const sel of [
+      `[role="cell"][aria-colindex="${colIndex}"]`,
+      `[aria-colindex="${colIndex}"]`
+    ]) {
+      const direct = row.querySelector(sel);
+      if (direct) return readStatCellText(direct);
+    }
+    for (const cell of row.querySelectorAll('[role="cell"], td')) {
+      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+      if (idx === colIndex) return readStatCellText(cell);
+    }
+    return void 0;
   }
   function cellTextAtColIndex(row, colIndex) {
     for (const sel of [
@@ -552,7 +724,7 @@
   function scoreAvatarImg(el, url, root) {
     let score = 0;
     const lowerUrl = url.toLowerCase();
-    const cls = `${el.className ?? ""} ${el.parentElement?.className ?? ""}`.toLowerCase();
+    const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
     if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
     if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
     if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
@@ -716,7 +888,9 @@
       if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.coins = idx;
       else if (/\bcoins?\b/i.test(h) && !/incentive|contribution|bonus/i.test(h)) map.coins = idx;
       if (/(engagements?|interactions?)/i.test(h) && !/incentive/i.test(h)) map.engagements = idx;
-      if (/(valid.*live.*days?|days? streamed|live days)/i.test(h)) map.days = idx;
+      if (!/eligible\s*incentive/i.test(h) && /(valid\s*go\s*live|valid.*live.*days?|days?\s*streamed|live\s*days?)/i.test(h)) {
+        map.days = idx;
+      }
       if (/(stream duration|live duration)/i.test(h) || /\bhours?\b/.test(h)) map.hours = idx;
       if (/(activeness|activity level|active level)/i.test(h)) map.activeness = idx;
     });
@@ -748,26 +922,32 @@
     let riskFlag;
     diamonds = diamondsFromRowGrid(row);
     if (diamonds !== void 0) coins = diamonds;
-    if (columnMap.engagements !== void 0 && cells[columnMap.engagements]) {
-      engagements = parseStatNumber(cells[columnMap.engagements]);
+    if (columnMap.engagements !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.engagements, cellEls);
+      if (text) engagements = parseStatNumber(text);
     }
-    if (columnMap.days !== void 0 && cells[columnMap.days]) {
-      days = parseDayCount(cells[columnMap.days]);
-    }
-    if (columnMap.hours !== void 0 && cells[columnMap.hours]) {
-      const seconds = parseDurationToSeconds(cells[columnMap.hours]);
-      if (seconds !== void 0) {
-        hours = seconds / 3600;
-        liveDurationText = cells[columnMap.hours];
-        liveDurationSeconds = seconds;
-      } else {
-        hours = firstCompactNumber(cells[columnMap.hours]);
+    if (columnMap.days !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.days, cellEls);
+      if (text) {
+        days = parseLiveDaysFromCell(text);
       }
     }
-    if (columnMap.activeness !== void 0 && cells[columnMap.activeness]) {
-      activeness = parseActiveness(cells[columnMap.activeness]);
+    if (columnMap.hours !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.hours, cellEls);
+      if (text) {
+        hours = parseStreamHoursFromCell(text);
+        if (hours !== void 0) {
+          liveDurationText = text;
+          liveDurationSeconds = Math.round(hours * 3600);
+        }
+      }
     }
-    for (const cell of cells) {
+    if (columnMap.activeness !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.activeness, cellEls);
+      if (text) activeness = parseActiveness(text);
+    }
+    for (const cellEl of cellEls) {
+      const cell = readStatCellText(cellEl);
       const lower = cell.toLowerCase();
       if (!diamonds && /\bdiamonds?\b/i.test(cell)) {
         const n = parseStatNumber(cell);
@@ -776,18 +956,17 @@
           coins = n;
         }
       }
-      if (!days && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\b/i.test(cell))) {
-        days = parseDayCount(cell);
+      if (!days && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\s*[\/／]/.test(cell) || /^\d+\s*d(?:ays?)?\b/i.test(cell.trim()))) {
+        const parsed = parseLiveDaysFromCell(cell);
+        if (parsed !== void 0) days = parsed;
       }
-      if (!hours && (lower.includes("hour") || /\d+h\b/i.test(cell) || /\d+\s*h\s*\d*m/i.test(cell))) {
-        hours = parseDurationToSeconds(cell);
-        if (hours !== void 0) hours = hours / 3600;
-        else {
-          const h = firstCompactNumber(cell);
-          if (h !== void 0) hours = h;
+      if (!hours && (/\d+\s*h\s*[\/／]/.test(cell) || /\d+\s*h(?:\s*\d+\s*m)?\b/i.test(cell) || lower.includes("duration") && /\d/.test(cell))) {
+        const parsed = parseStreamHoursFromCell(cell);
+        if (parsed !== void 0) {
+          hours = parsed;
+          liveDurationText = cell;
+          liveDurationSeconds = Math.round(parsed * 3600);
         }
-        liveDurationText = cell;
-        liveDurationSeconds = parseDurationToSeconds(cell);
       }
       if (engagements === void 0 && (lower.includes("engagement") || lower.includes("interaction") || lower.includes("activity") || lower.includes("comment") || lower.includes("like"))) {
         engagements = firstCompactNumber(cell);
@@ -862,6 +1041,8 @@
         detectedPageType: "live_now",
         relationshipTab: detection.relationshipTab,
         statPeriodLabel: detection.statPeriodLabel,
+        statPeriodStart: detection.statPeriodStart,
+        statPeriodEnd: detection.statPeriodEnd,
         rows: [],
         liveRows: extractLiveNowRowsFromPage(doc)
       };
@@ -871,6 +1052,8 @@
       detectedPageType: detection.detectedPageType,
       relationshipTab: detection.relationshipTab,
       statPeriodLabel: detection.statPeriodLabel,
+      statPeriodStart: detection.statPeriodStart,
+      statPeriodEnd: detection.statPeriodEnd,
       rows: extractCreatorRowsFromPage(doc, detection.detectedPageType, detection.relationshipTab),
       liveRows: []
     };
@@ -889,6 +1072,8 @@
       detectedPageType: snapshot.detectedPageType,
       relationshipTab: snapshot.relationshipTab,
       statPeriodLabel: snapshot.statPeriodLabel,
+      statPeriodStart: snapshot.statPeriodStart,
+      statPeriodEnd: snapshot.statPeriodEnd,
       rows: snapshot.rows.map(stripPreview),
       liveRows: snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : void 0
     };

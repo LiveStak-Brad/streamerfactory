@@ -4,6 +4,8 @@ export type NetworkMember = {
   username: string;
   /** Profile display name (may include emoji / unicode). */
   displayName: string;
+  /** Backstage / Creator Network table photo (same source as /rankings). */
+  avatarUrl?: string | null;
 };
 
 /** Synced to TikTok Creator Network eligible roster (29 active members). */

@@ -1,6 +1,7 @@
 import { extractUsernameFromText } from "./username";
 import { isNonDiamondStatCell, isNumericStatCell, parseStatNumber } from "./numbers";
 
+/** Visible cell text (diamonds, creator names, combined labels). */
 export function readCellText(cell: Element): string {
   const bits: string[] = [];
   for (const attr of ["aria-label", "title"]) {
@@ -10,6 +11,15 @@ export function readCellText(cell: Element): string {
   const text = (cell.textContent ?? "").trim();
   if (text) bits.push(text);
   return [...new Set(bits)].join(" ").trim();
+}
+
+/**
+ * Stats cells: prefer visible text. aria-label often says "30 days" while the cell shows "0d / 30d".
+ */
+export function readStatCellText(cell: Element): string {
+  const visible = (cell.textContent ?? "").trim();
+  if (visible) return visible;
+  return cell.getAttribute("aria-label")?.trim() ?? cell.getAttribute("title")?.trim() ?? "";
 }
 
 export function splitCellLines(text: string): string[] {
@@ -61,6 +71,52 @@ export function headerTextsForContainer(container: Element): string[] {
   return headerElementsForContainer(container)
     .map((h) => (h.textContent ?? "").trim().toLowerCase())
     .filter(Boolean);
+}
+
+/**
+ * Text for a stats column — uses aria-colindex + header position, not flattened cell lines.
+ */
+export function statTextFromRowColumn(
+  row: Element,
+  headerIndex: number,
+  cellEls: Element[],
+): string | undefined {
+  const grid = row.closest('[role="grid"], table');
+  if (grid) {
+    const headerEls = headerElementsForContainer(grid);
+    const headerEl = headerEls[headerIndex];
+    const ariaRaw = parseInt(headerEl?.getAttribute("aria-colindex") ?? "", 10);
+    const tryIndexes = new Set<number>();
+    if (!Number.isNaN(ariaRaw)) {
+      tryIndexes.add(ariaRaw);
+      tryIndexes.add(ariaRaw + 1);
+    }
+    tryIndexes.add(headerIndex + 1);
+    tryIndexes.add(headerIndex);
+
+    for (const idx of tryIndexes) {
+      const text = statCellTextAtColIndex(row, idx);
+      if (text?.trim()) return text;
+    }
+  }
+
+  const el = cellEls[headerIndex];
+  return el ? readStatCellText(el) : undefined;
+}
+
+export function statCellTextAtColIndex(row: Element, colIndex: number): string | undefined {
+  for (const sel of [
+    `[role="cell"][aria-colindex="${colIndex}"]`,
+    `[aria-colindex="${colIndex}"]`,
+  ]) {
+    const direct = row.querySelector(sel);
+    if (direct) return readStatCellText(direct);
+  }
+  for (const cell of row.querySelectorAll('[role="cell"], td')) {
+    const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+    if (idx === colIndex) return readStatCellText(cell);
+  }
+  return undefined;
 }
 
 export function cellTextAtColIndex(row: Element, colIndex: number): string | undefined {

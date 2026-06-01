@@ -12,6 +12,8 @@ export function buildPageSnapshot(url: string = location.href, doc: Document = d
       detectedPageType: "live_now",
       relationshipTab: detection.relationshipTab,
       statPeriodLabel: detection.statPeriodLabel,
+      statPeriodStart: detection.statPeriodStart,
+      statPeriodEnd: detection.statPeriodEnd,
       rows: [],
       liveRows: extractLiveNowRowsFromPage(doc),
     };
@@ -22,6 +24,8 @@ export function buildPageSnapshot(url: string = location.href, doc: Document = d
     detectedPageType: detection.detectedPageType,
     relationshipTab: detection.relationshipTab,
     statPeriodLabel: detection.statPeriodLabel,
+    statPeriodStart: detection.statPeriodStart,
+    statPeriodEnd: detection.statPeriodEnd,
     rows: extractCreatorRowsFromPage(doc, detection.detectedPageType, detection.relationshipTab),
     liveRows: [],
   };

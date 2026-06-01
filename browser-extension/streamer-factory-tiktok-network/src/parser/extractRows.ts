@@ -1,11 +1,13 @@
-import { parseDayCount, parseDurationToSeconds } from "./duration";
+import { parseDurationToSeconds, parseLiveDaysFromCell, parseStreamHoursFromCell } from "./duration";
 import {
   dataRowsInContainer,
   diamondsFromRowGrid,
   findCreatorContributionGrid,
   pickLargestDiamondLikeValue,
   readCellText,
+  readStatCellText,
   splitCellLines,
+  statTextFromRowColumn,
 } from "./gridTable";
 import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "./numbers";
 import type { DetectedPageType, ParsedCreatorRow } from "./types";
@@ -179,7 +181,12 @@ function inferColumnMap(headers: string[]): {
     if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.coins = idx;
     else if (/\bcoins?\b/i.test(h) && !/incentive|contribution|bonus/i.test(h)) map.coins = idx;
     if (/(engagements?|interactions?)/i.test(h) && !/incentive/i.test(h)) map.engagements = idx;
-    if (/(valid.*live.*days?|days? streamed|live days)/i.test(h)) map.days = idx;
+    if (
+      !/eligible\s*incentive/i.test(h) &&
+      /(valid\s*go\s*live|valid.*live.*days?|days?\s*streamed|live\s*days?)/i.test(h)
+    ) {
+      map.days = idx;
+    }
     if (/(stream duration|live duration)/i.test(h) || /\bhours?\b/.test(h)) map.hours = idx;
     if (/(activeness|activity level|active level)/i.test(h)) map.activeness = idx;
   });
@@ -219,27 +226,33 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
 
   diamonds = diamondsFromRowGrid(row);
   if (diamonds !== undefined) coins = diamonds;
-  if (columnMap.engagements !== undefined && cells[columnMap.engagements]) {
-    engagements = parseStatNumber(cells[columnMap.engagements]);
+  if (columnMap.engagements !== undefined) {
+    const text = statTextFromRowColumn(row, columnMap.engagements, cellEls);
+    if (text) engagements = parseStatNumber(text);
   }
-  if (columnMap.days !== undefined && cells[columnMap.days]) {
-    days = parseDayCount(cells[columnMap.days]);
-  }
-  if (columnMap.hours !== undefined && cells[columnMap.hours]) {
-    const seconds = parseDurationToSeconds(cells[columnMap.hours]);
-    if (seconds !== undefined) {
-      hours = seconds / 3600;
-      liveDurationText = cells[columnMap.hours];
-      liveDurationSeconds = seconds;
-    } else {
-      hours = firstCompactNumber(cells[columnMap.hours]);
+  if (columnMap.days !== undefined) {
+    const text = statTextFromRowColumn(row, columnMap.days, cellEls);
+    if (text) {
+      days = parseLiveDaysFromCell(text);
     }
   }
-  if (columnMap.activeness !== undefined && cells[columnMap.activeness]) {
-    activeness = parseActiveness(cells[columnMap.activeness]);
+  if (columnMap.hours !== undefined) {
+    const text = statTextFromRowColumn(row, columnMap.hours, cellEls);
+    if (text) {
+      hours = parseStreamHoursFromCell(text);
+      if (hours !== undefined) {
+        liveDurationText = text;
+        liveDurationSeconds = Math.round(hours * 3600);
+      }
+    }
+  }
+  if (columnMap.activeness !== undefined) {
+    const text = statTextFromRowColumn(row, columnMap.activeness, cellEls);
+    if (text) activeness = parseActiveness(text);
   }
 
-  for (const cell of cells) {
+  for (const cellEl of cellEls) {
+    const cell = readStatCellText(cellEl);
     const lower = cell.toLowerCase();
     if (!diamonds && /\bdiamonds?\b/i.test(cell)) {
       const n = parseStatNumber(cell);
@@ -248,18 +261,28 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
         coins = n;
       }
     }
-    if (!days && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\b/i.test(cell))) {
-      days = parseDayCount(cell);
+    if (
+      !days &&
+      (lower.includes("live day") ||
+        lower.includes("go live") ||
+        /\d+\s*d\s*[\/／]/.test(cell) ||
+        /^\d+\s*d(?:ays?)?\b/i.test(cell.trim()))
+    ) {
+      const parsed = parseLiveDaysFromCell(cell);
+      if (parsed !== undefined) days = parsed;
     }
-    if (!hours && (lower.includes("hour") || /\d+h\b/i.test(cell) || /\d+\s*h\s*\d*m/i.test(cell))) {
-      hours = parseDurationToSeconds(cell);
-      if (hours !== undefined) hours = hours / 3600;
-      else {
-        const h = firstCompactNumber(cell);
-        if (h !== undefined) hours = h;
+    if (
+      !hours &&
+      (/\d+\s*h\s*[\/／]/.test(cell) ||
+        /\d+\s*h(?:\s*\d+\s*m)?\b/i.test(cell) ||
+        (lower.includes("duration") && /\d/.test(cell)))
+    ) {
+      const parsed = parseStreamHoursFromCell(cell);
+      if (parsed !== undefined) {
+        hours = parsed;
+        liveDurationText = cell;
+        liveDurationSeconds = Math.round(parsed * 3600);
       }
-      liveDurationText = cell;
-      liveDurationSeconds = parseDurationToSeconds(cell);
     }
     if (
       engagements === undefined &&

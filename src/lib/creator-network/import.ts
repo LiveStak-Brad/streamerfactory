@@ -6,7 +6,12 @@ import {
   normalizeActiveness,
 } from "@/lib/creator-network/match-profiles";
 import type { ImportPayload, ImportResult, LiveRowPayload } from "@/lib/creator-network/types";
+import { resolveImportPeriodBounds, sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
+
+function sanitizeImportedHours(hours: number | undefined): number {
+  return Math.round(Math.max(0, Number(hours ?? 0)) * 10) / 10;
+}
 
 function normalizeConfidence(raw: string | undefined): "high" | "medium" | "low" {
   if (raw === "high" || raw === "medium" || raw === "low") return raw;
@@ -52,6 +57,14 @@ export async function importCreatorNetworkPayload(
   let lowConfidenceMatches = 0;
   const unmatchedUsernames = new Set<string>();
   let liveRowsAccepted = 0;
+
+  const importPeriod = resolveImportPeriodBounds({
+    statPeriodLabel: payload.statPeriodLabel ?? null,
+    statPeriodStart: payload.statPeriodStart ?? null,
+    statPeriodEnd: payload.statPeriodEnd ?? null,
+    statPeriodKind: payload.statPeriodKind ?? null,
+    importedAt: new Date(),
+  });
 
   try {
     if (payload.detectedPageType === "live_now") {
@@ -133,8 +146,8 @@ export async function importCreatorNetworkPayload(
           coins_earned: Math.max(0, Math.round(row.coinsEarned ?? row.diamondsEarned ?? 0)),
           diamonds_earned: Math.max(0, Math.round(row.diamondsEarned ?? row.coinsEarned ?? 0)),
           engagements: Math.max(0, Math.round(row.engagements ?? 0)),
-          days_streamed: Math.max(0, Math.round(row.daysStreamed ?? 0)),
-          hours_streamed: Math.max(0, Number(row.hoursStreamed ?? 0)),
+          days_streamed: sanitizeLiveDaysForPeriod(row.daysStreamed, importPeriod.kind),
+          hours_streamed: sanitizeImportedHours(row.hoursStreamed),
           activeness_level: normalizeActiveness(row.activenessLevel),
           live_duration_seconds: Math.max(0, Math.round(row.liveDurationSeconds ?? 0)),
           invite_status: row.inviteStatus ?? null,
@@ -143,8 +156,8 @@ export async function importCreatorNetworkPayload(
           relationship_reason: row.relationshipReason ?? null,
           relationship_request_date: row.relationshipRequestDate ?? null,
           stat_period_label: payload.statPeriodLabel ?? null,
-          stat_period_start: payload.statPeriodStart ?? null,
-          stat_period_end: payload.statPeriodEnd ?? null,
+          stat_period_start: importPeriod.periodStart,
+          stat_period_end: importPeriod.periodEnd,
           source_page_url: payload.sourcePageUrl,
           imported_by_profile_id: importedByProfileId,
         };

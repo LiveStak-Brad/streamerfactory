@@ -4,7 +4,17 @@ import { join } from "node:path";
 import { parseHTML } from "linkedom";
 import { buildPageSnapshot } from "../src/parser/index";
 import { detectTikTokCreatorNetworkPage } from "../src/parser/detectPage";
-import { parseDurationToSeconds, parseDayCount } from "../src/parser/duration";
+import {
+  defaultBoundsForKind,
+  inferPeriodKindFromLabel,
+  readStatPeriodBounds,
+} from "../src/parser/statPeriod";
+import {
+  parseDayCount,
+  parseDurationToSeconds,
+  parseLiveDaysFromCell,
+  parseStreamHoursFromCell,
+} from "../src/parser/duration";
 import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "../src/parser/numbers";
 import {
   cleanTikTokUsername,
@@ -41,6 +51,19 @@ test("parseDurationToSeconds", () => {
 test("parseDayCount", () => {
   assert.equal(parseDayCount("21d"), 21);
   assert.equal(parseDayCount("17 days"), 17);
+});
+
+test("parseLiveDaysFromCell uses actual before slash not target", () => {
+  assert.equal(parseLiveDaysFromCell("0d / 30d (Level 1)"), 0);
+  assert.equal(parseLiveDaysFromCell("1d / 8d (Level 1)"), 1);
+  assert.equal(parseLiveDaysFromCell("0d / 8d"), 0);
+  assert.equal(parseLiveDaysFromCell("30 days 0d / 30d"), 0);
+});
+
+test("parseStreamHoursFromCell uses actual before slash not 20h target", () => {
+  assert.equal(parseStreamHoursFromCell("0h / 20h (Level 1)"), 0);
+  assert.equal(parseStreamHoursFromCell("2h 32m / 20h (Level 1)"), 2.5);
+  assert.equal(parseStreamHoursFromCell("0h / 20h"), 0);
 });
 
 test("normalizeTikTokUsername", () => {
@@ -105,6 +128,27 @@ test("parseStatNumber does not return 1 from live day cells", () => {
   assert.equal(parseStatNumber("8,729"), 8729);
 });
 
+test("creator stats table reads days from correct column when creator cell is multiline", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/creator-stats.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.daysStreamed, 21);
+  assert.equal(snap.rows[0]?.hoursStreamed, 90.2);
+  assert.equal(snap.rows[1]?.daysStreamed, 17);
+});
+
+test("incentives table with eligible incentive days column reads valid go live days", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/incentives-by-creator.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows[0]?.daysStreamed, 1);
+  assert.equal(snap.rows[2]?.daysStreamed, 0);
+});
+
 test("incentives table reads full diamond counts", () => {
   const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
   const { document } = parseHTML(html);
@@ -123,7 +167,11 @@ test("incentives role=grid reads diamonds without comma", () => {
   const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
   assert.equal(snap.rows.length, 2);
   assert.equal(snap.rows[0]?.diamondsEarned, 8729);
+  assert.equal(snap.rows[0]?.daysStreamed, 1);
+  assert.equal(snap.rows[0]?.hoursStreamed, 2.5);
   assert.equal(snap.rows[1]?.diamondsEarned, 248);
+  assert.equal(snap.rows[1]?.daysStreamed, 0);
+  assert.equal(snap.rows[1]?.hoursStreamed, 0);
 });
 
 test("prefers role=grid over stale table rows", () => {
@@ -207,6 +255,26 @@ test("username badge fixture captures avatars and clean handles", () => {
   assert.equal(snap.rows[2]?.tiktokUsername, "high.blondie");
   assert.equal(snap.rows[0]?.avatarUrl?.includes("avatar-jasmine"), true);
   assert.equal(snap.rows[0]?.diamondsEarned, 11729);
+});
+
+test("infers weekly vs monthly from Backstage period label", () => {
+  assert.equal(inferPeriodKindFromLabel("Contribution details · Weekly"), "weekly");
+  assert.equal(inferPeriodKindFromLabel("Contribution details · Monthly"), "monthly");
+});
+
+test("parses ISO stat period bounds from page text", () => {
+  const { document } = parseHTML(
+    "<html><body><div>Stats for 2025-05-25 - 2025-05-31</div></body></html>",
+  );
+  const bounds = readStatPeriodBounds(document);
+  assert.equal(bounds?.start, "2025-05-25");
+  assert.equal(bounds?.end, "2025-05-31");
+});
+
+test("defaultBoundsForKind uses Monday week start", () => {
+  const bounds = defaultBoundsForKind("weekly", new Date("2025-06-01T12:00:00Z"));
+  assert.equal(bounds.start, "2025-05-26");
+  assert.equal(bounds.end, "2025-06-01");
 });
 
 test("does not treat Level as username", () => {

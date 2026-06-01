@@ -1,7 +1,58 @@
+/** Backstage incentive cells use actual / target (e.g. 0d / 30d, 2h 32m / 20h). */
+export function progressActualSegment(raw: string): string {
+  const t = raw.trim();
+  const slash = t.search(/\s*[\/／]\s*/);
+  if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
+  return t
+    .slice(0, slash)
+    .replace(/\(level\s*\d+\)/gi, "")
+    .trim();
+}
+
+/** Valid go LIVE days — actual count before the slash, not the monthly/weekly target. */
+export function parseLiveDaysFromCell(raw: string | undefined | null): number | undefined {
+  if (!raw) return undefined;
+
+  const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
+  if (progress) return Number(progress[1]);
+
+  const segment = progressActualSegment(raw);
+  const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
+  if (dayMatch) return Number(dayMatch[1]);
+  if (/^\d+$/.test(segment)) return Number(segment);
+  if (!raw.includes("/") && !raw.includes("／")) {
+    const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
+    if (m) return Number(m[1]);
+    const compact = parseCompactNumber(raw);
+    if (compact !== undefined && compact <= 7) return compact;
+    if (compact !== undefined && compact > 7) return 0;
+    return undefined;
+  }
+  return undefined;
+}
+
+/** Stream duration in hours — actual time before the slash, not the 20h target. */
+export function parseStreamHoursFromCell(raw: string | undefined | null): number | undefined {
+  if (!raw) return undefined;
+  const segment = progressActualSegment(raw);
+  if (!segment) {
+    if (/^0\s*h/i.test(raw.trim())) return 0;
+    return undefined;
+  }
+  const seconds = parseDurationToSeconds(segment);
+  if (seconds !== undefined) return Math.round((seconds / 3600) * 10) / 10;
+  if (/^0\s*h/i.test(segment)) return 0;
+  if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
+    const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
+    if (Number.isFinite(h)) return h;
+  }
+  return undefined;
+}
+
 /** Parse durations like 1h 5m 48s, 90h, 2d 3h into seconds. */
 export function parseDurationToSeconds(raw: string | undefined | null): number | undefined {
   if (!raw) return undefined;
-  const t = raw.trim().toLowerCase();
+  const t = progressActualSegment(raw).toLowerCase();
   if (!t) return undefined;
 
   let total = 0;
@@ -50,10 +101,13 @@ export function parseDurationToSeconds(raw: string | undefined | null): number |
 
 import { parseCompactNumber } from "./numbers";
 
-/** Parse "21d" or "17d" live day counts from backstage. */
+/** Parse "21d" or "17d" live day counts from backstage (simple cells only). */
 export function parseDayCount(raw: string | undefined | null): number | undefined {
   if (!raw) return undefined;
+  if (raw.includes("/") || raw.includes("／")) return parseLiveDaysFromCell(raw);
   const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
   if (m) return Number(m[1]);
-  return parseCompactNumber(raw);
+  const compact = parseCompactNumber(raw);
+  if (compact !== undefined && compact <= 31) return compact;
+  return undefined;
 }

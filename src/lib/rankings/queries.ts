@@ -1,7 +1,10 @@
 import {
   getLatestCreatorNetworkSyncMeta,
   getLeaderboardFromLatestCreatorNetworkImport,
+  getWrongPeriodImportHint,
 } from "@/lib/creator-network/leaderboard-from-import";
+import { mergeImportAvatarsIntoEntries } from "@/lib/creator-network/merge-import-avatars";
+import { periodKindForRanking } from "@/lib/creator-network/stat-period";
 import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
 import { periodBounds } from "@/lib/rankings/periods";
@@ -104,25 +107,40 @@ export type LeaderboardLoadIssue =
   | "no_import"
   | "import_not_readable"
   | "empty_diamonds"
-  | "load_error";
+  | "load_error"
+  | "wrong_period";
 
 export type LeaderboardLoadResult = {
   entries: LeaderboardEntry[];
   /** Set when weekly/monthly board is built from the latest extension import. */
-  syncMeta: { importedAt: string; acceptedRows: number; batchId: string } | null;
+  syncMeta: {
+    importedAt: string;
+    acceptedRows: number;
+    batchId: string;
+    periodStart?: string | null;
+    periodEnd?: string | null;
+    statPeriodLabel?: string | null;
+  } | null;
   loadIssue?: LeaderboardLoadIssue;
+  /** Shown when the latest sync is Monthly but the Weekly tab is selected (or vice versa). */
+  wrongPeriodHint?: string | null;
 };
+
+async function seedBoardWithImportAvatars(): Promise<LeaderboardEntry[]> {
+  return mergeImportAvatarsIntoEntries(getLeaderboardFromBackstageSeed());
+}
 
 export async function getLeaderboardWithMeta(
   kind: RankingPeriod,
   anchorDate?: string,
 ): Promise<LeaderboardLoadResult> {
   if (kind === "weekly" || kind === "monthly") {
+    const statKind = periodKindForRanking(kind)!;
     try {
-      const fromImport = await getLeaderboardFromLatestCreatorNetworkImport();
+      const fromImport = await getLeaderboardFromLatestCreatorNetworkImport(kind, anchorDate);
       if (fromImport?.emptyDiamonds) {
         return {
-          entries: getLeaderboardFromBackstageSeed(),
+          entries: await seedBoardWithImportAvatars(),
           syncMeta: null,
           loadIssue: "empty_diamonds",
         };
@@ -134,28 +152,52 @@ export async function getLeaderboardWithMeta(
             importedAt: fromImport.importedAt ?? new Date().toISOString(),
             acceptedRows: fromImport.acceptedRowsCount,
             batchId: fromImport.batchId ?? "",
+            periodStart: fromImport.periodStart,
+            periodEnd: fromImport.periodEnd,
+            statPeriodLabel: fromImport.statPeriodLabel,
           },
         };
       }
+
+      const wrong = await getWrongPeriodImportHint(statKind);
+      if (wrong) {
+        const other =
+          wrong.importKind === "monthly"
+            ? "Monthly"
+            : wrong.importKind === "weekly"
+              ? "Weekly"
+              : "a different period";
+        return {
+          entries: await seedBoardWithImportAvatars(),
+          syncMeta: null,
+          loadIssue: "wrong_period",
+          wrongPeriodHint: `Latest sync looks like ${other} data (e.g. 30-day stats on Weekly). In TikTok Backstage, open Creator stats, select the ${kind === "weekly" ? "Weekly" : "Monthly"} tab for this period, then sync again.`,
+        };
+      }
+
       const batchMeta = await getLatestCreatorNetworkSyncMeta();
       if (batchMeta) {
         return {
-          entries: getLeaderboardFromBackstageSeed(),
+          entries: await seedBoardWithImportAvatars(),
           syncMeta: null,
           loadIssue: "import_not_readable",
         };
       }
     } catch {
       return {
-        entries: getLeaderboardFromBackstageSeed(),
+        entries: await seedBoardWithImportAvatars(),
         syncMeta: null,
         loadIssue: "load_error",
       };
     }
-    return { entries: getLeaderboardFromBackstageSeed(), syncMeta: null, loadIssue: "no_import" };
+    return {
+      entries: await seedBoardWithImportAvatars(),
+      syncMeta: null,
+      loadIssue: "no_import",
+    };
   }
 
-  const entries = await getLeaderboard(kind, anchorDate);
+  const entries = await mergeImportAvatarsIntoEntries(await getLeaderboard(kind, anchorDate));
   return { entries, syncMeta: null };
 }
 
@@ -178,7 +220,7 @@ export async function getLeaderboard(
     // tables missing or RLS
   }
 
-  return getLeaderboardFromBackstageSeed();
+  return mergeImportAvatarsIntoEntries(getLeaderboardFromBackstageSeed());
 }
 
 async function getLeaderboardFromTables(

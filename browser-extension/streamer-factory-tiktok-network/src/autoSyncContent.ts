@@ -16,6 +16,8 @@ export function snapshotToPayload(snapshot: PageSnapshot): SyncPayload {
     detectedPageType: snapshot.detectedPageType,
     relationshipTab: snapshot.relationshipTab,
     statPeriodLabel: snapshot.statPeriodLabel,
+    statPeriodStart: snapshot.statPeriodStart,
+    statPeriodEnd: snapshot.statPeriodEnd,
     rows: snapshot.rows.map(stripPreview),
     liveRows:
       snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : undefined,

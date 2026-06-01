@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MemberTikTokAvatar } from "@/components/members/MemberTikTokAvatar";
+import { BackstageAvatar } from "@/components/members/BackstageAvatar";
 import type { NetworkMember } from "@/lib/members/network-members";
 import { memberProfileUrl } from "@/lib/members/network-members";
 
@@ -25,9 +25,11 @@ function avatarInitial(username: string): string {
 
 type MembersDirectoryProps = {
   members: readonly NetworkMember[];
+  importedAt?: string | null;
+  fromImport?: boolean;
 };
 
-export function MembersDirectory({ members }: MembersDirectoryProps) {
+export function MembersDirectory({ members, importedAt, fromImport }: MembersDirectoryProps) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -75,6 +77,17 @@ export function MembersDirectory({ members }: MembersDirectoryProps) {
         <span className="font-semibold text-zinc-700 dark:text-zinc-300">{filtered.length}</span>{" "}
         of {members.length} — open a profile in TikTok and tap <span className="font-medium">Follow</span>{" "}
         to connect.
+        {fromImport && importedAt ? (
+          <>
+            {" "}
+            Photos synced from Creator Network Backstage (
+            {new Date(importedAt).toLocaleString(undefined, {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })}
+            ).
+          </>
+        ) : null}
       </p>
 
       {filtered.length === 0 ? (
@@ -98,9 +111,8 @@ export function MembersDirectory({ members }: MembersDirectoryProps) {
                   className="group flex h-full flex-col rounded-2xl border border-zinc-200/90 bg-surface/90 p-5 shadow-sm outline-none ring-accent/0 transition-[border-color,box-shadow,transform,ring] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_40px_-12px_var(--accent-glow)] focus-visible:ring-4 focus-visible:ring-accent/20 dark:border-zinc-800 dark:bg-zinc-950/65 dark:hover:border-accent/30"
                 >
                   <div className="flex gap-4">
-                    <MemberTikTokAvatar
-                      key={m.username}
-                      username={m.username}
+                    <BackstageAvatar
+                      backstageImageUrl={m.avatarUrl}
                       fallbackBackdropClass={backdrop}
                       fallbackInitial={avatarInitial(m.username)}
                     />

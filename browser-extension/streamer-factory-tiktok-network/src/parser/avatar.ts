@@ -1,3 +1,5 @@
+import { elementClassText } from "./dom";
+
 /** Best profile image URL from the creator column on a Backstage stats row. */
 export function avatarFromRow(row: Element): string | undefined {
   const cells = row.querySelectorAll('[role="cell"], td');
@@ -41,7 +43,7 @@ function pickBestAvatarUrl(root: Element): string | undefined {
 function scoreAvatarImg(el: Element, url: string, root: Element): number {
   let score = 0;
   const lowerUrl = url.toLowerCase();
-  const cls = `${el.className ?? ""} ${(el.parentElement?.className ?? "")}`.toLowerCase();
+  const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
 
   if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
   if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
