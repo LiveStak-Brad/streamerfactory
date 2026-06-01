@@ -1,4 +1,4 @@
--- Seed weekly stats from TikTok Creator Network → Creator performance (Diamonds column).
+-- Seed weekly stats from TikTok Creator Network → Contribution details (Diamonds column).
 -- Matches profiles by tiktok_username (and applications.tiktok_username).
 -- Run in Supabase SQL Editor after apply-rankings-now.sql + apply-leaderboard-rpc.sql.
 
@@ -30,32 +30,34 @@ begin
   truncate _backstage_seed;
 
   insert into _backstage_seed (handle, coins_earned, days_streamed, hours_streamed, activeness_level, follower_growth) values
-    ('sunshine42882', 154935, 10, 42.43, 'high', 0),
-    ('high.blondie', 92014, 12, 84.13, 'high', 0),
-    ('cj_allycat93', 51834, 18, 77.43, 'elite', 0),
-    ('jasmine_wren', 38799, 17, 81.4, 'high', 0),
-    ('ruthie8910', 25975, 15, 63.83, 'elite', 0),
-    ('rosysmokes', 18257, 11, 33.33, 'medium', 0),
-    ('robertljterryjr', 17047, 9, 73.35, 'high', 0),
-    ('royaltystr8', 20431, 14, 46.08, 'high', 0),
-    ('browneyedbrat6', 13699, 7, 20.2, 'low', 0),
-    ('lilyunginn225', 8119, 2, 13.8, 'low', 0),
-    ('deeindabox', 9302, 8, 30.87, 'medium', 0),
-    ('daddyslittlemonster87', 8902, 17, 52.43, 'elite', 0),
-    ('rissa7683', 6345, 17, 58.93, 'high', 0),
-    ('kimberly.clarke396', 3402, 10, 57.52, 'high', 0),
-    ('_sahm_251_2', 6145, 9, 23.77, 'high', 0),
-    ('silvanita4444', 3067, 10, 26.17, 'medium', 0),
-    ('choppaboiofficial45p', 3856, 6, 13.95, 'low', 0),
-    ('tricioxv3', 535, 3, 10.47, 'low', 0),
-    ('gonx_missouri_mom', 426, 5, 10.95, 'none', 0),
-    ('ciraantequera131', 899, 6, 10.5, 'none', 0),
-    ('bugzyboy.j', 311, 0, 23.97, 'low', 0),
-    ('bigmommagapo', 310, 7, 14.13, 'low', 0),
-    ('blazinbaby420', 160, 2, 7.58, 'low', 0),
-    ('jennyrn55', 1557, 1, 22.03, 'low', 0),
-    ('nyla.williams8', 10, 1, 15.87, 'low', 0),
-    ('ashley8178', 578, 0, 10.02, 'low', 0),
+    ('sunshine42882', 168368, 21, 46, 'elite', 0),
+    ('high.blondie', 104844, 15, 93.17, 'elite', 0),
+    ('jasmine_wren', 77718, 19, 96.05, 'elite', 0),
+    ('cj_allycat93', 62993, 22, 158.73, 'elite', 0),
+    ('royaltystr8', 30656, 18, 64.3, 'elite', 0),
+    ('ruthie8910', 25576, 14, 64.28, 'elite', 0),
+    ('rosysmokes', 23762, 18, 58.18, 'elite', 0),
+    ('daddyslittlemonster87', 10516, 20, 70.17, 'elite', 0),
+    ('_sahm_251_2', 12891, 14, 32.3, 'high', 0),
+    ('browneyedbrat6', 13748, 7, 20.22, 'low', 0),
+    ('deeindabox', 9912, 8, 30.87, 'medium', 0),
+    ('lilyunginn225', 8119, 2, 13.68, 'low', 0),
+    ('rissa7683', 6358, 17, 58.93, 'high', 0),
+    ('bettsmart633', 4238, 0, 0, 'medium', 0),
+    ('choppaboiofficial45p', 3914, 6, 13.95, 'medium', 0),
+    ('silvanita4444', 3206, 10, 26.17, 'medium', 0),
+    ('jennyrn55', 1537, 1, 2.37, 'low', 0),
+    ('ciraantequera131', 899, 5, 10.5, 'low', 0),
+    ('ashley8178', 578, 6, 0.32, 'low', 0),
+    ('tricioxv3', 535, 3, 10.22, 'low', 0),
+    ('amylong86', 457, 0, 0, 'none', 0),
+    ('gonx_missouri_mom', 426, 5, 11.85, 'low', 0),
+    ('bugzyboy.j', 311, 0, 2.9, 'low', 0),
+    ('bigmommagapo', 310, 7, 16.63, 'low', 0),
+    ('blazinbaby420', 160, 2, 7.92, 'low', 0),
+    ('judy_132', 119, 1, 3.73, 'none', 0),
+    ('nyla.williams8', 10, 1, 1.88, 'low', 0),
+    ('melissaholmig41998', 0, 1, 1.63, 'none', 0),
     ('brittanykavanagh09', 0, 0, 0, 'none', 0);
 
   insert into public.creator_performance_stats (
