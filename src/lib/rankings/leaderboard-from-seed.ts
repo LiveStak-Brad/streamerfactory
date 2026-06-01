@@ -1,3 +1,4 @@
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { NETWORK_MEMBERS } from "@/lib/members/network-members";
 import {
   BACKSTAGE_STAT_SEEDS,
@@ -16,7 +17,9 @@ const displayNameByHandle = new Map(
  * Does not require Supabase rows or profile matching — always available on /rankings.
  */
 export function getLeaderboardFromBackstageSeed(): LeaderboardEntry[] {
-  const statsForScoring = BACKSTAGE_STAT_SEEDS.map((s) => ({
+  const statsForScoring = BACKSTAGE_STAT_SEEDS.filter(
+    (s) => !isExcludedNetworkHandle(s.handle),
+  ).map((s) => ({
     profile_id: normalizeHandle(resolveCanonicalHandle(s.handle)),
     coins_earned: s.diamondsEarned,
     days_streamed: s.validLiveDays,

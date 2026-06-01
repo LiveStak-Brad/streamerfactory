@@ -1,4 +1,9 @@
-import { cleanCreatorNetworkUsername } from "@/lib/creator-network/clean-username";
+import {
+  cleanCreatorNetworkDisplayName,
+  cleanCreatorNetworkUsername,
+} from "@/lib/creator-network/clean-username";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
+import { BACKSTAGE_HANDLE_ALIASES } from "@/lib/rankings/backstage-seed-data";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import {
   importBatchMatchesRankingPeriod,
@@ -197,12 +202,32 @@ export async function getBackstageAvatarMapByHandle(): Promise<Map<string, strin
   if (!loaded) return map;
 
   for (const row of loaded.rows) {
-    const handle = displayHandle(row);
-    if (!handle) continue;
-    const key = normalizeHandle(resolveCanonicalHandle(handle));
     const url = backstageAvatarUrl(row.avatar_url);
-    if (url && !map.has(key)) map.set(key, url);
+    if (!url) continue;
+
+    const candidates = new Set<string>();
+    for (const raw of [row.tiktok_username, row.tiktok_username_raw, displayHandle(row)]) {
+      if (!raw?.trim()) continue;
+      const canonical = normalizeHandle(resolveCanonicalHandle(raw));
+      if (isExcludedNetworkHandle(canonical)) continue;
+      candidates.add(canonical);
+      candidates.add(normalizeHandle(raw));
+    }
+
+    for (const key of candidates) {
+      if (!map.has(key)) map.set(key, url);
+    }
   }
+
+  for (const [alias, canonical] of Object.entries(BACKSTAGE_HANDLE_ALIASES)) {
+    const c = normalizeHandle(canonical);
+    const url = map.get(c);
+    if (url) {
+      map.set(normalizeHandle(alias), url);
+      map.set(c, url);
+    }
+  }
+
   return map;
 }
 
@@ -212,6 +237,7 @@ function dedupeImportRowsByHandle(rows: ImportStatRow[]): Map<string, ImportStat
     const handle = displayHandle(raw);
     if (!handle) continue;
     const key = normalizeHandle(resolveCanonicalHandle(handle));
+    if (isExcludedNetworkHandle(key)) continue;
     const existing = byHandle.get(key);
     byHandle.set(key, existing ? pickPreferredImportRow(existing, raw) : raw);
   }
@@ -236,20 +262,21 @@ export async function getDirectoryMembersFromLatestCreatorNetworkImport(): Promi
   const byHandle = dedupeImportRowsByHandle(loaded.rows);
   if (byHandle.size === 0) return null;
 
+  const avatarMap = await getBackstageAvatarMapByHandle();
+
   const members: CreatorNetworkDirectoryMember[] = [];
   for (const [, row] of byHandle) {
     const handle = normalizeHandle(
       resolveCanonicalHandle(displayHandle(row) ?? row.tiktok_username ?? ""),
     );
-    if (!handle) continue;
-    const display =
-      row.tiktok_display_name?.trim() ||
-      row.tiktok_username?.trim().replace(/^@+/, "") ||
-      handle;
+    if (!handle || isExcludedNetworkHandle(handle)) continue;
+    const display = cleanCreatorNetworkDisplayName(row.tiktok_display_name, handle);
+    const avatar =
+      backstageAvatarUrl(row.avatar_url) ?? avatarMap.get(handle) ?? null;
     members.push({
       username: handle,
-      displayName: display,
-      avatar_url: backstageAvatarUrl(row.avatar_url),
+      displayName: display || handle,
+      avatar_url: avatar,
     });
   }
 

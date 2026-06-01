@@ -1,8 +1,14 @@
-import { getDirectoryMembersFromLatestCreatorNetworkImport } from "@/lib/creator-network/leaderboard-from-import";
+import {
+  getBackstageAvatarMapByHandle,
+  getDirectoryMembersFromLatestCreatorNetworkImport,
+  backstageAvatarUrl,
+} from "@/lib/creator-network/leaderboard-from-import";
+import { cleanCreatorNetworkDisplayName } from "@/lib/creator-network/clean-username";
 import {
   NETWORK_MEMBERS,
   type NetworkMember,
 } from "@/lib/members/network-members";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle } from "@/lib/rankings/backstage-seed-data";
 
 const staticDisplayByHandle = new Map(
@@ -25,31 +31,40 @@ export async function getNetworkMembersForDirectory(): Promise<MembersDirectoryL
 
   if (!imported?.members.length) {
     return {
-      members: [...NETWORK_MEMBERS],
+      members: NETWORK_MEMBERS.filter((m) => !isExcludedNetworkHandle(m.username)),
       importedAt: null,
       fromImport: false,
     };
   }
 
+  const avatarMap = await getBackstageAvatarMapByHandle();
   const seen = new Set<string>();
   const members: NetworkMember[] = [];
 
   for (const row of imported.members) {
     const key = normalizeHandle(row.username);
-    if (seen.has(key)) continue;
+    if (seen.has(key) || isExcludedNetworkHandle(key)) continue;
     seen.add(key);
     members.push({
       username: row.username,
-      displayName: row.displayName || staticDisplayByHandle.get(key) || row.username,
-      avatarUrl: row.avatar_url,
+      displayName:
+        cleanCreatorNetworkDisplayName(
+          row.displayName,
+          staticDisplayByHandle.get(key) || row.username,
+        ) || row.username,
+      avatarUrl:
+        backstageAvatarUrl(row.avatar_url) ?? avatarMap.get(key) ?? null,
     });
   }
 
   for (const fallback of NETWORK_MEMBERS) {
     const key = normalizeHandle(fallback.username);
-    if (seen.has(key)) continue;
+    if (seen.has(key) || isExcludedNetworkHandle(key)) continue;
     seen.add(key);
-    members.push({ ...fallback, avatarUrl: null });
+    members.push({
+      ...fallback,
+      avatarUrl: avatarMap.get(key) ?? null,
+    });
   }
 
   members.sort((a, b) =>

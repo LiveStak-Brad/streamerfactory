@@ -48,6 +48,24 @@ export function cleanCreatorNetworkUsername(raw: string | undefined | null): str
   return t;
 }
 
+const BAD_DISPLAY =
+  /^(no\s*level|level\s*\d+|eligible|notable|inactive|none|unknown|creator|member)$/i;
+
+/** Strip badge text from Backstage display names (e.g. "Name No level" → use fallback). */
+export function cleanCreatorNetworkDisplayName(
+  raw: string | undefined | null,
+  fallback?: string,
+): string {
+  if (!raw?.trim()) return fallback?.trim() || "";
+  const lines = stripBadgeText(raw.trim())
+    .split(/\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && !BAD_DISPLAY.test(l));
+  const first = lines[0];
+  if (!first || BAD_DISPLAY.test(first)) return fallback?.trim() || "";
+  return first;
+}
+
 export function usernameCleanupWasSuspicious(raw: string | undefined, cleaned: string | undefined): boolean {
   if (!raw?.trim() || !cleaned) return false;
   const compact = raw.trim().replace(/^@+/, "").replace(/\s+/g, "").toLowerCase();

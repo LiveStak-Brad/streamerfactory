@@ -7,6 +7,7 @@ import {
 } from "@/lib/creator-network/match-profiles";
 import type { ImportPayload, ImportResult, LiveRowPayload } from "@/lib/creator-network/types";
 import { resolveImportPeriodBounds, sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 
 function sanitizeImportedHours(hours: number | undefined): number {
@@ -128,6 +129,10 @@ export async function importCreatorNetworkPayload(
         }
 
         const canonical = resolveCanonicalHandle(cleaned);
+        if (isExcludedNetworkHandle(canonical)) {
+          rejectedRows += 1;
+          continue;
+        }
         const profileId = matchProfileId(maps, cleaned);
         if (profileId) matchedProfiles += 1;
         if (profileId && normalizeConfidence(row.usernameConfidence) === "low") lowConfidenceMatches += 1;

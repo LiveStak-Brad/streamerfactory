@@ -34,6 +34,8 @@ export const BACKSTAGE_HANDLE_ALIASES: Record<string, string> = {
   ciroantequera131: "ciraantequera131",
   royaltyctr8: "royaltystr8",
   melissahelmig11998: "melissaholmig41998",
+  melissahelmig41998: "melissaholmig41998",
+  melissaholmig41998: "melissaholmig41998",
 };
 
 function levelToActiveness(level: number | null): ActivenessLevel {
@@ -74,7 +76,6 @@ export const BACKSTAGE_STAT_SEEDS: BackstageStatSeed[] = [
   { handle: "jennyrn55", diamondsEarned: 1_537, validLiveDays: 1, hoursStreamed: liveHours(2, 22), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "ciraantequera131", diamondsEarned: 899, validLiveDays: 5, hoursStreamed: liveHours(10, 30), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "ashley8178", diamondsEarned: 578, validLiveDays: 6, hoursStreamed: liveHours(0, 19), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
-  { handle: "tricioxv3", diamondsEarned: 535, validLiveDays: 3, hoursStreamed: liveHours(10, 13), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "amylong86", diamondsEarned: 457, validLiveDays: 0, hoursStreamed: liveHours(0, 0), activeness: levelToActiveness(0), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "gonx_missouri_mom", diamondsEarned: 426, validLiveDays: 5, hoursStreamed: liveHours(11, 51), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },
   { handle: "bugzyboy.j", diamondsEarned: 311, validLiveDays: 0, hoursStreamed: liveHours(2, 54), activeness: levelToActiveness(1), followerGrowth: 0, battlesPlayed: 0, battlesWon: 0 },

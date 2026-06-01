@@ -29,7 +29,6 @@ export const NETWORK_MEMBERS: readonly NetworkMember[] = [
   { username: "jennyrn55", displayName: "Jenny [SF]" },
   { username: "ciraantequera131", displayName: "Cira 131 (SF)" },
   { username: "ashley8178", displayName: "Ashley💋 [SF]" },
-  { username: "tricioxv3", displayName: "WHOTFISMACO?[SF]" },
   { username: "amylong86", displayName: "amylong86" },
   { username: "gonx_missouri_mom", displayName: "⚔️Ladypurplerose [SF]⚔️" },
   { username: "blazinbaby420", displayName: "blazinbaby420[SF]" },

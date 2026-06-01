@@ -2,6 +2,7 @@ import {
   backstageAvatarUrl,
   getBackstageAvatarMapByHandle,
 } from "@/lib/creator-network/leaderboard-from-import";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import type { LeaderboardEntry } from "@/lib/rankings/types";
 
@@ -12,7 +13,12 @@ export async function mergeImportAvatarsIntoEntries(
   const avatarMap = await getBackstageAvatarMapByHandle();
   if (avatarMap.size === 0) return entries;
 
-  return entries.map((e) => {
+  return entries
+    .filter((e) => {
+      const handle = e.tiktok_username ?? e.profile_id;
+      return !isExcludedNetworkHandle(handle);
+    })
+    .map((e) => {
     const handle = e.tiktok_username
       ? normalizeHandle(resolveCanonicalHandle(e.tiktok_username))
       : normalizeHandle(e.profile_id);
