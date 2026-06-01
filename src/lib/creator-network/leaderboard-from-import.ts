@@ -1,4 +1,4 @@
-import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
 import type { ActivenessLevel, LeaderboardEntry } from "@/lib/rankings/types";
@@ -13,8 +13,7 @@ export type CreatorNetworkSyncMeta = {
 
 /** When the public leaderboard last changed (for “last synced” UI). */
 export async function getLatestCreatorNetworkSyncMeta(): Promise<CreatorNetworkSyncMeta | null> {
-  const supabase = createServiceRoleClient();
-  if (!supabase) return null;
+  const supabase = await getLeaderboardSupabase();
 
   const { data: batches, error } = await supabase
     .from("creator_network_import_batches")
@@ -52,14 +51,17 @@ function diamondsForRow(row: ImportStatRow): number {
  * Public leaderboard from the latest completed Creator Network stats import.
  * Uses service role so anonymous /rankings visitors see synced data (same as seed snapshot).
  */
-export async function getLeaderboardFromLatestCreatorNetworkImport(): Promise<{
+export type LeaderboardImportLoad = {
   entries: LeaderboardEntry[];
   importedAt: string | null;
   batchId: string | null;
   acceptedRowsCount: number;
-} | null> {
-  const supabase = createServiceRoleClient();
-  if (!supabase) return null;
+  /** Import saved but every row had 0 diamonds (parser issue). */
+  emptyDiamonds?: boolean;
+};
+
+export async function getLeaderboardFromLatestCreatorNetworkImport(): Promise<LeaderboardImportLoad | null> {
+  const supabase = await getLeaderboardSupabase();
 
   const { data: batches, error: batchErr } = await supabase
     .from("creator_network_import_batches")
@@ -95,6 +97,17 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(): Promise<{
   }
 
   if (byHandle.size === 0) return null;
+
+  const maxDiamonds = Math.max(0, ...[...byHandle.values()].map(diamondsForRow));
+  if (maxDiamonds < 1) {
+    return {
+      entries: [],
+      importedAt: batch.created_at,
+      batchId: batch.id,
+      acceptedRowsCount: batch.accepted_rows_count ?? 0,
+      emptyDiamonds: true,
+    };
+  }
 
   const rowByScoringId = new Map<string, ImportStatRow>();
   const statsForScoring = [...byHandle.entries()].map(([handle, row]) => {

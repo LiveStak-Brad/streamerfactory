@@ -1,4 +1,7 @@
-import { getLeaderboardFromLatestCreatorNetworkImport } from "@/lib/creator-network/leaderboard-from-import";
+import {
+  getLatestCreatorNetworkSyncMeta,
+  getLeaderboardFromLatestCreatorNetworkImport,
+} from "@/lib/creator-network/leaderboard-from-import";
 import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
 import { periodBounds } from "@/lib/rankings/periods";
@@ -97,10 +100,17 @@ export async function getAggregatedAllTimeStats(): Promise<
  * Weekly/monthly: latest Chrome extension import when available; else backstage seed snapshot.
  * All-time: reads from DB when staff have imported; otherwise falls back to snapshot.
  */
+export type LeaderboardLoadIssue =
+  | "no_import"
+  | "import_not_readable"
+  | "empty_diamonds"
+  | "load_error";
+
 export type LeaderboardLoadResult = {
   entries: LeaderboardEntry[];
   /** Set when weekly/monthly board is built from the latest extension import. */
   syncMeta: { importedAt: string; acceptedRows: number; batchId: string } | null;
+  loadIssue?: LeaderboardLoadIssue;
 };
 
 export async function getLeaderboardWithMeta(
@@ -110,6 +120,13 @@ export async function getLeaderboardWithMeta(
   if (kind === "weekly" || kind === "monthly") {
     try {
       const fromImport = await getLeaderboardFromLatestCreatorNetworkImport();
+      if (fromImport?.emptyDiamonds) {
+        return {
+          entries: getLeaderboardFromBackstageSeed(),
+          syncMeta: null,
+          loadIssue: "empty_diamonds",
+        };
+      }
       if (fromImport && fromImport.entries.length > 0) {
         return {
           entries: fromImport.entries,
@@ -120,10 +137,22 @@ export async function getLeaderboardWithMeta(
           },
         };
       }
+      const batchMeta = await getLatestCreatorNetworkSyncMeta();
+      if (batchMeta) {
+        return {
+          entries: getLeaderboardFromBackstageSeed(),
+          syncMeta: null,
+          loadIssue: "import_not_readable",
+        };
+      }
     } catch {
-      // tables missing or service role unset
+      return {
+        entries: getLeaderboardFromBackstageSeed(),
+        syncMeta: null,
+        loadIssue: "load_error",
+      };
     }
-    return { entries: getLeaderboardFromBackstageSeed(), syncMeta: null };
+    return { entries: getLeaderboardFromBackstageSeed(), syncMeta: null, loadIssue: "no_import" };
   }
 
   const entries = await getLeaderboard(kind, anchorDate);

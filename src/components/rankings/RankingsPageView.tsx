@@ -36,10 +36,12 @@ export async function RankingsPageView({
   let entries: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["entries"] = [];
   let highlightTiktokHandle: string | null = null;
   let syncMeta: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["syncMeta"] = null;
+  let loadIssue: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["loadIssue"];
   try {
     const board = await getLeaderboardWithMeta(periodKind, anchor);
     entries = board.entries;
     syncMeta = board.syncMeta;
+    loadIssue = board.loadIssue;
   } catch {
     entries = [];
   }
@@ -85,6 +87,17 @@ export async function RankingsPageView({
             Live from TikTok Backstage · last extension sync {lastSyncedLabel}
             {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}. Sync again anytime to
             refresh this page.
+          </p>
+        ) : loadIssue === "import_not_readable" ? (
+          <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+            Sync saved in the database, but public rankings cannot read it yet. In Supabase SQL Editor,
+            run <code className="text-xs">supabase/apply-public-leaderboard-now.sql</code>, then hard-refresh
+            this page.
+          </p>
+        ) : loadIssue === "empty_diamonds" ? (
+          <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+            Latest import has no diamond values. Reload the Chrome extension, refresh preview on TikTok
+            Backstage (confirm diamond counts show), then sync again.
           </p>
         ) : periodKind === "weekly" || periodKind === "monthly" ? (
           <p className="mt-3 text-sm text-zinc-500">
