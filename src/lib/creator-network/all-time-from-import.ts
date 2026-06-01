@@ -1,12 +1,15 @@
 import {
-  cleanCreatorNetworkDisplayName,
   cleanCreatorNetworkUsername,
 } from "@/lib/creator-network/clean-username";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
+import {
+  BACKSTAGE_STAT_SEEDS,
+  normalizeHandle,
+  resolveCanonicalHandle,
+} from "@/lib/rankings/backstage-seed-data";
 import { periodBounds, toDateString } from "@/lib/rankings/periods";
-import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
 import type { ActivenessLevel, LeaderboardEntry } from "@/lib/rankings/types";
 import type { LeaderboardImportLoad } from "@/lib/creator-network/leaderboard-from-import";
@@ -37,6 +40,16 @@ type ImportStatRow = {
   activeness_level: string;
 };
 
+export type AllTimeHandleTotals = {
+  row: ImportStatRow | null;
+  handle: string;
+  scoringId: string;
+  coins_earned: number;
+  days_streamed: number;
+  hours_streamed: number;
+  activeness_level: ActivenessLevel;
+};
+
 const STAT_ROW_SELECT =
   "batch_id, profile_id, tiktok_username, tiktok_username_raw, tiktok_display_name, stat_period_label, stat_period_start, stat_period_end, avatar_url, coins_earned, diamonds_earned, days_streamed, hours_streamed, activeness_level";
 
@@ -58,23 +71,12 @@ function displayHandle(row: ImportStatRow): string | null {
   );
 }
 
-/** Skip old weekly-tab syncs so they are not double-counted as extra months. */
-export function isMonthlyStatPeriodRow(row: ImportStatRow): boolean {
-  if (row.stat_period_label && /\bweek(ly)?\b/i.test(row.stat_period_label)) return false;
-  if (!row.stat_period_start || !row.stat_period_end) return true;
-  const start = new Date(`${row.stat_period_start}T12:00:00Z`);
-  const end = new Date(`${row.stat_period_end}T12:00:00Z`);
-  const days = (end.getTime() - start.getTime()) / 86_400_000;
-  return days >= 20;
-}
-
-function periodKeyForRow(row: ImportStatRow): string {
-  if (row.stat_period_start && row.stat_period_end) {
-    return `${row.stat_period_start}|${row.stat_period_end}`;
-  }
-  const d = new Date(row.batch_created_at);
-  const { periodStart, periodEnd } = periodBounds("monthly", d);
-  return `${periodStart}|${periodEnd}`;
+/** Calendar month for bucketing (YYYY-MM). */
+function calendarMonthKey(row: ImportStatRow): string {
+  const dateStr =
+    row.stat_period_start?.slice(0, 10) ??
+    row.batch_created_at.slice(0, 10);
+  return dateStr.slice(0, 7);
 }
 
 function rowIsNewerThan(a: ImportStatRow, b: ImportStatRow): boolean {
@@ -86,6 +88,37 @@ function rowIsNewerThan(a: ImportStatRow, b: ImportStatRow): boolean {
 
 function maxActiveness(a: ActivenessLevel, b: ActivenessLevel): ActivenessLevel {
   return ELITE_ORDER.indexOf(a) >= ELITE_ORDER.indexOf(b) ? a : b;
+}
+
+function getSeedBaselinesByHandle(): Map<
+  string,
+  {
+    diamondsEarned: number;
+    validLiveDays: number;
+    hoursStreamed: number;
+    activeness: ActivenessLevel;
+  }
+> {
+  const map = new Map<
+    string,
+    {
+      diamondsEarned: number;
+      validLiveDays: number;
+      hoursStreamed: number;
+      activeness: ActivenessLevel;
+    }
+  >();
+  for (const seed of BACKSTAGE_STAT_SEEDS) {
+    const handle = normalizeHandle(resolveCanonicalHandle(seed.handle));
+    if (isExcludedNetworkHandle(handle)) continue;
+    map.set(handle, {
+      diamondsEarned: seed.diamondsEarned,
+      validLiveDays: seed.validLiveDays,
+      hoursStreamed: seed.hoursStreamed,
+      activeness: seed.activeness,
+    });
+  }
+  return map;
 }
 
 async function loadImportStatRowsForAllTime(): Promise<ImportStatRow[]> {
@@ -121,62 +154,28 @@ async function loadImportStatRowsForAllTime(): Promise<ImportStatRow[]> {
     .filter((r) => r.batch_created_at);
 }
 
-export type AllTimeScoringRow = {
-  profile_id: string;
-  coins_earned: number;
-  days_streamed: number;
-  hours_streamed: number;
-  activeness_level: ActivenessLevel;
-  follower_count: number;
-  follower_growth: number;
-  battles_played: number;
-  battles_won: number;
-};
-
 /**
- * Running all-time totals: for each creator and calendar month, use the latest sync,
- * then sum diamonds/days/hours across months (current month updates in place).
+ * Sum of latest sync per calendar month (weekly + monthly syncs bucket into YYYY-MM).
  */
-export function aggregateAllTimeStatsFromImportRows(rows: ImportStatRow[]): Map<
-  string,
-  {
-    row: ImportStatRow;
-    handle: string;
-    scoringId: string;
-    coins_earned: number;
-    days_streamed: number;
-    hours_streamed: number;
-    activeness_level: ActivenessLevel;
-  }
-> {
+export function aggregateImportMonthsByHandle(
+  rows: ImportStatRow[],
+): Map<string, Omit<AllTimeHandleTotals, "scoringId"> & { scoringId?: string }> {
   const bestPerHandleMonth = new Map<string, Map<string, ImportStatRow>>();
 
   for (const raw of rows) {
-    if (!isMonthlyStatPeriodRow(raw)) continue;
     const handle = displayHandle(raw);
     if (!handle) continue;
     const key = normalizeHandle(resolveCanonicalHandle(handle));
     if (isExcludedNetworkHandle(key)) continue;
 
-    const monthKey = periodKeyForRow(raw);
+    const monthKey = calendarMonthKey(raw);
     const byMonth = bestPerHandleMonth.get(key) ?? new Map<string, ImportStatRow>();
     const existing = byMonth.get(monthKey);
     byMonth.set(monthKey, existing && !rowIsNewerThan(raw, existing) ? existing : raw);
     bestPerHandleMonth.set(key, byMonth);
   }
 
-  const totals = new Map<
-    string,
-    {
-      row: ImportStatRow;
-      handle: string;
-      scoringId: string;
-      coins_earned: number;
-      days_streamed: number;
-      hours_streamed: number;
-      activeness_level: ActivenessLevel;
-    }
-  >();
+  const totals = new Map<string, Omit<AllTimeHandleTotals, "scoringId">>();
 
   for (const [handle, byMonth] of bestPerHandleMonth) {
     let coins = 0;
@@ -193,13 +192,11 @@ export function aggregateAllTimeStatsFromImportRows(rows: ImportStatRow[]): Map<
       if (!latestRow || rowIsNewerThan(row, latestRow)) latestRow = row;
     }
 
-    if (!latestRow || coins < 1) continue;
+    if (!latestRow) continue;
 
-    const scoringId = latestRow.profile_id ?? handle;
     totals.set(handle, {
       row: latestRow,
       handle,
-      scoringId,
       coins_earned: coins,
       days_streamed: days,
       hours_streamed: Math.round(hours * 10) / 10,
@@ -210,14 +207,74 @@ export function aggregateAllTimeStatsFromImportRows(rows: ImportStatRow[]): Map<
   return totals;
 }
 
-/** Stats rows for admin recalculate / DB paths (profile UUIDs only). */
-export async function getAllTimeScoringRowsFromImports(): Promise<AllTimeScoringRow[]> {
+/**
+ * Running all-time: opening backstage snapshot plus each calendar month from syncs.
+ * (Import-only totals replaced the snapshot and made all-time look lower.)
+ */
+export function mergeAllTimeWithSeedBaselines(
+  fromImports: Map<string, Omit<AllTimeHandleTotals, "scoringId"> & { scoringId?: string }>,
+): Map<string, AllTimeHandleTotals> {
+  const seeds = getSeedBaselinesByHandle();
+  const handles = new Set([...fromImports.keys(), ...seeds.keys()]);
+  const merged = new Map<string, AllTimeHandleTotals>();
+
+  for (const handle of handles) {
+    const imp = fromImports.get(handle);
+    const seed = seeds.get(handle);
+    const scoringId = imp?.row?.profile_id ?? handle;
+    const importCoins = imp?.coins_earned ?? 0;
+    const seedCoins = seed?.diamondsEarned ?? 0;
+
+    merged.set(handle, {
+      row: imp?.row ?? null,
+      handle,
+      scoringId,
+      coins_earned: seedCoins + importCoins,
+      days_streamed: Math.max(imp?.days_streamed ?? 0, seed?.validLiveDays ?? 0),
+      hours_streamed: Math.max(imp?.hours_streamed ?? 0, seed?.hoursStreamed ?? 0),
+      activeness_level: maxActiveness(
+        imp?.activeness_level ?? "none",
+        seed?.activeness ?? "none",
+      ),
+    });
+  }
+
+  return merged;
+}
+
+/** @deprecated Use aggregateImportMonthsByHandle + mergeAllTimeWithSeedBaselines */
+export function aggregateAllTimeStatsFromImportRows(rows: ImportStatRow[]): Map<
+  string,
+  AllTimeHandleTotals
+> {
+  return mergeAllTimeWithSeedBaselines(aggregateImportMonthsByHandle(rows));
+}
+
+export type AllTimeScoringRow = {
+  profile_id: string;
+  coins_earned: number;
+  days_streamed: number;
+  hours_streamed: number;
+  activeness_level: ActivenessLevel;
+  follower_count: number;
+  follower_growth: number;
+  battles_played: number;
+  battles_won: number;
+};
+
+export async function buildAllTimeTotalsByHandle(): Promise<Map<string, AllTimeHandleTotals>> {
   const rows = await loadImportStatRowsForAllTime();
-  const totals = aggregateAllTimeStatsFromImportRows(rows);
+  const fromImports = aggregateImportMonthsByHandle(rows);
+  return mergeAllTimeWithSeedBaselines(fromImports);
+}
+
+/** Stats rows for admin recalculate (profile UUIDs only). */
+export async function getAllTimeScoringRowsFromImports(): Promise<AllTimeScoringRow[]> {
+  const totals = await buildAllTimeTotalsByHandle();
   const out: AllTimeScoringRow[] = [];
 
   for (const t of totals.values()) {
-    if (!t.row.profile_id) continue;
+    if (!t.row?.profile_id) continue;
     out.push({
       profile_id: t.row.profile_id,
       coins_earned: t.coins_earned,
@@ -236,12 +293,12 @@ export async function getAllTimeScoringRowsFromImports(): Promise<AllTimeScoring
 
 export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<LeaderboardImportLoad | null> {
   const rows = await loadImportStatRowsForAllTime();
-  if (!rows.length) return null;
+  const totals = mergeAllTimeWithSeedBaselines(aggregateImportMonthsByHandle(rows));
 
-  const totals = aggregateAllTimeStatsFromImportRows(rows);
-  if (totals.size === 0) return null;
+  const withDiamonds = [...totals.values()].filter((t) => t.coins_earned >= 1);
+  if (withDiamonds.length === 0) return null;
 
-  const statsForScoring = [...totals.values()].map((t) => ({
+  const statsForScoring = withDiamonds.map((t) => ({
     profile_id: t.scoringId,
     coins_earned: t.coins_earned,
     days_streamed: t.days_streamed,
@@ -252,7 +309,7 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
   }));
 
   const ranked = assignRanks(computeRankings(statsForScoring));
-  const totalsByScoringId = new Map([...totals.values()].map((t) => [t.scoringId, t]));
+  const totalsByScoringId = new Map(withDiamonds.map((t) => [t.scoringId, t]));
 
   const entries: LeaderboardEntry[] = [];
   for (const r of ranked) {
@@ -262,7 +319,7 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
       profile_id: r.profile_id,
       email: null,
       tiktok_username: t.handle,
-      avatar_url: backstageAvatarUrl(t.row.avatar_url),
+      avatar_url: backstageAvatarUrl(t.row?.avatar_url),
       rank_position: r.rank_position,
       rank_score: r.rank_score,
       coins_rank: r.coins_rank,
@@ -299,6 +356,6 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
     acceptedRowsCount: sorted.length,
     periodStart: "2000-01-01",
     periodEnd: toDateString(new Date()),
-    statPeriodLabel: "All time (sum of monthly Backstage syncs)",
+    statPeriodLabel: "All time (baseline snapshot + monthly syncs)",
   };
 }
