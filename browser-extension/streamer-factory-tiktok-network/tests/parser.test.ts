@@ -58,6 +58,8 @@ test("parseLiveDaysFromCell uses actual before slash not target", () => {
   assert.equal(parseLiveDaysFromCell("1d / 8d (Level 1)"), 1);
   assert.equal(parseLiveDaysFromCell("0d / 8d"), 0);
   assert.equal(parseLiveDaysFromCell("30 days 0d / 30d"), 0);
+  assert.equal(parseLiveDaysFromCell("30 days"), 0);
+  assert.equal(parseLiveDaysFromCell("30d"), 0);
 });
 
 test("parseStreamHoursFromCell uses actual before slash not 20h target", () => {

@@ -18,11 +18,21 @@ export function parseLiveDaysFromCell(raw: string | undefined | null): number | 
 
   const segment = progressActualSegment(raw);
   const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
-  if (dayMatch) return Number(dayMatch[1]);
-  if (/^\d+$/.test(segment)) return Number(segment);
+  if (dayMatch) {
+    const n = Number(dayMatch[1]);
+    if (n >= 30) return 0;
+    return n;
+  }
+  if (/^\d+$/.test(segment)) {
+    const n = Number(segment);
+    return n >= 30 ? 0 : n;
+  }
   if (!raw.includes("/") && !raw.includes("／")) {
     const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
-    if (m) return Number(m[1]);
+    if (m) {
+      const n = Number(m[1]);
+      return n >= 30 ? 0 : n;
+    }
     const compact = parseCompactNumber(raw);
     if (compact !== undefined && compact <= 7) return compact;
     if (compact !== undefined && compact > 7) return 0;
@@ -108,6 +118,7 @@ export function parseDayCount(raw: string | undefined | null): number | undefine
   const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
   if (m) return Number(m[1]);
   const compact = parseCompactNumber(raw);
+  if (compact !== undefined && compact >= 30) return 0;
   if (compact !== undefined && compact <= 31) return compact;
   return undefined;
 }

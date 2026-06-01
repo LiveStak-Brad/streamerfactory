@@ -425,11 +425,21 @@
     if (progress) return Number(progress[1]);
     const segment = progressActualSegment(raw);
     const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
-    if (dayMatch) return Number(dayMatch[1]);
-    if (/^\d+$/.test(segment)) return Number(segment);
+    if (dayMatch) {
+      const n = Number(dayMatch[1]);
+      if (n >= 30) return 0;
+      return n;
+    }
+    if (/^\d+$/.test(segment)) {
+      const n = Number(segment);
+      return n >= 30 ? 0 : n;
+    }
     if (!raw.includes("/") && !raw.includes("\uFF0F")) {
       const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
-      if (m) return Number(m[1]);
+      if (m) {
+        const n = Number(m[1]);
+        return n >= 30 ? 0 : n;
+      }
       const compact = parseCompactNumber(raw);
       if (compact !== void 0 && compact <= 7) return compact;
       if (compact !== void 0 && compact > 7) return 0;
