@@ -136,6 +136,18 @@ test("prefers role=grid over stale table rows", () => {
   assert.equal(snap.rows[0]?.diamondsEarned, 8729);
 });
 
+test("reads diamonds from single mega-cell rows without commas", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/incentives-single-cell-row.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.diamondsEarned, 8720);
+  assert.equal(snap.rows[1]?.diamondsEarned, 5457);
+});
+
 test("does not treat Level as username", () => {
   const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
   const { document } = parseHTML(html);

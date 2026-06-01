@@ -117,10 +117,16 @@
     const t = cell.trim();
     if (!t) return true;
     if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
-    if (/\blevel\s*\d/i.test(t)) return true;
-    if (/\d+\s*h(?:\s*\d*m)?(?:\s*\/|\s)/i.test(t) || /\d+h\s*\/\s*\d+h/i.test(t)) return true;
-    if (/\d+\s*d(?:ays?)?(?:\s*\/|\s)/i.test(t) && !/\d,\d{3}/.test(t)) return true;
+    if (/^\$[\d,.]+$/.test(t)) return true;
+    if (/^\blevel\s*\d/i.test(t)) return true;
+    if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
+    if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
     return false;
+  }
+  function isNumericStatCell(cell) {
+    const t = cell.trim();
+    if (!t || isNonDiamondStatCell(t)) return false;
+    return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
   }
   function parseStatNumber(cell) {
     if (isNonDiamondStatCell(cell)) return void 0;
@@ -382,12 +388,19 @@
     if (aria && aria !== text) bits.push(aria);
     return bits.join(" ").trim();
   }
+  function splitCellLines(text) {
+    return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
+  }
   function cellTexts(row) {
     const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
     if (cells.length > 0) {
-      return cells.map(readCellText).filter(Boolean);
+      const lines = [];
+      for (const cell of cells) {
+        lines.push(...splitCellLines(readCellText(cell)));
+      }
+      return lines;
     }
-    return (row.textContent ?? "").split(/\n/).map((s) => s.trim()).filter(Boolean);
+    return splitCellLines((row.textContent ?? "").trim());
   }
   function tableCells(row) {
     return Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
@@ -434,10 +447,29 @@
     }
     return void 0;
   }
-  function extractDiamondsFromRowText(rowText) {
-    const commaMatches = [...rowText.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 10);
+  function extractDiamondsFromRowText(rowText, username) {
+    let text = rowText;
+    if (username) {
+      text = text.replace(
+        new RegExp(username.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+        " "
+      );
+    }
+    const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 10);
     if (commaMatches.length > 0) return Math.max(...commaMatches);
-    return void 0;
+    const plain = [];
+    for (const line of splitCellLines(text)) {
+      if (isNumericStatCell(line)) {
+        const n = parseStatNumber(line);
+        if (n !== void 0 && n >= 10) plain.push(n);
+      }
+    }
+    for (const m of text.matchAll(/\b(\d{3,7})\b/g)) {
+      const n = Number(m[1]);
+      if (n >= 100 && n <= 5e7) plain.push(n);
+    }
+    if (plain.length === 0) return void 0;
+    return Math.max(...plain);
   }
   function resolveDiamondsColumnIndex(row, doc, headers, columnMap) {
     if (columnMap.coins !== void 0) return columnMap.coins;
@@ -524,12 +556,22 @@
     }
     let best;
     for (const cell of cells) {
-      if (isNonDiamondStatCell(cell)) continue;
-      if (extractUsernameFromText(cell)) continue;
-      const n = parseStatNumber(cell);
-      if (n === void 0 || n < 10) continue;
-      if (n <= 100 && /%/.test(cell)) continue;
-      if (best === void 0 || n > best) best = n;
+      const parts = splitCellLines(cell);
+      for (const part of parts.length > 0 ? parts : [cell]) {
+        if (isNonDiamondStatCell(part)) continue;
+        if (extractUsernameFromText(part)) continue;
+        if (isNumericStatCell(part)) {
+          const n2 = parseStatNumber(part);
+          if (n2 !== void 0 && n2 >= 10) {
+            if (best === void 0 || n2 > best) best = n2;
+          }
+          continue;
+        }
+        const n = parseStatNumber(part);
+        if (n === void 0 || n < 10) continue;
+        if (n <= 100 && /%/.test(part)) continue;
+        if (best === void 0 || n > best) best = n;
+      }
     }
     return best;
   }
@@ -643,7 +685,7 @@
       if (diamonds !== void 0) coins = diamonds;
     }
     if (diamonds === void 0) {
-      diamonds = extractDiamondsFromRowText(joined);
+      diamonds = extractDiamondsFromRowText(joined, username);
       if (diamonds !== void 0) coins = diamonds;
     }
     if (coins === void 0 && diamonds !== void 0) coins = diamonds;

@@ -150,7 +150,10 @@ async function refreshPreview() {
                 r.diamondsEarned != null
                   ? `${r.diamondsEarned.toLocaleString()} diamonds`
                   : "diamonds: —";
-              return `@${r.tiktokUsername} · ${diamonds} · ${(r.usernameConfidence ?? "low").toUpperCase()} confidence`;
+              const conf = ["high", "medium", "low"].includes(r.usernameConfidence ?? "")
+                ? (r.usernameConfidence as string).toUpperCase()
+                : "LOW";
+              return `@${r.tiktokUsername} · ${diamonds} · ${conf} confidence`;
             });
 
     if (previewLines.length > 0) {

@@ -155,7 +155,8 @@
         (r) => `@${r.tiktokUsername} [${(r.usernameConfidence ?? "low").toUpperCase()}] \xB7 ${r.displayName ?? ""}`
       ) : statRows.slice(0, 5).map((r) => {
         const diamonds = r.diamondsEarned != null ? `${r.diamondsEarned.toLocaleString()} diamonds` : "diamonds: \u2014";
-        return `@${r.tiktokUsername} \xB7 ${diamonds} \xB7 ${(r.usernameConfidence ?? "low").toUpperCase()} confidence`;
+        const conf = ["high", "medium", "low"].includes(r.usernameConfidence ?? "") ? r.usernameConfidence.toUpperCase() : "LOW";
+        return `@${r.tiktokUsername} \xB7 ${diamonds} \xB7 ${conf} confidence`;
       });
       if (previewLines.length > 0) {
         previewEl.textContent = previewLines.join("\n");

@@ -60,10 +60,18 @@ export function isNonDiamondStatCell(cell: string): boolean {
   const t = cell.trim();
   if (!t) return true;
   if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
-  if (/\blevel\s*\d/i.test(t)) return true;
-  if (/\d+\s*h(?:\s*\d*m)?(?:\s*\/|\s)/i.test(t) || /\d+h\s*\/\s*\d+h/i.test(t)) return true;
-  if (/\d+\s*d(?:ays?)?(?:\s*\/|\s)/i.test(t) && !/\d,\d{3}/.test(t)) return true;
+  if (/^\$[\d,.]+$/.test(t)) return true;
+  if (/^\blevel\s*\d/i.test(t)) return true;
+  if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
+  if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
   return false;
+}
+
+/** Cell is only a stat number (8720, 8,729, 413.2K) — common for Diamonds column in DOM. */
+export function isNumericStatCell(cell: string): boolean {
+  const t = cell.trim();
+  if (!t || isNonDiamondStatCell(t)) return false;
+  return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
 }
 
 /** Parse a numeric stat from a table cell; skips day/duration/level patterns. */

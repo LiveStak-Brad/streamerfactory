@@ -1,5 +1,11 @@
 import { parseDayCount, parseDurationToSeconds } from "./duration";
-import { firstCompactNumber, isNonDiamondStatCell, parseCompactNumber, parseStatNumber } from "./numbers";
+import {
+  firstCompactNumber,
+  isNonDiamondStatCell,
+  isNumericStatCell,
+  parseCompactNumber,
+  parseStatNumber,
+} from "./numbers";
 import type { DetectedPageType, ParsedCreatorRow } from "./types";
 import { extractUsernameFromText, extractUsernameWithConfidence, normalizeTikTokUsername } from "./username";
 
@@ -37,15 +43,24 @@ function readCellText(cell: Element): string {
   return bits.join(" ").trim();
 }
 
-function cellTexts(row: Element): string[] {
-  const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
-  if (cells.length > 0) {
-    return cells.map(readCellText).filter(Boolean);
-  }
-  return (row.textContent ?? "")
+/** Split row/cell text into lines (TikTok often packs a row into one cell). */
+function splitCellLines(text: string): string[] {
+  return text
     .split(/\n/)
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+function cellTexts(row: Element): string[] {
+  const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
+  if (cells.length > 0) {
+    const lines: string[] = [];
+    for (const cell of cells) {
+      lines.push(...splitCellLines(readCellText(cell)));
+    }
+    return lines;
+  }
+  return splitCellLines((row.textContent ?? "").trim());
 }
 
 function tableCells(row: Element): Element[] {
@@ -103,13 +118,34 @@ function cellTextAtColIndex(row: Element, colIndex: number): string | undefined 
   return undefined;
 }
 
-/** Comma-formatted counts visible anywhere in the row (e.g. "8,229" in Diamonds column). */
-function extractDiamondsFromRowText(rowText: string): number | undefined {
-  const commaMatches = [...rowText.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)]
+/** Diamond counts from row text (DOM may omit commas: "8720" vs displayed "8,720"). */
+function extractDiamondsFromRowText(rowText: string, username?: string): number | undefined {
+  let text = rowText;
+  if (username) {
+    text = text.replace(
+      new RegExp(username.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+      " ",
+    );
+  }
+
+  const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)]
     .map((m) => parseCompactNumber(m[1]))
     .filter((n): n is number => n !== undefined && n >= 10);
   if (commaMatches.length > 0) return Math.max(...commaMatches);
-  return undefined;
+
+  const plain: number[] = [];
+  for (const line of splitCellLines(text)) {
+    if (isNumericStatCell(line)) {
+      const n = parseStatNumber(line);
+      if (n !== undefined && n >= 10) plain.push(n);
+    }
+  }
+  for (const m of text.matchAll(/\b(\d{3,7})\b/g)) {
+    const n = Number(m[1]);
+    if (n >= 100 && n <= 50_000_000) plain.push(n);
+  }
+  if (plain.length === 0) return undefined;
+  return Math.max(...plain);
 }
 
 function resolveDiamondsColumnIndex(
@@ -221,12 +257,22 @@ function pickDiamondsFromCells(cells: string[], coinsColumnIndex?: number): numb
 
   let best: number | undefined;
   for (const cell of cells) {
-    if (isNonDiamondStatCell(cell)) continue;
-    if (extractUsernameFromText(cell)) continue;
-    const n = parseStatNumber(cell);
-    if (n === undefined || n < 10) continue;
-    if (n <= 100 && /%/.test(cell)) continue;
-    if (best === undefined || n > best) best = n;
+    const parts = splitCellLines(cell);
+    for (const part of parts.length > 0 ? parts : [cell]) {
+      if (isNonDiamondStatCell(part)) continue;
+      if (extractUsernameFromText(part)) continue;
+      if (isNumericStatCell(part)) {
+        const n = parseStatNumber(part);
+        if (n !== undefined && n >= 10) {
+          if (best === undefined || n > best) best = n;
+        }
+        continue;
+      }
+      const n = parseStatNumber(part);
+      if (n === undefined || n < 10) continue;
+      if (n <= 100 && /%/.test(part)) continue;
+      if (best === undefined || n > best) best = n;
+    }
   }
   return best;
 }
@@ -366,7 +412,7 @@ function parseStatsRow(row: Element, doc: Document = document): ParsedCreatorRow
     if (diamonds !== undefined) coins = diamonds;
   }
   if (diamonds === undefined) {
-    diamonds = extractDiamondsFromRowText(joined);
+    diamonds = extractDiamondsFromRowText(joined, username);
     if (diamonds !== undefined) coins = diamonds;
   }
   if (coins === undefined && diamonds !== undefined) coins = diamonds;
