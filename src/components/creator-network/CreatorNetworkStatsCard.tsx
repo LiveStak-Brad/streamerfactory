@@ -42,9 +42,9 @@ export function CreatorNetworkStatsCard({ stats }: Props) {
 
       <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div>
-          <dt className="text-xs uppercase tracking-wide text-zinc-500">Coins earned</dt>
+          <dt className="text-xs uppercase tracking-wide text-zinc-500">Diamonds earned</dt>
           <dd className="mt-1 text-lg font-bold text-zinc-950 dark:text-zinc-50">
-            {(stats.coins_earned ?? 0).toLocaleString()}
+            {(stats.diamonds_earned ?? stats.coins_earned ?? 0).toLocaleString()}
           </dd>
         </div>
         <div>

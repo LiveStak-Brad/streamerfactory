@@ -55,6 +55,7 @@
   var copyCaptureBtn = document.getElementById("copyCapture");
   var syncResultEl = document.getElementById("syncResult");
   var captureMetaEl = document.getElementById("captureMeta");
+  var viewRankingsBtn = document.getElementById("viewRankingsBtn");
   var latestPayload = null;
   var latestSnapshot = null;
   var canImport = false;
@@ -103,6 +104,7 @@
   }
   async function refreshPreview() {
     syncResultEl.textContent = "";
+    hideRankingsLink();
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const tabId = tab?.id;
     const tabUrl = tab?.url;
@@ -176,10 +178,24 @@
       latestSnapshot = null;
     }
   }
+  function hideRankingsLink() {
+    viewRankingsBtn.style.display = "none";
+    viewRankingsBtn.disabled = true;
+  }
+  function showRankingsLink(apiBaseUrl, path = "/rankings") {
+    const url = `${apiBaseUrl.replace(/\/$/, "")}${path}`;
+    viewRankingsBtn.style.display = "block";
+    viewRankingsBtn.disabled = false;
+    viewRankingsBtn.onclick = () => {
+      void chrome.tabs.create({ url });
+    };
+  }
   async function syncNow() {
     if (!latestPayload || !canImport) return;
     syncBtn.disabled = true;
+    hideRankingsLink();
     syncResultEl.textContent = "Syncing\u2026";
+    const { apiBaseUrl } = await loadApiConfig();
     try {
       const res = await chrome.runtime.sendMessage({ type: "SYNC_IMPORT", payload: latestPayload });
       if (!res?.ok) {
@@ -188,7 +204,12 @@
         return;
       }
       const result = res.result;
-      syncResultEl.textContent = `Done \xB7 batch ${result.batchId?.slice(0, 8)}\u2026 \xB7 accepted ${result.acceptedRows ?? result.liveRowsAccepted ?? 0} \xB7 rejected ${result.rejectedRows ?? 0}${result.unmatchedUsernames?.length ? ` \xB7 unmatched: ${result.unmatchedUsernames.slice(0, 3).join(", ")}` : ""}`;
+      const accepted = result.acceptedRows ?? result.liveRowsAccepted ?? 0;
+      syncResultEl.textContent = `Done \xB7 batch ${result.batchId?.slice(0, 8)}\u2026 \xB7 accepted ${accepted} \xB7 rejected ${result.rejectedRows ?? 0}${result.unmatchedUsernames?.length ? ` \xB7 unmatched: ${result.unmatchedUsernames.slice(0, 3).join(", ")}` : ""}${result.siteUpdated ? " \xB7 rankings updated on site" : ""}`;
+      if (result.siteUpdated && accepted > 0) {
+        showRankingsLink(apiBaseUrl, result.rankingsPath ?? "/rankings");
+        syncResultEl.textContent += " \u2014 open rankings or refresh if already open.";
+      }
     } catch (e) {
       syncResultEl.textContent = e instanceof Error ? e.message : "Sync failed.";
     }

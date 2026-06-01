@@ -11,6 +11,7 @@ const refreshBtn = document.getElementById("refreshPreview") as HTMLButtonElemen
 const copyCaptureBtn = document.getElementById("copyCapture") as HTMLButtonElement;
 const syncResultEl = document.getElementById("syncResult")!;
 const captureMetaEl = document.getElementById("captureMeta")!;
+const viewRankingsBtn = document.getElementById("viewRankingsBtn") as HTMLButtonElement;
 
 let latestPayload: SyncPayload | null = null;
 let latestSnapshot: PageSnapshot | null = null;
@@ -73,6 +74,7 @@ async function getActiveTabId(): Promise<number | undefined> {
 
 async function refreshPreview() {
   syncResultEl.textContent = "";
+  hideRankingsLink();
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const tabId = tab?.id;
   const tabUrl = tab?.url;
@@ -182,10 +184,27 @@ async function refreshPreview() {
   }
 }
 
+function hideRankingsLink() {
+  viewRankingsBtn.style.display = "none";
+  viewRankingsBtn.disabled = true;
+}
+
+function showRankingsLink(apiBaseUrl: string, path = "/rankings") {
+  const url = `${apiBaseUrl.replace(/\/$/, "")}${path}`;
+  viewRankingsBtn.style.display = "block";
+  viewRankingsBtn.disabled = false;
+  viewRankingsBtn.onclick = () => {
+    void chrome.tabs.create({ url });
+  };
+}
+
 async function syncNow() {
   if (!latestPayload || !canImport) return;
   syncBtn.disabled = true;
+  hideRankingsLink();
   syncResultEl.textContent = "Syncing…";
+
+  const { apiBaseUrl } = await loadApiConfig();
 
   try {
     const res = await chrome.runtime.sendMessage({ type: "SYNC_IMPORT", payload: latestPayload });
@@ -200,12 +219,20 @@ async function syncNow() {
       rejectedRows?: number;
       unmatchedUsernames?: string[];
       liveRowsAccepted?: number;
+      siteUpdated?: boolean;
+      rankingsPath?: string;
     };
-    syncResultEl.textContent = `Done · batch ${result.batchId?.slice(0, 8)}… · accepted ${
-      result.acceptedRows ?? result.liveRowsAccepted ?? 0
-    } · rejected ${result.rejectedRows ?? 0}${
+    const accepted = result.acceptedRows ?? result.liveRowsAccepted ?? 0;
+    syncResultEl.textContent = `Done · batch ${result.batchId?.slice(0, 8)}… · accepted ${accepted} · rejected ${
+      result.rejectedRows ?? 0
+    }${
       result.unmatchedUsernames?.length ? ` · unmatched: ${result.unmatchedUsernames.slice(0, 3).join(", ")}` : ""
-    }`;
+    }${result.siteUpdated ? " · rankings updated on site" : ""}`;
+
+    if (result.siteUpdated && accepted > 0) {
+      showRankingsLink(apiBaseUrl, result.rankingsPath ?? "/rankings");
+      syncResultEl.textContent += " — open rankings or refresh if already open.";
+    }
   } catch (e) {
     syncResultEl.textContent = e instanceof Error ? e.message : "Sync failed.";
   }

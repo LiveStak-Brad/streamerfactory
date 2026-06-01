@@ -63,8 +63,8 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
         </h1>
         <p className="mt-2 max-w-3xl text-zinc-600 dark:text-zinc-400">
           Data is read from visible TikTok Backstage pages by authorized staff using the Chrome extension.
-          Nothing is scraped from TikTok cookies or hidden tokens. Public leaderboards still use the existing
-          seed snapshot until a later phase wires imports into rankings.
+          Nothing is scraped from TikTok cookies or hidden tokens.           Public <code className="text-xs">/rankings</code> uses the latest completed stats import when
+          available; otherwise it falls back to the seed snapshot.
         </p>
 
         {tablesMissing ? (

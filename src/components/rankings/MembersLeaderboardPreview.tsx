@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { LeaderboardTable } from "@/components/rankings/LeaderboardTable";
 import { Button } from "@/components/ui/Button";
-import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
+import { getLeaderboard } from "@/lib/rankings/queries";
 
-/** Top of member directory — same backstage snapshot as /rankings. */
-export function MembersLeaderboardPreview() {
-  const board = getLeaderboardFromBackstageSeed();
+/** Top of member directory — same source as /rankings (extension import or seed fallback). */
+export async function MembersLeaderboardPreview() {
+  const board = await getLeaderboard("weekly");
   const top = board.slice(0, 10);
 
   return (

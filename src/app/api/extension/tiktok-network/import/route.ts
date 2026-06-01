@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { canAccessAdmin } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
 import { importCreatorNetworkPayload } from "@/lib/creator-network/import";
+import {
+  revalidateCreatorNetworkLivePages,
+  revalidateCreatorNetworkSitePages,
+} from "@/lib/creator-network/revalidate-after-import";
+import type { ImportResult } from "@/lib/creator-network/types";
 import { validateImportPayload } from "@/lib/creator-network/validate";
 
 export const runtime = "nodejs";
@@ -29,10 +34,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  const result = await importCreatorNetworkPayload(parsed.data, session.profile.id);
-  if ("ok" in result && result.ok === false) {
-    return NextResponse.json({ error: result.error }, { status: 500 });
+  const imported = await importCreatorNetworkPayload(parsed.data, session.profile.id);
+  if ("ok" in imported && imported.ok === false) {
+    return NextResponse.json({ error: imported.error }, { status: 500 });
+  }
+  const result = imported as ImportResult;
+
+  const updatesRankings =
+    parsed.data.detectedPageType === "creator_stats" ||
+    parsed.data.detectedPageType === "manage_relationship";
+  if (updatesRankings && result.acceptedRows > 0) {
+    revalidateCreatorNetworkSitePages();
+  } else if (parsed.data.detectedPageType === "live_now" && (result.liveRowsAccepted ?? 0) > 0) {
+    revalidateCreatorNetworkLivePages();
   }
 
-  return NextResponse.json(result);
+  return NextResponse.json({
+    ...result,
+    siteUpdated: updatesRankings && result.acceptedRows > 0,
+    rankingsPath: "/rankings",
+  });
 }

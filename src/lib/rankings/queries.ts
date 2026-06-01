@@ -1,3 +1,4 @@
+import { getLeaderboardFromLatestCreatorNetworkImport } from "@/lib/creator-network/leaderboard-from-import";
 import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
 import { periodBounds } from "@/lib/rankings/periods";
@@ -93,15 +94,49 @@ export async function getAggregatedAllTimeStats(): Promise<
 }
 
 /**
- * Weekly/monthly: uses your backstage snapshot (screenshots) so the board is never empty.
+ * Weekly/monthly: latest Chrome extension import when available; else backstage seed snapshot.
  * All-time: reads from DB when staff have imported; otherwise falls back to snapshot.
  */
+export type LeaderboardLoadResult = {
+  entries: LeaderboardEntry[];
+  /** Set when weekly/monthly board is built from the latest extension import. */
+  syncMeta: { importedAt: string; acceptedRows: number; batchId: string } | null;
+};
+
+export async function getLeaderboardWithMeta(
+  kind: RankingPeriod,
+  anchorDate?: string,
+): Promise<LeaderboardLoadResult> {
+  if (kind === "weekly" || kind === "monthly") {
+    try {
+      const fromImport = await getLeaderboardFromLatestCreatorNetworkImport();
+      if (fromImport && fromImport.entries.length > 0) {
+        return {
+          entries: fromImport.entries,
+          syncMeta: {
+            importedAt: fromImport.importedAt ?? new Date().toISOString(),
+            acceptedRows: fromImport.acceptedRowsCount,
+            batchId: fromImport.batchId ?? "",
+          },
+        };
+      }
+    } catch {
+      // tables missing or service role unset
+    }
+    return { entries: getLeaderboardFromBackstageSeed(), syncMeta: null };
+  }
+
+  const entries = await getLeaderboard(kind, anchorDate);
+  return { entries, syncMeta: null };
+}
+
 export async function getLeaderboard(
   kind: RankingPeriod,
   anchorDate?: string,
 ): Promise<LeaderboardEntry[]> {
   if (kind === "weekly" || kind === "monthly") {
-    return getLeaderboardFromBackstageSeed();
+    const { entries } = await getLeaderboardWithMeta(kind, anchorDate);
+    return entries;
   }
 
   const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();

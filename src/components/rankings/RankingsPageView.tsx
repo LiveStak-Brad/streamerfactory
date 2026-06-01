@@ -5,7 +5,7 @@ import { LeaderboardTable } from "@/components/rankings/LeaderboardTable";
 import { Button } from "@/components/ui/Button";
 import { formatPeriodLabel, periodBounds, toDateString } from "@/lib/rankings/periods";
 import { createClient } from "@/lib/supabase/server";
-import { getLeaderboard } from "@/lib/rankings/queries";
+import { getLeaderboardWithMeta } from "@/lib/rankings/queries";
 import { RANKING_PERIODS, type RankingPeriod } from "@/lib/rankings/types";
 
 type RankingsPageViewProps = {
@@ -33,13 +33,24 @@ export async function RankingsPageView({
     anchor ? new Date(`${anchor}T12:00:00Z`) : new Date(),
   );
 
-  let entries: Awaited<ReturnType<typeof getLeaderboard>> = [];
+  let entries: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["entries"] = [];
   let highlightTiktokHandle: string | null = null;
+  let syncMeta: Awaited<ReturnType<typeof getLeaderboardWithMeta>>["syncMeta"] = null;
   try {
-    entries = await getLeaderboard(periodKind, anchor);
+    const board = await getLeaderboardWithMeta(periodKind, anchor);
+    entries = board.entries;
+    syncMeta = board.syncMeta;
   } catch {
     entries = [];
   }
+
+  const lastSyncedLabel =
+    syncMeta?.importedAt != null
+      ? new Date(syncMeta.importedAt).toLocaleString(undefined, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        })
+      : null;
 
   if (highlightProfileId) {
     try {
@@ -69,6 +80,17 @@ export async function RankingsPageView({
           stream time, activeness, and battles.
         </p>
         <p className="mt-2 text-sm text-zinc-500">{formatPeriodLabel(periodKind, periodStart, periodEnd)}</p>
+        {lastSyncedLabel ? (
+          <p className="mt-3 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2 text-sm text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
+            Live from TikTok Backstage · last extension sync {lastSyncedLabel}
+            {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}. Sync again anytime to
+            refresh this page.
+          </p>
+        ) : periodKind === "weekly" || periodKind === "monthly" ? (
+          <p className="mt-3 text-sm text-zinc-500">
+            Showing snapshot data until staff sync from the Chrome extension.
+          </p>
+        ) : null}
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button href="/members" variant="secondary">
             Member directory
