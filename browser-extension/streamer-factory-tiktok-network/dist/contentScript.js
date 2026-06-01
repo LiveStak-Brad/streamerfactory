@@ -750,6 +750,88 @@
     return false;
   }
 
+  // src/parser/live-header-hints.ts
+  var HANDLE_IN_TEXT = /@?([a-z0-9._]{2,24})/i;
+  var TRUNCATED_HANDLE = /^([a-z0-9._]{4,28})\.{2,3}$/i;
+  var PLAIN_HANDLE = /^@?([a-z0-9._]{2,24})$/i;
+  function handleFromRawText(raw) {
+    if (!raw) return void 0;
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed.length > 80) return void 0;
+    const plain = trimmed.match(PLAIN_HANDLE);
+    if (plain) {
+      const u = cleanTikTokUsername(plain[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+    const embedded = trimmed.match(HANDLE_IN_TEXT);
+    if (embedded && trimmed.length <= 40) {
+      const u = cleanTikTokUsername(embedded[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+    return void 0;
+  }
+  function expandTruncatedPrefix(scope, prefix) {
+    const key = prefix.toLowerCase().replace(/\.$/, "");
+    if (key.length < 4) return void 0;
+    const candidates = [];
+    const push = (raw) => {
+      const u = handleFromRawText(raw);
+      if (u && u.startsWith(key) && u.length > key.length) candidates.push(u);
+    };
+    for (const el of scope.querySelectorAll("[title], [aria-label], [data-username], [data-user-name]")) {
+      push(el.getAttribute("title"));
+      push(el.getAttribute("aria-label"));
+      push(el.getAttribute("data-username"));
+      push(el.getAttribute("data-user-name"));
+    }
+    for (const el of scope.querySelectorAll(
+      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
+    )) {
+      push(el.textContent);
+    }
+    if (candidates.length === 0) return void 0;
+    candidates.sort((a, b) => b.length - a.length);
+    return candidates[0];
+  }
+  function usernameFromLiveHeaderHints(scope) {
+    const attrEls = scope.querySelectorAll(
+      "[title], [aria-label], [data-username], [data-user-name], [data-nickname]"
+    );
+    for (const el of attrEls) {
+      for (const attr of ["title", "aria-label", "data-username", "data-user-name", "data-nickname"]) {
+        const u = handleFromRawText(el.getAttribute(attr));
+        if (u) return u;
+      }
+    }
+    for (const el of scope.querySelectorAll(
+      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
+    )) {
+      const u = handleFromRawText(el.textContent);
+      if (u) return u;
+    }
+    for (const el of scope.querySelectorAll("[aria-describedby]")) {
+      const id = el.getAttribute("aria-describedby");
+      if (!id) continue;
+      const doc = el.ownerDocument;
+      const safeId = id.replace(/([!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+      const tip = doc?.getElementById(id) ?? scope.querySelector(`#${safeId}`);
+      const u = handleFromRawText(tip?.textContent ?? tip?.getAttribute("title"));
+      if (u) return u;
+    }
+    for (const line of (scope.textContent ?? "").split(/\n/).map((l) => l.trim())) {
+      const trunc = line.match(TRUNCATED_HANDLE);
+      if (!trunc) continue;
+      const expanded = expandTruncatedPrefix(scope, trunc[1]);
+      if (expanded) return expanded;
+      const fromTitle = scope.querySelector(`[title="${trunc[1]}"], [title^="${trunc[1]}"]`);
+      if (fromTitle) {
+        const u = handleFromRawText(fromTitle.getAttribute("title"));
+        if (u) return u;
+      }
+    }
+    return void 0;
+  }
+
   // src/parser/extractLiveNow.ts
   var DOC_POS_FOLLOWING = 4;
   var DOC_POS_PRECEDING = 2;
@@ -935,6 +1017,8 @@
     const headerEl = streamCardHeaderElement(card);
     const scope = headerEl ?? card;
     const scopeText = (headerEl?.textContent ?? headerText).slice(0, 350);
+    const fromHints = usernameFromLiveHeaderHints(scope);
+    if (fromHints && !isSuspiciousLiveHandle(fromHints)) return fromHints;
     const fromLink = usernameFromLinks(scope);
     if (fromLink && !isSuspiciousLiveHandle(fromLink)) return fromLink;
     for (const img of scope.querySelectorAll("img[alt]")) {
@@ -948,6 +1032,10 @@
       if (LIVE_STAT_LINE.test(line)) continue;
       const truncated = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
       if (truncated) {
+        const expanded = usernameFromLiveHeaderHints(scope);
+        if (expanded && expanded.startsWith(truncated[1].toLowerCase().replace(/\.$/, ""))) {
+          return expanded;
+        }
         const u = cleanTikTokUsername(truncated[1]);
         if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
       }

@@ -7,6 +7,7 @@ import {
   isChatCommentLine,
   isLikelyChatOverlay,
 } from "./live-badge";
+import { usernameFromLiveHeaderHints } from "./live-header-hints";
 import { isInvalidLiveStreamHandle, isSuspiciousLiveHandle } from "./live-username";
 import type { ParsedLiveRow } from "./types";
 import { cleanTikTokUsername, normalizeTikTokUsername } from "./username";
@@ -255,6 +256,9 @@ function usernameFromStreamCard(card: Element, headerText: string): string | und
   const scope = headerEl ?? card;
   const scopeText = (headerEl?.textContent ?? headerText).slice(0, 350);
 
+  const fromHints = usernameFromLiveHeaderHints(scope);
+  if (fromHints && !isSuspiciousLiveHandle(fromHints)) return fromHints;
+
   const fromLink = usernameFromLinks(scope);
   if (fromLink && !isSuspiciousLiveHandle(fromLink)) return fromLink;
 
@@ -271,6 +275,10 @@ function usernameFromStreamCard(card: Element, headerText: string): string | und
 
     const truncated = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
     if (truncated) {
+      const expanded = usernameFromLiveHeaderHints(scope);
+      if (expanded && expanded.startsWith(truncated[1].toLowerCase().replace(/\.$/, ""))) {
+        return expanded;
+      }
       const u = cleanTikTokUsername(truncated[1]);
       if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
     }

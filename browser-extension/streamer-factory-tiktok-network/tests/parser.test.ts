@@ -335,6 +335,19 @@ test("rejects glued comment handles like assking king_reaper", () => {
   assert.equal(isInvalidLiveStreamHandle("cj_alleycat93"), false);
 });
 
+test("live now header tooltip title yields full handle not truncated text", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-backstage-tooltip.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 1);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_allycat93");
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "assking"), false);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "ezzat90"), false);
+});
+
 test("live now page accepts LIVE time and Gifts labels", () => {
   const html = readFileSync(
     join(import.meta.dirname, "../fixtures/live-now-backstage-gifts.html"),
