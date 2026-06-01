@@ -16,6 +16,8 @@ export type ImportResponse = {
   lowConfidenceMatches?: number;
   unmatchedUsernames?: string[];
   liveRowsAccepted?: number;
+  siteUpdated?: boolean;
+  rankingsPath?: string;
   error?: string;
 };
 

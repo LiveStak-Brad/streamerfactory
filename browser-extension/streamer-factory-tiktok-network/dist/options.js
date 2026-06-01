@@ -1,5 +1,9 @@
 "use strict";
 (() => {
+  // src/autoSyncSettings.ts
+  var AUTO_SYNC_STORAGE_KEY = "autoSyncOnBackstage";
+  var AUTO_SYNC_MIN_INTERVAL_MS = 5 * 60 * 1e3;
+
   // src/config.ts
   var DEFAULT_PROD = "https://www.thestreamerfactory.com";
   var DEFAULT_DEV = "http://localhost:3000";
@@ -26,12 +30,14 @@
 
   // src/options.ts
   var useDevModeEl = document.getElementById("useDevMode");
+  var autoSyncEl = document.getElementById("autoSyncOnBackstage");
   var apiBaseUrlEl = document.getElementById("apiBaseUrl");
   var saveBtn = document.getElementById("save");
   var savedEl = document.getElementById("saved");
   void loadApiConfig().then(async () => {
-    const stored = await chrome.storage.sync.get(["apiBaseUrl", "useDevMode"]);
+    const stored = await chrome.storage.sync.get(["apiBaseUrl", "useDevMode", AUTO_SYNC_STORAGE_KEY]);
     useDevModeEl.checked = stored.useDevMode === true;
+    autoSyncEl.checked = stored[AUTO_SYNC_STORAGE_KEY] !== false;
     apiBaseUrlEl.value = typeof stored.apiBaseUrl === "string" ? stored.apiBaseUrl : stored.useDevMode ? DEFAULT_DEV : DEFAULT_PROD;
   });
   saveBtn.addEventListener("click", () => {
@@ -43,6 +49,7 @@
         useDevMode: useDevModeEl.checked,
         apiBaseUrl
       });
+      await chrome.storage.sync.set({ [AUTO_SYNC_STORAGE_KEY]: autoSyncEl.checked });
       savedEl.textContent = "Saved.";
     })();
   });

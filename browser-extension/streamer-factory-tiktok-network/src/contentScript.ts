@@ -1,23 +1,6 @@
+import { startBackstageAutoSync, snapshotToPayload } from "./autoSyncContent";
 import { buildPageSnapshot } from "./parser/index";
-import type { PageSnapshot, SyncPayload } from "./parser/types";
-
-function stripPreview<T extends { rawTextPreview?: string }>(row: T): Omit<T, "rawTextPreview"> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { rawTextPreview, ...rest } = row;
-  return rest;
-}
-
-function snapshotToPayload(snapshot: PageSnapshot): SyncPayload {
-  return {
-    sourcePageUrl: snapshot.sourcePageUrl,
-    detectedPageType: snapshot.detectedPageType,
-    relationshipTab: snapshot.relationshipTab,
-    statPeriodLabel: snapshot.statPeriodLabel,
-    rows: snapshot.rows.map(stripPreview),
-    liveRows:
-      snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : undefined,
-  };
-}
+import type { PageSnapshot } from "./parser/types";
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type === "PING") {
@@ -53,5 +36,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return false;
 });
+
+startBackstageAutoSync();
 
 export {};

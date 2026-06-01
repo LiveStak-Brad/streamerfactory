@@ -255,8 +255,66 @@
     });
   }
 
+  // src/autoSyncSettings.ts
+  var AUTO_SYNC_STORAGE_KEY = "autoSyncOnBackstage";
+  var AUTO_SYNC_MIN_INTERVAL_MS = 5 * 60 * 1e3;
+  async function isAutoSyncEnabled() {
+    const stored = await chrome.storage.sync.get([AUTO_SYNC_STORAGE_KEY]);
+    return stored[AUTO_SYNC_STORAGE_KEY] !== false;
+  }
+
+  // src/autoSyncBackground.ts
+  function syncFingerprint(payload) {
+    const rows = payload.rows?.length ?? 0;
+    const live = payload.liveRows?.length ?? 0;
+    const first = payload.rows?.[0]?.tiktokUsername ?? payload.liveRows?.[0]?.tiktokUsername ?? "";
+    return `${payload.detectedPageType}|${payload.sourcePageUrl ?? ""}|${rows}|${live}|${first}`;
+  }
+  async function handleAutoSyncRequest(payload, reason) {
+    if (!await isAutoSyncEnabled()) {
+      return { ok: true, skipped: "disabled" };
+    }
+    const me = await fetchMe();
+    if (!me.authenticated || !me.canImportTikTokNetworkStats) {
+      return { ok: true, skipped: "not_staff" };
+    }
+    const fp = syncFingerprint(payload);
+    const stored = await chrome.storage.local.get(["lastAutoSyncAt", "lastAutoSyncFingerprint"]);
+    const lastAt = typeof stored.lastAutoSyncAt === "number" ? stored.lastAutoSyncAt : 0;
+    const lastFp = typeof stored.lastAutoSyncFingerprint === "string" ? stored.lastAutoSyncFingerprint : "";
+    if (lastFp === fp && Date.now() - lastAt < AUTO_SYNC_MIN_INTERVAL_MS) {
+      return { ok: true, skipped: "throttled" };
+    }
+    const result = await postImport(payload);
+    await chrome.storage.local.set({
+      lastAutoSyncAt: Date.now(),
+      lastAutoSyncFingerprint: fp,
+      lastAutoSyncResult: {
+        at: (/* @__PURE__ */ new Date()).toISOString(),
+        reason,
+        acceptedRows: result.acceptedRows ?? result.liveRowsAccepted ?? 0,
+        siteUpdated: result.siteUpdated === true
+      }
+    });
+    try {
+      await chrome.action.setBadgeBackgroundColor({ color: "#059669" });
+      await chrome.action.setBadgeText({ text: "\u2713" });
+      setTimeout(() => {
+        void chrome.action.setBadgeText({ text: "" });
+      }, 8e3);
+    } catch {
+    }
+    return { ok: true, result };
+  }
+
   // src/background.ts
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message?.type === "AUTO_SYNC_REQUEST") {
+      handleAutoSyncRequest(message.payload, String(message.reason ?? "auto")).then((out) => sendResponse(out)).catch(
+        (e) => sendResponse({ ok: false, error: e instanceof Error ? e.message : "Auto-sync failed." })
+      );
+      return true;
+    }
     if (message?.type === "FETCH_ME") {
       fetchMe().then((me) => sendResponse({ ok: true, me })).catch((e) => sendResponse({ ok: false, error: e instanceof Error ? e.message : "Auth check failed." }));
       return true;

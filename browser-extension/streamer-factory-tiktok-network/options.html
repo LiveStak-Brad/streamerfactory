@@ -40,6 +40,10 @@
       Use local dev API (http://localhost:3000)
     </label>
     <label>
+      <input type="checkbox" id="autoSyncOnBackstage" checked />
+      Auto-sync when I open TikTok Backstage (Incentives / stats pages)
+    </label>
+    <label>
       API base URL
       <input type="text" id="apiBaseUrl" placeholder="https://thestreamerfactory.com" />
     </label>
@@ -48,8 +52,9 @@
     <p class="note">
       This extension is for Streamer Factory staff/admin use only. It reads visible creator statistics from
       pages the authorized user can already access and sends selected stats to Streamer Factory for member
-      management, rankings, and dashboards. It does not collect TikTok credentials, cookies, hidden tokens, or
-      automate actions.
+      management, rankings, and dashboards. With auto-sync on, visiting Backstage updates the site within a
+      few seconds (no popup click). Rankings always show the latest saved import when you load /rankings. It
+      does not collect TikTok credentials, cookies, hidden tokens, or automate actions on TikTok.
     </p>
     <script src="dist/options.js"></script>
   </body>

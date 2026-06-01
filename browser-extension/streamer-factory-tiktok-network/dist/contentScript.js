@@ -768,7 +768,9 @@
     };
   }
 
-  // src/contentScript.ts
+  // src/autoSyncContent.ts
+  var DEBOUNCE_MS = 5e3;
+  var MAX_WAIT_FOR_ROWS_MS = 45e3;
   function stripPreview(row) {
     const { rawTextPreview, ...rest } = row;
     return rest;
@@ -783,6 +785,69 @@
       liveRows: snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : void 0
     };
   }
+  function rowCount(snapshot) {
+    return snapshot.detectedPageType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
+  }
+  function statsLookReady(snapshot) {
+    if (snapshot.detectedPageType === "live_now") return snapshot.liveRows.length > 0;
+    if (snapshot.detectedPageType !== "creator_stats" && snapshot.detectedPageType !== "manage_relationship") {
+      return rowCount(snapshot) > 0;
+    }
+    return snapshot.rows.some((r) => (r.diamondsEarned ?? 0) > 0 || (r.coinsEarned ?? 0) > 0);
+  }
+  function fingerprint(snapshot) {
+    const top = snapshot.rows[0]?.tiktokUsername ?? snapshot.liveRows[0]?.tiktokUsername ?? "";
+    return `${snapshot.detectedPageType}|${snapshot.sourcePageUrl}|${rowCount(snapshot)}|${top}`;
+  }
+  function startBackstageAutoSync() {
+    let debounce;
+    let lastSentFingerprint = "";
+    let lastUrl = location.href;
+    const startedAt = Date.now();
+    const queue = (reason) => {
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => void attempt(reason), DEBOUNCE_MS);
+    };
+    const attempt = async (reason) => {
+      try {
+        const snapshot = buildPageSnapshot(location.href, document);
+        if (!statsLookReady(snapshot)) {
+          if (Date.now() - startedAt < MAX_WAIT_FOR_ROWS_MS) {
+            queue("wait-rows");
+          }
+          return;
+        }
+        const fp = fingerprint(snapshot);
+        if (fp === lastSentFingerprint && reason !== "force") return;
+        lastSentFingerprint = fp;
+        const payload = snapshotToPayload(snapshot);
+        chrome.runtime.sendMessage({
+          type: "AUTO_SYNC_REQUEST",
+          payload,
+          reason
+        });
+      } catch {
+      }
+    };
+    queue("load");
+    setInterval(() => {
+      if (location.href !== lastUrl) {
+        lastUrl = location.href;
+        lastSentFingerprint = "";
+        queue("navigation");
+      }
+    }, 1500);
+    const observer = new MutationObserver(() => queue("dom"));
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener("DOMContentLoaded", () => {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+  }
+
+  // src/contentScript.ts
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message?.type === "PING") {
       sendResponse({ ok: true });
@@ -814,4 +879,5 @@
     }
     return false;
   });
+  startBackstageAutoSync();
 })();

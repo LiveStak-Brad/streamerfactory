@@ -85,8 +85,8 @@ export async function RankingsPageView({
         {lastSyncedLabel ? (
           <p className="mt-3 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2 text-sm text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
             Live from TikTok Backstage · last extension sync {lastSyncedLabel}
-            {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}. Sync again anytime to
-            refresh this page.
+            {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}. Open TikTok Backstage
+            (extension auto-sync) or use manual sync, then reload this page.
           </p>
         ) : loadIssue === "import_not_readable" ? (
           <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">

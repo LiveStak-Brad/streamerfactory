@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Streamer Factory — TikTok Network Sync",
   "version": "0.1.0",
-  "description": "Staff tool to sync visible TikTok Creator Network Backstage data to Streamer Factory. Manual sync only.",
+  "description": "Staff tool to sync visible TikTok Creator Network Backstage data to Streamer Factory. Auto-sync on Backstage visit (optional).",
   "permissions": ["storage", "activeTab", "scripting", "cookies"],
   "host_permissions": [
     "https://live-backstage.tiktok.com/*",
