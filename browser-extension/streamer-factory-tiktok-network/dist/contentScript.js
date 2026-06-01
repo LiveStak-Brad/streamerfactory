@@ -997,7 +997,7 @@
       coinsEarned: coins,
       diamondsEarned: diamonds,
       engagements,
-      daysStreamed: days,
+      daysStreamed: days ?? 0,
       hoursStreamed: hours,
       liveDurationText,
       liveDurationSeconds,

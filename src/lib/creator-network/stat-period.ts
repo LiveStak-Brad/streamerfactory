@@ -72,7 +72,35 @@ export function sanitizeLiveDaysForPeriod(
   return n;
 }
 
-/** Whether a stored import row belongs on the requested weekly/monthly board. */
+/** Whether an import batch is for the requested weekly/monthly period (ignore day counts). */
+export function importBatchMatchesRankingPeriod(
+  rows: ImportPeriodFields[],
+  kind: StatPeriodKind,
+  periodStart: string,
+  periodEnd: string,
+  batchCreatedAt?: string | null,
+): boolean {
+  const sample =
+    rows.find((r) => r.stat_period_start && r.stat_period_end) ??
+    rows.find((r) => r.stat_period_label);
+
+  if (sample?.stat_period_start && sample.stat_period_end) {
+    return sample.stat_period_start === periodStart && sample.stat_period_end === periodEnd;
+  }
+
+  const rowKind = inferPeriodKindFromLabel(sample?.stat_period_label ?? null);
+  if (rowKind && rowKind !== kind) return false;
+  if (rowKind === kind) return true;
+
+  if (!rowKind && batchCreatedAt) {
+    const created = toDateString(new Date(batchCreatedAt));
+    return created >= periodStart && created <= periodEnd;
+  }
+
+  return false;
+}
+
+/** @deprecated Use importBatchMatchesRankingPeriod — kept for tests. */
 export function rowMatchesRankingPeriod(
   row: ImportPeriodFields,
   kind: StatPeriodKind,
@@ -80,29 +108,7 @@ export function rowMatchesRankingPeriod(
   periodEnd: string,
   batchCreatedAt?: string | null,
 ): boolean {
-  if (row.stat_period_start && row.stat_period_end) {
-    if (row.stat_period_start === periodStart && row.stat_period_end === periodEnd) {
-      return isPlausibleDaysStreamed(row.days_streamed, kind);
-    }
-    return false;
-  }
-
-  const rowKind = inferPeriodKindFromLabel(row.stat_period_label);
-  if (rowKind && rowKind !== kind) return false;
-
-  if (rowKind === kind) {
-    if (!isPlausibleDaysStreamed(row.days_streamed, kind)) return false;
-    return true;
-  }
-
-  if (!rowKind && !row.stat_period_start) {
-    if (!isPlausibleDaysStreamed(row.days_streamed, kind)) return false;
-    if (!batchCreatedAt) return false;
-    const created = toDateString(new Date(batchCreatedAt));
-    return created >= periodStart && created <= periodEnd;
-  }
-
-  return false;
+  return importBatchMatchesRankingPeriod([row], kind, periodStart, periodEnd, batchCreatedAt);
 }
 
 export function periodKindForRanking(kind: RankingPeriod): StatPeriodKind | null {

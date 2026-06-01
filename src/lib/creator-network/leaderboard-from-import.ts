@@ -1,9 +1,9 @@
 import { cleanCreatorNetworkUsername } from "@/lib/creator-network/clean-username";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import {
+  importBatchMatchesRankingPeriod,
   inferPeriodKindFromLabel,
   periodKindForRanking,
-  rowMatchesRankingPeriod,
   sanitizeLiveDaysForPeriod,
   type StatPeriodKind,
 } from "@/lib/creator-network/stat-period";
@@ -136,11 +136,10 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
       return { batch, rows: typed };
     }
 
-    const matching = typed.filter((row) =>
-      rowMatchesRankingPeriod(row, periodKind!, periodStart, periodEnd, batch.created_at),
-    );
-    if (matching.length > 0) {
-      return { batch, rows: matching };
+    if (
+      importBatchMatchesRankingPeriod(typed, periodKind!, periodStart, periodEnd, batch.created_at)
+    ) {
+      return { batch, rows: typed };
     }
   }
 
@@ -168,10 +167,17 @@ export async function getWrongPeriodImportHint(
 
   const anchor = new Date();
   const { periodStart, periodEnd } = periodBounds(kind, anchor);
-  const matching = loaded.rows.filter((row) =>
-    rowMatchesRankingPeriod(row, kind, periodStart, periodEnd, loaded.batch.created_at),
-  );
-  if (matching.length > 0) return null;
+  if (
+    importBatchMatchesRankingPeriod(
+      loaded.rows,
+      kind,
+      periodStart,
+      periodEnd,
+      loaded.batch.created_at,
+    )
+  ) {
+    return null;
+  }
 
   const label = loaded.rows.find((r) => r.stat_period_label)?.stat_period_label ?? null;
   const importKind = inferPeriodKindFromLabel(label);

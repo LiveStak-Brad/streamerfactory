@@ -323,7 +323,7 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
     coinsEarned: coins,
     diamondsEarned: diamonds,
     engagements,
-    daysStreamed: days,
+    daysStreamed: days ?? 0,
     hoursStreamed: hours,
     liveDurationText,
     liveDurationSeconds,
