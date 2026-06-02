@@ -7,6 +7,7 @@ const pageTypeEl = document.getElementById("pageType")!;
 const rowCountEl = document.getElementById("rowCount")!;
 const previewEl = document.getElementById("preview")!;
 const syncBtn = document.getElementById("syncBtn") as HTMLButtonElement;
+const clearLiveBtn = document.getElementById("clearLiveBtn") as HTMLButtonElement;
 const refreshBtn = document.getElementById("refreshPreview") as HTMLButtonElement;
 const copyCaptureBtn = document.getElementById("copyCapture") as HTMLButtonElement;
 const syncResultEl = document.getElementById("syncResult")!;
@@ -162,23 +163,26 @@ async function refreshPreview() {
               return `@${r.tiktokUsername} · ${diamonds} · ${conf} confidence`;
             });
 
+    const onLiveNow = snapshot.detectedPageType === "live_now";
+    clearLiveBtn.style.display = onLiveNow && canImport ? "block" : "none";
+
     if (previewLines.length > 0) {
       const liveNote =
-        snapshot.detectedPageType !== "live_now" && liveRows.length > 0
+        !onLiveNow && liveRows.length > 0
           ? `\n\nLIVE ring: ${liveRows
               .slice(0, 3)
               .map((r) => `@${r.tiktokUsername}`)
               .join(", ")}`
           : "";
       previewEl.textContent = previewLines.join("\n") + liveNote;
-    } else if (snapshot.detectedPageType === "live_now") {
+    } else if (onLiveNow) {
       previewEl.textContent =
-        "Page: LIVE now · 0 creators parsed.\n\n" +
-        "If streams are visible on the page:\n" +
-        "1. Scroll so every LIVE card (with LIVE dur / Diamonds) is on screen\n" +
-        "2. Hover each truncated blue name once (loads title=\"fullhandle\")\n" +
-        "3. Click Refresh preview again\n\n" +
-        "Or sync LIVE from Incentives when you see the pink ring on a creator.";
+        "LIVE now · 0 creators found.\n\n" +
+        "1. Confirm popup says Page: live_now (not creator_stats)\n" +
+        "2. Scroll each stream card fully into view\n" +
+        "3. Hover each blue truncated name once (loads full handle in tooltip)\n" +
+        "4. Click Refresh preview\n\n" +
+        "Still 0? Use Copy capture and send the JSON.";
     } else {
       previewEl.textContent = "No rows detected on this page yet. Scroll the table into view or try another Backstage tab.";
     }
@@ -187,7 +191,18 @@ async function refreshPreview() {
       snapshot.detectedPageType === "live_now"
         ? liveRows.filter((r) => r.usernameConfidence === "low").length
         : statRows.filter((r) => r.usernameConfidence === "low").length;
-    captureMetaEl.textContent = `Capture: ${snapshot.detectedPageType} · low-confidence usernames: ${lowConfidence}`;
+    const dbg = snapshot.liveParseDebug;
+    const debugNote =
+      onLiveNow && liveRows.length === 0 && dbg
+        ? ` · DOM: ${dbg.atTruncatedInBody} @handles, ${dbg.creatorIdMentions} IDs, ${dbg.bodyChars} chars`
+        : "";
+    captureMetaEl.textContent = `Capture: ${snapshot.detectedPageType} · low-confidence: ${lowConfidence}${debugNote}`;
+    if (onLiveNow && liveRows.length === 0 && dbg) {
+      previewEl.textContent +=
+        dbg.atTruncatedInBody === 0
+          ? "\n\nParser sees no @handle… text in page HTML. Stream UI may be in a cross-origin iframe the extension cannot read."
+          : `\n\nParser sees ${dbg.atTruncatedInBody} @handle… in page text but could not pair them — try Copy capture JSON.`;
+    }
 
     syncBtn.disabled = !canImport || count === 0;
   } catch {
@@ -216,6 +231,12 @@ function showRankingsLink(apiBaseUrl: string, path = "/rankings") {
 
 async function syncNow() {
   if (!latestPayload || !canImport) return;
+  const pageType = latestSnapshot?.detectedPageType;
+  if (pageType !== "creator_stats" && pageType !== "live_now") {
+    syncResultEl.textContent =
+      "Open Creator performance / Incentives (monthly stats table) before Sync. Other Backstage pages are not imported for rankings.";
+    return;
+  }
   syncBtn.disabled = true;
   hideRankingsLink();
   syncResultEl.textContent = "Syncing…";
@@ -235,6 +256,7 @@ async function syncNow() {
       rejectedRows?: number;
       unmatchedUsernames?: string[];
       liveRowsAccepted?: number;
+      performanceStatsWarning?: string;
       siteUpdated?: boolean;
       rankingsPath?: string;
     };
@@ -244,10 +266,18 @@ async function syncNow() {
     }${
       result.unmatchedUsernames?.length ? ` · unmatched: ${result.unmatchedUsernames.slice(0, 3).join(", ")}` : ""
     }${result.siteUpdated ? " · rankings updated on site" : ""}`;
+    if (result.performanceStatsWarning) {
+      syncResultEl.textContent += `\n\n⚠ ${result.performanceStatsWarning}`;
+    }
 
-    if (result.siteUpdated && accepted > 0) {
-      showRankingsLink(apiBaseUrl, result.rankingsPath ?? "/rankings");
-      syncResultEl.textContent += " — open rankings or refresh if already open.";
+    const membersPath =
+      latestSnapshot?.detectedPageType === "live_now" ? "/members" : (result.rankingsPath ?? "/rankings");
+    if ((result.siteUpdated && accepted > 0) || (latestSnapshot?.detectedPageType === "live_now" && accepted > 0)) {
+      showRankingsLink(apiBaseUrl, membersPath);
+      syncResultEl.textContent +=
+        latestSnapshot?.detectedPageType === "live_now"
+          ? " — open /members or hard-refresh if already open."
+          : " — open rankings or refresh if already open.";
     }
   } catch (e) {
     syncResultEl.textContent = e instanceof Error ? e.message : "Sync failed.";
@@ -258,6 +288,28 @@ async function syncNow() {
 
 refreshBtn.addEventListener("click", () => void refreshPreview());
 syncBtn.addEventListener("click", () => void syncNow());
+clearLiveBtn.addEventListener("click", () => void clearLiveOnSite());
+
+async function clearLiveOnSite() {
+  if (!canImport) return;
+  clearLiveBtn.disabled = true;
+  syncResultEl.textContent = "Clearing LIVE snapshots…";
+  try {
+    const res = await chrome.runtime.sendMessage({ type: "CLEAR_LIVE_SNAPSHOTS" });
+    if (!res?.ok) {
+      syncResultEl.textContent = res?.error ?? "Clear failed.";
+      clearLiveBtn.disabled = false;
+      return;
+    }
+    const deleted = (res.result as { deleted?: number })?.deleted ?? 0;
+    syncResultEl.textContent = `Cleared ${deleted} LIVE row(s) on the site. Refresh preview, then Sync.`;
+    const { apiBaseUrl } = await loadApiConfig();
+    showRankingsLink(apiBaseUrl, "/members");
+  } catch (e) {
+    syncResultEl.textContent = e instanceof Error ? e.message : "Clear failed.";
+  }
+  clearLiveBtn.disabled = false;
+}
 copyCaptureBtn.addEventListener("click", async () => {
   if (!latestSnapshot || !latestPayload) {
     syncResultEl.textContent = "Refresh preview first.";

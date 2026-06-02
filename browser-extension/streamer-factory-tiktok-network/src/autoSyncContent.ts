@@ -59,6 +59,9 @@ export function startBackstageAutoSync(): void {
   const attempt = async (reason: string) => {
     try {
       const snapshot = buildPageSnapshot(location.href, document);
+      if (snapshot.detectedPageType !== "creator_stats") {
+        return;
+      }
       if (!statsLookReady(snapshot)) {
         if (Date.now() - startedAt < MAX_WAIT_FOR_ROWS_MS) {
           queue("wait-rows");

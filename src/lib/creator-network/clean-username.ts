@@ -9,6 +9,7 @@ const GLUED_SUFFIX_RES = [
   /^([a-z0-9._]{2,38})nolevel$/i,
   /^([a-z0-9._]{2,38})no$/i,
   /^([a-z0-9._]{2,38})level\d*$/i,
+  /^([a-z0-9._]{2,38})tier\d+$/i,
   /^([a-z0-9._]{2,38})(eligible|notable|inactive|invited|removed|following|new|quit)$/i,
 ] as const;
 

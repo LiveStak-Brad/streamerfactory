@@ -40,9 +40,7 @@ export async function POST(request: Request) {
   }
   const result = imported as ImportResult;
 
-  const updatesRankings =
-    parsed.data.detectedPageType === "creator_stats" ||
-    parsed.data.detectedPageType === "manage_relationship";
+  const updatesRankings = parsed.data.detectedPageType === "creator_stats";
   if (updatesRankings && result.acceptedRows > 0) {
     revalidateCreatorNetworkSitePages();
   }

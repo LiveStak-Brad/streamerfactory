@@ -10,7 +10,7 @@ const savedEl = document.getElementById("saved")!;
 void loadApiConfig().then(async () => {
   const stored = await chrome.storage.sync.get(["apiBaseUrl", "useDevMode", AUTO_SYNC_STORAGE_KEY]);
   useDevModeEl.checked = stored.useDevMode === true;
-  autoSyncEl.checked = stored[AUTO_SYNC_STORAGE_KEY] !== false;
+  autoSyncEl.checked = stored[AUTO_SYNC_STORAGE_KEY] === true;
   apiBaseUrlEl.value =
     typeof stored.apiBaseUrl === "string" ? stored.apiBaseUrl : stored.useDevMode ? DEFAULT_DEV : DEFAULT_PROD;
 });

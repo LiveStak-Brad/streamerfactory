@@ -7,6 +7,7 @@ import {
 } from "@/lib/creator-network/match-profiles";
 import type { ImportPayload, ImportResult, LiveRowPayload } from "@/lib/creator-network/types";
 import { resolveImportPeriodBounds, sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import { parsePlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
 import {
   monthlyPerformanceUpsertFromImportRow,
   upsertMonthlyPerformanceStatsFromImport,
@@ -115,6 +116,8 @@ export async function importCreatorNetworkPayload(
           rejectedRows += 1;
         }
       }
+    } else if (payload.detectedPageType !== "creator_stats") {
+      rejectedRows += payload.rows.length;
     } else {
       for (const row of payload.rows) {
         const usernameRaw = row.tiktokUsernameRaw?.trim() || row.tiktokUsername?.trim();
@@ -131,6 +134,13 @@ export async function importCreatorNetworkPayload(
           rejectedRows += 1;
           continue;
         }
+
+        const diamonds = parsePlausibleImportedDiamonds(row.diamondsEarned, row.coinsEarned);
+        if (diamonds === null) {
+          rejectedRows += 1;
+          continue;
+        }
+
         const profileId = matchProfileId(maps, cleaned);
         if (profileId) matchedProfiles += 1;
         if (profileId && normalizeConfidence(row.usernameConfidence) === "low") lowConfidenceMatches += 1;
@@ -146,8 +156,8 @@ export async function importCreatorNetworkPayload(
           username_source: row.usernameSource ?? null,
           avatar_url: row.avatarUrl ?? null,
           creator_network_status: row.creatorNetworkStatus ?? payload.relationshipTab ?? null,
-          coins_earned: Math.max(0, Math.round(row.coinsEarned ?? row.diamondsEarned ?? 0)),
-          diamonds_earned: Math.max(0, Math.round(row.diamondsEarned ?? row.coinsEarned ?? 0)),
+          coins_earned: diamonds,
+          diamonds_earned: diamonds,
           engagements: Math.max(0, Math.round(row.engagements ?? 0)),
           days_streamed: sanitizeLiveDaysForPeriod(row.daysStreamed),
           hours_streamed: sanitizeImportedHours(row.hoursStreamed),
@@ -215,6 +225,8 @@ export async function importCreatorNetworkPayload(
       }
     }
 
+    let performanceStatsWarning: string | undefined;
+
     if (
       payload.detectedPageType !== "live_now" &&
       performanceUpserts.length > 0
@@ -224,8 +236,10 @@ export async function importCreatorNetworkPayload(
         performanceUpserts,
       );
       if (perfErr) {
-        await failBatch(supabase, batchId, perfErr);
-        return { ok: false, error: perfErr };
+        performanceStatsWarning =
+          perfErr.includes("creator_performance_stats")
+            ? "Import saved, but rankings table is missing. Run supabase/apply-creator-performance-stats-now.sql in Supabase SQL Editor, then sync again."
+            : `Import saved, but rankings update failed: ${perfErr}`;
       }
     }
 
@@ -247,6 +261,7 @@ export async function importCreatorNetworkPayload(
       lowConfidenceMatches,
       unmatchedUsernames: [...unmatchedUsernames],
       liveRowsAccepted: liveRowsAccepted > 0 ? liveRowsAccepted : undefined,
+      performanceStatsWarning,
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Import failed.";

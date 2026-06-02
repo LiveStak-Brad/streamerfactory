@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { normalizeActiveness } from "@/lib/creator-network/match-profiles";
 import { sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import { parsePlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
 import type { ImportRowPayload } from "@/lib/creator-network/types";
 
 export type MonthlyPerformanceUpsert = {
@@ -54,7 +55,7 @@ export function monthlyPerformanceUpsertFromImportRow(
   periodStart: string,
   periodEnd: string,
 ): MonthlyPerformanceUpsert {
-  const diamonds = Math.max(0, Math.round(row.diamondsEarned ?? row.coinsEarned ?? 0));
+  const diamonds = parsePlausibleImportedDiamonds(row.diamondsEarned, row.coinsEarned) ?? 0;
   return {
     profileId,
     periodStart,

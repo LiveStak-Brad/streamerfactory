@@ -3,6 +3,7 @@ import {
 } from "@/lib/creator-network/clean-username";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import { isPlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import {
   BACKSTAGE_STAT_SEEDS,
@@ -20,7 +21,8 @@ function backstageAvatarUrl(imported: string | null | undefined): string | null 
   return url;
 }
 
-const STATS_PAGE_TYPES = ["creator_stats", "manage_relationship"] as const;
+/** Only the Creator performance / Incentives stats table — not relationship or other tabs. */
+const STATS_PAGE_TYPES = ["creator_stats"] as const;
 
 type ImportStatRow = {
   batch_id: string;
@@ -59,8 +61,8 @@ const ELITE_ORDER: ActivenessLevel[] = ["none", "low", "medium", "high", "elite"
 
 function diamondsForRow(row: ImportStatRow): number {
   const diamonds = Math.max(0, row.diamonds_earned ?? 0);
-  if (diamonds > 0) return diamonds;
-  return Math.max(0, row.coins_earned ?? 0);
+  const pick = diamonds > 0 ? diamonds : Math.max(0, row.coins_earned ?? 0);
+  return isPlausibleImportedDiamonds(pick) ? pick : 0;
 }
 
 function displayHandle(row: ImportStatRow): string | null {
@@ -165,6 +167,7 @@ export function aggregateImportMonthsByHandle(
   const bestPerHandleMonth = new Map<string, Map<string, ImportStatRow>>();
 
   for (const raw of rows) {
+    if (diamondsForRow(raw) < 1) continue;
     const handle = displayHandle(raw);
     if (!handle) continue;
     const key = normalizeHandle(resolveCanonicalHandle(handle));
