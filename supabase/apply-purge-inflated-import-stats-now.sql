@@ -26,6 +26,15 @@ where coalesce(diamonds_earned, coins_earned, 0) = 100000
 delete from public.creator_performance_stats
 where coins_earned = 100000;
 
+-- UI tokens saved as handles (Level 10 → @10, chart "vs 0.00", activeness "level")
+delete from public.creator_network_member_stats
+where lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) in (
+  '10', 'level', '0.00vs', '0.00', 'vs', 'elite', 'high', 'medium', 'low', 'none'
+)
+or lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) ~ '^[\d.]+$'
+or lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) ~ '^level\d*$'
+or lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) ~ '^0\.?\d*v?s?\.?$';
+
 -- Optional: empty batches that no longer have any stats rows
 delete from public.creator_network_import_batches b
 where not exists (

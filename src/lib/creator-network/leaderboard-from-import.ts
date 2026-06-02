@@ -2,7 +2,10 @@ import {
   cleanCreatorNetworkDisplayName,
   cleanCreatorNetworkUsername,
 } from "@/lib/creator-network/clean-username";
-import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
+import {
+  isExcludedNetworkHandle,
+  isKnownNetworkRosterHandle,
+} from "@/lib/members/network-exclusions";
 import { BACKSTAGE_HANDLE_ALIASES } from "@/lib/rankings/backstage-seed-data";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import {
@@ -83,11 +86,7 @@ function diamondsForRow(row: ImportStatRow): number {
 function displayHandle(row: ImportStatRow): string | null {
   const stored = row.tiktok_username?.trim();
   const raw = row.tiktok_username_raw?.trim();
-  return (
-    cleanCreatorNetworkUsername(stored) ??
-    cleanCreatorNetworkUsername(raw) ??
-    (stored || null)
-  );
+  return cleanCreatorNetworkUsername(stored) ?? cleanCreatorNetworkUsername(raw) ?? null;
 }
 
 function pickPreferredImportRow(a: ImportStatRow, b: ImportStatRow): ImportStatRow {
@@ -386,6 +385,10 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
   }
 
   const sorted = entries
+    .filter((e) => {
+      const h = e.tiktok_username ?? "";
+      return isKnownNetworkRosterHandle(h) && !isExcludedNetworkHandle(h);
+    })
     .sort((a, b) => b.coins_earned - a.coins_earned)
     .map((e, index) => ({
       ...e,

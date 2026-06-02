@@ -34,19 +34,29 @@ function stripGluedBadgeSuffix(compact: string): string {
   return t;
 }
 
+function finalizeCleanedUsername(t: string): string | undefined {
+  if (!/^[a-z0-9._]{2,40}$/.test(t)) return undefined;
+  if (RESERVED.test(t)) return undefined;
+  if (/^\d+$/.test(t)) return undefined;
+  if (/^[\d.]+v[s.]?$/i.test(t) || /^0\.?\d*v?s?\.?$/i.test(t)) return undefined;
+  if (!/[a-z]/.test(t)) return undefined;
+  if (!/[_.]/.test(t) && !/\d/.test(t) && t.length < 6) return undefined;
+  return t;
+}
+
+export function isJunkBackstageUsername(handle: string | null | undefined): boolean {
+  if (!handle?.trim()) return true;
+  return !cleanCreatorNetworkUsername(handle);
+}
+
+/** Chart/UI tokens mis-parsed as @handles (Level 10 → @10, vs 0.00 → @0.00vs). */
 export function cleanCreatorNetworkUsername(raw: string | undefined | null): string | undefined {
   if (!raw) return undefined;
   let t = stripBadgeText(raw.trim().replace(/^@+/, ""));
   const leading = t.match(/(@?[_]?[a-z0-9][a-z0-9._]{0,37})/i);
   t = (leading?.[1] ?? t).replace(/\s+/g, "").toLowerCase();
   t = stripGluedBadgeSuffix(t);
-
-  if (!/^[a-z0-9._]{2,40}$/.test(t)) return undefined;
-  if (RESERVED.test(t)) return undefined;
-  if (/^\d+$/.test(t)) return undefined;
-  if (!/[a-z]/.test(t)) return undefined;
-  if (!/[_.]/.test(t) && !/\d/.test(t) && t.length < 6) return undefined;
-  return t;
+  return finalizeCleanedUsername(t);
 }
 
 const BAD_DISPLAY =

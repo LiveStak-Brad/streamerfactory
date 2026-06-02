@@ -7,7 +7,10 @@ import {
   isCredibleAllTimeImportTotal,
   isCredibleImportedStatRow,
 } from "@/lib/creator-network/stat-sanity";
-import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
+import {
+  isExcludedNetworkHandle,
+  isKnownNetworkRosterHandle,
+} from "@/lib/members/network-exclusions";
 import {
   BACKSTAGE_STAT_SEEDS,
   normalizeHandle,
@@ -71,11 +74,7 @@ function diamondsForRow(row: ImportStatRow): number {
 function displayHandle(row: ImportStatRow): string | null {
   const stored = row.tiktok_username?.trim();
   const raw = row.tiktok_username_raw?.trim();
-  return (
-    cleanCreatorNetworkUsername(stored) ??
-    cleanCreatorNetworkUsername(raw) ??
-    (stored || null)
-  );
+  return cleanCreatorNetworkUsername(stored) ?? cleanCreatorNetworkUsername(raw) ?? null;
 }
 
 /** Calendar month for bucketing (YYYY-MM). */
@@ -363,6 +362,10 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
   }
 
   const sorted = entries
+    .filter((e) => {
+      const h = e.tiktok_username ?? "";
+      return isKnownNetworkRosterHandle(h) && !isExcludedNetworkHandle(h);
+    })
     .sort((a, b) => b.coins_earned - a.coins_earned)
     .map((e, index) => ({
       ...e,

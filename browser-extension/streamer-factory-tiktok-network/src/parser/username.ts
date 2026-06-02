@@ -42,6 +42,7 @@ function finalizeHandle(compact: string): string | undefined {
   if (!/^[a-z0-9._]{2,40}$/.test(t)) return undefined;
   if (RESERVED_HANDLE_WORDS.test(t)) return undefined;
   if (/^\d+$/.test(t)) return undefined;
+  if (/^[\d.]+v[s.]?$/i.test(t) || /^0\.?\d*v?s?\.?$/i.test(t)) return undefined;
   if (!/[a-z]/.test(t)) return undefined;
   if (!/[_.]/.test(t) && !/\d/.test(t) && t.length < 6) return undefined;
   return t;

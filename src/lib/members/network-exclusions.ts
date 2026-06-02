@@ -1,4 +1,16 @@
+import { isJunkBackstageUsername } from "@/lib/creator-network/clean-username";
+import { NETWORK_MEMBERS } from "@/lib/members/network-members";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
+
+const ROSTER_HANDLES = new Set(
+  NETWORK_MEMBERS.map((m) => normalizeHandle(resolveCanonicalHandle(m.username))),
+);
+
+/** Real Factory network creators — filters junk rows from public leaderboards. */
+export function isKnownNetworkRosterHandle(handle: string | null | undefined): boolean {
+  if (!handle?.trim()) return false;
+  return ROSTER_HANDLES.has(normalizeHandle(resolveCanonicalHandle(handle)));
+}
 
 /** Banned or removed — never show on /members, /rankings, or imports. */
 const EXCLUDED_HANDLES = new Set(
@@ -35,6 +47,7 @@ export function isAggregateBackstageHandle(handle: string | null | undefined): b
 export function isExcludedNetworkHandle(handle: string | null | undefined): boolean {
   if (!handle?.trim()) return false;
   const canonical = normalizeHandle(resolveCanonicalHandle(handle));
+  if (isJunkBackstageUsername(canonical)) return true;
   if (isAggregateBackstageHandle(canonical)) return true;
   return EXCLUDED_HANDLES.has(canonical);
 }
