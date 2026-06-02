@@ -135,7 +135,12 @@ export async function importCreatorNetworkPayload(
           continue;
         }
 
-        const diamonds = parsePlausibleImportedDiamonds(row.diamondsEarned, row.coinsEarned);
+        const diamonds = parsePlausibleImportedDiamonds(
+          row.diamondsEarned,
+          row.coinsEarned,
+          row.hoursStreamed,
+          row.daysStreamed,
+        );
         if (diamonds === null) {
           rejectedRows += 1;
           continue;

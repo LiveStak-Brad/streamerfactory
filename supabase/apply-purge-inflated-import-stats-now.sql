@@ -17,6 +17,15 @@ where lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) in (
 )
 or lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) ~ '^no_?group$';
 
+-- Chart misread: 100k diamonds with no stream time (same value pasted on everyone)
+delete from public.creator_network_member_stats
+where coalesce(diamonds_earned, coins_earned, 0) = 100000
+  and coalesce(hours_streamed, 0) < 0.5
+  and coalesce(days_streamed, 0) = 0;
+
+delete from public.creator_performance_stats
+where coins_earned = 100000;
+
 -- Optional: empty batches that no longer have any stats rows
 delete from public.creator_network_import_batches b
 where not exists (

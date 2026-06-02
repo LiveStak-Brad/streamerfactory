@@ -3,7 +3,10 @@ import {
 } from "@/lib/creator-network/clean-username";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import { sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
-import { isPlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
+import {
+  isCredibleAllTimeImportTotal,
+  isCredibleImportedStatRow,
+} from "@/lib/creator-network/stat-sanity";
 import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import {
   BACKSTAGE_STAT_SEEDS,
@@ -62,7 +65,7 @@ const ELITE_ORDER: ActivenessLevel[] = ["none", "low", "medium", "high", "elite"
 function diamondsForRow(row: ImportStatRow): number {
   const diamonds = Math.max(0, row.diamonds_earned ?? 0);
   const pick = diamonds > 0 ? diamonds : Math.max(0, row.coins_earned ?? 0);
-  return isPlausibleImportedDiamonds(pick) ? pick : 0;
+  return isCredibleImportedStatRow(pick, row.hours_streamed, row.days_streamed) ? pick : 0;
 }
 
 function displayHandle(row: ImportStatRow): string | null {
@@ -213,8 +216,8 @@ export function aggregateImportMonthsByHandle(
 }
 
 /**
- * All-time diamonds: sum of monthly imports per handle. Seed snapshot is fallback only
- * when a creator has no import rows (never add seed + imports — that double-counts).
+ * All-time: credible sum of monthly imports, or opening roster snapshot when imports are junk/missing.
+ * Uses max(seed, imports) when imports are credible (extra months), never seed + import double-count.
  */
 export function mergeAllTimeWithSeedBaselines(
   fromImports: Map<string, Omit<AllTimeHandleTotals, "scoringId"> & { scoringId?: string }>,
@@ -229,17 +232,30 @@ export function mergeAllTimeWithSeedBaselines(
     const scoringId = imp?.row?.profile_id ?? handle;
     const importCoins = imp?.coins_earned ?? 0;
     const seedCoins = seed?.diamondsEarned ?? 0;
-    const hasImportTotals = importCoins > 0;
+    const credibleImport = isCredibleAllTimeImportTotal(
+      importCoins,
+      seedCoins,
+      imp?.hours_streamed,
+      imp?.days_streamed,
+    );
+
+    const coins_earned = credibleImport
+      ? Math.max(seedCoins, importCoins)
+      : seedCoins > 0
+        ? seedCoins
+        : importCoins;
+
+    const useImportActivity = credibleImport && importCoins >= seedCoins;
 
     merged.set(handle, {
       row: imp?.row ?? null,
       handle,
       scoringId,
-      coins_earned: hasImportTotals ? importCoins : seedCoins,
-      days_streamed: hasImportTotals
+      coins_earned,
+      days_streamed: useImportActivity
         ? (imp?.days_streamed ?? 0)
         : Math.max(imp?.days_streamed ?? 0, seed?.validLiveDays ?? 0),
-      hours_streamed: hasImportTotals
+      hours_streamed: useImportActivity
         ? (imp?.hours_streamed ?? 0)
         : Math.max(imp?.hours_streamed ?? 0, seed?.hoursStreamed ?? 0),
       activeness_level: maxActiveness(
@@ -366,6 +382,6 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
     acceptedRowsCount: sorted.length,
     periodStart: "2000-01-01",
     periodEnd: toDateString(new Date()),
-    statPeriodLabel: "All time (sum of monthly backstage syncs)",
+    statPeriodLabel: "All time (roster baseline + credible monthly syncs)",
   };
 }

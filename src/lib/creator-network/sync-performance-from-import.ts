@@ -55,7 +55,13 @@ export function monthlyPerformanceUpsertFromImportRow(
   periodStart: string,
   periodEnd: string,
 ): MonthlyPerformanceUpsert {
-  const diamonds = parsePlausibleImportedDiamonds(row.diamondsEarned, row.coinsEarned) ?? 0;
+  const diamonds =
+    parsePlausibleImportedDiamonds(
+      row.diamondsEarned,
+      row.coinsEarned,
+      row.hoursStreamed,
+      row.daysStreamed,
+    ) ?? 0;
   return {
     profileId,
     periodStart,

@@ -13,7 +13,7 @@ import {
   type DetectedStatPeriodLabel,
   type StatPeriodKind,
 } from "@/lib/creator-network/stat-period";
-import { isPlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
+import { isCredibleImportedStatRow } from "@/lib/creator-network/stat-sanity";
 import { periodBounds } from "@/lib/rankings/periods";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
@@ -77,7 +77,7 @@ export function backstageAvatarUrl(imported: string | null | undefined): string 
 function diamondsForRow(row: ImportStatRow): number {
   const diamonds = Math.max(0, row.diamonds_earned ?? 0);
   const pick = diamonds > 0 ? diamonds : Math.max(0, row.coins_earned ?? 0);
-  return isPlausibleImportedDiamonds(pick) ? pick : 0;
+  return isCredibleImportedStatRow(pick, row.hours_streamed, row.days_streamed) ? pick : 0;
 }
 
 function displayHandle(row: ImportStatRow): string | null {
