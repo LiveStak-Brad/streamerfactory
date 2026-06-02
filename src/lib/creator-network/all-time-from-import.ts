@@ -58,7 +58,9 @@ const IMPORT_BATCH_LIMIT = 60;
 const ELITE_ORDER: ActivenessLevel[] = ["none", "low", "medium", "high", "elite"];
 
 function diamondsForRow(row: ImportStatRow): number {
-  return Math.max(0, row.diamonds_earned ?? 0, row.coins_earned ?? 0);
+  const diamonds = Math.max(0, row.diamonds_earned ?? 0);
+  if (diamonds > 0) return diamonds;
+  return Math.max(0, row.coins_earned ?? 0);
 }
 
 function displayHandle(row: ImportStatRow): string | null {
@@ -208,8 +210,8 @@ export function aggregateImportMonthsByHandle(
 }
 
 /**
- * Running all-time: opening backstage snapshot plus each calendar month from syncs.
- * (Import-only totals replaced the snapshot and made all-time look lower.)
+ * All-time diamonds: sum of monthly imports per handle. Seed snapshot is fallback only
+ * when a creator has no import rows (never add seed + imports — that double-counts).
  */
 export function mergeAllTimeWithSeedBaselines(
   fromImports: Map<string, Omit<AllTimeHandleTotals, "scoringId"> & { scoringId?: string }>,
@@ -224,14 +226,19 @@ export function mergeAllTimeWithSeedBaselines(
     const scoringId = imp?.row?.profile_id ?? handle;
     const importCoins = imp?.coins_earned ?? 0;
     const seedCoins = seed?.diamondsEarned ?? 0;
+    const hasImportTotals = importCoins > 0;
 
     merged.set(handle, {
       row: imp?.row ?? null,
       handle,
       scoringId,
-      coins_earned: seedCoins + importCoins,
-      days_streamed: Math.max(imp?.days_streamed ?? 0, seed?.validLiveDays ?? 0),
-      hours_streamed: Math.max(imp?.hours_streamed ?? 0, seed?.hoursStreamed ?? 0),
+      coins_earned: hasImportTotals ? importCoins : seedCoins,
+      days_streamed: hasImportTotals
+        ? (imp?.days_streamed ?? 0)
+        : Math.max(imp?.days_streamed ?? 0, seed?.validLiveDays ?? 0),
+      hours_streamed: hasImportTotals
+        ? (imp?.hours_streamed ?? 0)
+        : Math.max(imp?.hours_streamed ?? 0, seed?.hoursStreamed ?? 0),
       activeness_level: maxActiveness(
         imp?.activeness_level ?? "none",
         seed?.activeness ?? "none",
@@ -356,6 +363,6 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
     acceptedRowsCount: sorted.length,
     periodStart: "2000-01-01",
     periodEnd: toDateString(new Date()),
-    statPeriodLabel: "All time (baseline snapshot + monthly syncs)",
+    statPeriodLabel: "All time (sum of monthly backstage syncs)",
   };
 }
