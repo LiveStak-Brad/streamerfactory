@@ -161,4 +161,6 @@ export type ImportResult = {
   lowConfidenceMatches: number;
   unmatchedUsernames: string[];
   liveRowsAccepted?: number;
+  /** Rankings mirror failed (table missing) but import rows may have saved. */
+  performanceStatsWarning?: string;
 };
