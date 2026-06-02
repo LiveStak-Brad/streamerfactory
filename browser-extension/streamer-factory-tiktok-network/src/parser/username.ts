@@ -2,7 +2,7 @@ export type UsernameConfidence = "high" | "medium" | "low";
 export type UsernameSource = "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
 
 const RESERVED_HANDLE_WORDS =
-  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive)$/i;
+  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive|nogroup|no_?group|effective|total|summary|aggregate|ungrouped|all)$/i;
 
 /** Remove badge/status labels while whitespace still separates tokens. */
 export function stripBadgeText(text: string): string {

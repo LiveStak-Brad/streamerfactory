@@ -10,6 +10,13 @@ where coalesce(diamonds_earned, 0) > 1000000
 delete from public.creator_performance_stats
 where coalesce(coins_earned, 0) > 1000000;
 
+-- Backstage summary rows (e.g. "No group" network total → @nogroup)
+delete from public.creator_network_member_stats
+where lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) in (
+  'nogroup', 'no_group', 'no-group', 'effective', 'total', 'summary', 'aggregate', 'ungrouped', 'all'
+)
+or lower(regexp_replace(coalesce(tiktok_username, ''), '^@', '')) ~ '^no_?group$';
+
 -- Optional: empty batches that no longer have any stats rows
 delete from public.creator_network_import_batches b
 where not exists (

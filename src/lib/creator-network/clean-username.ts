@@ -3,7 +3,7 @@
  */
 
 const RESERVED =
-  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive)$/i;
+  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive|nogroup|no_?group|effective|total|summary|aggregate|ungrouped|all)$/i;
 
 const GLUED_SUFFIX_RES = [
   /^([a-z0-9._]{2,38})nolevel$/i,
