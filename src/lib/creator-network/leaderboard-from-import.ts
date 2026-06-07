@@ -2,10 +2,7 @@ import {
   cleanCreatorNetworkDisplayName,
   cleanCreatorNetworkUsername,
 } from "@/lib/creator-network/clean-username";
-import {
-  isExcludedNetworkHandle,
-  isKnownNetworkRosterHandle,
-} from "@/lib/members/network-exclusions";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { BACKSTAGE_HANDLE_ALIASES } from "@/lib/rankings/backstage-seed-data";
 import { getLeaderboardSupabase } from "@/lib/creator-network/leaderboard-db";
 import {
@@ -385,10 +382,7 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
   }
 
   const sorted = entries
-    .filter((e) => {
-      const h = e.tiktok_username ?? "";
-      return isKnownNetworkRosterHandle(h) && !isExcludedNetworkHandle(h);
-    })
+    .filter((e) => !isExcludedNetworkHandle(e.tiktok_username))
     .sort((a, b) => b.coins_earned - a.coins_earned)
     .map((e, index) => ({
       ...e,

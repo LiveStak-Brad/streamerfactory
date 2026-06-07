@@ -7,10 +7,7 @@ import {
   isCredibleAllTimeImportTotal,
   isCredibleImportedStatRow,
 } from "@/lib/creator-network/stat-sanity";
-import {
-  isExcludedNetworkHandle,
-  isKnownNetworkRosterHandle,
-} from "@/lib/members/network-exclusions";
+import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import {
   BACKSTAGE_STAT_SEEDS,
   normalizeHandle,
@@ -362,10 +359,7 @@ export async function getLeaderboardFromAllTimeCreatorNetworkImports(): Promise<
   }
 
   const sorted = entries
-    .filter((e) => {
-      const h = e.tiktok_username ?? "";
-      return isKnownNetworkRosterHandle(h) && !isExcludedNetworkHandle(h);
-    })
+    .filter((e) => !isExcludedNetworkHandle(e.tiktok_username))
     .sort((a, b) => b.coins_earned - a.coins_earned)
     .map((e, index) => ({
       ...e,
