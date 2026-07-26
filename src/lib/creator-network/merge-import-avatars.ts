@@ -6,7 +6,7 @@ import { isExcludedNetworkHandle } from "@/lib/members/network-exclusions";
 import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstage-seed-data";
 import type { LeaderboardEntry } from "@/lib/rankings/types";
 
-/** Attach latest Backstage import photos to leaderboard rows (e.g. all-time / seed fallback). */
+/** Attach latest Backstage import photos to leaderboard rows (e.g. seed fallback). */
 export async function mergeImportAvatarsIntoEntries(
   entries: LeaderboardEntry[],
 ): Promise<LeaderboardEntry[]> {

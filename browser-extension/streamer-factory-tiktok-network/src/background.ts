@@ -1,5 +1,5 @@
 import { handleAutoSyncRequest } from "./autoSyncBackground";
-import { fetchMe, postImport } from "./api";
+import { fetchMe, postClearLiveSnapshots, postImport } from "./api";
 import type { SyncPayload } from "./parser/types";
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
@@ -24,6 +24,15 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     postImport(payload)
       .then((result) => sendResponse({ ok: true, result }))
       .catch((e) => sendResponse({ ok: false, error: e instanceof Error ? e.message : "Sync failed." }));
+    return true;
+  }
+
+  if (message?.type === "CLEAR_LIVE_SNAPSHOTS") {
+    postClearLiveSnapshots()
+      .then((result) => sendResponse({ ok: true, result }))
+      .catch((e) =>
+        sendResponse({ ok: false, error: e instanceof Error ? e.message : "Clear failed." }),
+      );
     return true;
   }
 

@@ -19,7 +19,7 @@ export async function MembersLeaderboardPreview() {
         </h2>
         <p className="mt-3 text-muted">
           Ranked by diamonds earned from TikTok Creator Network backstage. SunShine leads with{" "}
-          {top[0]?.coins_earned.toLocaleString() ?? "—"} diamonds this period.
+          {top[0]?.coins_earned.toLocaleString() ?? "—"} diamonds this month.
         </p>
         <div className="mt-6">
           <Button href="/rankings" variant="primary">

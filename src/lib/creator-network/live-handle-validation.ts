@@ -16,7 +16,36 @@ const LIVE_HANDLE_BLOCKLIST = new Set([
   "assking",
   "king_reaper5150",
   "king_reaper",
+  "replay",
+  "previous",
+  "next",
+  "selected",
+  "chevron_down",
+  "chevron_left",
+  "help_circle_stroked",
 ]);
+
+const UI_HANDLE_EXACT = new Set([
+  "replay",
+  "previous",
+  "next",
+  "selected",
+  "close",
+  "menu",
+  "more",
+  "refresh",
+  "play",
+  "pause",
+]);
+
+export function isUiChromeHandle(handle: string): boolean {
+  if (UI_HANDLE_EXACT.has(handle)) return true;
+  if (/^(chevron|help|icon|arrow|close|menu|more|play|pause|semi)/i.test(handle)) return true;
+  if (/_stroked|_outlined|_filled|_circle_|_square_/i.test(handle)) return true;
+  const underscores = handle.match(/_/g)?.length ?? 0;
+  if (underscores >= 2 && !/\d/.test(handle)) return true;
+  return false;
+}
 
 /** Backstage UI labels and junk — not real TikTok handles. */
 export function isInvalidLiveStreamHandle(raw: string | undefined | null): boolean {
@@ -26,6 +55,7 @@ export function isInvalidLiveStreamHandle(raw: string | undefined | null): boole
   if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing/i.test(handle)) {
     return true;
   }
+  if (isUiChromeHandle(handle)) return true;
   if (isSuspiciousLiveHandle(handle)) return true;
   return false;
 }

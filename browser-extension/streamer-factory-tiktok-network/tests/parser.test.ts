@@ -102,6 +102,17 @@ test("detectTikTokCreatorNetworkPage live now", () => {
   assert.equal(d.detectedPageType, "live_now");
 });
 
+test("live now page is not misclassified as creator stats from sidebar text", () => {
+  const d = detectTikTokCreatorNetworkPage("https://live-backstage.tiktok.com/portal/anchor/live", {
+    title: "LIVE now",
+    body: {
+      innerText:
+        "activeness incentive contribution details estimated bonus valid go live creators who are live now",
+    },
+  } as unknown as Document);
+  assert.equal(d.detectedPageType, "live_now");
+});
+
 test("detectTikTokCreatorNetworkPage creator stats", () => {
   const d = detectTikTokCreatorNetworkPage("https://live-backstage.tiktok.com/portal/data/performance", {
     title: "Creator performance",
@@ -333,6 +344,95 @@ test("rejects glued comment handles like assking king_reaper", () => {
   assert.equal(isInvalidLiveStreamHandle("king_reaper515025assking_reaper5150the"), true);
   assert.equal(isInvalidLiveStreamHandle("assking"), true);
   assert.equal(isInvalidLiveStreamHandle("cj_alleycat93"), false);
+});
+
+test("rejects Semi icon titles as usernames", () => {
+  assert.equal(isInvalidLiveStreamHandle("chevron_down"), true);
+  assert.equal(isInvalidLiveStreamHandle("help_circle_stroked"), true);
+  assert.equal(isInvalidLiveStreamHandle("selected"), true);
+  assert.equal(isInvalidLiveStreamHandle("previous"), true);
+});
+
+test("live now ignores @handles inside stream chat overlay", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-chat-at-mentions.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/anchor/live?tab=liveRoom",
+    document,
+  );
+  assert.equal(snap.liveRows.length, 2);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "botsmart653"), true);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "cj_allyca"), true);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "blessingsbebright"), false);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "1549"), false);
+});
+
+test("live now parses @truncated… handles without Creator ID (liveRoom grid)", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-at-truncated.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const url =
+    "https://live-backstage.tiktok.com/portal/anchor/live?tab=liveRoom";
+  const snap = buildPageSnapshot(url, document);
+  assert.equal(snap.liveRows.length, 3);
+  const names = snap.liveRows.map((r) => r.tiktokUsername).sort();
+  assert.deepEqual(names, ["_allyca", "amy_long", "barbara"]);
+});
+
+test("live now liveRoom tab parses handle above Creator ID without LIVE time labels", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-liveroom-minimal.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const url =
+    "https://live-backstage.tiktok.com/portal/anchor/live?sortBy=1&sortOrder=descend&tab=liveRoom";
+  const snap = buildPageSnapshot(url, document);
+  assert.equal(snap.detectedPageType, "live_now");
+  assert.equal(snap.liveRows.length, 2);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_allyca");
+  assert.equal(snap.liveRows[1]?.tiktokUsername, "bottsma");
+});
+
+test("live now finds creators via title tooltip without avatar images", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-title-only-no-img.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 1);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_allycat93");
+});
+
+test("live now reads title tooltips with unicode ellipsis visible text", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-backstage-unicode-title.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 2);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_allycat93");
+  assert.equal(snap.liveRows[1]?.tiktokUsername, "bettsmart633");
+});
+
+test("live now ignores replay carousel icon titles", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/live-now-backstage-replay-icons.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/anchor/live", document);
+  assert.equal(snap.liveRows.length, 1);
+  assert.equal(snap.liveRows[0]?.tiktokUsername, "bettsmart633");
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "chevron_down"), false);
+  assert.equal(snap.liveRows.some((r) => r.tiktokUsername === "previous"), false);
 });
 
 test("live now header tooltip title yields full handle not truncated text", () => {

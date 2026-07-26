@@ -33,7 +33,54 @@ const LIVE_HANDLE_BLOCKLIST = new Set([
   "assking",
   "king_reaper5150",
   "king_reaper",
+  "replay",
+  "previous",
+  "next",
+  "selected",
+  "chevron_down",
+  "chevron_left",
+  "chevron_right",
+  "chevron_up",
+  "help_circle_stroked",
 ]);
+
+const UI_HANDLE_EXACT = new Set([
+  "replay",
+  "previous",
+  "next",
+  "selected",
+  "close",
+  "menu",
+  "more",
+  "refresh",
+  "play",
+  "pause",
+  "mute",
+  "volume",
+  "fullscreen",
+  "settings",
+  "search",
+  "filter",
+  "sort",
+  "share",
+  "copy",
+  "edit",
+  "delete",
+  "back",
+  "forward",
+]);
+
+/** Semi Design / icon font titles mistaken for @handles (chevron_down, help_circle_stroked). */
+export function isUiChromeHandle(handle: string): boolean {
+  if (UI_HANDLE_EXACT.has(handle)) return true;
+  if (/^(chevron|help|icon|arrow|close|menu|more|play|pause|mute|volume|fullscreen|semi)/i.test(handle)) {
+    return true;
+  }
+  if (/_stroked|_outlined|_filled|_circle_|_square_|_bold|_regular/i.test(handle)) return true;
+  const underscores = handle.match(/_/g)?.length ?? 0;
+  if (underscores >= 2 && !/\d/.test(handle)) return true;
+  return false;
+}
 
 /** Glued chat usernames or multiple handles in one string. */
 export function isSuspiciousLiveHandle(handle: string): boolean {
@@ -56,12 +103,14 @@ export function isSuspiciousLiveHandle(handle: string): boolean {
 export function isInvalidLiveStreamHandle(raw: string | undefined | null): boolean {
   const handle = cleanTikTokUsername(raw);
   if (!handle) return true;
+  if (/^\d+$/.test(handle)) return true;
   if (LIVE_HANDLE_BLOCKLIST.has(handle)) return true;
   if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing|estimated|bonus|ratio/i.test(handle)) {
     return true;
   }
   if (handle.startsWith("live") && handle.length <= 14) return true;
   if (handle.startsWith("creator") && handle.length <= 16) return true;
+  if (isUiChromeHandle(handle)) return true;
   if (isSuspiciousLiveHandle(handle)) return true;
   return false;
 }

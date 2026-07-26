@@ -19,8 +19,8 @@ function sanitizeHours(hours: number | undefined): number {
 }
 
 /**
- * Mirror the latest monthly Backstage sync into creator_performance_stats so
- * all-time DB aggregates stay aligned with imports (matched profiles only).
+ * Mirror the latest monthly Backstage sync into creator_performance_stats
+ * (matched profiles only) for admin overrides and DB-backed monthly ranks.
  */
 export async function upsertMonthlyPerformanceStatsFromImport(
   supabase: SupabaseClient,

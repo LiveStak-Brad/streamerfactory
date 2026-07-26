@@ -1,12 +1,14 @@
 import { detectTikTokCreatorNetworkPage } from "./detectPage";
 import { extractLiveNowRowsFromPage, extractLiveRowsFromCreatorTable } from "./extractLiveNow";
 import { extractCreatorRowsFromPage } from "./extractRows";
+import { collectLiveParseDebug } from "./live-parse-debug";
 import type { PageSnapshot } from "./types";
 
 export function buildPageSnapshot(url: string = location.href, doc: Document = document): PageSnapshot {
   const detection = detectTikTokCreatorNetworkPage(url, doc);
 
   if (detection.detectedPageType === "live_now") {
+    const liveRows = extractLiveNowRowsFromPage(doc);
     return {
       sourcePageUrl: url,
       detectedPageType: "live_now",
@@ -15,7 +17,8 @@ export function buildPageSnapshot(url: string = location.href, doc: Document = d
       statPeriodStart: detection.statPeriodStart,
       statPeriodEnd: detection.statPeriodEnd,
       rows: [],
-      liveRows: extractLiveNowRowsFromPage(doc),
+      liveRows,
+      liveParseDebug: liveRows.length === 0 ? collectLiveParseDebug(doc) : undefined,
     };
   }
 

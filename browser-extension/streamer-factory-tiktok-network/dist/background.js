@@ -254,13 +254,19 @@
       body: JSON.stringify(payload)
     });
   }
+  async function postClearLiveSnapshots() {
+    return requestStreamerFactoryApi(
+      "/api/extension/tiktok-network/clear-live",
+      { method: "POST", body: "{}" }
+    );
+  }
 
   // src/autoSyncSettings.ts
   var AUTO_SYNC_STORAGE_KEY = "autoSyncOnBackstage";
   var AUTO_SYNC_MIN_INTERVAL_MS = 5 * 60 * 1e3;
   async function isAutoSyncEnabled() {
     const stored = await chrome.storage.sync.get([AUTO_SYNC_STORAGE_KEY]);
-    return stored[AUTO_SYNC_STORAGE_KEY] !== false;
+    return stored[AUTO_SYNC_STORAGE_KEY] === true;
   }
 
   // src/autoSyncBackground.ts
@@ -322,6 +328,12 @@
     if (message?.type === "SYNC_IMPORT") {
       const payload = message.payload;
       postImport(payload).then((result) => sendResponse({ ok: true, result })).catch((e) => sendResponse({ ok: false, error: e instanceof Error ? e.message : "Sync failed." }));
+      return true;
+    }
+    if (message?.type === "CLEAR_LIVE_SNAPSHOTS") {
+      postClearLiveSnapshots().then((result) => sendResponse({ ok: true, result })).catch(
+        (e) => sendResponse({ ok: false, error: e instanceof Error ? e.message : "Clear failed." })
+      );
       return true;
     }
     return false;

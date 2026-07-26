@@ -106,7 +106,10 @@
       path = "";
     }
     const title = doc.title.toLowerCase();
-    const bodyText = (doc.body?.innerText ?? "").slice(0, 4e3).toLowerCase();
+    const bodyText = (doc.body?.innerText ?? doc.body?.textContent ?? "").slice(0, 4e3).toLowerCase();
+    if (path.includes("/anchor/live") || path.includes("/live-now") || path.includes("livenow") || path.includes("/live") && !path.includes("/relation") || title.includes("live now") || bodyText.includes("creators who are live now") || bodyText.includes("promote their live")) {
+      return { detectedPageType: "live_now" };
+    }
     if (path.includes("/revenue") || path.includes("/incentive") || path.includes("/performance") || path.includes("/contribution") || path.includes("/data/") || path.includes("/analytics") || title.includes("incentive") || title.includes("performance") || title.includes("contribution") || bodyText.includes("contribution details") || bodyText.includes("estimated bonus") || bodyText.includes("valid go live") || bodyText.includes("activeness incentive")) {
       return withStatPeriod(doc, {
         detectedPageType: "creator_stats",
@@ -119,9 +122,6 @@
         detectedPageType: "manage_relationship",
         relationshipTab: readActiveRelationshipTab(doc)
       };
-    }
-    if (path.includes("/anchor/live") || path.includes("/live-now") || path.includes("livenow") || path.includes("/live") && !path.includes("/relation") || title.includes("live now") || bodyText.includes("creators who are live now")) {
-      return { detectedPageType: "live_now" };
     }
     if (path.includes("/creator") || bodyText.includes("coins earned") || bodyText.includes("diamonds")) {
       return withStatPeriod(doc, {
@@ -203,6 +203,88 @@
     return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
   }
 
+  // src/parser/dom-deep.ts
+  function isDocumentNode(root) {
+    return root.nodeType === 9;
+  }
+  function isShadowRootNode(node) {
+    return node.nodeType === 11;
+  }
+  function deepQueryAll(root, selector) {
+    const results = [];
+    const seen = /* @__PURE__ */ new Set();
+    function visit(node) {
+      if (node.nodeType === 1) {
+        const el = node;
+        el.querySelectorAll(selector).forEach((match) => {
+          if (!seen.has(match)) {
+            seen.add(match);
+            results.push(match);
+          }
+        });
+        el.querySelectorAll("*").forEach((child) => {
+          if (child.shadowRoot) visit(child.shadowRoot);
+        });
+        return;
+      }
+      if (isDocumentNode(node)) {
+        visit(node.documentElement);
+        return;
+      }
+      if (isShadowRootNode(node)) {
+        const sr = node;
+        sr.querySelectorAll(selector).forEach((match) => {
+          if (!seen.has(match)) {
+            seen.add(match);
+            results.push(match);
+          }
+        });
+        sr.querySelectorAll("*").forEach((child) => {
+          if (child.shadowRoot) visit(child.shadowRoot);
+        });
+      }
+    }
+    if (isDocumentNode(root)) visit(root);
+    else {
+      if (!seen.has(root) && root.matches(selector)) {
+        seen.add(root);
+        results.push(root);
+      }
+      visit(root);
+      if (root.shadowRoot) visit(root.shadowRoot);
+    }
+    return results;
+  }
+  function isNodeInside(el, scope) {
+    if (isDocumentNode(scope)) {
+      return scope.documentElement.contains(el);
+    }
+    let node = el;
+    while (node) {
+      if (node === scope) return true;
+      if (isShadowRootNode(node)) {
+        node = node.host;
+        continue;
+      }
+      node = node.parentNode;
+    }
+    return false;
+  }
+
+  // src/parser/live-card-stats.ts
+  function elementVisibleText(el) {
+    const html = el;
+    return (html.innerText ?? el.textContent ?? "").trim();
+  }
+  function textHasLiveCardStats(text) {
+    const t = text.trim();
+    if (t.length < 12) return false;
+    const hasLive = /live\s*(?:time|dur(?:ation)?)/i.test(t) || /\blive\b[^\n]{0,24}\d+\s*[hms]\b/i.test(t);
+    const hasEarnings = /diamonds?|gifts?|coins?\s*earned/i.test(t);
+    const hasAudience = /viewers?|watching|current\s*viewers?|audience/i.test(t);
+    return hasLive && hasEarnings && hasAudience;
+  }
+
   // src/parser/username.ts
   var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive)$/i;
   function stripBadgeText(text) {
@@ -212,6 +294,7 @@
     /^([a-z0-9._]{2,38})nolevel$/i,
     /^([a-z0-9._]{2,38})no$/i,
     /^([a-z0-9._]{2,38})level\d*$/i,
+    /^([a-z0-9._]{2,38})tier\d+$/i,
     /^([a-z0-9._]{2,38})(eligible|notable|inactive|invited|removed|following|new|quit)$/i
   ];
   function stripGluedBadgeSuffix(compact) {
@@ -324,6 +407,844 @@
   }
   function extractUsernameFromText(text) {
     return extractUsernameWithConfidence(text).username;
+  }
+
+  // src/parser/live-username.ts
+  var LIVE_HANDLE_BLOCKLIST = /* @__PURE__ */ new Set([
+    "creators",
+    "creatorsmanage",
+    "creatorsmanagement",
+    "creator",
+    "manage",
+    "management",
+    "live",
+    "liveduration",
+    "livedur",
+    "duration",
+    "diamonds",
+    "diamond",
+    "gifters",
+    "gifter",
+    "viewers",
+    "viewer",
+    "follower",
+    "followers",
+    "current",
+    "promote",
+    "showing",
+    "estimated",
+    "bonus",
+    "ratio",
+    "streaming",
+    "stream",
+    "inactive",
+    "notable",
+    "eligible",
+    "assking",
+    "king_reaper5150",
+    "king_reaper",
+    "replay",
+    "previous",
+    "next",
+    "selected",
+    "chevron_down",
+    "chevron_left",
+    "chevron_right",
+    "chevron_up",
+    "help_circle_stroked"
+  ]);
+  var UI_HANDLE_EXACT = /* @__PURE__ */ new Set([
+    "replay",
+    "previous",
+    "next",
+    "selected",
+    "close",
+    "menu",
+    "more",
+    "refresh",
+    "play",
+    "pause",
+    "mute",
+    "volume",
+    "fullscreen",
+    "settings",
+    "search",
+    "filter",
+    "sort",
+    "share",
+    "copy",
+    "edit",
+    "delete",
+    "back",
+    "forward"
+  ]);
+  function isUiChromeHandle(handle) {
+    if (UI_HANDLE_EXACT.has(handle)) return true;
+    if (/^(chevron|help|icon|arrow|close|menu|more|play|pause|mute|volume|fullscreen|semi)/i.test(handle)) {
+      return true;
+    }
+    if (/_stroked|_outlined|_filled|_circle_|_square_|_bold|_regular/i.test(handle)) return true;
+    const underscores = handle.match(/_/g)?.length ?? 0;
+    if (underscores >= 2 && !/\d/.test(handle)) return true;
+    return false;
+  }
+  function isSuspiciousLiveHandle(handle) {
+    if (handle.length > 24) return true;
+    if (/assking|king_reaper/i.test(handle)) return true;
+    if (/\d{5,}/.test(handle) && handle.length > 18) return true;
+    const chunks = handle.match(/[a-z][a-z0-9_]{4,}/gi) ?? [];
+    const unique = new Set(chunks.map((c) => c.toLowerCase()));
+    if (unique.size >= 2 && handle.length >= 16) return true;
+    for (const chunk of unique) {
+      if (handle.split(chunk).length > 2) return true;
+    }
+    return false;
+  }
+  function isInvalidLiveStreamHandle(raw) {
+    const handle = cleanTikTokUsername(raw);
+    if (!handle) return true;
+    if (/^\d+$/.test(handle)) return true;
+    if (LIVE_HANDLE_BLOCKLIST.has(handle)) return true;
+    if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing|estimated|bonus|ratio/i.test(handle)) {
+      return true;
+    }
+    if (handle.startsWith("live") && handle.length <= 14) return true;
+    if (handle.startsWith("creator") && handle.length <= 16) return true;
+    if (isUiChromeHandle(handle)) return true;
+    if (isSuspiciousLiveHandle(handle)) return true;
+    return false;
+  }
+
+  // src/parser/live-handle-text.ts
+  var HANDLE_IN_TEXT = /@?([a-z0-9._]{2,24})/i;
+  var PLAIN_HANDLE = /^@?([a-z0-9._]{2,24})$/i;
+  function handleFromRawText(raw) {
+    if (!raw) return void 0;
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed.length > 80) return void 0;
+    const plain = trimmed.match(PLAIN_HANDLE);
+    if (plain) {
+      const u = cleanTikTokUsername(plain[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+    const embedded = trimmed.match(HANDLE_IN_TEXT);
+    if (embedded && trimmed.length <= 40) {
+      const u = cleanTikTokUsername(embedded[1]);
+      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    }
+    return void 0;
+  }
+
+  // src/parser/live-handle-patterns.ts
+  var TRUNCATED_HANDLE_VISIBLE = /^(@?[_]?[a-z0-9][a-z0-9._]{1,27})(?:\.{2,3}|…|\u2026)$/i;
+  function isTruncatedHandleVisible(text) {
+    return TRUNCATED_HANDLE_VISIBLE.test(text.trim());
+  }
+  function truncatedHandlePrefix(text) {
+    const m = text.trim().match(TRUNCATED_HANDLE_VISIBLE);
+    return m?.[1]?.replace(/^@+/, "").toLowerCase();
+  }
+
+  // src/parser/live-hint-elements.ts
+  function isInsideIconControl(el) {
+    return !!el.closest('button, [role="button"], [role="menuitem"], [role="option"], svg');
+  }
+  function isLikelyUsernameHintElement(el) {
+    if (isInsideIconControl(el)) return false;
+    const tag = el.tagName.toLowerCase();
+    if (tag === "svg" || tag === "path" || tag === "use" || tag === "button") return false;
+    const title = el.getAttribute("title")?.trim() ?? "";
+    if (title && handleFromRawText(title)) return true;
+    const cls = elementClassText(el).toLowerCase();
+    if (/semi-icon|chevron|icon-btn|player-btn|replay-btn/i.test(cls)) return false;
+    if (el.matches('a[href*="@"]')) return true;
+    if (isTruncatedHandleVisible((el.textContent ?? "").trim())) return true;
+    const parentCls = elementClassText(el.parentElement ?? el).toLowerCase();
+    if (/creator|username|user-?name|handle|anchor|nickname|display-?name/i.test(cls + parentCls)) {
+      return true;
+    }
+    return false;
+  }
+  function titleElementsWithHandles(scope) {
+    const out = [];
+    const doc = scope.nodeType === 9 ? scope : scope.ownerDocument ?? document;
+    const candidates = deepQueryAll(doc, "[title]").filter((el) => isNodeInside(el, scope));
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of candidates) {
+      if (seen.has(el)) continue;
+      seen.add(el);
+      if (isInsideIconControl(el)) continue;
+      const title = el.getAttribute("title")?.trim();
+      if (title && handleFromRawText(title)) out.push(el);
+    }
+    return out;
+  }
+
+  // src/parser/live-header-hints.ts
+  function hintElementsInOrder(scope) {
+    const priority = [];
+    const rest = [];
+    for (const el of scope.querySelectorAll(
+      "[title], [data-username], [data-user-name], [data-nickname]"
+    )) {
+      if (!isLikelyUsernameHintElement(el)) continue;
+      const bucket = el.matches('a[href*="@"]') || isTruncatedHandleVisible((el.textContent ?? "").trim()) ? priority : rest;
+      bucket.push(el);
+    }
+    for (const el of titleElementsWithHandles(scope)) {
+      if (!priority.includes(el) && !rest.includes(el)) priority.push(el);
+    }
+    return [...priority, ...rest];
+  }
+  function expandTruncatedPrefix(scope, prefix) {
+    const key = prefix.toLowerCase().replace(/\.$/, "");
+    if (key.length < 4) return void 0;
+    const candidates = [];
+    const push = (raw) => {
+      const u = handleFromRawText(raw);
+      if (u && u.startsWith(key) && u.length > key.length) candidates.push(u);
+    };
+    for (const el of hintElementsInOrder(scope)) {
+      push(el.getAttribute("title"));
+      push(el.getAttribute("data-username"));
+      push(el.getAttribute("data-user-name"));
+      push(el.getAttribute("data-nickname"));
+    }
+    for (const el of scope.querySelectorAll(
+      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
+    )) {
+      push(el.textContent);
+    }
+    if (candidates.length === 0) return void 0;
+    candidates.sort((a, b) => b.length - a.length);
+    return candidates[0];
+  }
+  function usernameFromLiveHeaderHints(scope) {
+    for (const el of hintElementsInOrder(scope)) {
+      for (const attr of ["title", "data-username", "data-user-name", "data-nickname"]) {
+        const u = handleFromRawText(el.getAttribute(attr));
+        if (u) return u;
+      }
+    }
+    for (const el of titleElementsWithHandles(scope)) {
+      const u = handleFromRawText(el.getAttribute("title"));
+      if (u) return u;
+    }
+    for (const el of scope.querySelectorAll(
+      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
+    )) {
+      const u = handleFromRawText(el.textContent);
+      if (u) return u;
+    }
+    for (const el of scope.querySelectorAll("[aria-describedby]")) {
+      if (!isLikelyUsernameHintElement(el)) continue;
+      const id = el.getAttribute("aria-describedby");
+      if (!id) continue;
+      const doc = el.ownerDocument;
+      const safeId = id.replace(/([!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+      const tip = doc?.getElementById(id) ?? scope.querySelector(`#${safeId}`);
+      const u = handleFromRawText(tip?.textContent ?? tip?.getAttribute("title"));
+      if (u) return u;
+    }
+    for (const line of (scope.textContent ?? "").split(/\n/).map((l) => l.trim())) {
+      const prefix = truncatedHandlePrefix(line);
+      if (!prefix) continue;
+      const expanded = expandTruncatedPrefix(scope, prefix);
+      if (expanded) return expanded;
+      for (const el of titleElementsWithHandles(scope)) {
+        const title = el.getAttribute("title");
+        if (!title?.toLowerCase().startsWith(prefix.replace(/\.$/, ""))) continue;
+        const u = handleFromRawText(title);
+        if (u) return u;
+      }
+    }
+    return void 0;
+  }
+
+  // src/parser/live-badge.ts
+  function isStandaloneLiveBadgeText(text) {
+    const t = text.trim();
+    if (!/^live$/i.test(t)) return false;
+    return t.length <= 6;
+  }
+  var LIVE_ACCENT_RGB = [
+    [254, 44, 85],
+    [255, 23, 68],
+    [255, 0, 80],
+    [238, 29, 82],
+    [255, 59, 92]
+  ];
+  function parseCssColorChannels(css) {
+    const t = css.trim().toLowerCase();
+    if (!t || t === "transparent" || t === "none") return null;
+    const hex = t.match(/#([0-9a-f]{3,8})\b/i)?.[1];
+    if (hex) {
+      if (hex.length === 3) {
+        return [
+          parseInt(hex[0] + hex[0], 16),
+          parseInt(hex[1] + hex[1], 16),
+          parseInt(hex[2] + hex[2], 16)
+        ];
+      }
+      if (hex.length >= 6) {
+        return [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
+      }
+    }
+    const rgb = t.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (rgb) return [Number(rgb[1]), Number(rgb[2]), Number(rgb[3])];
+    return null;
+  }
+  function cssColorLooksLikeLiveRing(css) {
+    const rgb = parseCssColorChannels(css ?? "");
+    if (!rgb) return false;
+    const [r, g, b] = rgb;
+    if (r < 200 || g > 120 || b > 140) return false;
+    for (const accent of LIVE_ACCENT_RGB) {
+      const dist = Math.abs(r - accent[0]) + Math.abs(g - accent[1]) + Math.abs(b - accent[2]);
+      if (dist < 80) return true;
+    }
+    if (r > 220 && g < 90 && b < 120) return true;
+    return false;
+  }
+  function classHintsLiveRing(cls) {
+    const c = cls.toLowerCase();
+    if (/\blive-ring\b|\blive-badge\b|\bgoing-live\b|\bis-live\b|\bon-live\b|\blive-avatar\b/.test(c)) {
+      return true;
+    }
+    if (/\blive\b/.test(c) && /ring|badge|avatar|status|dot|indicator|border|living|streaming/.test(c)) {
+      return true;
+    }
+    if (/border.*red|red.*ring|live.*border|living/i.test(c)) return true;
+    return false;
+  }
+  function elementHasLiveAccentStyle(el) {
+    const inline = el.getAttribute("style") ?? "";
+    if (/#fe2c55|#ff2c55|rgb\(\s*25[0-4]\s*,\s*[0-5]?\d\s*,\s*[0-9]{1,2}\s*\)/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
+      return true;
+    }
+    if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
+      try {
+        const style = getComputedStyle(el);
+        const borderW = parseFloat(style.borderTopWidth || "0");
+        const outlineW = parseFloat(style.outlineWidth || "0");
+        if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
+        if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
+        if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
+      } catch {
+      }
+    }
+    return false;
+  }
+  function wrapperHasLiveColoredRing(img) {
+    if (elementHasLiveAccentStyle(img)) return true;
+    let el = img.parentElement;
+    for (let depth = 0; depth < 7 && el; depth++) {
+      const cls = elementClassText(el);
+      if (classHintsLiveRing(cls)) return true;
+      const inline = el.getAttribute("style") ?? "";
+      if (/border[^;]*(?:#fe2c55|#ff[0-9a-f]{3,4}|rgb\(\s*2[0-9]{2})/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
+        return true;
+      }
+      if (elementHasLiveAccentStyle(el)) return true;
+      for (const sib of el.children) {
+        if (sib.tagName === "IMG") continue;
+        if (elementHasLiveAccentStyle(sib) || classHintsLiveRing(elementClassText(sib))) {
+          return true;
+        }
+      }
+      for (const svg of el.querySelectorAll("svg circle, svg path, svg rect")) {
+        const stroke = svg.getAttribute("stroke") ?? svg.getAttribute("fill") ?? svg.style?.stroke ?? "";
+        if (cssColorLooksLikeLiveRing(stroke)) return true;
+      }
+      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
+      el = el.parentElement;
+    }
+    return false;
+  }
+  function imgHasLiveIndicator(img) {
+    if (wrapperHasLiveColoredRing(img)) return true;
+    let el = img;
+    for (let depth = 0; depth < 8 && el; depth++) {
+      const cls = elementClassText(el);
+      if (classHintsLiveRing(cls)) return true;
+      const label = el.getAttribute("aria-label") ?? "";
+      if (/\b(is\s+)?live(?!.*\bdur)/i.test(label) && !/go\s*live|duration/i.test(label)) {
+        return true;
+      }
+      for (const node of el.querySelectorAll("span, div, label, p, strong")) {
+        if ((node.textContent ?? "").length > 12) continue;
+        const direct = Array.from(node.childNodes).filter((n) => n.nodeType === 3).map((n) => (n.textContent ?? "").trim()).join("");
+        const own = direct || (node.childNodes.length <= 2 ? (node.textContent ?? "").trim() : "");
+        if (isStandaloneLiveBadgeText(own)) return true;
+      }
+      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
+      el = el.parentElement;
+    }
+    return false;
+  }
+  function isChatCommentLine(line) {
+    const t = line.trim();
+    if (t.length < 4 || t.length > 200) return false;
+    return /^[a-z0-9._]{2,40}:\s+\S/i.test(t);
+  }
+  function creatorCellShowsLive(cell) {
+    for (const img of cell.querySelectorAll("img[src]")) {
+      const src = img.getAttribute("src") ?? "";
+      if (!src || src.startsWith("data:")) continue;
+      if (imgHasLiveIndicator(img)) return true;
+    }
+    const cls = elementClassText(cell).toLowerCase();
+    if (/living|on-?live|live-?status|avatar.*live/i.test(cls)) return true;
+    for (const el of cell.querySelectorAll("[class], [style]")) {
+      const c = elementClassText(el);
+      if (classHintsLiveRing(c)) return true;
+      if (elementHasLiveAccentStyle(el)) return true;
+    }
+    return false;
+  }
+  function isLikelyChatOverlay(el) {
+    const cls = elementClassText(el).toLowerCase();
+    if (/chat|comment|message|danmaku|bullet|im-message/i.test(cls)) return true;
+    const text = el.textContent ?? "";
+    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    if (lines.length < 2) return false;
+    const chatLines = lines.filter(isChatCommentLine);
+    return chatLines.length >= 2 && chatLines.length / lines.length >= 0.25;
+  }
+
+  // src/parser/live-stream-card.ts
+  function isInsideBackstageChrome(el) {
+    if (el.closest(
+      'nav, header, aside, form, [role="combobox"], [role="listbox"], [role="menu"], select, [class*="semi-select"]'
+    )) {
+      return true;
+    }
+    const cls = elementClassText(el).toLowerCase();
+    if (/filter-bar|filterbar|page-filter|toolbar|sidebar|combobox|dropdown-menu|select-option/i.test(cls)) {
+      return true;
+    }
+    return false;
+  }
+  function isLiveStreamScope(text) {
+    const t = text.trim();
+    if (t.length < 20 || t.length > 12e3) return false;
+    return textHasLiveCardStats(t);
+  }
+  function countMatches(text, re) {
+    return (text.match(re) ?? []).length;
+  }
+  function cardHeaderSlice(text) {
+    const idx = text.search(/live\s*(?:time|dur(?:ation)?)/i);
+    return idx > 20 ? text.slice(0, idx) : text.slice(0, Math.min(text.length, 600));
+  }
+  function looksLikeSingleLiveStreamCard(card) {
+    if (isInsideBackstageChrome(card)) return false;
+    const text = elementVisibleText(card);
+    if (!isLiveStreamScope(text)) return false;
+    if (isPageFilterLabelBlob(text)) return false;
+    if (isReplayControlCard(card, text)) return false;
+    const header = cardHeaderSlice(text);
+    const idCount = countMatches(header, /id\s*\d{4,}/gi);
+    if (idCount > 2) return false;
+    if (idCount === 0 && titleElementsWithHandles(card).length === 0) return false;
+    const liveStatCount = countMatches(text, /live\s*(?:time|dur(?:ation)?)/gi);
+    if (liveStatCount < 1 || liveStatCount > 4) return false;
+    if (!/(?:diamonds?|gifts?)\b/i.test(text)) return false;
+    if (!/(?:viewers?|watching|current\s*viewers?)/i.test(text)) return false;
+    const imgs = [...card.querySelectorAll("img[src]")].filter((img) => {
+      const src = img.getAttribute("src") ?? "";
+      return src && !src.startsWith("data:");
+    });
+    if (imgs.length === 0 && titleElementsWithHandles(card).length === 0) return false;
+    return true;
+  }
+  function isPageFilterLabelBlob(text) {
+    const lower = text.toLowerCase();
+    if (/creator\s+username|creator\s+id|graduation\s+status|tier\s+status|manager/i.test(lower)) {
+      return true;
+    }
+    if (/^promote their live/i.test(lower)) return true;
+    if (/^showing\s+\d+-\d+\s+of\s+\d+/i.test(lower) && !/id\s*\d{4,}/i.test(lower)) return true;
+    return false;
+  }
+  function isReplayControlCard(card, text) {
+    if (titleElementsWithHandles(card).length > 0) return false;
+    if (card.querySelector('a[href*="@"]')) return false;
+    const header = cardHeaderSlice(text).trim();
+    const headerLines = header.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    const replayOnly = headerLines.length > 0 && headerLines.every((l) => /^replay$/i.test(l) || /^id\s*\d+$/i.test(l));
+    return replayOnly || /^replay$/im.test(header);
+  }
+  function cardChatLineCount(card) {
+    const text = card.textContent ?? "";
+    return text.split(/\n/).filter((l) => isChatCommentLine(l.trim())).length;
+  }
+
+  // src/parser/extract-live-from-creator-id.ts
+  var CREATOR_ID_LINE = /^(?:creator\s*)?id\s*[:#]?\s*(\d{4,})\s*$/i;
+  var CREATOR_ID_IN_LINE = /(?:creator\s*)?id\s*[:#]?\s*\d{4,}/i;
+  function looksLikeTikTokHandle2(handle) {
+    if (handle.length < 5) return false;
+    if (/^(id|live|replay|creator|manage)$/i.test(handle)) return false;
+    return /[_.\d]/.test(handle) || handle.length >= 6;
+  }
+  function usernameFromLinesBeforeId(scope) {
+    const lines = elementVisibleText(scope).split(/\n/).map((l) => l.trim()).filter(Boolean);
+    for (let i = 0; i < lines.length; i += 1) {
+      if (!CREATOR_ID_IN_LINE.test(lines[i])) continue;
+      for (let j = i - 1; j >= Math.max(0, i - 6); j -= 1) {
+        const line = lines[j];
+        if (/^live$/i.test(line) || /^replay$/i.test(line)) continue;
+        if (/^\d+[hm]?\s*$/i.test(line)) continue;
+        const fromTitle = usernameFromLiveHeaderHints(scope);
+        if (fromTitle) return fromTitle;
+        const prefix = truncatedHandlePrefix(line);
+        if (prefix) {
+          const u = cleanTikTokUsername(prefix);
+          if (u && looksLikeTikTokHandle2(u) && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) {
+            return u;
+          }
+        }
+        if (isTruncatedHandleVisible(line)) continue;
+        const plain = line.match(/^@?([a-z0-9][a-z0-9._]{2,24})$/i);
+        if (plain) {
+          const u = cleanTikTokUsername(plain[1]);
+          if (u && looksLikeTikTokHandle2(u) && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) {
+            return u;
+          }
+        }
+      }
+    }
+    for (const el of titleElementsWithHandles(scope)) {
+      const u = handleFromRawText(el.getAttribute("title"));
+      if (u) return u;
+    }
+    return void 0;
+  }
+  function countCreatorIds(text) {
+    return (text.match(/(?:creator\s*)?id\s*[:#]?\s*\d{4,}/gi) ?? []).length;
+  }
+  function climbToCreatorCardFromId(idEl) {
+    let scope = idEl;
+    let best = null;
+    let bestLen = Infinity;
+    for (let depth = 0; depth < 16 && scope; depth += 1) {
+      if (isInsideBackstageChrome(scope)) break;
+      const text = elementVisibleText(scope);
+      if (text.length < 12 || text.length > 6e3) {
+        scope = scope.parentElement;
+        continue;
+      }
+      if (countCreatorIds(text) === 1 && CREATOR_ID_IN_LINE.test(text)) {
+        if (text.length < bestLen) {
+          best = scope;
+          bestLen = text.length;
+        }
+      }
+      scope = scope.parentElement;
+    }
+    return best;
+  }
+  function idAnchorElements(doc) {
+    const out = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of deepQueryAll(doc, "div, span, p, li, td, a, label, h3, h4")) {
+      if (seen.has(el)) continue;
+      const text = elementVisibleText(el);
+      if (!text || text.length > 120) continue;
+      if (!CREATOR_ID_IN_LINE.test(text)) continue;
+      if (CREATOR_ID_LINE.test(text.trim()) || text.length < 60 && CREATOR_ID_IN_LINE.test(text)) {
+        seen.add(el);
+        out.push(el);
+      }
+    }
+    return out;
+  }
+  function extractLiveNowFromCreatorIdAnchors(doc, buildRow) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const idEl of idAnchorElements(doc)) {
+      const card = climbToCreatorCardFromId(idEl);
+      if (!card) continue;
+      const username = usernameFromLinesBeforeId(card);
+      if (!username) continue;
+      const key = normalizeTikTokUsername(username) ?? username;
+      if (seen.has(key)) continue;
+      const parsed = buildRow(card, username);
+      if (!parsed) continue;
+      seen.add(key);
+      rows.push(parsed);
+    }
+    return rows;
+  }
+  function extractLiveNowFromBodyText(doc) {
+    const body = elementVisibleText(doc.body ?? doc.documentElement);
+    if (!body || body.length < 30) return [];
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    const patterns = [
+      /(?:^|[\n\r])\s*@?([a-z0-9][a-z0-9._]{2,27})(?:…|\.{2,3})?\s*[\n\r]+\s*(?:Creator\s*)?ID\s*[:#]?\s*\d{4,}/gim,
+      /(?:^|[\n\r])\s*@?([a-z0-9][a-z0-9._]{4,24})\s*[\n\r]+\s*(?:Creator\s*)?ID\s*[:#]?\s*\d{4,}/gim,
+      /(?:^|[\n\r])\s*(?:Creator\s*)?ID\s*[:#]?\s*\d{4,}\s*[\n\r]+\s*@?([a-z0-9][a-z0-9._]{2,27})(?:…|\.{2,3})?/gim
+    ];
+    for (const re of patterns) {
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(body)) !== null) {
+        const raw = m[1];
+        const u = cleanTikTokUsername(raw);
+        if (!u || !looksLikeTikTokHandle2(u) || isInvalidLiveStreamHandle(u) || isSuspiciousLiveHandle(u)) {
+          continue;
+        }
+        const key = normalizeTikTokUsername(u) ?? u;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        rows.push({
+          tiktokUsername: u,
+          usernameConfidence: isTruncatedHandleVisible(raw) ? "medium" : "high",
+          usernameSource: "handle_pattern",
+          liveBadgeDetected: /\blive\b/i.test(body.slice(Math.max(0, m.index - 80), m.index + 80)),
+          rawTextPreview: m[0].trim().slice(0, 120)
+        });
+      }
+    }
+    return rows;
+  }
+
+  // src/parser/extract-live-from-titles.ts
+  function cardHeaderSlice2(text) {
+    const idx = text.search(/live\s*(?:time|dur(?:ation)?)/i);
+    return idx > 20 ? text.slice(0, idx) : text.slice(0, Math.min(text.length, 600));
+  }
+  function isReplayOnlyScope(card, text) {
+    if (titleElementsWithHandles(card).length > 0) return false;
+    if (card.querySelector('a[href*="@"]')) return false;
+    const header = cardHeaderSlice2(text).trim();
+    const lines = header.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    return lines.length > 0 && lines.every((l) => /^replay$/i.test(l) || /^id\s*\d+$/i.test(l));
+  }
+  function climbToLiveScopeFromHandle(handleEl) {
+    let scope = handleEl;
+    let best = null;
+    for (let depth = 0; depth < 22 && scope; depth += 1) {
+      if (isInsideBackstageChrome(scope)) break;
+      const text = elementVisibleText(scope);
+      if (text.length < 25 || text.length > 12e3) {
+        scope = scope.parentElement;
+        continue;
+      }
+      const hasId = /id\s*[:#]?\s*\d{4,}/i.test(text);
+      const hasStats = textHasLiveCardStats(text);
+      const hasLiveWord = /\blive\b/i.test(text);
+      if (hasId && (hasStats || hasLiveWord && /viewers?|gifts?|diamonds?/i.test(text))) {
+        if (!isReplayOnlyScope(scope, text)) best = scope;
+      }
+      scope = scope.parentElement;
+    }
+    return best;
+  }
+  function extractLiveNowFromHandleTitles(doc, buildRow) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of deepQueryAll(doc, "[title]")) {
+      if (isInsideIconControl(el)) continue;
+      if (isInsideBackstageChrome(el)) continue;
+      const handle = handleFromRawText(el.getAttribute("title"));
+      if (!handle || isInvalidLiveStreamHandle(handle) || isSuspiciousLiveHandle(handle)) continue;
+      const key = normalizeTikTokUsername(handle) ?? handle;
+      if (seen.has(key)) continue;
+      let card = climbToLiveScopeFromHandle(el);
+      if (!card) {
+        let scope = el.parentElement;
+        for (let d = 0; d < 10 && scope; d += 1) {
+          if (/id\s*[:#]?\s*\d{4,}/i.test(elementVisibleText(scope))) {
+            card = scope;
+            break;
+          }
+          scope = scope.parentElement;
+        }
+      }
+      if (!card) continue;
+      const parsed = buildRow(card, handle);
+      if (!parsed) continue;
+      seen.add(key);
+      rows.push(parsed);
+    }
+    return rows;
+  }
+
+  // src/parser/live-stream-tile.ts
+  var DOC_POS_FOLLOWING = 4;
+  var AT_TRUNCATED_LINE = /^@([_]?[a-z0-9][a-z0-9._]{1,26})(?:…|\.{2,3}|\u2026)\s*$/i;
+  function isInsideStreamChatOrVideo(el) {
+    if (isLikelyChatOverlay(el)) return true;
+    if (el.closest(
+      '[class*="chat"], [class*="Chat"], [class*="comment"], [class*="Comment"], [class*="message"], [class*="Message"], [class*="danmaku"], [class*="im-"], [class*="player"], [class*="Player"], [class*="video"], [class*="Video"], [class*="preview"], [class*="Preview"], video, canvas'
+    )) {
+      return true;
+    }
+    const cls = elementClassText(el).toLowerCase();
+    return /chat|comment|message|danmaku|bullet|player|preview|stream-room/i.test(cls);
+  }
+  function isLargePreviewMedia(el) {
+    const tag = el.tagName.toLowerCase();
+    if (tag !== "img" && tag !== "video" && tag !== "canvas") return false;
+    const w = parseInt(el.getAttribute("width") ?? "", 10);
+    const h = parseInt(el.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && w >= 100) return true;
+    if (!Number.isNaN(h) && h >= 100) return true;
+    const cls = elementClassText(el).toLowerCase();
+    return /preview|cover|player|stream/i.test(cls);
+  }
+  function previewCountIn(el) {
+    return [...el.querySelectorAll("img[src], video, canvas")].filter(isLargePreviewMedia).length;
+  }
+  function scopeQualifiesAsStreamTile(scope) {
+    const text = elementVisibleText(scope);
+    if (/(?:creator\s*)?id\s*[:#]?\s*\d{4,}/i.test(text)) return true;
+    for (const el of scope.querySelectorAll("span, a, p")) {
+      const line = (el.textContent ?? "").trim();
+      if (!AT_TRUNCATED_LINE.test(line)) continue;
+      if (isInsideStreamChatOrVideo(el)) continue;
+      return true;
+    }
+    return false;
+  }
+  function climbToStreamTile(from) {
+    let scope = from;
+    let best = null;
+    let bestLen = Infinity;
+    for (let depth = 0; depth < 16 && scope; depth += 1) {
+      if (isInsideBackstageChrome(scope)) break;
+      const text = elementVisibleText(scope);
+      if (text.length < 20 || text.length > 6e3) {
+        scope = scope.parentElement;
+        continue;
+      }
+      const previews = previewCountIn(scope);
+      if (previews === 1 && scopeQualifiesAsStreamTile(scope)) {
+        if (text.length < bestLen) {
+          best = scope;
+          bestLen = text.length;
+        }
+      }
+      if (previews >= 2) break;
+      scope = scope.parentElement;
+    }
+    return best;
+  }
+  function compareDocumentOrder(a, b) {
+    const pos = a.compareDocumentPosition(b);
+    if (pos & DOC_POS_FOLLOWING) return -1;
+    return 1;
+  }
+  function findLiveStreamTiles(doc) {
+    const roots = [];
+    for (const media of deepQueryAll(doc, "img[src], video, canvas")) {
+      if (!isLargePreviewMedia(media)) continue;
+      const tile = climbToStreamTile(media);
+      if (tile) roots.push(tile);
+    }
+    const sorted = [...roots].sort(
+      (a, b) => (a.textContent?.length ?? 0) - (b.textContent?.length ?? 0)
+    );
+    const kept = [];
+    for (const el of sorted) {
+      const contained = kept.findIndex((k) => el.contains(k) && k !== el);
+      if (contained >= 0) {
+        kept[contained] = el;
+        continue;
+      }
+      if (kept.some((k) => k.contains(el) && k !== el)) continue;
+      kept.push(el);
+    }
+    return kept.sort(compareDocumentOrder);
+  }
+  function isStreamCardHeaderHandle(handleEl, tile) {
+    if (isInsideStreamChatOrVideo(handleEl)) return false;
+    if (tile.contains(handleEl) === false) return false;
+    const preview = [...tile.querySelectorAll("img[src], video, canvas")].find(isLargePreviewMedia);
+    if (!preview) return !isLikelyChatOverlay(handleEl);
+    if (preview.contains(handleEl)) return false;
+    const pos = handleEl.compareDocumentPosition(preview);
+    if (pos & DOC_POS_FOLLOWING) return true;
+    const headerSlice = elementVisibleText(tile).split(/\n/).slice(0, 6).join("\n");
+    const handleText = (handleEl.textContent ?? "").trim();
+    if (headerSlice.includes(handleText) && !isChatCommentLine(handleText)) return true;
+    return false;
+  }
+
+  // src/parser/extract-live-from-visible-handles.ts
+  var AT_TRUNCATED_LINE2 = /^@([_]?[a-z0-9][a-z0-9._]{1,26})(?:…|\.{2,3}|\u2026)\s*$/i;
+  function usernameFromAtTruncated(raw) {
+    const line = raw.trim();
+    const m = line.match(AT_TRUNCATED_LINE2);
+    if (!m) return void 0;
+    const u = cleanTikTokUsername(m[1]);
+    if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+    return void 0;
+  }
+  function headerHandleElements(tile) {
+    const out = [];
+    for (const el of tile.querySelectorAll("span, a, p, div")) {
+      if (isInsideIconControl(el)) continue;
+      if (isInsideStreamChatOrVideo(el)) continue;
+      const text = (el.textContent ?? "").trim();
+      if (!AT_TRUNCATED_LINE2.test(text)) continue;
+      if (!isStreamCardHeaderHandle(el, tile)) continue;
+      out.push(el);
+    }
+    return out.sort((a, b) => {
+      const pos = a.compareDocumentPosition(b);
+      if (pos & 4) return -1;
+      if (pos & 2) return 1;
+      return 0;
+    });
+  }
+  function extractLiveNowFromVisibleAtHandles(doc, buildRow) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const tile of findLiveStreamTiles(doc)) {
+      const candidates = headerHandleElements(tile);
+      if (candidates.length === 0) continue;
+      const headerEl = candidates[0];
+      const username = usernameFromAtTruncated(headerEl.textContent ?? "");
+      if (!username) continue;
+      const key = normalizeTikTokUsername(username) ?? username;
+      if (seen.has(key)) continue;
+      const parsed = buildRow(tile, username);
+      const row = parsed ?? {
+        tiktokUsername: username,
+        usernameConfidence: "medium",
+        usernameSource: "username_column",
+        liveBadgeDetected: true,
+        rawTextPreview: (headerEl.textContent ?? "").trim().slice(0, 80)
+      };
+      if (!row) continue;
+      seen.add(key);
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  // src/parser/enumerate-documents.ts
+  function enumerateDocuments(root) {
+    const docs = [root];
+    const queue = [root];
+    while (queue.length > 0) {
+      const doc = queue.shift();
+      for (const frame of deepQueryAll(doc, "iframe")) {
+        try {
+          const nested = frame.contentDocument;
+          if (nested && !docs.includes(nested)) {
+            docs.push(nested);
+            queue.push(nested);
+          }
+        } catch {
+        }
+      }
+    }
+    return docs;
   }
 
   // src/parser/numbers.ts
@@ -539,301 +1460,8 @@
     return best;
   }
 
-  // src/parser/live-badge.ts
-  function isStandaloneLiveBadgeText(text) {
-    const t = text.trim();
-    if (!/^live$/i.test(t)) return false;
-    return t.length <= 6;
-  }
-  var LIVE_ACCENT_RGB = [
-    [254, 44, 85],
-    [255, 23, 68],
-    [255, 0, 80],
-    [238, 29, 82],
-    [255, 59, 92]
-  ];
-  function parseCssColorChannels(css) {
-    const t = css.trim().toLowerCase();
-    if (!t || t === "transparent" || t === "none") return null;
-    const hex = t.match(/#([0-9a-f]{3,8})\b/i)?.[1];
-    if (hex) {
-      if (hex.length === 3) {
-        return [
-          parseInt(hex[0] + hex[0], 16),
-          parseInt(hex[1] + hex[1], 16),
-          parseInt(hex[2] + hex[2], 16)
-        ];
-      }
-      if (hex.length >= 6) {
-        return [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
-      }
-    }
-    const rgb = t.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
-    if (rgb) return [Number(rgb[1]), Number(rgb[2]), Number(rgb[3])];
-    return null;
-  }
-  function cssColorLooksLikeLiveRing(css) {
-    const rgb = parseCssColorChannels(css ?? "");
-    if (!rgb) return false;
-    const [r, g, b] = rgb;
-    if (r < 200 || g > 120 || b > 140) return false;
-    for (const accent of LIVE_ACCENT_RGB) {
-      const dist = Math.abs(r - accent[0]) + Math.abs(g - accent[1]) + Math.abs(b - accent[2]);
-      if (dist < 80) return true;
-    }
-    if (r > 220 && g < 90 && b < 120) return true;
-    return false;
-  }
-  function classHintsLiveRing(cls) {
-    const c = cls.toLowerCase();
-    if (/\blive-ring\b|\blive-badge\b|\bgoing-live\b|\bis-live\b|\bon-live\b|\blive-avatar\b/.test(c)) {
-      return true;
-    }
-    if (/\blive\b/.test(c) && /ring|badge|avatar|status|dot|indicator|border|living|streaming/.test(c)) {
-      return true;
-    }
-    if (/border.*red|red.*ring|live.*border|living/i.test(c)) return true;
-    return false;
-  }
-  function elementHasLiveAccentStyle(el) {
-    const inline = el.getAttribute("style") ?? "";
-    if (/#fe2c55|#ff2c55|rgb\(\s*25[0-4]\s*,\s*[0-5]?\d\s*,\s*[0-9]{1,2}\s*\)/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
-      return true;
-    }
-    if (typeof getComputedStyle === "function" && el instanceof HTMLElement) {
-      try {
-        const style = getComputedStyle(el);
-        const borderW = parseFloat(style.borderTopWidth || "0");
-        const outlineW = parseFloat(style.outlineWidth || "0");
-        if (borderW >= 1 && cssColorLooksLikeLiveRing(style.borderTopColor)) return true;
-        if (outlineW >= 1 && cssColorLooksLikeLiveRing(style.outlineColor)) return true;
-        if (cssColorLooksLikeLiveRing(style.boxShadow)) return true;
-      } catch {
-      }
-    }
-    return false;
-  }
-  function wrapperHasLiveColoredRing(img) {
-    if (elementHasLiveAccentStyle(img)) return true;
-    let el = img.parentElement;
-    for (let depth = 0; depth < 7 && el; depth++) {
-      const cls = elementClassText(el);
-      if (classHintsLiveRing(cls)) return true;
-      const inline = el.getAttribute("style") ?? "";
-      if (/border[^;]*(?:#fe2c55|#ff[0-9a-f]{3,4}|rgb\(\s*2[0-9]{2})/i.test(inline) || cssColorLooksLikeLiveRing(inline)) {
-        return true;
-      }
-      if (elementHasLiveAccentStyle(el)) return true;
-      for (const sib of el.children) {
-        if (sib.tagName === "IMG") continue;
-        if (elementHasLiveAccentStyle(sib) || classHintsLiveRing(elementClassText(sib))) {
-          return true;
-        }
-      }
-      for (const svg of el.querySelectorAll("svg circle, svg path, svg rect")) {
-        const stroke = svg.getAttribute("stroke") ?? svg.getAttribute("fill") ?? svg.style?.stroke ?? "";
-        if (cssColorLooksLikeLiveRing(stroke)) return true;
-      }
-      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
-      el = el.parentElement;
-    }
-    return false;
-  }
-  function imgHasLiveIndicator(img) {
-    if (wrapperHasLiveColoredRing(img)) return true;
-    let el = img;
-    for (let depth = 0; depth < 8 && el; depth++) {
-      const cls = elementClassText(el);
-      if (classHintsLiveRing(cls)) return true;
-      const label = el.getAttribute("aria-label") ?? "";
-      if (/\b(is\s+)?live(?!.*\bdur)/i.test(label) && !/go\s*live|duration/i.test(label)) {
-        return true;
-      }
-      for (const node of el.querySelectorAll("span, div, label, p, strong")) {
-        if ((node.textContent ?? "").length > 12) continue;
-        const direct = Array.from(node.childNodes).filter((n) => n.nodeType === 3).map((n) => (n.textContent ?? "").trim()).join("");
-        const own = direct || (node.childNodes.length <= 2 ? (node.textContent ?? "").trim() : "");
-        if (isStandaloneLiveBadgeText(own)) return true;
-      }
-      if (el.matches("tr, [role='row'], .live-card, [data-live-card]")) break;
-      el = el.parentElement;
-    }
-    return false;
-  }
-  function isChatCommentLine(line) {
-    const t = line.trim();
-    if (t.length < 4 || t.length > 200) return false;
-    return /^[a-z0-9._]{2,40}:\s+\S/i.test(t);
-  }
-  function creatorCellShowsLive(cell) {
-    for (const img of cell.querySelectorAll("img[src]")) {
-      const src = img.getAttribute("src") ?? "";
-      if (!src || src.startsWith("data:")) continue;
-      if (imgHasLiveIndicator(img)) return true;
-    }
-    const cls = elementClassText(cell).toLowerCase();
-    if (/living|on-?live|live-?status|avatar.*live/i.test(cls)) return true;
-    for (const el of cell.querySelectorAll("[class], [style]")) {
-      const c = elementClassText(el);
-      if (classHintsLiveRing(c)) return true;
-      if (elementHasLiveAccentStyle(el)) return true;
-    }
-    return false;
-  }
-  function isLikelyChatOverlay(el) {
-    const cls = elementClassText(el).toLowerCase();
-    if (/chat|comment|message|danmaku|bullet|im-message/i.test(cls)) return true;
-    const text = el.textContent ?? "";
-    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
-    if (lines.length < 2) return false;
-    const chatLines = lines.filter(isChatCommentLine);
-    return chatLines.length >= 2 && chatLines.length / lines.length >= 0.25;
-  }
-
-  // src/parser/live-username.ts
-  var LIVE_HANDLE_BLOCKLIST = /* @__PURE__ */ new Set([
-    "creators",
-    "creatorsmanage",
-    "creatorsmanagement",
-    "creator",
-    "manage",
-    "management",
-    "live",
-    "liveduration",
-    "livedur",
-    "duration",
-    "diamonds",
-    "diamond",
-    "gifters",
-    "gifter",
-    "viewers",
-    "viewer",
-    "follower",
-    "followers",
-    "current",
-    "promote",
-    "showing",
-    "estimated",
-    "bonus",
-    "ratio",
-    "streaming",
-    "stream",
-    "inactive",
-    "notable",
-    "eligible",
-    "assking",
-    "king_reaper5150",
-    "king_reaper"
-  ]);
-  function isSuspiciousLiveHandle(handle) {
-    if (handle.length > 24) return true;
-    if (/assking|king_reaper/i.test(handle)) return true;
-    if (/\d{5,}/.test(handle) && handle.length > 18) return true;
-    const chunks = handle.match(/[a-z][a-z0-9_]{4,}/gi) ?? [];
-    const unique = new Set(chunks.map((c) => c.toLowerCase()));
-    if (unique.size >= 2 && handle.length >= 16) return true;
-    for (const chunk of unique) {
-      if (handle.split(chunk).length > 2) return true;
-    }
-    return false;
-  }
-  function isInvalidLiveStreamHandle(raw) {
-    const handle = cleanTikTokUsername(raw);
-    if (!handle) return true;
-    if (LIVE_HANDLE_BLOCKLIST.has(handle)) return true;
-    if (/manage|duration|viewers?|gifters?|diamonds?|follower|promote|showing|estimated|bonus|ratio/i.test(handle)) {
-      return true;
-    }
-    if (handle.startsWith("live") && handle.length <= 14) return true;
-    if (handle.startsWith("creator") && handle.length <= 16) return true;
-    if (isSuspiciousLiveHandle(handle)) return true;
-    return false;
-  }
-
-  // src/parser/live-header-hints.ts
-  var HANDLE_IN_TEXT = /@?([a-z0-9._]{2,24})/i;
-  var TRUNCATED_HANDLE = /^([a-z0-9._]{4,28})\.{2,3}$/i;
-  var PLAIN_HANDLE = /^@?([a-z0-9._]{2,24})$/i;
-  function handleFromRawText(raw) {
-    if (!raw) return void 0;
-    const trimmed = raw.trim();
-    if (!trimmed || trimmed.length > 80) return void 0;
-    const plain = trimmed.match(PLAIN_HANDLE);
-    if (plain) {
-      const u = cleanTikTokUsername(plain[1]);
-      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
-    }
-    const embedded = trimmed.match(HANDLE_IN_TEXT);
-    if (embedded && trimmed.length <= 40) {
-      const u = cleanTikTokUsername(embedded[1]);
-      if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
-    }
-    return void 0;
-  }
-  function expandTruncatedPrefix(scope, prefix) {
-    const key = prefix.toLowerCase().replace(/\.$/, "");
-    if (key.length < 4) return void 0;
-    const candidates = [];
-    const push = (raw) => {
-      const u = handleFromRawText(raw);
-      if (u && u.startsWith(key) && u.length > key.length) candidates.push(u);
-    };
-    for (const el of scope.querySelectorAll("[title], [aria-label], [data-username], [data-user-name]")) {
-      push(el.getAttribute("title"));
-      push(el.getAttribute("aria-label"));
-      push(el.getAttribute("data-username"));
-      push(el.getAttribute("data-user-name"));
-    }
-    for (const el of scope.querySelectorAll(
-      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
-    )) {
-      push(el.textContent);
-    }
-    if (candidates.length === 0) return void 0;
-    candidates.sort((a, b) => b.length - a.length);
-    return candidates[0];
-  }
-  function usernameFromLiveHeaderHints(scope) {
-    const attrEls = scope.querySelectorAll(
-      "[title], [aria-label], [data-username], [data-user-name], [data-nickname]"
-    );
-    for (const el of attrEls) {
-      for (const attr of ["title", "aria-label", "data-username", "data-user-name", "data-nickname"]) {
-        const u = handleFromRawText(el.getAttribute(attr));
-        if (u) return u;
-      }
-    }
-    for (const el of scope.querySelectorAll(
-      "[role='tooltip'], [class*='tooltip'], [class*='Tooltip'], [class*='popover'], [class*='Popover']"
-    )) {
-      const u = handleFromRawText(el.textContent);
-      if (u) return u;
-    }
-    for (const el of scope.querySelectorAll("[aria-describedby]")) {
-      const id = el.getAttribute("aria-describedby");
-      if (!id) continue;
-      const doc = el.ownerDocument;
-      const safeId = id.replace(/([!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
-      const tip = doc?.getElementById(id) ?? scope.querySelector(`#${safeId}`);
-      const u = handleFromRawText(tip?.textContent ?? tip?.getAttribute("title"));
-      if (u) return u;
-    }
-    for (const line of (scope.textContent ?? "").split(/\n/).map((l) => l.trim())) {
-      const trunc = line.match(TRUNCATED_HANDLE);
-      if (!trunc) continue;
-      const expanded = expandTruncatedPrefix(scope, trunc[1]);
-      if (expanded) return expanded;
-      const fromTitle = scope.querySelector(`[title="${trunc[1]}"], [title^="${trunc[1]}"]`);
-      if (fromTitle) {
-        const u = handleFromRawText(fromTitle.getAttribute("title"));
-        if (u) return u;
-      }
-    }
-    return void 0;
-  }
-
   // src/parser/extractLiveNow.ts
-  var DOC_POS_FOLLOWING = 4;
+  var DOC_POS_FOLLOWING2 = 4;
   var DOC_POS_PRECEDING = 2;
   function isPageChromeText(text) {
     const t = text.trim().toLowerCase();
@@ -845,15 +1473,7 @@
   }
   var LIVE_STAT_LINE = /live\s*(?:time|dur(?:ation)?)|diamonds?|gifts?|gifters?|new\s*viewers?|viewers?/i;
   function cardHasLiveStats(text) {
-    const hasDuration = /live\s*(?:time|dur(?:ation)?)/i.test(text);
-    const hasEarnings = /diamonds?|gifts?/i.test(text);
-    const hasAudience = /(?:new\s*)?viewers?|watching|current/i.test(text);
-    return hasDuration && hasEarnings && hasAudience;
-  }
-  function isLiveStreamScope(text) {
-    const t = text.trim();
-    if (t.length < 20 || t.length > 5e3) return false;
-    return /live\s*(?:time|dur(?:ation)?)/i.test(t) && /diamonds?|gifts?/i.test(t);
+    return textHasLiveCardStats(text);
   }
   function dedupeToSmallestLiveCards(elements) {
     const sorted = [...elements].sort(
@@ -869,32 +1489,11 @@
       if (kept.some((k) => k.contains(el) && k !== el)) continue;
       kept.push(el);
     }
-    return kept.sort(compareDocumentOrder);
+    return kept.sort(compareDocumentOrder2);
   }
-  function liveCardRoot(el) {
-    const text = (el.textContent ?? "").trim();
-    const headerText = cardHeaderText(text);
-    if (cardHasCreatorHeader(el, headerText)) return el;
-    const parent = el.parentElement;
-    if (parent) {
-      const pt = (parent.textContent ?? "").trim();
-      if (cardHasLiveStats(pt) && cardHasCreatorHeader(parent, cardHeaderText(pt))) {
-        return parent;
-      }
-    }
-    return el;
-  }
-  function cardHasCreatorHeader(el, headerText) {
-    if (/id\s*\d{4,}/i.test(headerText)) return true;
-    if (usernameFromLinks(el)) return true;
-    for (const img of el.querySelectorAll("img[src]")) {
-      if (!isStreamPreviewImage(img, el)) return true;
-    }
-    return /^@?[a-z0-9._]{2,}/i.test(headerText.split(/\n/)[0] ?? "");
-  }
-  function compareDocumentOrder(a, b) {
+  function compareDocumentOrder2(a, b) {
     const pos = a.compareDocumentPosition(b);
-    if (pos & DOC_POS_FOLLOWING) return -1;
+    if (pos & DOC_POS_FOLLOWING2) return -1;
     if (pos & DOC_POS_PRECEDING) return 1;
     return 0;
   }
@@ -928,7 +1527,8 @@
   }
   function liveBadgeImagesIn(root) {
     const imgs = [];
-    for (const img of root.querySelectorAll("img[src]")) {
+    const list = isDocumentNode(root) ? deepQueryAll(root, "img[src]") : root.querySelectorAll("img[src]");
+    for (const img of list) {
       const src = img.getAttribute("src") ?? "";
       if (!src || src.startsWith("data:") || src.includes("emoji")) continue;
       if (isStreamPreviewImage(img)) continue;
@@ -951,67 +1551,48 @@
     }
     return null;
   }
+  function climbFromStatAnchor(anchor) {
+    let scope = anchor;
+    for (let depth = 0; depth < 14 && scope; depth += 1) {
+      if (isInsideBackstageChrome(scope)) return null;
+      if (looksLikeSingleLiveStreamCard(scope)) return scope;
+      scope = scope.parentElement;
+    }
+    return null;
+  }
   function findLiveCardsByStatsPanel(doc) {
     const roots = [];
-    for (const el of doc.querySelectorAll("div, section, article, li, span")) {
-      const text = (el.textContent ?? "").trim();
-      if (text.length < 15 || text.length > 900) continue;
+    for (const el of deepQueryAll(doc, "div, section, article, li")) {
+      if (isInsideBackstageChrome(el)) continue;
+      const text = elementVisibleText(el);
+      if (text.length < 10 || text.length > 3200) continue;
       if (!/live\s*(?:time|dur(?:ation)?)/i.test(text)) continue;
       if (!/diamonds?|gifts?/i.test(text)) continue;
-      let scope = el;
-      for (let depth = 0; depth < 12 && scope; depth += 1) {
-        const block = (scope.textContent ?? "").trim();
-        if (isLiveStreamScope(block) && scope.querySelector("img[src]")) {
-          roots.push(scope);
-          break;
-        }
-        scope = scope.parentElement;
-      }
+      const card = climbFromStatAnchor(el);
+      if (card) roots.push(card);
     }
     return roots;
   }
-  function extractLiveNowFromTitleAnchors(doc) {
-    const rows = [];
-    for (const el of doc.querySelectorAll("[title], [aria-label]")) {
-      const username = handleFromRawText(el.getAttribute("title")) ?? handleFromRawText(el.getAttribute("aria-label"));
-      if (!username) continue;
-      let scope = el;
-      let card = null;
-      for (let depth = 0; depth < 18 && scope; depth += 1) {
-        const block = (scope.textContent ?? "").trim();
-        if (isLiveStreamScope(block)) {
-          card = scope;
-          break;
-        }
-        scope = scope.parentElement;
-      }
-      if (!card) continue;
-      const parsed = buildLiveRowFromScope(card, username);
-      if (parsed) rows.push(parsed);
-    }
-    return rows;
-  }
-  function findLiveCreatorCards(doc) {
+  function findLiveStreamCardsOnly(doc) {
     const roots = [];
+    for (const card of findLiveCardsByStatsPanel(doc)) {
+      roots.push(card);
+    }
     for (const img of liveBadgeImagesIn(doc)) {
-      const card = climbToLiveCard(img);
-      if (card) roots.push(card);
+      const climbed = climbToLiveCard(img);
+      if (climbed && looksLikeSingleLiveStreamCard(climbed)) roots.push(climbed);
     }
-    roots.push(...findLiveCardsByStatsPanel(doc));
-    for (const a of doc.querySelectorAll('a[href*="/live"], a[href*="LiveRoom"], a[href*="live_room"]')) {
-      const href = a.getAttribute("href") ?? "";
-      if (!/@[a-z0-9._]+/i.test(href) && !/live/i.test(href)) continue;
-      let el = a;
-      for (let depth = 0; depth < 12 && el; depth += 1) {
-        const text = (el.textContent ?? "").trim();
-        if (text.length >= 30 && cardHasLiveStats(text) && !isPageChromeText(text) && !isLikelyChatOverlay(el)) {
-          roots.push(el);
-          break;
-        }
-        el = el.parentElement;
-      }
+    const deduped = dedupeToSmallestLiveCards(roots);
+    const valid = [];
+    for (const card of deduped) {
+      if (!looksLikeSingleLiveStreamCard(card)) continue;
+      if (cardChatLineCount(card) > 48) continue;
+      const headerText = cardHeaderText((card.textContent ?? "").trim());
+      const username = usernameFromStreamCard(card, headerText);
+      if (!username || isSuspiciousLiveHandle(username)) continue;
+      valid.push(card);
     }
-    return dedupeToSmallestLiveCards(roots);
+    return valid;
   }
   function cardHeaderText(fullText) {
     const idx = fullText.search(/live\s*(?:time|dur(?:ation)?)/i);
@@ -1031,6 +1612,13 @@
     return fullText.slice(0, Math.min(fullText.length, 400)).trim();
   }
   function streamCardHeaderElement(card) {
+    const titled = titleElementsWithHandles(card);
+    if (titled.length > 0) {
+      const header = titled[0].closest(
+        '[class*="header"], [class*="Header"], [class*="info"], [class*="creator"], [class*="anchor"]'
+      ) ?? titled[0].parentElement;
+      if (header && !isLikelyChatOverlay(header)) return header;
+    }
     for (const img of card.querySelectorAll("img[src]")) {
       if (isStreamPreviewImage(img, card)) continue;
       const header = img.closest(
@@ -1040,14 +1628,24 @@
     }
     return null;
   }
+  function usernameFromTitlesOnCard(card) {
+    const candidates = [];
+    for (const el of titleElementsWithHandles(card)) {
+      const u = handleFromRawText(el.getAttribute("title"));
+      if (u) candidates.push(u);
+    }
+    if (candidates.length === 0) return void 0;
+    candidates.sort((a, b) => b.length - a.length);
+    return candidates[0];
+  }
   function usernameFromStreamCard(card, headerText) {
     const headerEl = streamCardHeaderElement(card);
     const scope = headerEl ?? card;
     const scopeText = (headerEl?.textContent ?? headerText).slice(0, 350);
-    const fromHints = usernameFromLiveHeaderHints(scope);
-    if (fromHints && !isSuspiciousLiveHandle(fromHints)) return fromHints;
-    const fromLink = usernameFromLinks(scope);
+    const fromLink = usernameFromLinks(card);
     if (fromLink && !isSuspiciousLiveHandle(fromLink)) return fromLink;
+    const fromTitles = usernameFromTitlesOnCard(card);
+    if (fromTitles && !isSuspiciousLiveHandle(fromTitles)) return fromTitles;
     for (const img of scope.querySelectorAll("img[alt]")) {
       if (isStreamPreviewImage(img, card)) continue;
       const alt = cleanTikTokUsername(img.getAttribute("alt"));
@@ -1057,13 +1655,13 @@
       if (isChatCommentLine(line)) continue;
       if (/^id\s*\d/i.test(line)) continue;
       if (LIVE_STAT_LINE.test(line)) continue;
-      const truncated = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
-      if (truncated) {
+      const prefix = truncatedHandlePrefix(line);
+      if (prefix) {
         const expanded = usernameFromLiveHeaderHints(scope);
-        if (expanded && expanded.startsWith(truncated[1].toLowerCase().replace(/\.$/, ""))) {
+        if (expanded && expanded.startsWith(prefix.replace(/\.$/, ""))) {
           return expanded;
         }
-        const u = cleanTikTokUsername(truncated[1]);
+        const u = cleanTikTokUsername(prefix);
         if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
       }
       const at = line.match(/^@([a-z0-9._]{2,28})/i);
@@ -1076,6 +1674,8 @@
         if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
       }
     }
+    const fromHints = usernameFromLiveHeaderHints(scope);
+    if (fromHints && !isSuspiciousLiveHandle(fromHints)) return fromHints;
     return void 0;
   }
   function avatarFrom(el) {
@@ -1101,7 +1701,7 @@
       if (isChatCommentLine(line)) continue;
       if (/^id\s*\d/i.test(line)) continue;
       if (line.startsWith("@")) continue;
-      if (line.length > 3 && line.length < 64 && !/live|diamond|viewer|gifter/i.test(line)) {
+      if (line.length > 3 && line.length < 64 && !/live|diamond|viewer|gifter/i.test(line) && !/^replay$/i.test(line)) {
         return line;
       }
     }
@@ -1111,8 +1711,14 @@
     const root = scope ?? el;
     for (const a of root.querySelectorAll("a[href]")) {
       const href = a.getAttribute("href") ?? "";
-      const m = href.match(/tiktok\.com\/@([a-z0-9._]+)/i);
-      if (m) {
+      const patterns = [
+        /tiktok\.com\/@([a-z0-9._]+)/i,
+        /\/@([a-z0-9._]{2,24})(?:\/|$|\?|#)/i,
+        /[?&](?:uniqueId|username)=([a-z0-9._]+)/i
+      ];
+      for (const re of patterns) {
+        const m = href.match(re);
+        if (!m?.[1]) continue;
         const u = cleanTikTokUsername(m[1]);
         if (u && !isInvalidLiveStreamHandle(u)) return u;
       }
@@ -1140,8 +1746,11 @@
   }
   function buildLiveRowFromScope(card, username) {
     if (!username || isSuspiciousLiveHandle(username)) return null;
-    const text = (card.textContent ?? "").trim();
-    if (!text || !isLiveStreamScope(text)) return null;
+    const text = elementVisibleText(card);
+    if (!text) return null;
+    if (!textHasLiveCardStats(text) && !/(?:creator\s*)?id\s*[:#]?\s*\d{4,}/i.test(text) && !/@[_]?[a-z0-9][a-z0-9._]{2,24}(?:…|\.{2,3}|\u2026)/i.test(text)) {
+      return null;
+    }
     const headerText = cardHeaderText(text);
     const displayName = displayNameFrom(card, headerText);
     const liveDuration = parseStatValue(text, /live\s*(?:time|dur(?:ation)?)\.?\.?/) ?? text.match(/live\s*(?:time|dur(?:ation)?)\.?\s*(\d+\s*[hm](?:\s*\d+\s*m)?)/i)?.[1]?.trim();
@@ -1191,65 +1800,50 @@
     }
     return out;
   }
-  function extractLiveNowRowsFromPage(doc = document) {
+  function extractLiveNowFromListRows(doc) {
     const rows = [];
-    rows.push(...extractLiveNowFromTitleAnchors(doc));
-    const cards = findLiveCreatorCards(doc);
-    for (const el of cards) {
-      const parsed = parseLiveCard(liveCardRoot(el));
+    const candidates = [
+      ...deepQueryAll(doc, '[role="row"]'),
+      ...deepQueryAll(doc, "table tbody tr"),
+      ...deepQueryAll(doc, "li")
+    ];
+    for (const row of candidates) {
+      const text = elementVisibleText(row);
+      if (!textHasLiveCardStats(text)) continue;
+      if (!/id\s*[:#]?\s*\d{4,}/i.test(text)) continue;
+      if ((row.textContent?.length ?? 0) > 4e3) continue;
+      const headerText = cardHeaderText(text);
+      const username = usernameFromStreamCard(row, headerText);
+      if (!username) continue;
+      const parsed = buildLiveRowFromScope(row, username);
       if (parsed) rows.push(parsed);
-    }
-    if (rows.length === 0) {
-      rows.push(...extractLiveNowFromInnerText(doc));
     }
     return dedupeLive(rows);
   }
-  function extractLiveNowFromInnerText(doc) {
-    const text = doc.body?.innerText ?? "";
-    if (!/live\s*dur/i.test(text) && !/live\s*time/i.test(text)) return [];
-    const rows = [];
-    const chunks = text.split(/(?=\n\s*LIVE\s*(?:time|dur))/i);
-    for (const chunk of chunks) {
-      if (!/live\s*(?:time|dur)/i.test(chunk)) continue;
-      const headerPart = chunk.split(/LIVE\s*(?:time|dur)/i)[0] ?? "";
-      let username;
-      for (const line of headerPart.split(/\n/).map((l) => l.trim()).filter(Boolean)) {
-        if (isChatCommentLine(line) || /^id\s*\d/i.test(line)) continue;
-        const fromDom = doc.querySelector(`[title="${line}"], [title^="${line.replace(/\.\.\.$/, "")}"]`);
-        if (fromDom) {
-          username = handleFromRawText(fromDom.getAttribute("title"));
-          if (username) break;
-        }
-        const trunc = line.match(/^([a-z0-9._]{2,28})\.{2,3}$/i);
-        if (trunc) {
-          username = handleFromRawText(
-            doc.querySelector(`[title^="${trunc[1]}"]`)?.getAttribute("title")
-          );
-          if (username) break;
-        }
-      }
-      if (!username) {
-        const at = headerPart.match(/@([a-z0-9._]{2,24})/i);
-        if (at) username = cleanTikTokUsername(at[1]);
-      }
-      if (!username || isSuspiciousLiveHandle(username)) continue;
-      const liveDuration = chunk.match(/live\s*(?:time|dur)\.?\s*(\d+\s*[hm])/i)?.[1]?.trim();
-      const diamonds = chunk.match(/diamonds?\s*(\d+)/i)?.[1];
-      const viewers = chunk.match(/viewers?\s*(\d+)/i)?.[1];
-      const parts = [];
-      if (viewers) parts.push(`${viewers} viewers`);
-      if (diamonds) parts.push(`${diamonds} diamonds`);
-      rows.push({
-        tiktokUsername: username,
-        usernameConfidence: "high",
-        usernameSource: "username_column",
-        viewerCountText: parts.length ? parts.join(" \xB7 ") : void 0,
-        liveStartedText: liveDuration,
-        liveBadgeDetected: false,
-        rawTextPreview: headerPart.slice(0, 120)
-      });
+  function extractLiveNowFromDocument(doc) {
+    const fromVisible = extractLiveNowFromVisibleAtHandles(doc, buildLiveRowFromScope);
+    if (fromVisible.length > 0) return dedupeLive(fromVisible);
+    const fromCards = [];
+    for (const card of findLiveStreamCardsOnly(doc)) {
+      const parsed = parseLiveCard(card);
+      if (parsed) fromCards.push(parsed);
     }
-    return rows;
+    const cardRows = dedupeLive(fromCards);
+    if (cardRows.length > 0) return cardRows;
+    const fromTitles = extractLiveNowFromHandleTitles(doc, buildLiveRowFromScope);
+    if (fromTitles.length > 0) return dedupeLive(fromTitles);
+    const fromIds = extractLiveNowFromCreatorIdAnchors(doc, buildLiveRowFromScope);
+    if (fromIds.length > 0) return dedupeLive(fromIds);
+    const fromBody = extractLiveNowFromBodyText(doc);
+    if (fromBody.length > 0) return dedupeLive(fromBody);
+    return extractLiveNowFromListRows(doc);
+  }
+  function extractLiveNowRowsFromPage(doc = document) {
+    const merged = [];
+    for (const d of enumerateDocuments(doc)) {
+      merged.push(...extractLiveNowFromDocument(d));
+    }
+    return dedupeLive(merged);
   }
   function creatorTableRows(doc) {
     const grid = findCreatorContributionGrid(doc);
@@ -1658,10 +2252,44 @@
     return dedupeRows(rows);
   }
 
+  // src/parser/live-parse-debug.ts
+  var AT_TRUNCATED = /(?:^|[\s\n\r(])(@[_]?[a-z0-9][a-z0-9._]{2,26})(?:…|\.{2,3}|\u2026)/gi;
+  function collectLiveParseDebug(doc = document) {
+    const docs = enumerateDocuments(doc);
+    let bodyChars = 0;
+    let atTruncatedInBody = 0;
+    let creatorIdMentions = 0;
+    let titleWithHandle = 0;
+    let bodySnippet = "";
+    for (const d of docs) {
+      const body = elementVisibleText(d.body ?? d.documentElement);
+      bodyChars += body.length;
+      if (!bodySnippet && body.length > 0) {
+        bodySnippet = body.slice(0, 280).replace(/\s+/g, " ");
+      }
+      AT_TRUNCATED.lastIndex = 0;
+      atTruncatedInBody += [...body.matchAll(AT_TRUNCATED)].length;
+      creatorIdMentions += (body.match(/(?:creator\s*)?id\s*[:#]?\s*\d{4,}/gi) ?? []).length;
+      for (const el of deepQueryAll(d, "[title]")) {
+        const t = el.getAttribute("title") ?? "";
+        if (/^[a-z0-9._]{2,24}$/i.test(t.trim())) titleWithHandle += 1;
+      }
+    }
+    return {
+      documentsScanned: docs.length,
+      bodyChars,
+      atTruncatedInBody,
+      creatorIdMentions,
+      titleWithHandle,
+      bodySnippet
+    };
+  }
+
   // src/parser/index.ts
   function buildPageSnapshot(url = location.href, doc = document) {
     const detection = detectTikTokCreatorNetworkPage(url, doc);
     if (detection.detectedPageType === "live_now") {
+      const liveRows = extractLiveNowRowsFromPage(doc);
       return {
         sourcePageUrl: url,
         detectedPageType: "live_now",
@@ -1670,7 +2298,8 @@
         statPeriodStart: detection.statPeriodStart,
         statPeriodEnd: detection.statPeriodEnd,
         rows: [],
-        liveRows: extractLiveNowRowsFromPage(doc)
+        liveRows,
+        liveParseDebug: liveRows.length === 0 ? collectLiveParseDebug(doc) : void 0
       };
     }
     const liveFromTable = detection.detectedPageType === "creator_stats" || detection.detectedPageType === "manage_relationship" ? extractLiveRowsFromCreatorTable(doc) : [];
@@ -1731,6 +2360,9 @@
     const attempt = async (reason) => {
       try {
         const snapshot = buildPageSnapshot(location.href, document);
+        if (snapshot.detectedPageType !== "creator_stats") {
+          return;
+        }
         if (!statsLookReady(snapshot)) {
           if (Date.now() - startedAt < MAX_WAIT_FOR_ROWS_MS) {
             queue("wait-rows");

@@ -1,28 +1,32 @@
-import { isInvalidLiveStreamHandle, isSuspiciousLiveHandle } from "./live-username";
-import { cleanTikTokUsername } from "./username";
+import { isLikelyUsernameHintElement, titleElementsWithHandles } from "./live-hint-elements";
+import {
+  isTruncatedHandleVisible,
+  truncatedHandlePrefix,
+} from "./live-handle-patterns";
+import { handleFromRawText } from "./live-handle-text";
 
-const HANDLE_IN_TEXT = /@?([a-z0-9._]{2,24})/i;
-const TRUNCATED_HANDLE = /^([a-z0-9._]{4,28})\.{2,3}$/i;
-const PLAIN_HANDLE = /^@?([a-z0-9._]{2,24})$/i;
+export { handleFromRawText } from "./live-handle-text";
 
-export function handleFromRawText(raw: string | null | undefined): string | undefined {
-  if (!raw) return undefined;
-  const trimmed = raw.trim();
-  if (!trimmed || trimmed.length > 80) return undefined;
+function hintElementsInOrder(scope: Element): Element[] {
+  const priority: Element[] = [];
+  const rest: Element[] = [];
 
-  const plain = trimmed.match(PLAIN_HANDLE);
-  if (plain) {
-    const u = cleanTikTokUsername(plain[1]);
-    if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+  for (const el of scope.querySelectorAll(
+    "[title], [data-username], [data-user-name], [data-nickname]",
+  )) {
+    if (!isLikelyUsernameHintElement(el)) continue;
+    const bucket =
+      el.matches('a[href*="@"]') || isTruncatedHandleVisible((el.textContent ?? "").trim())
+        ? priority
+        : rest;
+    bucket.push(el);
   }
 
-  const embedded = trimmed.match(HANDLE_IN_TEXT);
-  if (embedded && trimmed.length <= 40) {
-    const u = cleanTikTokUsername(embedded[1]);
-    if (u && !isInvalidLiveStreamHandle(u) && !isSuspiciousLiveHandle(u)) return u;
+  for (const el of titleElementsWithHandles(scope)) {
+    if (!priority.includes(el) && !rest.includes(el)) priority.push(el);
   }
 
-  return undefined;
+  return [...priority, ...rest];
 }
 
 function expandTruncatedPrefix(scope: Element, prefix: string): string | undefined {
@@ -35,11 +39,11 @@ function expandTruncatedPrefix(scope: Element, prefix: string): string | undefin
     if (u && u.startsWith(key) && u.length > key.length) candidates.push(u);
   };
 
-  for (const el of scope.querySelectorAll("[title], [aria-label], [data-username], [data-user-name]")) {
+  for (const el of hintElementsInOrder(scope)) {
     push(el.getAttribute("title"));
-    push(el.getAttribute("aria-label"));
     push(el.getAttribute("data-username"));
     push(el.getAttribute("data-user-name"));
+    push(el.getAttribute("data-nickname"));
   }
 
   for (const el of scope.querySelectorAll(
@@ -54,18 +58,20 @@ function expandTruncatedPrefix(scope: Element, prefix: string): string | undefin
 }
 
 /**
- * Full @handle from Backstage LIVE card header — title tooltips, aria-label, data attrs.
- * (Truncated visible text is often "cj_allyca..." while title/tooltip has "cj_allycat93".)
+ * Full @handle from Backstage LIVE card — title on truncated name, data attrs, tooltips.
+ * Skips icon button titles (chevron_down, previous, …).
  */
 export function usernameFromLiveHeaderHints(scope: Element): string | undefined {
-  const attrEls = scope.querySelectorAll(
-    "[title], [aria-label], [data-username], [data-user-name], [data-nickname]",
-  );
-  for (const el of attrEls) {
-    for (const attr of ["title", "aria-label", "data-username", "data-user-name", "data-nickname"] as const) {
+  for (const el of hintElementsInOrder(scope)) {
+    for (const attr of ["title", "data-username", "data-user-name", "data-nickname"] as const) {
       const u = handleFromRawText(el.getAttribute(attr));
       if (u) return u;
     }
+  }
+
+  for (const el of titleElementsWithHandles(scope)) {
+    const u = handleFromRawText(el.getAttribute("title"));
+    if (u) return u;
   }
 
   for (const el of scope.querySelectorAll(
@@ -76,6 +82,7 @@ export function usernameFromLiveHeaderHints(scope: Element): string | undefined 
   }
 
   for (const el of scope.querySelectorAll("[aria-describedby]")) {
+    if (!isLikelyUsernameHintElement(el)) continue;
     const id = el.getAttribute("aria-describedby");
     if (!id) continue;
     const doc = el.ownerDocument;
@@ -86,13 +93,14 @@ export function usernameFromLiveHeaderHints(scope: Element): string | undefined 
   }
 
   for (const line of (scope.textContent ?? "").split(/\n/).map((l) => l.trim())) {
-    const trunc = line.match(TRUNCATED_HANDLE);
-    if (!trunc) continue;
-    const expanded = expandTruncatedPrefix(scope, trunc[1]);
+    const prefix = truncatedHandlePrefix(line);
+    if (!prefix) continue;
+    const expanded = expandTruncatedPrefix(scope, prefix);
     if (expanded) return expanded;
-    const fromTitle = scope.querySelector(`[title="${trunc[1]}"], [title^="${trunc[1]}"]`);
-    if (fromTitle) {
-      const u = handleFromRawText(fromTitle.getAttribute("title"));
+    for (const el of titleElementsWithHandles(scope)) {
+      const title = el.getAttribute("title");
+      if (!title?.toLowerCase().startsWith(prefix.replace(/\.$/, ""))) continue;
+      const u = handleFromRawText(title);
       if (u) return u;
     }
   }

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Suspense } from "react";
-import { LeaderboardPeriodTabs } from "@/components/rankings/LeaderboardPeriodTabs";
 import { LeaderboardTable } from "@/components/rankings/LeaderboardTable";
 import { Button } from "@/components/ui/Button";
 import { formatPeriodLabel, periodBounds, toDateString } from "@/lib/rankings/periods";
@@ -9,19 +7,19 @@ import { getLeaderboardWithMeta } from "@/lib/rankings/queries";
 import { parseRankingPeriod, type RankingPeriod } from "@/lib/rankings/types";
 
 type RankingsPageViewProps = {
-  periodKind: RankingPeriod;
+  periodKind?: RankingPeriod;
   anchor?: string;
   highlightProfileId?: string | null;
   showAdminHint?: boolean;
 };
 
 export async function RankingsPageView({
-  periodKind: periodKindProp,
+  periodKind: periodKindProp = "monthly",
   anchor: anchorProp,
   highlightProfileId = null,
   showAdminHint = false,
 }: RankingsPageViewProps) {
-  const periodKind = periodKindProp;
+  const periodKind = parseRankingPeriod(periodKindProp);
   const anchor = anchorProp ?? toDateString(new Date());
   const calendarPeriod = periodBounds(
     periodKind,
@@ -78,9 +76,8 @@ export async function RankingsPageView({
           Factory rankings
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-          {periodKind === "all-time"
-            ? "All-time performance from TikTok Creator Network backstage — diamonds, stream time, and activeness."
-            : "Monthly performance leaderboard from TikTok Creator Network backstage — diamonds earned (Gifts), stream time, and activeness."}
+          Monthly performance leaderboard from TikTok Creator Network backstage — diamonds earned
+          (Gifts), stream time, and activeness.
         </p>
         <p className="mt-2 text-sm text-zinc-500">
           {formatPeriodLabel(periodKind, periodStart, periodEnd)}
@@ -94,10 +91,8 @@ export async function RankingsPageView({
           <p className="mt-3 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2 text-sm text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
             Live from TikTok Backstage · last extension sync {lastSyncedLabel}
             {syncMeta?.acceptedRows ? ` · ${syncMeta.acceptedRows} creators` : ""}
-            {periodKind === "monthly"
-              ? ` · monthly view (${periodStart} → ${periodEnd})`
-              : ""}
-            . Open Backstage, select the Monthly tab, sync, then reload.
+            {` · monthly view (${periodStart} → ${periodEnd})`}. Open Backstage, select the Monthly
+            tab, sync, then reload.
           </p>
         ) : loadIssue === "wrong_period" && wrongPeriodHint ? (
           <p className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-2 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
@@ -114,11 +109,11 @@ export async function RankingsPageView({
             Latest import has no diamond values. Reload the Chrome extension, refresh preview on TikTok
             Backstage (confirm diamond counts show), then sync again.
           </p>
-        ) : periodKind === "monthly" ? (
+        ) : (
           <p className="mt-3 text-sm text-zinc-500">
             Showing snapshot data until staff sync from the Chrome extension.
           </p>
-        ) : null}
+        )}
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button href="/members" variant="secondary">
             Member directory
@@ -138,12 +133,6 @@ export async function RankingsPageView({
           or contact support.
         </div>
       ) : null}
-
-      <div className="mx-auto mt-10 max-w-4xl">
-        <Suspense fallback={null}>
-          <LeaderboardPeriodTabs basePath="/rankings" />
-        </Suspense>
-      </div>
 
       <div className="mx-auto mt-10 max-w-4xl">
         <LeaderboardTable

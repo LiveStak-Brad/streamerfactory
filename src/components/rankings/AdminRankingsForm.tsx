@@ -8,21 +8,21 @@ import {
   savePerformanceStatsAction,
 } from "@/lib/rankings/actions";
 import { periodBounds, formatPeriodLabel } from "@/lib/rankings/periods";
-import { ACTIVENESS_LEVELS, RANKING_PERIODS, type ActivenessLevel, type RankingPeriod } from "@/lib/rankings/types";
+import { ACTIVENESS_LEVELS, type ActivenessLevel, type RankingPeriod } from "@/lib/rankings/types";
 import type { PerformanceStatsRow } from "@/lib/rankings/types";
 import type { NetworkMemberListRow } from "@/lib/profiles/queries";
 
 type AdminRankingsFormProps = {
   members: NetworkMemberListRow[];
   existingStats: PerformanceStatsRow[];
-  periodKind: RankingPeriod;
+  /** Ignored — rankings are monthly only. Kept for call-site compatibility. */
+  periodKind?: RankingPeriod;
   periodAnchor: string;
 };
 
 export function AdminRankingsForm({
   members,
   existingStats,
-  periodKind: initialKind,
   periodAnchor: initialAnchor,
 }: AdminRankingsFormProps) {
   const router = useRouter();
@@ -31,7 +31,7 @@ export function AdminRankingsForm({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [periodKind, setPeriodKind] = useState<RankingPeriod>(initialKind);
+  const periodKind: RankingPeriod = "monthly";
   const [periodAnchor, setPeriodAnchor] = useState(initialAnchor);
   const [profileId, setProfileId] = useState(members[0]?.id ?? "");
   const [memberQuery, setMemberQuery] = useState("");
@@ -125,25 +125,12 @@ export function AdminRankingsForm({
       </section>
 
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Period</h2>
+        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Month</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Match TikTok Creator Network backstage dates. Monthly uses the calendar month (UTC).
+          Leaderboards are monthly only. Pick any date in the calendar month (UTC) to load or
+          override.
         </p>
         <div className="mt-4 flex flex-wrap gap-4">
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">Ranking period</span>
-            <select
-              value={periodKind}
-              onChange={(e) => setPeriodKind(e.target.value as RankingPeriod)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
-            >
-              {RANKING_PERIODS.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </label>
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium text-zinc-700 dark:text-zinc-300">Anchor date</span>
             <input
@@ -158,7 +145,7 @@ export function AdminRankingsForm({
             onClick={applyPeriodToUrl}
             className="self-end rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-muted-bg dark:border-zinc-600"
           >
-            Load period
+            Load month
           </button>
         </div>
         <p className="mt-3 text-sm text-zinc-500">

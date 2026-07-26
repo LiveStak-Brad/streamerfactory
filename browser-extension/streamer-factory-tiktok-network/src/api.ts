@@ -16,6 +16,7 @@ export type ImportResponse = {
   lowConfidenceMatches?: number;
   unmatchedUsernames?: string[];
   liveRowsAccepted?: number;
+  performanceStatsWarning?: string;
   siteUpdated?: boolean;
   rankingsPath?: string;
   error?: string;
@@ -30,4 +31,11 @@ export async function postImport(payload: SyncPayload): Promise<ImportResponse> 
     method: "POST",
     body: JSON.stringify(payload),
   });
+}
+
+export async function postClearLiveSnapshots(): Promise<{ deleted: number; membersPath?: string }> {
+  return requestStreamerFactoryApi<{ deleted: number; membersPath?: string }>(
+    "/api/extension/tiktok-network/clear-live",
+    { method: "POST", body: "{}" },
+  );
 }

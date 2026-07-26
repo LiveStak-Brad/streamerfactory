@@ -1,12 +1,13 @@
 export const ACTIVENESS_LEVELS = ["none", "low", "medium", "high", "elite"] as const;
 export type ActivenessLevel = (typeof ACTIVENESS_LEVELS)[number];
 
-export const RANKING_PERIODS = ["monthly", "all-time"] as const;
+/** Site leaderboards are monthly only (legacy weekly / all-time URLs map here). */
+export const RANKING_PERIODS = ["monthly"] as const;
 export type RankingPeriod = (typeof RANKING_PERIODS)[number];
 
-/** Legacy URLs and old data may still say weekly — treat as monthly. */
+/** Legacy URLs may still say weekly or all-time — treat as monthly. */
 export function parseRankingPeriod(raw: string | undefined): RankingPeriod {
-  if (raw === "weekly") return "monthly";
+  if (raw === "weekly" || raw === "all-time") return "monthly";
   if (raw && (RANKING_PERIODS as readonly string[]).includes(raw)) {
     return raw as RankingPeriod;
   }

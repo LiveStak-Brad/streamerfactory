@@ -1,4 +1,3 @@
-import { getLeaderboardFromAllTimeCreatorNetworkImports } from "@/lib/creator-network/all-time-from-import";
 import {
   getLatestCreatorNetworkSyncMeta,
   getLeaderboardFromLatestCreatorNetworkImport,
@@ -10,7 +9,6 @@ import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardFromBackstageSeed } from "@/lib/rankings/leaderboard-from-seed";
 import { periodBounds } from "@/lib/rankings/periods";
 import type {
-  ActivenessLevel,
   LeaderboardEntry,
   PerformanceStatsRow,
   RankingPeriod,
@@ -50,64 +48,9 @@ export async function getPerformanceStatForProfile(
   return (data as PerformanceStatsRow | null) ?? null;
 }
 
-/** Aggregate all-time stats (imports first, else creator_performance_stats). */
-export async function getAggregatedAllTimeStats(): Promise<
-  Array<{
-    profile_id: string;
-    coins_earned: number;
-    days_streamed: number;
-    hours_streamed: number;
-    activeness_level: ActivenessLevel;
-    follower_count: number;
-    follower_growth: number;
-    battles_played: number;
-    battles_won: number;
-  }>
-> {
-  const { getAllTimeScoringRowsFromImports } =
-    await import("@/lib/creator-network/all-time-from-import");
-  const fromImports = await getAllTimeScoringRowsFromImports();
-  if (fromImports.length > 0) return fromImports;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("creator_performance_stats").select("*");
-
-  if (error) throw new Error(error.message);
-  const rows = (data ?? []) as PerformanceStatsRow[];
-
-  const byProfile = new Map<string, (typeof rows)[0][]>();
-  for (const row of rows) {
-    const list = byProfile.get(row.profile_id) ?? [];
-    list.push(row);
-    byProfile.set(row.profile_id, list);
-  }
-
-  const eliteOrder: ActivenessLevel[] = ["none", "low", "medium", "high", "elite"];
-
-  return [...byProfile.entries()].map(([profile_id, list]) => {
-    const maxActiveness = list.reduce<ActivenessLevel>((best, r) => {
-      const idx = eliteOrder.indexOf(r.activeness_level);
-      const bestIdx = eliteOrder.indexOf(best);
-      return idx > bestIdx ? r.activeness_level : best;
-    }, "none");
-
-    return {
-      profile_id,
-      coins_earned: list.reduce((s, r) => s + r.coins_earned, 0),
-      days_streamed: list.reduce((s, r) => s + r.days_streamed, 0),
-      hours_streamed: list.reduce((s, r) => Number(r.hours_streamed), 0),
-      activeness_level: maxActiveness,
-      follower_count: Math.max(...list.map((r) => r.follower_count), 0),
-      follower_growth: list.reduce((s, r) => s + r.follower_growth, 0),
-      battles_played: list.reduce((s, r) => s + r.battles_played, 0),
-      battles_won: list.reduce((s, r) => s + r.battles_won, 0),
-    };
-  });
-}
-
 /**
- * Weekly/monthly: latest Chrome extension import when available; else backstage seed snapshot.
- * All-time: reads from DB when staff have imported; otherwise falls back to snapshot.
+ * Monthly leaderboard: latest Chrome extension import when available;
+ * else backstage seed snapshot.
  */
 export type LeaderboardLoadIssue =
   | "no_import"
@@ -137,213 +80,77 @@ async function seedBoardWithImportAvatars(): Promise<LeaderboardEntry[]> {
 }
 
 export async function getLeaderboardWithMeta(
-  kind: RankingPeriod,
+  kind: RankingPeriod = "monthly",
   anchorDate?: string,
 ): Promise<LeaderboardLoadResult> {
-  if (kind === "monthly") {
-    const statKind = periodKindForRanking(kind)!;
-    try {
-      const fromImport = await getLeaderboardFromLatestCreatorNetworkImport(kind, anchorDate);
-      if (fromImport?.emptyDiamonds) {
-        return {
-          entries: await seedBoardWithImportAvatars(),
-          syncMeta: null,
-          loadIssue: "empty_diamonds",
-        };
-      }
-      if (fromImport && fromImport.entries.length > 0) {
-        return {
-          entries: fromImport.entries,
-          syncMeta: {
-            importedAt: fromImport.importedAt ?? new Date().toISOString(),
-            acceptedRows: fromImport.acceptedRowsCount,
-            batchId: fromImport.batchId ?? "",
-            periodStart: fromImport.periodStart,
-            periodEnd: fromImport.periodEnd,
-            statPeriodLabel: fromImport.statPeriodLabel,
-          },
-        };
-      }
-
-      const wrong = await getWrongPeriodImportHint(statKind);
-      if (wrong) {
-        const other =
-          wrong.importKind === "weekly"
-            ? "Weekly"
-            : wrong.importKind === "monthly"
-              ? "Monthly"
-              : "a different period";
-        return {
-          entries: await seedBoardWithImportAvatars(),
-          syncMeta: null,
-          loadIssue: "wrong_period",
-          wrongPeriodHint: `Latest sync looks like ${other} data. In TikTok Backstage, open Creator stats, select the Monthly tab for this period, then sync again.`,
-        };
-      }
-
-      const batchMeta = await getLatestCreatorNetworkSyncMeta();
-      if (batchMeta) {
-        return {
-          entries: await seedBoardWithImportAvatars(),
-          syncMeta: null,
-          loadIssue: "import_not_readable",
-        };
-      }
-    } catch {
+  const statKind = periodKindForRanking(kind);
+  try {
+    const fromImport = await getLeaderboardFromLatestCreatorNetworkImport(kind, anchorDate);
+    if (fromImport?.emptyDiamonds) {
       return {
         entries: await seedBoardWithImportAvatars(),
         syncMeta: null,
-        loadIssue: "load_error",
+        loadIssue: "empty_diamonds",
       };
     }
+    if (fromImport && fromImport.entries.length > 0) {
+      return {
+        entries: fromImport.entries,
+        syncMeta: {
+          importedAt: fromImport.importedAt ?? new Date().toISOString(),
+          acceptedRows: fromImport.acceptedRowsCount,
+          batchId: fromImport.batchId ?? "",
+          periodStart: fromImport.periodStart,
+          periodEnd: fromImport.periodEnd,
+          statPeriodLabel: fromImport.statPeriodLabel,
+        },
+      };
+    }
+
+    const wrong = await getWrongPeriodImportHint(statKind);
+    if (wrong) {
+      const other =
+        wrong.importKind === "weekly"
+          ? "Weekly"
+          : wrong.importKind === "monthly"
+            ? "Monthly"
+            : "a different period";
+      return {
+        entries: await seedBoardWithImportAvatars(),
+        syncMeta: null,
+        loadIssue: "wrong_period",
+        wrongPeriodHint: `Latest sync looks like ${other} data. In TikTok Backstage, open Creator stats, select the Monthly tab for this period, then sync again.`,
+      };
+    }
+
+    const batchMeta = await getLatestCreatorNetworkSyncMeta();
+    if (batchMeta) {
+      return {
+        entries: await seedBoardWithImportAvatars(),
+        syncMeta: null,
+        loadIssue: "import_not_readable",
+      };
+    }
+  } catch {
     return {
       entries: await seedBoardWithImportAvatars(),
       syncMeta: null,
-      loadIssue: "no_import",
+      loadIssue: "load_error",
     };
   }
-
-  if (kind === "all-time") {
-    try {
-      const fromImport = await getLeaderboardFromAllTimeCreatorNetworkImports();
-      if (fromImport && fromImport.entries.length > 0) {
-        return {
-          entries: fromImport.entries,
-          syncMeta: {
-            importedAt: fromImport.importedAt ?? new Date().toISOString(),
-            acceptedRows: fromImport.acceptedRowsCount,
-            batchId: fromImport.batchId ?? "",
-            periodStart: fromImport.periodStart,
-            periodEnd: fromImport.periodEnd,
-            statPeriodLabel: fromImport.statPeriodLabel,
-          },
-        };
-      }
-    } catch {
-      // fall through to DB / seed
-    }
-  }
-
-  const entries = await mergeImportAvatarsIntoEntries(await getLeaderboard(kind, anchorDate));
-  return { entries, syncMeta: null };
+  return {
+    entries: await seedBoardWithImportAvatars(),
+    syncMeta: null,
+    loadIssue: "no_import",
+  };
 }
 
 export async function getLeaderboard(
-  kind: RankingPeriod,
+  kind: RankingPeriod = "monthly",
   anchorDate?: string,
 ): Promise<LeaderboardEntry[]> {
-  if (kind === "monthly") {
-    const { entries } = await getLeaderboardWithMeta(kind, anchorDate);
-    return entries;
-  }
-
-  if (kind === "all-time") {
-    try {
-      const fromImport = await getLeaderboardFromAllTimeCreatorNetworkImports();
-      if (fromImport && fromImport.entries.length > 0) return fromImport.entries;
-    } catch {
-      // fall through
-    }
-  }
-
-  const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();
-  const { periodStart, periodEnd } = periodBounds(kind, anchor);
-
-  try {
-    const fromDb = await getLeaderboardFromTables(kind, anchor, periodStart, periodEnd);
-    if (fromDb.length > 0) return fromDb;
-  } catch {
-    // tables missing or RLS
-  }
-
-  return mergeImportAvatarsIntoEntries(getLeaderboardFromBackstageSeed());
-}
-
-async function getLeaderboardFromTables(
-  kind: RankingPeriod,
-  anchor: Date,
-  periodStart: string,
-  periodEnd: string,
-): Promise<LeaderboardEntry[]> {
-  const supabase = await createClient();
-
-  const { data: rankings, error: rankErr } = await supabase
-    .from("creator_rankings")
-    .select("*")
-    .eq("ranking_period", kind)
-    .eq("period_start", periodStart)
-    .order("rank_position", { ascending: true, nullsFirst: false });
-
-  if (rankErr) throw new Error(rankErr.message);
-
-  let statsMap = new Map<string, PerformanceStatsRow>();
-  if (kind === "all-time") {
-    const agg = await getAggregatedAllTimeStats();
-    for (const a of agg) {
-      statsMap.set(a.profile_id, {
-        id: "",
-        profile_id: a.profile_id,
-        period_start: periodStart,
-        period_end: periodEnd,
-        coins_earned: a.coins_earned,
-        days_streamed: a.days_streamed,
-        hours_streamed: a.hours_streamed,
-        activeness_level: a.activeness_level,
-        follower_count: a.follower_count,
-        follower_growth: a.follower_growth,
-        battles_played: a.battles_played,
-        battles_won: a.battles_won,
-        created_at: "",
-        updated_at: "",
-      });
-    }
-  } else {
-    const stats = await getPerformanceStatsForPeriod(periodStart, periodEnd);
-    statsMap = new Map(stats.map((s) => [s.profile_id, s]));
-  }
-
-  const profileIds = [...new Set((rankings ?? []).map((r) => r.profile_id as string))];
-  if (profileIds.length === 0) return [];
-
-  const { data: profiles, error: profErr } = await supabase
-    .from("profiles")
-    .select("id, email, tiktok_username")
-    .in("id", profileIds);
-
-  if (profErr) throw new Error(profErr.message);
-
-  const profileMap = new Map(
-    (profiles ?? []).map((p) => [
-      p.id as string,
-      { email: p.email as string | null, tiktok_username: p.tiktok_username as string | null },
-    ]),
-  );
-
-  return (rankings ?? [])
-    .map((r) => {
-      const pid = r.profile_id as string;
-      const prof = profileMap.get(pid);
-      const stat = statsMap.get(pid);
-      return {
-        profile_id: pid,
-        email: prof?.email ?? null,
-        tiktok_username: prof?.tiktok_username ?? null,
-        rank_position: r.rank_position as number | null,
-        rank_score: Number(r.rank_score),
-        coins_rank: r.coins_rank as number | null,
-        hours_rank: r.hours_rank as number | null,
-        activity_rank: r.activity_rank as number | null,
-        battle_rank: r.battle_rank as number | null,
-        coins_earned: stat?.coins_earned ?? 0,
-        days_streamed: stat?.days_streamed ?? 0,
-        hours_streamed: Number(stat?.hours_streamed ?? 0),
-        activeness_level: (stat?.activeness_level ?? "none") as ActivenessLevel,
-        follower_growth: stat?.follower_growth ?? 0,
-        battles_played: stat?.battles_played ?? 0,
-        battles_won: stat?.battles_won ?? 0,
-      } satisfies LeaderboardEntry;
-    })
-    .sort((a, b) => (a.rank_position ?? 999) - (b.rank_position ?? 999));
+  const { entries } = await getLeaderboardWithMeta(kind, anchorDate);
+  return entries;
 }
 
 export async function getMyLeaderboardSummary(

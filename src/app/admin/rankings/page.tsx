@@ -44,7 +44,7 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
   }
 
   try {
-    if (!tablesMissing && periodKind !== "all-time") {
+    if (!tablesMissing) {
       existingStats = await getPerformanceStatsForPeriod(periodStart, periodEnd);
     } else {
       existingStats = [];

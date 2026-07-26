@@ -5,7 +5,7 @@ import { requireAdmin } from "@/lib/auth/server";
 import { seedBackstageStatsFromSnapshots } from "@/lib/rankings/seed-backstage";
 import { periodBounds } from "@/lib/rankings/periods";
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
-import { getAggregatedAllTimeStats, getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
+import { getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
 import { createClient } from "@/lib/supabase/server";
 import type { ActivenessLevel, RankingPeriod } from "@/lib/rankings/types";
 import { ACTIVENESS_LEVELS, RANKING_PERIODS } from "@/lib/rankings/types";
@@ -96,30 +96,16 @@ export async function recalculateRankingsAction(
   const anchor = periodAnchor ? new Date(`${periodAnchor}T12:00:00Z`) : new Date();
   const { periodStart, periodEnd } = periodBounds(kind, anchor);
 
-  let statsForScoring: Array<{
-    profile_id: string;
-    coins_earned: number;
-    days_streamed: number;
-    hours_streamed: number;
-    activeness_level: ActivenessLevel;
-    battles_played: number;
-    battles_won: number;
-  }>;
-
-  if (kind === "all-time") {
-    statsForScoring = await getAggregatedAllTimeStats();
-  } else {
-    const rows = await getPerformanceStatsForPeriod(periodStart, periodEnd);
-    statsForScoring = rows.map((r) => ({
-      profile_id: r.profile_id,
-      coins_earned: r.coins_earned,
-      days_streamed: r.days_streamed,
-      hours_streamed: Number(r.hours_streamed),
-      activeness_level: r.activeness_level,
-      battles_played: r.battles_played,
-      battles_won: r.battles_won,
-    }));
-  }
+  const rows = await getPerformanceStatsForPeriod(periodStart, periodEnd);
+  const statsForScoring = rows.map((r) => ({
+    profile_id: r.profile_id,
+    coins_earned: r.coins_earned,
+    days_streamed: r.days_streamed,
+    hours_streamed: Number(r.hours_streamed),
+    activeness_level: r.activeness_level,
+    battles_played: r.battles_played,
+    battles_won: r.battles_won,
+  }));
 
   const computed = computeRankings(statsForScoring);
   const ranked = assignRanks(computed);

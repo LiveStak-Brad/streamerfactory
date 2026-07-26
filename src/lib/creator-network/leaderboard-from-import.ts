@@ -311,9 +311,7 @@ export async function getLeaderboardFromLatestCreatorNetworkImport(
 ): Promise<LeaderboardImportLoad | null> {
   const periodKind = periodKindForRanking(kind);
   const anchor = anchorDate ? new Date(`${anchorDate}T12:00:00Z`) : new Date();
-  const loaded = periodKind
-    ? await loadImportStatRows({ mode: "period", periodKind, anchor })
-    : await loadLatestImportStatRows();
+  const loaded = await loadImportStatRows({ mode: "period", periodKind, anchor });
   if (!loaded) return null;
 
   const { batch, rows } = loaded;

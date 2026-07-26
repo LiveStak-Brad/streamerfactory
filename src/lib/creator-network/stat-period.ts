@@ -101,7 +101,6 @@ export function rowMatchesRankingPeriod(
   return importBatchMatchesRankingPeriod([row], kind, periodStart, periodEnd, batchCreatedAt);
 }
 
-export function periodKindForRanking(kind: RankingPeriod): StatPeriodKind | null {
-  if (kind === "monthly") return "monthly";
-  return null;
+export function periodKindForRanking(_kind: RankingPeriod): StatPeriodKind {
+  return "monthly";
 }

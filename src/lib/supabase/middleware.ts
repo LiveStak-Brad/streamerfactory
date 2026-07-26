@@ -52,7 +52,10 @@ export async function updateSession(request: NextRequest) {
   }
 
   /* Extension import: staff only (session cookie from Streamer Factory login). */
-  if (pathname.startsWith("/api/extension/tiktok-network/import")) {
+  if (
+    pathname.startsWith("/api/extension/tiktok-network/import") ||
+    pathname.startsWith("/api/extension/tiktok-network/clear-live")
+  ) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

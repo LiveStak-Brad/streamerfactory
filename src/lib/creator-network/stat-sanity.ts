@@ -35,27 +35,6 @@ export function isCredibleImportedStatRow(
   return true;
 }
 
-/** All-time total from DB — reject flat 100k when roster seed disagrees. */
-export function isCredibleAllTimeImportTotal(
-  importTotal: number,
-  seedBaseline: number,
-  hoursStreamed?: number | null,
-  daysStreamed?: number | null,
-): boolean {
-  if (importTotal < 1) return false;
-  if (!isPlausibleImportedDiamonds(importTotal)) return false;
-  if (isChartMisreadDiamonds(importTotal, hoursStreamed, daysStreamed)) return false;
-  if (
-    importTotal === 100_000 &&
-    seedBaseline > 0 &&
-    seedBaseline !== 100_000 &&
-    Number(hoursStreamed ?? 0) < 0.5
-  ) {
-    return false;
-  }
-  return true;
-}
-
 /** Returns rounded diamonds, or null when the value should not be stored or summed. */
 export function parsePlausibleImportedDiamonds(
   diamonds: number | undefined | null,

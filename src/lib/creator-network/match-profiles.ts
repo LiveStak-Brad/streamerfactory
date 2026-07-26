@@ -59,11 +59,23 @@ export function matchProfileId(
 ): string | null {
   if (!rawUsername?.trim()) return null;
   const canonical = resolveCanonicalHandle(rawUsername);
-  return (
+  const direct =
     maps.handleToProfileId.get(normalizeHandle(canonical)) ??
-    maps.handleToProfileId.get(normalizeHandle(rawUsername)) ??
-    null
-  );
+    maps.handleToProfileId.get(normalizeHandle(rawUsername));
+  if (direct) return direct;
+
+  const key = normalizeHandle(canonical);
+  if (key.length < 6) return null;
+
+  const prefixMatches: Array<[string, string]> = [];
+  for (const [handle, profileId] of maps.handleToProfileId.entries()) {
+    if (handle.startsWith(key) || key.startsWith(handle)) {
+      prefixMatches.push([handle, profileId]);
+    }
+  }
+
+  if (prefixMatches.length === 1) return prefixMatches[0][1];
+  return null;
 }
 
 function emptyMaps(): ProfileMatchMaps {

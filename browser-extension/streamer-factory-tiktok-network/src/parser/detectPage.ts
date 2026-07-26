@@ -77,7 +77,20 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
   }
 
   const title = doc.title.toLowerCase();
-  const bodyText = (doc.body?.innerText ?? "").slice(0, 4000).toLowerCase();
+  const bodyText = (doc.body?.innerText ?? doc.body?.textContent ?? "").slice(0, 4000).toLowerCase();
+
+  /* LIVE now — before creator_stats (every Backstage page mentions incentives in the nav). */
+  if (
+    path.includes("/anchor/live") ||
+    path.includes("/live-now") ||
+    path.includes("livenow") ||
+    (path.includes("/live") && !path.includes("/relation")) ||
+    title.includes("live now") ||
+    bodyText.includes("creators who are live now") ||
+    bodyText.includes("promote their live")
+  ) {
+    return { detectedPageType: "live_now" };
+  }
 
   /* Revenue / incentives / stats — before manage_relationship (sidebar often mentions "Manage relationship"). */
   if (
@@ -111,17 +124,6 @@ export function detectTikTokCreatorNetworkPage(url: string, doc: Document = docu
       detectedPageType: "manage_relationship",
       relationshipTab: readActiveRelationshipTab(doc),
     };
-  }
-
-  if (
-    path.includes("/anchor/live") ||
-    path.includes("/live-now") ||
-    path.includes("livenow") ||
-    (path.includes("/live") && !path.includes("/relation")) ||
-    title.includes("live now") ||
-    bodyText.includes("creators who are live now")
-  ) {
-    return { detectedPageType: "live_now" };
   }
 
   if (

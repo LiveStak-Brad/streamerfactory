@@ -38,6 +38,15 @@ export type ParsedLiveRow = {
   rawTextPreview?: string;
 };
 
+export type LiveParseDebug = {
+  documentsScanned: number;
+  bodyChars: number;
+  atTruncatedInBody: number;
+  creatorIdMentions: number;
+  titleWithHandle: number;
+  bodySnippet: string;
+};
+
 export type PageSnapshot = {
   sourcePageUrl: string;
   detectedPageType: DetectedPageType;
@@ -45,6 +54,8 @@ export type PageSnapshot = {
   statPeriodLabel?: string;
   rows: ParsedCreatorRow[];
   liveRows: ParsedLiveRow[];
+  /** Present when live_now returns 0 rows — helps diagnose DOM vs parser. */
+  liveParseDebug?: LiveParseDebug;
 };
 
 export type SyncPayload = {
