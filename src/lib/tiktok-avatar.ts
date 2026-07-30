@@ -94,11 +94,17 @@ export function isTikTokCdnAvatarUrl(url: string | null | undefined): boolean {
 /**
  * Same-origin proxy URL for Backstage / TikTok CDN avatars (browser hotlinking is blocked).
  * Returns null when the URL should not be shown (empty, data:, or unknown host).
- * First-party site URLs are returned as-is.
+ * First-party site URLs (absolute or root-relative `/…`) are returned as-is.
  */
 export function toProxiedAvatarSrc(url: string | null | undefined): string | null {
   const trimmed = url?.trim();
   if (!trimmed || trimmed.startsWith("data:") || trimmed.startsWith("blob:")) return null;
+
+  // Site-relative public assets (e.g. /branding/team/brad-morris.jpg)
+  if (trimmed.startsWith("/") && !trimmed.startsWith("//")) {
+    return trimmed;
+  }
+
   try {
     const absolute = trimmed.startsWith("//") ? `https:${trimmed}` : trimmed;
     const host = new URL(absolute).hostname.toLowerCase();

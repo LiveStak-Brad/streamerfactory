@@ -46,11 +46,13 @@ export function NetworkLeadership({ managers }: NetworkLeadershipProps) {
                 )}
                 <div className="mt-5 flex items-center gap-4">
                   <CreatorAvatar
-                    username={handle || manager.displayName}
+                    username={manager.displayName}
                     preferredImageUrl={manager.avatarUrl}
                     fallbackBackdropClass="bg-gradient-to-br from-[#5B3BFF] via-[#A020F0] to-[#FF2ED1]"
                     fallbackInitial={(manager.displayName[0] || "?").toUpperCase()}
                     className="h-16 w-16 ring-2 ring-white/15"
+                    priority={Boolean(manager.isPrimary)}
+                    tiktokFallback={false}
                   />
                   <div className="min-w-0">
                     <h3

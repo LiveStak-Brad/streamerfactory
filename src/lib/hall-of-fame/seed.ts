@@ -16,6 +16,8 @@ export const NETWORK_MANAGERS_SEED: readonly NetworkManager[] = [
     displayName: "Brad Morris",
     title: "Founder of Streamer Factory",
     contactHandle: "warrentonjunk",
+    /** Drop the photo at public/branding/team/brad-morris.png */
+    avatarUrl: "/branding/team/brad-morris.png",
     sortOrder: 0,
     isPrimary: true,
   },

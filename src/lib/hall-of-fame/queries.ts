@@ -18,6 +18,7 @@ import type {
   NetworkManager,
   YearMonth,
 } from "@/lib/hall-of-fame/types";
+import { getBackstageAvatarMapByHandle } from "@/lib/creator-network/leaderboard-from-import";
 import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import { getLeaderboardWithMeta } from "@/lib/rankings/queries";
 import { rankingBadge } from "@/lib/rankings/scoring";
@@ -210,6 +211,50 @@ function mergeArchivedMonths(dbMonths: HallOfFameMonth[] | null): HallOfFameMont
     .sort((a, b) => compareYearMonthDesc(a.yearMonth, b.yearMonth));
 }
 
+/** Fill missing photos from the same Backstage import map /rankings uses. */
+function withBackstageAvatars(
+  months: HallOfFameMonth[],
+  avatarMap: Map<string, string | null>,
+): HallOfFameMonth[] {
+  if (avatarMap.size === 0) return months;
+
+  return months.map((month) => ({
+    ...month,
+    placements: month.placements.map((p) => {
+      if (p.avatarUrl) return p;
+      const url = avatarMap.get(normalizeHandle(p.tiktokUsername)) ?? null;
+      return url ? { ...p, avatarUrl: url } : p;
+    }),
+  }));
+}
+
+/** Manager photos are explicit (local branding) — never pull TikTok / Backstage for staff. */
+function resolveManagers(dbManagers: NetworkManager[] | null): NetworkManager[] {
+  const seedById = new Map(NETWORK_MANAGERS_SEED.map((m) => [m.id, m]));
+  const base =
+    dbManagers && dbManagers.length > 0 ? dbManagers : [...NETWORK_MANAGERS_SEED];
+
+  return base.map((m) => {
+    const seed = seedById.get(m.id);
+    // Prefer dedicated manager photo from seed (local branding asset).
+    const avatarUrl = seed?.avatarUrl || m.avatarUrl || null;
+    return { ...m, avatarUrl };
+  });
+}
+
+function legendsWithAvatars(
+  legends: FactoryLegend[],
+  avatarMap: Map<string, string | null>,
+): FactoryLegend[] {
+  return legends.map((legend) => {
+    const holder = legend.holder;
+    if (!holder || holder.avatarUrl) return legend;
+    const url = avatarMap.get(normalizeHandle(holder.tiktokUsername)) ?? null;
+    if (!url) return legend;
+    return { ...legend, holder: { ...holder, avatarUrl: url } };
+  });
+}
+
 function seedLegends(): FactoryLegend[] {
   const holders = new Map(LEGEND_HOLDERS_SEED.map((h) => [h.categoryKey, h]));
   return LEGEND_CATEGORIES_SEED.map((c) => ({
@@ -261,27 +306,31 @@ export async function getLiveHallOfFameMonth(
 }
 
 export async function getHallOfFamePageData(): Promise<HallOfFamePageData> {
-  const [dbMonths, dbManagers, dbLegends] = await Promise.all([
+  const [dbMonths, dbManagers, dbLegends, avatarMap] = await Promise.all([
     loadArchivedMonthsFromDb(),
     loadManagersFromDb(),
     loadLegendsFromDb(),
+    getBackstageAvatarMapByHandle().catch(() => new Map<string, string | null>()),
   ]);
 
-  const archivedMonths = mergeArchivedMonths(dbMonths);
+  const archivedMonths = withBackstageAvatars(mergeArchivedMonths(dbMonths), avatarMap);
   const archivedKeys = new Set(archivedMonths.map((m) => m.yearMonth));
   const currentYm = yearMonthFromDate();
 
   let liveMonth: HallOfFameMonth | null = null;
   if (!archivedKeys.has(currentYm)) {
     liveMonth = await getLiveHallOfFameMonth(currentYm);
+    if (liveMonth) {
+      liveMonth = withBackstageAvatars([liveMonth], avatarMap)[0] ?? liveMonth;
+    }
   }
 
-  const managers =
-    dbManagers && dbManagers.length > 0
-      ? dbManagers
-      : [...NETWORK_MANAGERS_SEED];
+  const managers = resolveManagers(dbManagers);
 
-  const legends = dbLegends && dbLegends.length > 0 ? dbLegends : seedLegends();
+  const legends = legendsWithAvatars(
+    dbLegends && dbLegends.length > 0 ? dbLegends : seedLegends(),
+    avatarMap,
+  );
 
   return {
     managers,

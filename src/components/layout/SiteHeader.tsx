@@ -103,7 +103,7 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
   const isApplicant = profileRole === "applicant";
 
   const navLinkClass = (active: boolean, emphasize = false) =>
-    `relative rounded-lg px-3 py-2 text-[0.92rem] font-semibold transition-colors after:absolute after:inset-x-3 after:bottom-1 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-200 dark:after:bg-accent-muted sm:py-1.5 ${
+    `relative whitespace-nowrap rounded-lg px-2.5 py-2 text-[0.9rem] font-semibold transition-colors after:absolute after:inset-x-2.5 after:bottom-1 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-200 dark:after:bg-accent-muted sm:px-2 sm:py-1.5 lg:px-2.5 ${
       active ? "text-zinc-950 after:scale-x-100 dark:text-zinc-50" : "after:scale-x-0 hover:after:scale-x-100"
     } ${
       emphasize
@@ -154,7 +154,7 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
           <div className="relative" ref={platformRef}>
             <button
               type="button"
-              className={`${navLinkClass(platformActive)} flex w-full items-center justify-between gap-1.5 sm:w-auto`}
+              className={`${navLinkClass(platformActive)} flex w-full items-center justify-between gap-1 sm:w-auto`}
               aria-expanded={platformOpen}
               aria-controls={platformMenuId}
               onClick={() => {
@@ -227,13 +227,14 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
                 className={navLinkClass(active, isJoin)}
                 onClick={() => setOpen(false)}
                 aria-current={active ? "page" : undefined}
+                title={item.href === "/hall-of-fame" ? "Factory Hall of Fame" : undefined}
               >
                 {item.label}
               </Link>
             );
           })}
 
-          <div className="mt-2 flex flex-col gap-2 border-t border-zinc-200/90 pt-3 sm:mt-0 sm:ml-2 sm:flex-row sm:items-center sm:gap-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0 dark:border-zinc-800/90">
+          <div className="mt-2 flex flex-col gap-2 border-t border-zinc-200/90 pt-3 sm:mt-0 sm:ml-2 sm:flex-row sm:items-center sm:gap-1.5 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0 dark:border-zinc-800/90">
             <SocialFollowLinks variant="icons" className="justify-start sm:justify-center" />
             {user ? (
               <>

@@ -43,8 +43,9 @@ export function RunnerUpCard({ placement }: RunnerUpCardProps) {
           username={handle}
           preferredImageUrl={placement.avatarUrl}
           fallbackBackdropClass="bg-gradient-to-br from-zinc-400 to-zinc-600"
-          fallbackInitial={(handle[0] || "?").toUpperCase()}
+          fallbackInitial={(placement.displayName[0] || handle[0] || "?").toUpperCase()}
           className="h-12 w-12"
+          priority
         />
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-white">{placement.displayName}</p>

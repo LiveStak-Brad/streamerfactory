@@ -12,6 +12,11 @@ type CreatorAvatarProps = {
   className?: string;
   /** Above-the-fold: load immediately instead of lazy. */
   priority?: boolean;
+  /**
+   * When false, only `preferredImageUrl` is used (no TikTok handle lookup).
+   * Use for staff/manager photos that must not pull a creator TikTok avatar.
+   */
+  tiktokFallback?: boolean;
 };
 
 function normalizeHandle(raw: string): string {
@@ -153,21 +158,22 @@ export function CreatorAvatar({
   fallbackInitial,
   className = "h-14 w-14",
   priority = false,
+  tiktokFallback = true,
 }: CreatorAvatarProps) {
   const handle = normalizeHandle(username);
   const candidates = useMemo(() => {
     const list: string[] = [];
     const proxied = toProxiedAvatarSrc(preferredImageUrl);
     if (proxied) list.push(proxied);
-    if (handle) {
+    if (tiktokFallback && handle) {
       list.push(`/api/members/tiktok-avatar-image?${new URLSearchParams({ handle })}`);
     }
     return list;
-  }, [preferredImageUrl, handle]);
+  }, [preferredImageUrl, handle, tiktokFallback]);
 
   return (
     <CreatorAvatarSources
-      key={`${handle}|${preferredImageUrl ?? ""}`}
+      key={`${handle}|${preferredImageUrl ?? ""}|${tiktokFallback ? "tt" : "local"}`}
       candidates={candidates}
       className={className}
       priority={priority}

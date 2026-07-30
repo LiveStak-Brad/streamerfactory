@@ -55,8 +55,9 @@ export function ChampionCard({
           username={handle}
           preferredImageUrl={placement.avatarUrl}
           fallbackBackdropClass="bg-gradient-to-br from-amber-400 to-orange-500"
-          fallbackInitial={(handle[0] || "?").toUpperCase()}
+          fallbackInitial={(placement.displayName[0] || handle[0] || "?").toUpperCase()}
           className={featured ? "h-24 w-24 ring-2 ring-amber-300/40" : "h-16 w-16"}
+          priority={featured}
         />
       </div>
       <h3 className="mt-5 truncate text-2xl font-bold tracking-tight text-white sm:text-3xl">
