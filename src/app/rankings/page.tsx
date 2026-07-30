@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { RankingsPageView, parseRankingsSearchParams } from "@/components/rankings/RankingsPageView";
-import { Section } from "@/components/ui/Section";
+import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Factory rankings",
   description:
-    "Streamer Factory network creator leaderboard — coins, stream hours, activeness, and battle performance.",
+    "Streamer Factory network creator leaderboard — diamonds, stream hours, activeness, and battle performance.",
 };
 
 export const dynamic = "force-dynamic";
@@ -20,10 +20,10 @@ export default async function RankingsPage({ searchParams }: PageProps) {
   const { periodKind, anchor } = parseRankingsSearchParams(sp);
 
   return (
-    <>
-      <Section className="!pt-12 sm:!pt-16" variant="default" containerClassName="max-w-6xl">
+    <div className="border-b border-border/70 bg-muted-bg/30 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-10">
+      <Container className="max-w-6xl">
         <RankingsPageView periodKind={periodKind} anchor={anchor} showAdminHint />
-      </Section>
-    </>
+      </Container>
+    </div>
   );
 }

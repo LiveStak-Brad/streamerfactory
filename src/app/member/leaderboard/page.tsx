@@ -1,5 +1,5 @@
 import { RankingsPageView, parseRankingsSearchParams } from "@/components/rankings/RankingsPageView";
-import { Section } from "@/components/ui/Section";
+import { Container } from "@/components/ui/Container";
 import { getSessionProfile } from "@/lib/auth/server";
 
 export const metadata = {
@@ -21,15 +21,15 @@ export default async function MemberLeaderboardPage({ searchParams }: PageProps)
   const { periodKind, anchor } = parseRankingsSearchParams(sp);
 
   return (
-    <div className="border-b border-zinc-200/80 bg-muted-bg/30 pb-16 pt-12 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-16">
-      <Section variant="default" containerClassName="max-w-6xl" className="!py-0">
+    <div className="border-b border-border/70 bg-muted-bg/30 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-10">
+      <Container className="max-w-6xl">
         <RankingsPageView
           periodKind={periodKind}
           anchor={anchor}
           highlightProfileId={userId}
           showAdminHint
         />
-      </Section>
+      </Container>
     </div>
   );
 }

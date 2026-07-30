@@ -1,4 +1,7 @@
-import { BackstageAvatar } from "@/components/members/BackstageAvatar";
+import { CreatorAvatar } from "@/components/members/CreatorAvatar";
+import { AchievementBadge } from "@/components/ui/AchievementBadge";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { RankBadge } from "@/components/ui/RankBadge";
 import { memberProfileUrl } from "@/lib/members/network-members";
 import { formatDiamondsEarned } from "@/lib/rankings/diamonds";
 import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
@@ -20,21 +23,6 @@ function avatarInitial(handle: string | null, email: string | null): string {
   return /[a-z]/i.test(ch) ? ch.toUpperCase() : ch;
 }
 
-function badgeClass(badge: ReturnType<typeof rankingBadge>): string {
-  switch (badge) {
-    case "Factory Champion":
-      return "bg-amber-100 text-amber-950 ring-amber-300/60 dark:bg-amber-950/50 dark:text-amber-100 dark:ring-amber-700/50";
-    case "Elite Creator":
-      return "bg-violet-100 text-violet-950 ring-violet-300/60 dark:bg-violet-950/50 dark:text-violet-100 dark:ring-violet-700/50";
-    case "Rising Star":
-      return "bg-sky-100 text-sky-950 ring-sky-300/60 dark:bg-sky-950/50 dark:text-sky-100 dark:ring-sky-700/50";
-    case "Active Member":
-      return "bg-emerald-100 text-emerald-950 ring-emerald-300/60 dark:bg-emerald-950/50 dark:text-emerald-100 dark:ring-emerald-700/50";
-    default:
-      return "bg-zinc-100 text-zinc-700 ring-zinc-300/60 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-600/50";
-  }
-}
-
 function formatNum(n: number): string {
   return new Intl.NumberFormat("en-US").format(n);
 }
@@ -48,21 +36,23 @@ type LeaderboardTableProps = {
   highlightProfileId?: string | null;
   /** When the board uses TikTok handles as ids, match the signed-in member by @handle. */
   highlightTiktokHandle?: string | null;
+  /** Add id anchors for jump-to-rank links */
+  showRankAnchor?: boolean;
 };
 
 export function LeaderboardTable({
   entries,
   highlightProfileId,
   highlightTiktokHandle,
+  showRankAnchor = false,
 }: LeaderboardTableProps) {
   if (entries.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-zinc-300/90 bg-muted-bg/40 px-6 py-16 text-center dark:border-zinc-700 dark:bg-zinc-950/40">
-        <p className="font-semibold text-zinc-800 dark:text-zinc-200">No rankings yet</p>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Rankings will appear after the latest Creator Network snapshot is loaded.
-        </p>
-      </div>
+      <EmptyState
+        title="No rankings yet"
+        description="Rankings will appear after the latest Creator Network snapshot is loaded."
+        className="py-12 text-center items-center"
+      />
     );
   }
 
@@ -77,94 +67,85 @@ export function LeaderboardTable({
           (highlightProfileId != null && highlightProfileId === e.profile_id) ||
           (highlightTiktokHandle != null && entryHandle === normalizeHandle(highlightTiktokHandle));
         const profileUrl = handle ? memberProfileUrl(handle) : null;
+        const anchorId = showRankAnchor
+          ? `rank-${e.profile_id || entryHandle || index}`
+          : undefined;
+        const rank = e.rank_position ?? index + 1;
 
-        const cardClass = `block rounded-2xl border bg-surface/90 p-4 shadow-sm outline-none ring-accent/0 transition dark:bg-zinc-950/65 sm:p-5 ${
+        const cardClass = `block rounded-2xl border bg-surface/95 p-4 shadow-sm outline-none transition dark:bg-zinc-950/70 sm:p-5 ${
           isYou
             ? "border-accent/50 ring-2 ring-accent/20 dark:border-accent/40"
-            : "border-zinc-200/90 dark:border-zinc-800"
+            : "border-border/80 dark:border-zinc-800"
         }${
           profileUrl
-            ? " hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_40px_-12px_var(--accent-glow)] focus-visible:ring-4 focus-visible:ring-accent/20 dark:hover:border-accent/30"
+            ? " hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_40px_-12px_var(--accent-glow)] focus-visible:ring-4 focus-visible:ring-accent/20 motion-reduce:transform-none dark:hover:border-accent/30"
             : ""
         }`;
 
         const cardBody = (
           <>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="flex min-w-0 flex-1 items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-lg font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
-                  {e.rank_position ?? "—"}
-                </div>
-                {handle ? (
-                  <BackstageAvatar
-                    backstageImageUrl={e.avatar_url}
-                    fallbackBackdropClass={backdrop}
-                    fallbackInitial={avatarInitial(handle, e.email)}
-                    className="h-14 w-14"
-                  />
-                ) : (
-                  <div
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white ${backdrop}`}
-                  >
-                    {avatarInitial(handle, e.email)}
-                  </div>
-                )}
+            <div className="flex flex-col gap-4">
+              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                <RankBadge rank={rank} size="md" />
+                <CreatorAvatar
+                  username={handle ?? "creator"}
+                  preferredImageUrl={e.avatar_url}
+                  fallbackBackdropClass={backdrop}
+                  fallbackInitial={avatarInitial(handle, e.email)}
+                  className="h-12 w-12 sm:h-14 sm:w-14"
+                />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-semibold text-zinc-950 dark:text-zinc-50">
+                  <p className="truncate text-base font-semibold text-foreground">
                     {handle ? displayLabelForHandle(handle) : e.email ?? "Member"}
-                    {handle ? (
-                      <span className="ml-1 font-normal text-zinc-500 dark:text-zinc-400">@{handle}</span>
-                    ) : null}
                     {isYou ? (
                       <span className="ml-2 text-xs font-bold uppercase tracking-wider text-accent dark:text-accent-muted">
                         You
                       </span>
                     ) : null}
                   </p>
-                  <span
-                    className={`mt-1 inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${badgeClass(badge)}`}
-                  >
-                    {badge === "Factory Champion" && e.rank_position === 1
-                      ? "#1 Factory Champion"
-                      : badge === "Elite Creator"
-                        ? "Top 3 Elite Creator"
-                        : badge === "Rising Star"
-                          ? "Top 10 Rising Star"
-                          : badge}
-                  </span>
+                  {handle ? (
+                    <p className="truncate text-sm text-muted">@{handle}</p>
+                  ) : null}
+                  <div className="mt-1.5">
+                    <AchievementBadge badge={badge} size="sm" />
+                  </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4 sm:gap-4">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Score</p>
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100">{e.rank_score.toFixed(1)}</p>
+
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                <div className="rounded-xl bg-muted-bg/70 px-3 py-2 dark:bg-zinc-900/70">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Score</p>
+                  <p className="mt-0.5 text-base font-bold tabular-nums text-foreground">
+                    {e.rank_score.toFixed(1)}
+                  </p>
                 </div>
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Diamonds</p>
-                  <p className="font-semibold text-zinc-800 dark:text-zinc-200">
+                <div className="rounded-xl bg-muted-bg/70 px-3 py-2 dark:bg-zinc-900/70">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Diamonds</p>
+                  <p className="mt-0.5 text-base font-bold tabular-nums text-foreground">
                     {formatDiamondsEarned(e.coins_earned)}
                   </p>
                 </div>
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Hours</p>
-                  <p className="font-semibold text-zinc-800 dark:text-zinc-200">
+                <div className="rounded-xl bg-muted-bg/70 px-3 py-2 dark:bg-zinc-900/70">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Hours</p>
+                  <p className="mt-0.5 text-base font-bold tabular-nums text-foreground">
                     {Number(e.hours_streamed).toFixed(1)}
                   </p>
                 </div>
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Days</p>
-                  <p className="font-semibold text-zinc-800 dark:text-zinc-200">{e.days_streamed}</p>
+                <div className="rounded-xl bg-muted-bg/70 px-3 py-2 dark:bg-zinc-900/70">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Days</p>
+                  <p className="mt-0.5 text-base font-bold tabular-nums text-foreground">{e.days_streamed}</p>
                 </div>
               </div>
             </div>
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
               <span>
-                Activeness: <span className="font-medium capitalize text-zinc-700 dark:text-zinc-300">{e.activeness_level}</span>
+                Activeness:{" "}
+                <span className="font-medium capitalize text-foreground/80">{e.activeness_level}</span>
               </span>
               {e.follower_growth !== 0 ? (
                 <span>
                   Follower growth:{" "}
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <span className="font-medium text-foreground/80">
                     {e.follower_growth > 0 ? "+" : ""}
                     {formatNum(e.follower_growth)}
                   </span>
@@ -173,7 +154,7 @@ export function LeaderboardTable({
               {e.battles_played > 0 ? (
                 <span>
                   Battles:{" "}
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                  <span className="font-medium text-foreground/80">
                     {e.battles_won}/{e.battles_played} won
                   </span>
                 </span>
@@ -183,7 +164,7 @@ export function LeaderboardTable({
         );
 
         return (
-          <li key={e.profile_id}>
+          <li key={e.profile_id} id={anchorId}>
             {profileUrl ? (
               <a
                 href={profileUrl}
