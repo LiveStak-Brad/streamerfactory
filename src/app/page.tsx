@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { HomeCta } from "@/components/home/HomeCta";
+import { HomeFollowBand } from "@/components/home/HomeFollowBand";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeMemberUnlock } from "@/components/home/HomeMemberUnlock";
 import { HomeNetworkStrip } from "@/components/home/HomeNetworkStrip";
@@ -61,6 +62,7 @@ export default async function HomePage() {
         topCreators={rankings.slice(0, 5)}
       />
       <HomeNetworkStrip members={previewMembers} memberCount={members.length} />
+      <HomeFollowBand />
       <HomePlatformPreview />
       <WhatWeDo />
       <HomeRankingPreview entries={rankings} totalCount={rankings.length} />
@@ -72,3 +74,4 @@ export default async function HomePage() {
     </>
   );
 }
+

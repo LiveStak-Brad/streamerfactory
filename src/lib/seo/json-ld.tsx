@@ -1,4 +1,4 @@
-import { site } from "@/lib/site";
+import { site, socialLinks } from "@/lib/site";
 
 type JsonLdValue = Record<string, unknown> | Record<string, unknown>[];
 
@@ -20,7 +20,7 @@ export function organizationSchema() {
     url: site.url,
     email: site.contactEmail,
     description: site.tagline,
-    sameAs: [] as string[],
+    sameAs: [socialLinks.tiktok.href, socialLinks.instagram.href],
     areaServed: "Worldwide",
     knowsAbout: [
       "TikTok LIVE",

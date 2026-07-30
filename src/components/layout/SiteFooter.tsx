@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SfLogoMark } from "@/components/brand/SfLogoMark";
+import { SocialFollowLinks } from "@/components/layout/SocialFollowLinks";
 import { Container } from "@/components/ui/Container";
 import { footerNav, site } from "@/lib/site";
 
@@ -37,6 +38,7 @@ export function SiteFooter() {
                 {site.contactEmail}
               </a>
             </p>
+            <SocialFollowLinks variant="footer" className="pt-2" />
           </div>
           <div className="grid gap-10 sm:grid-cols-2">
             <nav aria-label="Footer">

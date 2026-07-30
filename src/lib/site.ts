@@ -2,6 +2,22 @@
 export const tiktokCreatorNetworkApplyUrl =
   "https://www.tiktok.com/t/ZTkvnxHmY/" as const;
 
+/** Public social profiles — same handle on both platforms. */
+export const socialHandle = "streamerfactoryllc" as const;
+
+export const socialLinks = {
+  tiktok: {
+    label: "TikTok",
+    handle: `@${socialHandle}`,
+    href: `https://www.tiktok.com/@${socialHandle}`,
+  },
+  instagram: {
+    label: "Instagram",
+    handle: `@${socialHandle}`,
+    href: `https://www.instagram.com/${socialHandle}/`,
+  },
+} as const;
+
 export const site = {
   name: "Streamer Factory",
   domain: "thestreamerfactory.com",

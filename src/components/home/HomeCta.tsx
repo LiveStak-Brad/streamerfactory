@@ -1,4 +1,5 @@
 import { TrackedCta } from "@/components/analytics/TrackedCta";
+import { SocialFollowLinks } from "@/components/layout/SocialFollowLinks";
 import { Section } from "@/components/ui/Section";
 import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
@@ -37,6 +38,15 @@ export function HomeCta() {
             2. Request website access
           </TrackedCta>
         </div>
+      </div>
+      <div className="mt-12 border-t border-white/10 pt-10 dark:border-zinc-300/40">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-500">
+          Follow
+        </p>
+        <p className="mt-2 text-sm text-zinc-400 dark:text-zinc-600">
+          Follow @streamerfactoryllc while you apply — updates land on TikTok and Instagram first.
+        </p>
+        <SocialFollowLinks variant="compact" className="mt-4" />
       </div>
     </Section>
   );

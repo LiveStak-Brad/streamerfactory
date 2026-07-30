@@ -11,6 +11,7 @@ import type { OwnerNetworkViewMode } from "@/lib/auth/network-view";
 import { mainNav, platformNav, site } from "@/lib/site";
 import { SfLogoMark } from "@/components/brand/SfLogoMark";
 import { NetworkViewToggle } from "@/components/layout/NetworkViewToggle";
+import { SocialFollowLinks } from "@/components/layout/SocialFollowLinks";
 
 type HeaderProps = {
   /** Site owner only: switch between visitor and member experience (Battle Hub, calendar, scheduler). */
@@ -233,6 +234,7 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
           })}
 
           <div className="mt-2 flex flex-col gap-2 border-t border-zinc-200/90 pt-3 sm:mt-0 sm:ml-2 sm:flex-row sm:items-center sm:gap-2 sm:border-l sm:border-t-0 sm:pl-3 sm:pt-0 dark:border-zinc-800/90">
+            <SocialFollowLinks variant="icons" className="justify-start sm:justify-center" />
             {user ? (
               <>
                 {isMember ? (
