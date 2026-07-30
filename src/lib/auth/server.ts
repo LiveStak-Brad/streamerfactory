@@ -67,7 +67,7 @@ export const requireAdmin = cache(async () => {
 export const requireNetworkMember = cache(async () => {
   const session = await getSessionProfile();
   if (!session) {
-    redirect("/login?next=/streameru");
+    redirect("/login?next=/member/dashboard");
   }
   if (!session.profile) {
     redirect("/apply");

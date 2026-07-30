@@ -1,16 +1,29 @@
-import Link from "next/link";
-import { CreatorNetworkStatsCard } from "@/components/creator-network/CreatorNetworkStatsCard";
-import { MemberRankingCard } from "@/components/rankings/MemberRankingCard";
+import { MemberDashboardBattlesWidget } from "@/components/member/dashboard/MemberDashboardBattlesWidget";
+import { MemberDashboardProfileWidget } from "@/components/member/dashboard/MemberDashboardProfileWidget";
+import { MemberDashboardProgress } from "@/components/member/dashboard/MemberDashboardProgress";
+import { MemberDashboardQuickActions } from "@/components/member/dashboard/MemberDashboardQuickActions";
+import { MemberDashboardStreamerUWidget } from "@/components/member/dashboard/MemberDashboardStreamerUWidget";
+import { MemberDashboardWelcome } from "@/components/member/dashboard/MemberDashboardWelcome";
+import { DashboardWidget } from "@/components/ui/DashboardWidget";
+import { AchievementBadge } from "@/components/ui/AchievementBadge";
 import { Container } from "@/components/ui/Container";
 import { getMyLatestImportedStats } from "@/lib/creator-network/queries";
+import {
+  getMyUpcomingBattleEvents,
+  getUpcomingBattleEvents,
+} from "@/lib/battle-hub/queries";
+import {
+  resolveDashboardNextAction,
+  timeOfDayGreeting,
+} from "@/lib/member/dashboard-next-action";
+import { rankingBadge } from "@/lib/rankings/scoring";
 import { getMyLeaderboardSummary } from "@/lib/rankings/queries";
 import { getTikTokConnectionPublic } from "@/lib/tiktok/db";
 import { getSessionProfile } from "@/lib/auth/server";
-import { TikTokMemberCard } from "@/components/member/TikTokMemberCard";
 
 export const metadata = {
   title: "Member dashboard",
-  description: "Your Streamer Factory member dashboard — TikTok connection and account tools.",
+  description: "Your Streamer Factory member dashboard — rankings, training, and battles.",
 };
 
 export const dynamic = "force-dynamic";
@@ -29,6 +42,7 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
   const session = await getSessionProfile();
   const userId = session?.user?.id;
   const email = session?.user?.email ?? null;
+  const profile = session?.profile ?? null;
 
   let connection = null;
   if (userId) {
@@ -45,61 +59,74 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
 
   let rankingSummary: Awaited<ReturnType<typeof getMyLeaderboardSummary>> | null = null;
   let myImportedStats: Awaited<ReturnType<typeof getMyLatestImportedStats>> | null = null;
+  let myUpcoming: Awaited<ReturnType<typeof getMyUpcomingBattleEvents>> = [];
+  let networkUpcoming: Awaited<ReturnType<typeof getUpcomingBattleEvents>> = [];
+
   if (userId) {
-    try {
-      rankingSummary = await getMyLeaderboardSummary(userId, "monthly");
-    } catch {
-      rankingSummary = null;
-    }
-    try {
-      myImportedStats = await getMyLatestImportedStats(userId);
-    } catch {
-      myImportedStats = null;
-    }
+    const [rankRes, statsRes, myBattlesRes, networkBattlesRes] = await Promise.all([
+      getMyLeaderboardSummary(userId, "monthly").catch(() => null),
+      getMyLatestImportedStats(userId).catch(() => null),
+      getMyUpcomingBattleEvents(userId, 3).catch(() => []),
+      getUpcomingBattleEvents(6).catch(() => []),
+    ]);
+    rankingSummary = rankRes;
+    myImportedStats = statsRes;
+    myUpcoming = myBattlesRes;
+    networkUpcoming = networkBattlesRes;
   }
 
+  const entry = rankingSummary?.entry ?? null;
+  const badge = rankingBadge(entry?.rank_position ?? null, Boolean(entry));
+  const handle =
+    connection?.tiktok_username?.replace(/^@/, "") ||
+    myImportedStats?.tiktok_username?.replace(/^@/, "") ||
+    profile?.tiktok_username?.replace(/^@/, "") ||
+    null;
+  const displayName =
+    connection?.display_name?.trim() ||
+    myImportedStats?.tiktok_display_name?.trim() ||
+    (handle ? `@${handle}` : null) ||
+    email?.split("@")[0] ||
+    "Creator";
+  const avatarUrl = connection?.avatar_url || myImportedStats?.avatar_url || entry?.avatar_url || null;
+
+  const nextAction = resolveDashboardNextAction({
+    profile,
+    connection,
+    rankingEntry: entry,
+    importedStats: myImportedStats,
+    myUpcomingBattles: myUpcoming,
+  });
+
+  const greeting = timeOfDayGreeting(profile?.timezone);
+
   return (
-    <div className="border-b border-zinc-200/80 bg-muted-bg/30 pb-16 pt-12 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-16">
-      <Container className="max-w-3xl">
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
-          Members
-        </p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">Dashboard</h1>
-        <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Connect TikTok to sync public profile stats. Tokens stay on the server — only you can refresh or
-          reconnect from this page while signed in.
-        </p>
-
-        {email ? (
-          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-            Signed in as <span className="font-medium text-zinc-800 dark:text-zinc-200">{email}</span>
-          </p>
-        ) : null}
-
+    <div className="border-b border-border/70 bg-muted-bg/40 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/50 sm:pt-10">
+      <Container className="max-w-6xl space-y-6 sm:space-y-8">
         {tiktokStatus === "connected" ? (
-          <p className="mt-6 rounded-xl border border-emerald-200/80 bg-emerald-50/80 px-4 py-3 text-sm font-medium text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
+          <p className="rounded-xl border border-emerald-200/80 bg-emerald-50/80 px-4 py-3 text-sm font-medium text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
             TikTok connected — your latest stats are saved.
           </p>
         ) : null}
         {tiktokError ? (
-          <p className="mt-6 rounded-xl border border-rose-200/80 bg-rose-50/80 px-4 py-3 text-sm font-medium text-rose-950 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-100">
+          <p className="rounded-xl border border-rose-200/80 bg-rose-50/80 px-4 py-3 text-sm font-medium text-rose-950 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-100">
             {tiktokError === "config"
               ? "TikTok sign-in is not configured on the server (missing env vars)."
               : tiktokError === "invalid_state"
                 ? "Sign-in with TikTok could not be verified (state mismatch). Try again."
                 : tiktokError === "already_linked"
                   ? "This TikTok account is already linked to a different Streamer Factory login."
-                : (() => {
-                    try {
-                      return decodeURIComponent(tiktokError);
-                    } catch {
-                      return tiktokError;
-                    }
-                  })()}
+                  : (() => {
+                      try {
+                        return decodeURIComponent(tiktokError);
+                      } catch {
+                        return tiktokError;
+                      }
+                    })()}
           </p>
         ) : null}
         {tiktokWarn ? (
-          <p className="mt-6 rounded-xl border border-amber-200/80 bg-amber-50/80 px-4 py-3 text-sm font-medium text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+          <p className="rounded-xl border border-amber-200/80 bg-amber-50/80 px-4 py-3 text-sm font-medium text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
             Connected, but profile sync had an issue:{" "}
             {(() => {
               try {
@@ -112,39 +139,67 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
           </p>
         ) : null}
 
-        <div className="mt-10">
-          <TikTokMemberCard connection={connection} />
-        </div>
+        <MemberDashboardWelcome
+          greeting={greeting}
+          displayName={displayName}
+          handle={handle}
+          avatarUrl={avatarUrl}
+          rankPosition={entry?.rank_position ?? null}
+          badge={badge}
+          nextAction={nextAction}
+          email={email}
+        />
 
-        <div className="mt-10">
-          <CreatorNetworkStatsCard stats={myImportedStats} />
-        </div>
+        <MemberDashboardProgress
+          entry={entry}
+          leaderboardSize={rankingSummary?.leaderboardSize ?? 0}
+        />
 
-        <div className="mt-10">
-          <MemberRankingCard
-            entry={rankingSummary?.entry ?? null}
-            periodStart={rankingSummary?.periodStart ?? ""}
-            periodEnd={rankingSummary?.periodEnd ?? ""}
-            leaderboardSize={rankingSummary?.leaderboardSize ?? 0}
+        <MemberDashboardQuickActions handle={handle} tiktokConnected={Boolean(connection)} />
+
+        <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
+          <MemberDashboardStreamerUWidget />
+          <MemberDashboardBattlesWidget myUpcoming={myUpcoming} networkUpcoming={networkUpcoming} />
+          <MemberDashboardProfileWidget
+            connection={connection}
+            onboardingComplete={Boolean(profile?.onboarding_completed_at)}
+            networkStatus={myImportedStats?.creator_network_status ?? null}
           />
-        </div>
-
-        <div className="mt-10 flex flex-wrap gap-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400">
-          <Link href="/member/leaderboard" className="text-accent hover:underline dark:text-accent-muted">
-            Leaderboard
-          </Link>
-          <span aria-hidden>·</span>
-          <Link href="/battle-hub" className="text-accent hover:underline dark:text-accent-muted">
-            Battle Hub
-          </Link>
-          <span aria-hidden>·</span>
-          <Link href="/streameru" className="text-accent hover:underline dark:text-accent-muted">
-            StreamerU
-          </Link>
-          <span aria-hidden>·</span>
-          <Link href="/application-status" className="hover:underline">
-            Application status
-          </Link>
+          <DashboardWidget
+            eyebrow="Recognition"
+            title="Your factory status"
+            actionHref="/rankings"
+            actionLabel="Public board →"
+          >
+            <div className="space-y-4">
+              <AchievementBadge badge={badge} />
+              <p className="text-sm leading-relaxed text-muted">
+                {entry?.rank_position != null
+                  ? `You're #${entry.rank_position} on the monthly factory board${
+                      rankingSummary?.leaderboardSize
+                        ? ` of ${rankingSummary.leaderboardSize}`
+                        : ""
+                    }. Badges update from real Creator Network rankings — Champion (#1), Elite (Top 3), Rising (Top 10).`
+                  : "Your badge becomes Active, Rising, Elite, or Champion once Creator Network stats match your TikTok handle."}
+              </p>
+              {connection ? (
+                <dl className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2 dark:border-zinc-800">
+                    <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Followers</dt>
+                    <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                      {connection.follower_count.toLocaleString()}
+                    </dd>
+                  </div>
+                  <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2 dark:border-zinc-800">
+                    <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Videos</dt>
+                    <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                      {connection.video_count.toLocaleString()}
+                    </dd>
+                  </div>
+                </dl>
+              ) : null}
+            </div>
+          </DashboardWidget>
         </div>
       </Container>
     </div>

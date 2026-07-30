@@ -10,7 +10,7 @@ const pillars = [
     title: "StreamerU",
     body: "Curriculum-style training with clear next lessons — onboarding, LIVE craft, and monetization that compounds.",
     accent: "from-indigo-500/20 via-transparent to-transparent",
-    chip: "XP · modules · progress",
+    chip: "Modules · missions · progress",
   },
   {
     href: "/battle-hub",
