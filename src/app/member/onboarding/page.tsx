@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { MemberPageHeader } from "@/components/member/MemberPageHeader";
 import { getSessionProfile } from "@/lib/auth/server";
 import {
   getOnboardingChecklist,
@@ -28,7 +29,7 @@ export default async function MemberOnboardingPage() {
     key: t.key,
     title: t.title,
     description: t.description,
-    href: t.href,
+    href: t.href === "/member/onboarding" ? null : t.href,
     required: t.required,
     completed_at: t.completed_at,
     sort_order: t.sort_order,
@@ -39,20 +40,18 @@ export default async function MemberOnboardingPage() {
   const percent = checklist.length
     ? Math.round((completed / checklist.length) * 100)
     : 0;
+  const allRequiredDone = requiredTotal > 0 && requiredDone === requiredTotal;
 
   return (
     <div className="border-b border-border/70 bg-muted-bg/40 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/50 sm:pt-10">
       <Container className="max-w-3xl space-y-8">
-        <header className="space-y-3">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
-            Getting started
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Your onboarding checklist
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-base">
-            Finish these steps once — progress saves to your account and follows you across devices.
-          </p>
+        <MemberPageHeader
+          eyebrow="Getting started"
+          title="Your onboarding checklist"
+          description="Finish these steps once — progress saves to your account and follows you across devices."
+        />
+
+        <div className="space-y-2">
           <p className="text-sm font-semibold text-foreground">
             {percent}% complete · {requiredDone}/{requiredTotal} required
           </p>
@@ -60,19 +59,29 @@ export default async function MemberOnboardingPage() {
             <div
               className="h-full rounded-full bg-accent transition-[width]"
               style={{ width: `${percent}%` }}
+              aria-hidden
             />
           </div>
-        </header>
+        </div>
+
+        {allRequiredDone ? (
+          <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 px-5 py-5 dark:border-emerald-900/40 dark:bg-emerald-950/25">
+            <p className="text-base font-bold text-emerald-950 dark:text-emerald-100">
+              You&apos;re ready for the Factory
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-emerald-900/80 dark:text-emerald-100/80">
+              Required checklist items are done. Head to your dashboard for today&apos;s missions.
+            </p>
+            <Link
+              href="/member/dashboard"
+              className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-accent px-4 text-sm font-semibold text-accent-foreground hover:bg-accent-hover"
+            >
+              Go to dashboard
+            </Link>
+          </div>
+        ) : null}
 
         <OnboardingChecklistClient initialTasks={tasksForClient} />
-
-        <p className="text-sm text-muted">
-          Prefer to explore first?{" "}
-          <Link href="/member/dashboard" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-            Go to your dashboard
-          </Link>
-          .
-        </p>
       </Container>
     </div>
   );

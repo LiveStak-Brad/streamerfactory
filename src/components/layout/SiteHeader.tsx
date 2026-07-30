@@ -296,13 +296,43 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
                       </Link>
                     ) : null}
                     {isMember ? (
-                      <Link
-                        href="/rankings"
-                        className="rounded-xl px-3 py-2 text-sm font-semibold text-foreground hover:bg-muted-bg"
-                        onClick={() => setOpen(false)}
-                      >
-                        My rankings
-                      </Link>
+                      <>
+                        <Link
+                          href="/member/dashboard"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Dashboard
+                        </Link>
+                        <Link
+                          href="/member/onboarding"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Onboarding
+                        </Link>
+                        <Link
+                          href="/member/leaderboard"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          My rankings
+                        </Link>
+                        <Link
+                          href="/member/notifications"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Notifications
+                        </Link>
+                        <Link
+                          href="/member/activity"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Activity
+                        </Link>
+                      </>
                     ) : null}
                     {isAdmin ? (
                       <Link

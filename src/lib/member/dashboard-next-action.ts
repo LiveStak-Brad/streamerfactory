@@ -38,8 +38,8 @@ export function resolveDashboardNextAction(input: NextActionInput): DashboardNex
   if (profile && !profile.onboarding_completed_at) {
     return {
       label: "Finish onboarding",
-      href: "/battle-hub",
-      reason: "Complete network onboarding to unlock the full Battle Hub workflow.",
+      href: "/member/onboarding",
+      reason: "Complete your checklist so battles, rankings, and training stay in sync.",
     };
   }
 

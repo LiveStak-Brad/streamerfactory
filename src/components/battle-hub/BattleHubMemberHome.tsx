@@ -21,16 +21,16 @@ export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: P
       <Container className="relative max-w-6xl">
         {showOnboardingNudge ? (
           <div className="mb-8 rounded-2xl border border-accent/30 bg-accent/5 px-4 py-4 dark:border-accent/40 dark:bg-accent/10 sm:px-6 sm:py-5">
-            <p className="text-sm font-semibold text-foreground">Finish your StreamerU setup</p>
+            <p className="text-sm font-semibold text-foreground">Finish your Factory onboarding</p>
             <p className="mt-1 text-sm leading-relaxed text-muted">
-              You haven&apos;t marked onboarding complete yet — continue training in StreamerU when you have a
-              moment.
+              A few checklist steps unlock the full member experience — training, battles, and rankings that
+              know who you are.
             </p>
             <Link
-              href="/streameru"
-              className="mt-3 inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
+              href="/member/onboarding"
+              className="mt-3 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
             >
-              Open StreamerU →
+              Open checklist →
             </Link>
           </div>
         ) : null}

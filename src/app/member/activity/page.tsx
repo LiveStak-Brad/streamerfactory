@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { MemberPageHeader } from "@/components/member/MemberPageHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
@@ -17,6 +18,20 @@ function firstString(v: string | string[] | undefined): string | undefined {
   if (Array.isArray(v)) return v[0];
   return v;
 }
+
+const EVENT_LABELS: Record<string, string> = {
+  achievement_unlocked: "Achievement",
+  onboarding_completed: "Onboarding",
+  onboarding_task_completed: "Onboarding",
+  mission_completed: "Mission",
+  battle_joined: "Battle",
+  battle_completed: "Battle",
+  streameru_live_mission_completed: "Training",
+  lesson_completed: "Training",
+  title_unlocked: "Reputation",
+  referral_accepted: "Referral",
+  creator_joined: "Community",
+};
 
 export default async function MemberActivityPage({ searchParams }: PageProps) {
   const sp = await searchParams;
@@ -48,25 +63,18 @@ export default async function MemberActivityPage({ searchParams }: PageProps) {
   return (
     <div className="border-b border-border/70 bg-muted-bg/40 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/50 sm:pt-10">
       <Container className="max-w-3xl space-y-6">
-        <header className="space-y-2">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
-            Community
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Activity</h1>
-          <p className="text-sm text-muted">
-            Real Factory progress only — never fabricated.{" "}
-            <Link href="/member/dashboard" className="font-semibold text-accent hover:underline dark:text-accent-muted">
-              Dashboard
-            </Link>
-          </p>
-        </header>
+        <MemberPageHeader
+          eyebrow="Community"
+          title="Activity"
+          description="Real Factory progress only — never fabricated."
+        />
 
         <div className="flex flex-wrap gap-2">
           {filters.map((f) => (
             <Link
               key={f.key}
               href={f.key === "all" ? "/member/activity" : `/member/activity?type=${f.key}`}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
+              className={`inline-flex min-h-[40px] items-center rounded-xl px-3.5 text-sm font-semibold ${
                 filter === f.key
                   ? "bg-foreground text-background"
                   : "border border-border/80 text-muted hover:text-foreground dark:border-zinc-700"
@@ -78,19 +86,29 @@ export default async function MemberActivityPage({ searchParams }: PageProps) {
         </div>
 
         {rows.length === 0 ? (
-          <p className="rounded-2xl border border-border/80 bg-surface/90 px-4 py-6 text-sm text-muted dark:border-zinc-800">
-            No activity yet for this filter.
-          </p>
+          <div className="rounded-2xl border border-dashed border-border/80 bg-surface/90 px-5 py-8 dark:border-zinc-800">
+            <p className="text-base font-semibold text-foreground">No activity here yet</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              Complete a mission or unlock an achievement and it will show up in the Factory feed.
+            </p>
+            <Link
+              href="/member/dashboard"
+              className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
+              Go to today&apos;s missions →
+            </Link>
+          </div>
         ) : (
           <ul className="space-y-2">
             {rows.map((row) => (
               <li
                 key={row.id}
-                className="rounded-2xl border border-border/80 bg-surface/90 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950/45"
+                className="rounded-2xl border border-border/80 bg-surface/90 px-4 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/45"
               >
                 <p className="text-sm text-foreground">{row.summary}</p>
-                <p className="mt-1 text-[0.65rem] text-muted">
-                  {row.event_type} · {new Date(row.created_at).toLocaleString()}
+                <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-wider text-muted">
+                  {EVENT_LABELS[row.event_type] ?? "Update"} ·{" "}
+                  {new Date(row.created_at).toLocaleString()}
                 </p>
               </li>
             ))}

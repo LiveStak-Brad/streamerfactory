@@ -18,18 +18,22 @@ export function MemberDashboardProfileWidget({
   const checks = [
     { label: "TikTok connected", done: Boolean(connection) },
     { label: "Profile synced", done: Boolean(connection?.last_synced_at) },
-    { label: "Network onboarding", done: onboardingComplete },
+    { label: "Onboarding checklist", done: onboardingComplete },
   ];
   const doneCount = checks.filter((c) => c.done).length;
   const complete = doneCount === checks.length;
 
   return (
-    <DashboardWidget eyebrow="Profile" title="Account readiness" actionHref="/application-status" actionLabel="Status →">
+    <DashboardWidget
+      eyebrow="Profile"
+      title="Account readiness"
+      actionHref={onboardingComplete ? undefined : "/member/onboarding"}
+      actionLabel={onboardingComplete ? undefined : "Checklist →"}
+    >
       {complete ? (
         <div className="space-y-3">
           <p className="text-sm leading-relaxed text-muted">
-            Your member account is ready. Refresh TikTok anytime to update public follower stats on this
-            dashboard.
+            You&apos;re set. Refresh TikTok anytime to keep follower stats current on this dashboard.
           </p>
           {networkStatus ? (
             <p className="text-xs font-semibold uppercase tracking-wider text-accent dark:text-accent-muted">
@@ -54,7 +58,7 @@ export function MemberDashboardProfileWidget({
               {checks.map((c) => (
                 <li
                   key={c.label}
-                  className="flex items-center justify-between rounded-xl border border-border/70 bg-surface px-3 py-2 text-sm dark:border-zinc-800"
+                  className="flex items-center justify-between rounded-xl border border-border/70 bg-surface px-3 py-2.5 text-sm dark:border-zinc-800"
                 >
                   <span className="font-medium text-foreground">{c.label}</span>
                   <span className={c.done ? "font-semibold text-emerald-600 dark:text-emerald-400" : "text-muted"}>
@@ -70,8 +74,8 @@ export function MemberDashboardProfileWidget({
                 </li>
               ) : !onboardingComplete ? (
                 <li className="pt-1">
-                  <Button href="/battle-hub" variant="primary" className="min-h-[44px] w-full px-4">
-                    Continue onboarding
+                  <Button href="/member/onboarding" variant="primary" className="min-h-[44px] w-full px-4">
+                    Open checklist
                   </Button>
                 </li>
               ) : null}

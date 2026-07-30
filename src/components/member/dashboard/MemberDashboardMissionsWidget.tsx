@@ -14,13 +14,20 @@ export function MemberDashboardMissionsWidget({ missions, seasonName }: Props) {
       eyebrow={seasonName ? `${seasonName} · Today` : "Today"}
       title="Today's missions"
       featured
-      actionHref="/member/onboarding"
-      actionLabel="Onboarding →"
     >
       {missions.length === 0 ? (
-        <p className="text-sm text-muted">
-          No missions assigned yet. Open the dashboard again after sync, or check back tomorrow.
-        </p>
+        <div className="space-y-3">
+          <p className="text-sm leading-relaxed text-muted">
+            Your daily missions will show up after a quick check-in. Reopen this page in a moment if
+            they&apos;re still loading.
+          </p>
+          <Link
+            href="/streameru"
+            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
+          >
+            Train in StreamerU while you wait →
+          </Link>
+        </div>
       ) : (
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted">
@@ -31,7 +38,7 @@ export function MemberDashboardMissionsWidget({ missions, seasonName }: Props) {
               <li key={m.id}>
                 <Link
                   href={m.href ?? "/member/dashboard"}
-                  className="flex items-start gap-3 rounded-xl border border-border/70 bg-muted-bg/40 px-3 py-2.5 transition-colors hover:border-accent/30 dark:border-zinc-800"
+                  className="flex min-h-[48px] items-start gap-3 rounded-xl border border-border/70 bg-muted-bg/40 px-3 py-2.5 transition-colors hover:border-accent/30 dark:border-zinc-800"
                 >
                   <span
                     className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-xs font-bold ${

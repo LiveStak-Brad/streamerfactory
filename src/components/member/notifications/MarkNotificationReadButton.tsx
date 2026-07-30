@@ -10,9 +10,9 @@ export function MarkNotificationReadButton({ id }: { id: string }) {
       type="button"
       disabled={pending}
       onClick={() => startTransition(() => void markNotificationReadAction(id))}
-      className="shrink-0 rounded-lg border border-border/80 px-2 py-1 text-xs font-semibold text-muted hover:text-foreground disabled:opacity-60 dark:border-zinc-700"
+      className="inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-xl border border-border/80 px-3 text-sm font-semibold text-muted transition-colors hover:border-accent/40 hover:text-foreground disabled:opacity-60 dark:border-zinc-700"
     >
-      Mark read
+      {pending ? "Saving…" : "Mark read"}
     </button>
   );
 }

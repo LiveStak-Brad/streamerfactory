@@ -14,6 +14,7 @@ export function MemberDashboardStreakReputationWidget({
 }: Props) {
   const login = streaks.daily_login;
   const titles = reputation.titles;
+  const current = login?.current ?? 0;
 
   return (
     <DashboardWidget eyebrow="Consistency" title="Streaks & reputation">
@@ -22,10 +23,14 @@ export function MemberDashboardStreakReputationWidget({
           <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-3 dark:border-zinc-800">
             <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Login streak</p>
             <p className="mt-1 text-2xl font-bold tabular-nums text-foreground">
-              {login?.current ?? 0}
+              {current}
               <span className="ml-1 text-sm font-semibold text-muted">days</span>
             </p>
-            <p className="mt-1 text-xs text-muted">Best {login?.longest ?? 0}</p>
+            <p className="mt-1 text-xs text-muted">
+              {current === 0
+                ? "Open your dashboard daily to start"
+                : `Best ${login?.longest ?? 0}`}
+            </p>
           </div>
           <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-3 dark:border-zinc-800">
             <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { memberProfileUrl } from "@/lib/members/network-members";
 
 type QuickAction = {
   label: string;
@@ -11,34 +10,43 @@ type QuickAction = {
 type MemberDashboardQuickActionsProps = {
   handle: string | null;
   tiktokConnected: boolean;
+  onboardingComplete?: boolean;
+  unreadNotifications?: number;
 };
 
 export function MemberDashboardQuickActions({
   handle,
   tiktokConnected,
+  onboardingComplete = true,
+  unreadNotifications = 0,
 }: MemberDashboardQuickActionsProps) {
   const actions: QuickAction[] = [
-    {
-      label: "Continue training",
-      href: "/streameru",
-      description: "StreamerU lessons & missions",
-    },
+    !onboardingComplete
+      ? {
+          label: "Onboarding",
+          href: "/member/onboarding",
+          description: "Finish your Factory checklist",
+        }
+      : {
+          label: "Continue training",
+          href: "/streameru",
+          description: "StreamerU lessons & missions",
+        },
     {
       label: "Find a battle",
       href: "/battle-hub",
       description: "Schedule or browse Battle Hub",
     },
     {
-      label: "View my ranking",
-      href: "/member/leaderboard",
-      description: "Monthly factory leaderboard",
+      label: unreadNotifications > 0 ? `Inbox (${unreadNotifications})` : "Inbox",
+      href: "/member/notifications",
+      description: "Missions, unlocks, reminders",
     },
     tiktokConnected && handle
       ? {
-          label: "Open TikTok",
-          href: memberProfileUrl(handle),
-          external: true,
-          description: "Your public TikTok profile",
+          label: "My rankings",
+          href: "/member/leaderboard",
+          description: "Monthly factory leaderboard",
         }
       : {
           label: "Connect TikTok",
@@ -52,7 +60,7 @@ export function MemberDashboardQuickActions({
       <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {actions.map((action) => {
           const className =
-            "group flex h-full flex-col rounded-2xl border border-border/80 bg-surface px-4 py-4 shadow-sm transition-[transform,border-color,box-shadow] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-950/50 dark:hover:border-accent/40";
+            "group flex h-full min-h-[88px] flex-col rounded-2xl border border-border/80 bg-surface px-4 py-4 shadow-sm transition-[transform,border-color,box-shadow] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-950/50 dark:hover:border-accent/40";
           const body = (
             <>
               <span className="text-sm font-bold text-foreground group-hover:text-accent dark:group-hover:text-accent-muted">

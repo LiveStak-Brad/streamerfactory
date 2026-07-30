@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { DashboardWidget } from "@/components/ui/DashboardWidget";
 import type { CreatorProgressSummary } from "@/lib/growth/types";
 
@@ -10,9 +11,19 @@ export function MemberDashboardAchievementWidget({ achievement }: Props) {
   return (
     <DashboardWidget eyebrow="Achievements" title="Newest unlock">
       {!achievement ? (
-        <p className="text-sm text-muted">
-          Complete missions and onboarding to unlock your first achievement.
-        </p>
+        <div className="space-y-3">
+          <p className="text-sm leading-relaxed text-muted">
+            Finish a lesson or checklist step to unlock your first achievement.
+          </p>
+          <div className="flex flex-wrap gap-3 text-sm font-semibold">
+            <Link href="/member/onboarding" className="text-accent hover:underline dark:text-accent-muted">
+              Open checklist →
+            </Link>
+            <Link href="/streameru" className="text-accent hover:underline dark:text-accent-muted">
+              Start a lesson →
+            </Link>
+          </div>
+        </div>
       ) : (
         <div className="flex items-start gap-3">
           {achievement.icon ? (

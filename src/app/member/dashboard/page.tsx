@@ -10,7 +10,6 @@ import { MemberDashboardStreamerUWidget } from "@/components/member/dashboard/Me
 import { MemberDashboardWelcome } from "@/components/member/dashboard/MemberDashboardWelcome";
 import { MemberGrowthBootstrap } from "@/components/member/dashboard/MemberGrowthBootstrap";
 import { DashboardWidget } from "@/components/ui/DashboardWidget";
-import { AchievementBadge } from "@/components/ui/AchievementBadge";
 import { Container } from "@/components/ui/Container";
 import { getMyLatestImportedStats } from "@/lib/creator-network/queries";
 import {
@@ -190,7 +189,12 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
           leaderboardSize={rankingSummary?.leaderboardSize ?? 0}
         />
 
-        <MemberDashboardQuickActions handle={handle} tiktokConnected={Boolean(connection)} />
+        <MemberDashboardQuickActions
+          handle={handle}
+          tiktokConnected={Boolean(connection)}
+          onboardingComplete={Boolean(profile?.onboarding_completed_at)}
+          unreadNotifications={growth?.unreadNotifications ?? 0}
+        />
 
         <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
           <MemberDashboardStreamerUWidget />
@@ -210,41 +214,32 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
             onboardingComplete={Boolean(profile?.onboarding_completed_at)}
             networkStatus={myImportedStats?.creator_network_status ?? null}
           />
-          <DashboardWidget
-            eyebrow="Recognition"
-            title="Your factory status"
-            actionHref="/rankings"
-            actionLabel="Public board →"
-          >
-            <div className="space-y-4">
-              <AchievementBadge badge={badge} />
-              <p className="text-sm leading-relaxed text-muted">
-                {entry?.rank_position != null
-                  ? `You're #${entry.rank_position} on the monthly factory board${
-                      rankingSummary?.leaderboardSize
-                        ? ` of ${rankingSummary.leaderboardSize}`
-                        : ""
-                    }. Badges update from real Creator Network rankings — Champion (#1), Elite (Top 3), Rising (Top 10).`
-                  : "Your badge becomes Active, Rising, Elite, or Champion once Creator Network stats match your TikTok handle."}
+          {connection ? (
+            <DashboardWidget
+              eyebrow="TikTok"
+              title="Your creator stats"
+              actionHref="/member/leaderboard"
+              actionLabel="My board →"
+            >
+              <dl className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2.5 dark:border-zinc-800">
+                  <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Followers</dt>
+                  <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                    {connection.follower_count.toLocaleString()}
+                  </dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2.5 dark:border-zinc-800">
+                  <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Videos</dt>
+                  <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                    {connection.video_count.toLocaleString()}
+                  </dd>
+                </div>
+              </dl>
+              <p className="mt-3 text-xs leading-relaxed text-muted">
+                Ranking badges live in your welcome card above — they update from Creator Network stats.
               </p>
-              {connection ? (
-                <dl className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2 dark:border-zinc-800">
-                    <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Followers</dt>
-                    <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
-                      {connection.follower_count.toLocaleString()}
-                    </dd>
-                  </div>
-                  <div className="rounded-xl border border-border/70 bg-muted-bg/50 px-3 py-2 dark:border-zinc-800">
-                    <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Videos</dt>
-                    <dd className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
-                      {connection.video_count.toLocaleString()}
-                    </dd>
-                  </div>
-                </dl>
-              ) : null}
-            </div>
-          </DashboardWidget>
+            </DashboardWidget>
+          ) : null}
         </div>
       </Container>
     </div>

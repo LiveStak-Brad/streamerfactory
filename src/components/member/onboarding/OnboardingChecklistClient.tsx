@@ -66,6 +66,7 @@ export function OnboardingChecklistClient({
                       ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-200"
                       : "bg-muted-bg text-muted"
                   }`}
+                  aria-hidden
                 >
                   {done ? "✓" : "○"}
                 </span>
@@ -84,10 +85,10 @@ export function OnboardingChecklistClient({
                 </div>
               </div>
               <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
-                {task.href ? (
+                {!done && task.href ? (
                   <Link
                     href={task.href}
-                    className="inline-flex min-h-[40px] items-center rounded-xl border border-border/80 px-3 text-sm font-semibold text-foreground hover:border-accent/40 dark:border-zinc-700"
+                    className="inline-flex min-h-[44px] items-center rounded-xl border border-border/80 px-3 text-sm font-semibold text-foreground hover:border-accent/40 dark:border-zinc-700"
                   >
                     Open
                   </Link>
@@ -97,11 +98,15 @@ export function OnboardingChecklistClient({
                     type="button"
                     disabled={pending && pendingKey === task.key}
                     onClick={() => markDone(task.key)}
-                    className="inline-flex min-h-[40px] items-center rounded-xl bg-accent px-3 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-60"
+                    className="inline-flex min-h-[44px] items-center rounded-xl bg-accent px-3 text-sm font-semibold text-accent-foreground hover:bg-accent-hover disabled:opacity-60"
                   >
-                    Mark done
+                    {task.href ? "I've done this" : "Mark done"}
                   </button>
-                ) : null}
+                ) : (
+                  <span className="inline-flex min-h-[44px] items-center text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                    Done
+                  </span>
+                )}
               </div>
             </li>
           );

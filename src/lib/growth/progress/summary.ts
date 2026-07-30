@@ -92,9 +92,9 @@ function resolveNextAction(input: {
   const task = input.incompleteOnboarding[0];
   if (task) {
     return {
-      label: task.title || "Finish onboarding",
-      href: task.href || "/member/onboarding",
-      reason: "Complete your onboarding checklist to unlock the full Factory experience.",
+      label: "Continue onboarding",
+      href: "/member/onboarding",
+      reason: `Next up: ${task.title}.`,
     };
   }
 
@@ -103,9 +103,9 @@ function resolveNextAction(input: {
   );
   if (mission && mission.status === "active") {
     return {
-      label: mission.title,
+      label: "Today's mission",
       href: mission.href || CATEGORY_HREF[mission.category] || "/member/dashboard",
-      reason: "Knock out today's mission to keep your streak and reputation moving.",
+      reason: mission.title,
     };
   }
 
