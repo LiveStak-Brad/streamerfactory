@@ -20,11 +20,11 @@ export function HomeNetworkStrip({ members, memberCount }: HomeNetworkStripProps
     <section className="relative border-b border-border/70 bg-surface/90 py-5 backdrop-blur-md dark:bg-zinc-950/50">
       <Container>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-w-0 flex-1 items-center gap-4 overflow-hidden">
+          <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <p className="shrink-0 text-xs font-bold uppercase tracking-[0.2em] text-muted">
               Creators inside
             </p>
-            <div className="flex min-w-0 items-center -space-x-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex min-h-9 min-w-0 items-center -space-x-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {shown.map((m, i) => (
                 <CreatorAvatar
                   key={m.username}
@@ -36,7 +36,8 @@ export function HomeNetworkStrip({ members, memberCount }: HomeNetworkStripProps
                       : "bg-gradient-to-br from-fuchsia-500 to-violet-700"
                   }
                   fallbackInitial={fallbackInitial(m.displayName || m.username)}
-                  className="h-9 w-9 ring-2 ring-surface dark:ring-zinc-950"
+                  className="h-9 w-9 shrink-0 ring-2 ring-surface dark:ring-zinc-950"
+                  priority={i < 8}
                 />
               ))}
               {memberCount > shown.length ? (
