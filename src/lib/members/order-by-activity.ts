@@ -1,43 +1,61 @@
 import type { NetworkMember } from "@/lib/members/network-members";
 import { normalizeHandle } from "@/lib/rankings/backstage-seed-data";
+import { displayLabelForHandle } from "@/lib/rankings/leaderboard-from-seed";
 import type { LeaderboardEntry } from "@/lib/rankings/types";
 
 /**
- * Order directory members by this month's leaderboard activity (rank score → hours → diamonds),
- * so homepage previews surface currently active creators ahead of low/no-activity handles.
- * Members missing from the board sink to the end; photos are a tie-breaker only.
+ * Homepage hero / network-strip order: monthly leaderboard activity first, with photos
+ * taken from the same leaderboard `avatar_url` that /rankings uses (not directory-only URLs).
+ * Directory-only handles (not on the board) append afterward.
  */
 export function orderMembersByActivity(
   members: NetworkMember[],
   rankings: LeaderboardEntry[],
 ): NetworkMember[] {
-  const byHandle = new Map<string, LeaderboardEntry>();
-  for (const entry of rankings) {
-    const handle = normalizeHandle(entry.tiktok_username ?? "");
-    if (!handle || byHandle.has(handle)) continue;
-    byHandle.set(handle, entry);
+  const directoryByHandle = new Map<string, NetworkMember>();
+  for (const member of members) {
+    const handle = normalizeHandle(member.username);
+    if (!handle || directoryByHandle.has(handle)) continue;
+    directoryByHandle.set(handle, member);
   }
 
-  return [...members].sort((a, b) => {
-    const ea = byHandle.get(normalizeHandle(a.username));
-    const eb = byHandle.get(normalizeHandle(b.username));
+  const seen = new Set<string>();
+  const ordered: NetworkMember[] = [];
 
-    const scoreA = ea?.rank_score ?? -1;
-    const scoreB = eb?.rank_score ?? -1;
-    if (scoreB !== scoreA) return scoreB - scoreA;
+  // Leaderboard is already most-active-first — reuse those rows + their photos.
+  for (const entry of rankings) {
+    const handle = normalizeHandle(entry.tiktok_username ?? "");
+    if (!handle || seen.has(handle)) continue;
+    seen.add(handle);
 
-    const hoursA = ea?.hours_streamed ?? -1;
-    const hoursB = eb?.hours_streamed ?? -1;
-    if (hoursB !== hoursA) return hoursB - hoursA;
+    const fromDirectory = directoryByHandle.get(handle);
+    const avatarUrl = entry.avatar_url ?? fromDirectory?.avatarUrl ?? null;
+    ordered.push({
+      username: fromDirectory?.username ?? handle,
+      displayName:
+        fromDirectory?.displayName ??
+        displayLabelForHandle(handle).replace(/^@/, "") ??
+        handle,
+      avatarUrl,
+    });
+  }
 
-    const diamondsA = ea?.coins_earned ?? -1;
-    const diamondsB = eb?.coins_earned ?? -1;
-    if (diamondsB !== diamondsA) return diamondsB - diamondsA;
+  // Remaining directory members (not on this month's board) — keep A–Z, photos when present.
+  const remainder = members
+    .filter((m) => !seen.has(normalizeHandle(m.username)))
+    .sort((a, b) => {
+      const photoA = a.avatarUrl ? 0 : 1;
+      const photoB = b.avatarUrl ? 0 : 1;
+      if (photoA !== photoB) return photoA - photoB;
+      return a.displayName.localeCompare(b.displayName, undefined, { sensitivity: "base" });
+    });
 
-    const photoA = a.avatarUrl ? 0 : 1;
-    const photoB = b.avatarUrl ? 0 : 1;
-    if (photoA !== photoB) return photoA - photoB;
+  for (const member of remainder) {
+    const handle = normalizeHandle(member.username);
+    if (!handle || seen.has(handle)) continue;
+    seen.add(handle);
+    ordered.push(member);
+  }
 
-    return a.displayName.localeCompare(b.displayName, undefined, { sensitivity: "base" });
-  });
+  return ordered;
 }
