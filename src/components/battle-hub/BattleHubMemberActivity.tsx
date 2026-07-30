@@ -1,10 +1,11 @@
 import Link from "next/link";
 
-import { formatLabelToDisplay } from "@/lib/battle-hub/formats";
+import { BattleCard } from "@/components/ui/BattleCard";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Button } from "@/components/ui/Button";
 import {
   battleTitleOrFallback,
   formatBattleScheduleTime,
-  formatParticipantHandles,
 } from "@/lib/battle-hub/display";
 import type { BattleEventWithParticipants } from "@/lib/battle-hub/types";
 
@@ -16,37 +17,6 @@ export type BattleHubMemberActivityProps = {
   myNextBattle: BattleEventWithParticipants | null;
   createdBattleCount: number;
 };
-
-function EventMeta({
-  ev,
-  compact = false,
-}: {
-  ev: BattleEventWithParticipants;
-  compact?: boolean;
-}) {
-  const format = formatLabelToDisplay(ev.format_label, ev.participant_count);
-  const when = formatBattleScheduleTime(ev.scheduled_at, ev.timezone);
-  const people = formatParticipantHandles(ev.battle_event_participants);
-  return (
-    <div className={compact ? "space-y-1.5" : "space-y-2"}>
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200">
-          {format}
-        </span>
-        {ev.event_type && ev.event_type !== "battle" ? (
-          <span className="text-xs font-medium capitalize text-zinc-500 dark:text-zinc-400">
-            {ev.event_type.replace(/-/g, " ")}
-          </span>
-        ) : null}
-      </div>
-      <p className={`font-medium text-zinc-950 dark:text-zinc-50 ${compact ? "text-sm" : "text-base"}`}>
-        {battleTitleOrFallback(ev.title)}
-      </p>
-      <p className={`text-zinc-600 dark:text-zinc-400 ${compact ? "text-xs" : "text-sm"}`}>{people}</p>
-      <p className={`text-zinc-500 dark:text-zinc-500 ${compact ? "text-xs" : "text-sm"}`}>{when}</p>
-    </div>
-  );
-}
 
 function MemberContextStrip({
   userId,
@@ -158,56 +128,37 @@ function NextUpSection({
     </div>
 
       {nextNetworkEvent ? (
-        <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-gradient-to-br from-white to-zinc-50/90 p-6 shadow-sm transition duration-200 hover:border-accent/30 hover:shadow-md dark:border-zinc-800 dark:from-zinc-950 dark:to-zinc-900/80 dark:hover:border-accent/40">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 blur-3xl transition duration-300 group-hover:bg-accent/15 dark:bg-accent/15" />
-          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <div className="min-w-0 flex-1 space-y-1">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
-                Network calendar
-              </p>
-              {nextNetworkEvent.created_by === userId ? (
-                <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">You&apos;re hosting</p>
-              ) : null}
-              <EventMeta ev={nextNetworkEvent} />
-            </div>
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row lg:flex-col">
-              <Link
-                href="/battle-hub/calendar"
-                className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
-              >
-                View calendar
-              </Link>
-              <Link
-                href="/battle-hub/scheduler"
-                className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-zinc-200 px-4 py-2.5 text-sm font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-900/60"
-              >
-                Create another battle
-              </Link>
-            </div>
+        <div className="space-y-4">
+          <BattleCard
+            featured
+            event={nextNetworkEvent}
+            isHosting={nextNetworkEvent.created_by === userId}
+          />
+          <div className="flex flex-wrap gap-2">
+            <Button href="/battle-hub/calendar" variant="secondary" className="min-h-[44px] px-4">
+              View calendar
+            </Button>
+            <Button href="/battle-hub/scheduler" variant="primary" className="min-h-[44px] px-4">
+              Create another battle
+            </Button>
           </div>
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-zinc-300/90 bg-zinc-50/50 p-8 text-center dark:border-zinc-700 dark:bg-zinc-900/30">
-          <p className="text-base font-semibold text-zinc-950 dark:text-zinc-50">No battles on the calendar yet</p>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            The network calendar fills up as members schedule battles. Add yours to kick things off — everyone
-            with access will see it in one place.
-          </p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/battle-hub/scheduler"
-              className="inline-flex min-h-[48px] min-w-[200px] items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white dark:bg-white dark:text-zinc-950"
-            >
-              Schedule a battle
-            </Link>
-            <Link
-              href="/battle-hub/calendar"
-              className="inline-flex min-h-[48px] items-center justify-center text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
-            >
-              Open network calendar →
-            </Link>
-          </div>
-        </div>
+        <EmptyState
+          className="items-center text-center py-10"
+          title="No battles on the calendar yet"
+          description="The network calendar fills up as members schedule battles. Add yours to kick things off — everyone with access will see it in one place."
+          action={
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button href="/battle-hub/scheduler" variant="primary" className="min-h-[48px] px-6">
+                Schedule a battle
+              </Button>
+              <Button href="/battle-hub/calendar" variant="secondary" className="min-h-[48px] px-6">
+                Open calendar
+              </Button>
+            </div>
+          }
+        />
       )}
     </section>
   );
@@ -243,48 +194,35 @@ function UpcomingListSection({
       </div>
 
       {empty && !hasNextScheduled ? (
-        <div className="rounded-2xl border border-zinc-200/80 bg-white/60 p-6 dark:border-zinc-800 dark:bg-zinc-950/30">
-          <p className="text-sm font-medium text-zinc-950 dark:text-zinc-50">No battles scheduled yet</p>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Create your first battle to see it here and on the shared calendar. Other members use the same
-            view to plan around network activity.
-          </p>
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Link
-              href="/battle-hub/scheduler"
-              className="inline-flex text-sm font-semibold text-zinc-950 hover:underline dark:text-zinc-50"
-            >
-              Schedule a battle →
-            </Link>
-            <Link
-              href="/battle-hub/calendar"
-              className="inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
-            >
-              Review the calendar →
-            </Link>
-          </div>
-        </div>
+        <EmptyState
+          title="No battles scheduled yet"
+          description="Create your first battle to see it here and on the shared calendar."
+          action={
+            <div className="flex flex-wrap gap-2">
+              <Button href="/battle-hub/scheduler" variant="primary" className="min-h-[44px] px-4">
+                Schedule a battle
+              </Button>
+              <Button href="/battle-hub/calendar" variant="secondary" className="min-h-[44px] px-4">
+                Review calendar
+              </Button>
+            </div>
+          }
+        />
       ) : empty ? (
-        <div className="rounded-2xl border border-zinc-200/80 bg-white/60 p-6 dark:border-zinc-800 dark:bg-zinc-950/30">
-          <p className="text-sm font-medium text-zinc-950 dark:text-zinc-50">Nothing else queued yet</p>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            When more battles are scheduled, they&apos;ll show here in order. You can also browse everything on
-            the calendar.
-          </p>
-          <Link
-            href="/battle-hub/calendar"
-            className="mt-4 inline-flex text-sm font-semibold text-accent hover:underline dark:text-accent-muted"
-          >
-            Open network calendar →
-          </Link>
-        </div>
+        <EmptyState
+          title="Nothing else queued yet"
+          description="When more battles are scheduled, they will show here in order."
+          action={
+            <Button href="/battle-hub/calendar" variant="secondary" className="min-h-[44px] px-4">
+              Open network calendar
+            </Button>
+          }
+        />
       ) : (
         <ul className="space-y-3">
           {events.map((ev) => (
             <li key={ev.id}>
-              <div className="group rounded-xl border border-zinc-200/90 bg-white/70 p-4 transition duration-200 hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-600">
-                <EventMeta ev={ev} compact />
-              </div>
+              <BattleCard event={ev} />
             </li>
           ))}
         </ul>
