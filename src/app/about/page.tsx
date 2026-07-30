@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Section } from "@/components/ui/Section";
+import { Container } from "@/components/ui/Container";
 import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
@@ -13,59 +13,72 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ["Streamer Factory", "TikTok LIVE agency", "creator agency about"],
 });
 
+const pillars = [
+  {
+    title: "Recruit selectively",
+    body: "Fit matters as much as follower count — we partner with creators who treat LIVE like a craft.",
+  },
+  {
+    title: "Onboard with clarity",
+    body: "Documentation and expectations up front so everyone knows how the network works.",
+  },
+  {
+    title: "Train for compounding",
+    body: "StreamerU missions and Battle Hub systems built for retention and sustainable monetization.",
+  },
+] as const;
+
 export default function AboutPage() {
   return (
-    <>
-      <Section className="!pt-12 sm:!pt-16">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-4xl font-bold tracking-[-0.03em] text-foreground sm:text-5xl">
-            About Streamer Factory
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
-            Streamer Factory is a TikTok LIVE creator agency built for operators—creators
-            who want to grow an audience, build trust, and earn sustainably. We combine
-            recruitment, structured onboarding, hands-on training, and ongoing management
-            so you can focus on your craft while we help you professionalize the business
-            around it.
+    <div className="border-b border-border/70 bg-muted-bg/30 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-10">
+      <Container className="max-w-6xl">
+        <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-10 text-zinc-50 sm:px-10 sm:py-14">
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_20%_-10%,rgba(99,102,241,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(168,85,247,0.22),transparent_50%)]"
+            aria-hidden
+          />
+          <div className="relative mx-auto max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-accent-muted">About</p>
+            <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-white sm:text-5xl">
+              About Streamer Factory
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed text-zinc-400">
+              A TikTok LIVE creator agency for operators — creators who want audience, trust, and sustainable
+              income. Recruitment, onboarding, StreamerU training, and Battle Hub coordination in one network.
+            </p>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-12 max-w-3xl space-y-6 text-lg leading-relaxed text-muted">
+          <p>
+            This isn&apos;t a gaming brand and it isn&apos;t a viewer product. It&apos;s a partner network: clear
+            expectations, real coaching, and a conversion-focused approach to helping creators win on LIVE.
           </p>
-          <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
-            This isn’t a gaming brand and it isn’t a viewer product. It’s a company
-            website for a real partner network: clear expectations, real coaching, and
-            a conversion-focused approach to helping creators win on LIVE.
+          <p>
+            Approved members use the same platform to learn (StreamerU), connect (Battle Finder), schedule
+            (Battle Hub and the calendar), and grow — with support aligned to how you actually go live.
           </p>
-          <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
-            Approved members use the same platform to learn (StreamerU and onboarding), connect (Battle
-            Finder and coordination), schedule (Battle Hub and the network calendar), and grow — with support
-            that stays aligned to how you actually go live.
-          </p>
-        </div>
-      </Section>
-      <Section variant="muted" className="!py-14 sm:!py-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">
+        </section>
+
+        <section className="mt-14">
+          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">
             What “agency” means here
           </h2>
-          <ul className="mt-6 space-y-4 text-muted">
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-              <span>
-                We recruit selectively—fit matters as much as follower count.
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-              <span>
-                We onboard with documentation and clarity—so creators know how we work.
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-              <span>
-                We train for retention and monetization—practical, repeatable habits.
-              </span>
-            </li>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-3">
+            {pillars.map((p, i) => (
+              <li
+                key={p.title}
+                className="rounded-2xl border border-border/80 bg-surface/95 p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/55"
+              >
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-brand text-sm font-bold text-white">
+                  {i + 1}
+                </span>
+                <h3 className="mt-4 text-lg font-semibold text-foreground">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
+              </li>
+            ))}
           </ul>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[48px] px-8">
               Join Creator Network on TikTok
             </Button>
@@ -73,22 +86,31 @@ export default function AboutPage() {
               Request website access
             </Button>
           </div>
-          <p className="mt-8 text-sm leading-relaxed text-muted">
+          <p className="mt-8 text-center text-sm leading-relaxed text-muted">
             Dig deeper:{" "}
-            <Link href="/guides/tiktok-live-agency" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            <Link
+              href="/guides/tiktok-live-agency"
+              className="font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
               TikTok LIVE Agency
             </Link>
             {" · "}
-            <Link href="/guides/how-to-join-tiktok-live-agency" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            <Link
+              href="/guides/how-to-join-tiktok-live-agency"
+              className="font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
               How to join
             </Link>
             {" · "}
-            <Link href="/guides/creator-academy" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            <Link
+              href="/guides/creator-academy"
+              className="font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
               Creator Academy
             </Link>
           </p>
-        </div>
-      </Section>
-    </>
+        </section>
+      </Container>
+    </div>
   );
 }

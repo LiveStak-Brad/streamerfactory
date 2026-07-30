@@ -89,8 +89,9 @@ export default async function ApplyPage() {
   const isResubmitAfterReject = existingApplication?.status === "rejected";
 
   return (
-    <Section className="!pt-12 sm:!pt-16">
+    <Section className="!pt-10 sm:!pt-12">
       <div className="mx-auto max-w-2xl">
+        <div className="rounded-3xl border border-border/80 bg-gradient-to-b from-accent-soft/50 to-surface px-5 py-7 dark:border-zinc-800 dark:from-accent/10 dark:to-zinc-950/60 sm:px-8">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
           Join Streamer Factory
         </p>
@@ -111,6 +112,7 @@ export default async function ApplyPage() {
           </Link>{" "}
           on this website.
         </p>
+        </div>
 
         <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-muted-bg/50 p-6 dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">

@@ -132,23 +132,30 @@ function LoginContent() {
   }
 
   return (
-    <section className="py-16 sm:py-24">
-      <Container className="max-w-md">
+    <section className="relative overflow-hidden py-14 sm:py-20">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[320px] bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(99,102,241,0.18),transparent_65%)]"
+        aria-hidden
+      />
+      <Container className="relative max-w-md">
+        <div className="rounded-3xl border border-border/80 bg-surface/95 p-6 shadow-[var(--shadow-card)] dark:border-zinc-800 dark:bg-zinc-950/70 sm:p-8">
         <Link
           href="/"
-          className="group mb-10 inline-flex items-center gap-3.5 rounded-xl outline-none ring-offset-2 ring-offset-white transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent dark:ring-offset-zinc-950"
+          className="group mb-8 inline-flex items-center gap-3.5 rounded-xl outline-none ring-offset-2 ring-offset-white transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent dark:ring-offset-zinc-950"
         >
           <SfLogoMark size="md" />
           <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
             {site.name}
           </span>
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
+          Members
+        </p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Use your email and password. Enable Email under Authentication → Providers in
-          Supabase if you have not already.
+          Access your dashboard, rankings, StreamerU progress, and Battle Hub.
         </p>
 
         {callbackError === "callback" && (
@@ -232,11 +239,18 @@ function LoginContent() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl border border-accent/40 bg-accent/15 px-4 py-3 text-sm font-semibold text-accent shadow-sm transition-colors hover:border-accent/60 hover:bg-accent/25 disabled:opacity-60 dark:text-accent-muted"
+            className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-accent-foreground shadow-[0_8px_24px_-8px_var(--accent-glow)] transition-[transform,background-color] hover:-translate-y-0.5 hover:bg-accent-hover disabled:opacity-60 motion-reduce:transform-none dark:text-zinc-950"
           >
             {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-muted">
+          New to the network?{" "}
+          <Link href="/apply" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+            Join Streamer Factory
+          </Link>
+        </p>
+        </div>
       </Container>
     </section>
   );
