@@ -44,6 +44,13 @@ export default async function HomePage() {
   ]);
   const members = directory.members ?? [];
   const rankings = board ?? [];
+  /** Prefer creators with Backstage photos for above-the-fold hero avatars. */
+  const previewMembers = [...members].sort((a, b) => {
+    const aPhoto = a.avatarUrl ? 0 : 1;
+    const bPhoto = b.avatarUrl ? 0 : 1;
+    if (aPhoto !== bPhoto) return aPhoto - bPhoto;
+    return 0;
+  });
 
   return (
     <>
@@ -54,10 +61,10 @@ export default async function HomePage() {
       </p>
       <HomeHero
         memberCount={members.length}
-        previewMembers={members}
+        previewMembers={previewMembers}
         topCreators={rankings.slice(0, 5)}
       />
-      <HomeNetworkStrip members={members} memberCount={members.length} />
+      <HomeNetworkStrip members={previewMembers} memberCount={members.length} />
       <HomePlatformPreview />
       <WhatWeDo />
       <HomeRankingPreview entries={rankings} totalCount={rankings.length} />

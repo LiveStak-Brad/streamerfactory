@@ -10,6 +10,8 @@ type MemberTikTokAvatarProps = {
   fallbackBackdropClass: string;
   fallbackInitial: string;
   className?: string;
+  /** Above-the-fold: load immediately instead of lazy. */
+  priority?: boolean;
 };
 
 type LoadState = "pending" | "ok" | "fail";
@@ -24,6 +26,7 @@ export function MemberTikTokAvatar({
   fallbackBackdropClass,
   fallbackInitial,
   className = "h-14 w-14",
+  priority = false,
 }: MemberTikTokAvatarProps) {
   const [load, setLoad] = useState<LoadState>("pending");
 
@@ -65,7 +68,7 @@ export function MemberTikTokAvatar({
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${
               load === "ok" ? "opacity-100" : "opacity-0"
             }`}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
             decoding="async"
             onLoad={() => setLoad("ok")}
             onError={() => setLoad("fail")}

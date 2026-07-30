@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { isTikTokCdnAvatarUrl } from "@/lib/tiktok-avatar";
+
 export const runtime = "nodejs";
 
 const BROWSER_UA =
@@ -9,20 +11,10 @@ function isAllowedAvatarUrl(url: string): boolean {
   try {
     const u = new URL(url.startsWith("//") ? `https:${url}` : url);
     const host = u.hostname.toLowerCase();
-    if (
-      host.includes("tiktokcdn") ||
-      host.includes("ibytedapm") ||
-      host.includes("byteimg") ||
-      host.includes("tiktokv.com") ||
-      host.endsWith(".tiktok.com") ||
-      host === "tiktok.com"
-    ) {
-      return true;
-    }
     if (host === "thestreamerfactory.com" || host.endsWith(".thestreamerfactory.com")) {
       return true;
     }
-    return false;
+    return isTikTokCdnAvatarUrl(url.startsWith("//") ? `https:${url}` : url);
   } catch {
     return false;
   }

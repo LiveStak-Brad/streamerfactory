@@ -73,18 +73,45 @@ export function isTikTokCdnAvatarUrl(url: string | null | undefined): boolean {
   if (!url || typeof url !== "string") return false;
   let host: string;
   try {
-    host = new URL(url).hostname.toLowerCase();
+    host = new URL(url.startsWith("//") ? `https:${url}` : url).hostname.toLowerCase();
   } catch {
     return false;
   }
   if (host === "unavatar.io" || host.endsWith(".unavatar.io")) return false;
   return (
     host.includes("tiktokcdn") ||
-    host.includes("ibyteimg.com") ||
-    host.includes("byteoversea.com") ||
+    host.includes("ibyteimg") ||
+    host.includes("byteimg") ||
+    host.includes("ibytedapm") ||
+    host.includes("byteoversea") ||
     host.includes("tiktokv.com") ||
-    host.includes("muscdn.com")
+    host.includes("muscdn.com") ||
+    host.endsWith(".tiktok.com") ||
+    host === "tiktok.com"
   );
+}
+
+/**
+ * Same-origin proxy URL for Backstage / TikTok CDN avatars (browser hotlinking is blocked).
+ * Returns null when the URL should not be shown (empty, data:, or unknown host).
+ * First-party site URLs are returned as-is.
+ */
+export function toProxiedAvatarSrc(url: string | null | undefined): string | null {
+  const trimmed = url?.trim();
+  if (!trimmed || trimmed.startsWith("data:") || trimmed.startsWith("blob:")) return null;
+  try {
+    const absolute = trimmed.startsWith("//") ? `https:${trimmed}` : trimmed;
+    const host = new URL(absolute).hostname.toLowerCase();
+    if (host === "thestreamerfactory.com" || host.endsWith(".thestreamerfactory.com")) {
+      return absolute;
+    }
+    if (isTikTokCdnAvatarUrl(absolute)) {
+      return `/api/creator-network/avatar-image?${new URLSearchParams({ url: trimmed })}`;
+    }
+  } catch {
+    return null;
+  }
+  return null;
 }
 
 /** First successful JSON response wins (tries short path then full profile URL). */

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { brandAssets } from "@/lib/brand/assets";
+import { toProxiedAvatarSrc } from "@/lib/tiktok-avatar";
 
 type BackstageAvatarProps = {
   /** Imported Creator Network / Backstage table photo only — never TikTok profile or unavatar. */
@@ -14,27 +15,6 @@ type BackstageAvatarProps = {
 
 type LoadState = "pending" | "ok" | "fail";
 
-function proxyBackstageImageUrl(url: string): string {
-  const trimmed = url.trim();
-  if (!trimmed || trimmed.startsWith("data:") || trimmed.startsWith("blob:")) return "";
-  try {
-    const parsed = new URL(trimmed.startsWith("//") ? `https:${trimmed}` : trimmed);
-    const host = parsed.hostname.toLowerCase();
-    const isCdn =
-      host.includes("tiktokcdn") ||
-      host.includes("ibytedapm") ||
-      host.includes("byteimg") ||
-      host.includes("tiktokv.com") ||
-      host.endsWith(".tiktok.com");
-    if (isCdn) {
-      return `/api/creator-network/avatar-image?${new URLSearchParams({ url: trimmed })}`;
-    }
-  } catch {
-    return "";
-  }
-  return trimmed;
-}
-
 /** Rankings / creator network: Backstage import photo or initial — no TikTok story/profile fallback. */
 export function BackstageAvatar({
   backstageImageUrl,
@@ -42,12 +22,7 @@ export function BackstageAvatar({
   fallbackInitial,
   className = "h-14 w-14",
 }: BackstageAvatarProps) {
-  const src = useMemo(() => {
-    const url = backstageImageUrl?.trim();
-    if (!url) return null;
-    const proxied = proxyBackstageImageUrl(url);
-    return proxied || null;
-  }, [backstageImageUrl]);
+  const src = useMemo(() => toProxiedAvatarSrc(backstageImageUrl), [backstageImageUrl]);
 
   const [load, setLoad] = useState<LoadState>(src ? "pending" : "fail");
 

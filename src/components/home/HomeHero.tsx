@@ -87,6 +87,7 @@ export function HomeHero({
                     fallbackBackdropClass={avatarTone(i)}
                     fallbackInitial={fallbackInitial(m.displayName || m.username)}
                     className="h-10 w-10 ring-2 ring-[#07060c]"
+                    priority
                   />
                 ))}
               </div>
@@ -188,6 +189,7 @@ export function HomeHero({
                             fallbackBackdropClass={avatarTone(index)}
                             fallbackInitial={fallbackInitial(handle)}
                             className="h-10 w-10"
+                            priority
                           />
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-semibold text-white">@{handle}</p>
