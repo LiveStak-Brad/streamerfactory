@@ -52,6 +52,26 @@ export const AnalyticsEvents = {
   BATTLE_SCHEDULER_OPENED: "battle_scheduler_opened",
   BATTLE_EVENT_CREATED: "battle_event_created",
   BATTLE_CALENDAR_VIEWED: "battle_calendar_viewed",
+
+  // Growth foundation (missions, streaks, achievements, reputation, referrals)
+  MISSION_ASSIGNED: "mission_assigned",
+  MISSION_COMPLETED: "mission_completed",
+  MISSION_ABANDONED: "mission_abandoned",
+  STREAK_INCREMENTED: "streak_incremented",
+  STREAK_BROKEN: "streak_broken",
+  ACHIEVEMENT_UNLOCKED: "achievement_unlocked",
+  ONBOARDING_TASK_COMPLETED: "onboarding_task_completed",
+  DAILY_LOGIN: "daily_login",
+  REFERRAL_CODE_CREATED: "referral_code_created",
+  REFERRAL_ACCEPTED: "referral_accepted",
+  REPUTATION_EARNED: "reputation_earned",
+  TITLE_UNLOCKED: "title_unlocked",
+  DASHBOARD_ENGAGED: "dashboard_engaged",
+  NOTIFICATION_OPENED: "notification_opened",
+  STREAMERU_LIVE_MISSION_COMPLETED: "streameru_live_mission_completed",
+  GUIDE_READ: "guide_read",
+  LESSON_STARTED: "lesson_started",
+  LESSON_COMPLETED: "lesson_completed",
 } as const;
 
 export type AnalyticsEventName = (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents];

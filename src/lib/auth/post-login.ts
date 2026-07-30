@@ -9,7 +9,7 @@ export type PostLoginProfile = {
  * After sign-in / email callback: choose a sensible default when `next` is generic (/ or /login).
  *
  * - **Applicants** → `/application-status`.
- * - **Approved network members** (member/editor/admin/owner) with incomplete onboarding → `/streameru` (StreamerU).
+ * - **Approved network members** (member/editor/admin/owner) with incomplete onboarding → `/member/onboarding`.
  * - Explicit `next` (e.g. /apply, /battle-hub, /admin) is always preserved.
  */
 export function resolvePostLoginRedirect(
@@ -32,7 +32,7 @@ export function resolvePostLoginRedirect(
     canScheduleBattles(profile.role) &&
     !profile.onboarding_completed_at
   ) {
-    return "/streameru";
+    return "/member/onboarding";
   }
 
   return next;

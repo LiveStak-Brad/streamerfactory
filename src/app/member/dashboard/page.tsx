@@ -1,9 +1,14 @@
+import { MemberDashboardAchievementWidget } from "@/components/member/dashboard/MemberDashboardAchievementWidget";
 import { MemberDashboardBattlesWidget } from "@/components/member/dashboard/MemberDashboardBattlesWidget";
+import { MemberDashboardCommunityWidget } from "@/components/member/dashboard/MemberDashboardCommunityWidget";
+import { MemberDashboardMissionsWidget } from "@/components/member/dashboard/MemberDashboardMissionsWidget";
 import { MemberDashboardProfileWidget } from "@/components/member/dashboard/MemberDashboardProfileWidget";
 import { MemberDashboardProgress } from "@/components/member/dashboard/MemberDashboardProgress";
 import { MemberDashboardQuickActions } from "@/components/member/dashboard/MemberDashboardQuickActions";
+import { MemberDashboardStreakReputationWidget } from "@/components/member/dashboard/MemberDashboardStreakReputationWidget";
 import { MemberDashboardStreamerUWidget } from "@/components/member/dashboard/MemberDashboardStreamerUWidget";
 import { MemberDashboardWelcome } from "@/components/member/dashboard/MemberDashboardWelcome";
+import { MemberGrowthBootstrap } from "@/components/member/dashboard/MemberGrowthBootstrap";
 import { DashboardWidget } from "@/components/ui/DashboardWidget";
 import { AchievementBadge } from "@/components/ui/AchievementBadge";
 import { Container } from "@/components/ui/Container";
@@ -12,14 +17,14 @@ import {
   getMyUpcomingBattleEvents,
   getUpcomingBattleEvents,
 } from "@/lib/battle-hub/queries";
-import {
-  resolveDashboardNextAction,
-  timeOfDayGreeting,
-} from "@/lib/member/dashboard-next-action";
+import { timeOfDayGreeting } from "@/lib/member/dashboard-next-action";
 import { rankingBadge } from "@/lib/rankings/scoring";
 import { getMyLeaderboardSummary } from "@/lib/rankings/queries";
 import { getTikTokConnectionPublic } from "@/lib/tiktok/db";
 import { getSessionProfile } from "@/lib/auth/server";
+import { getCreatorProgressSummary } from "@/lib/growth/progress/summary";
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackServerEvent } from "@/lib/analytics/server";
 
 export const metadata = {
   title: "Member dashboard",
@@ -66,18 +71,21 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
   let myImportedStats: Awaited<ReturnType<typeof getMyLatestImportedStats>> | null = null;
   let myUpcoming: Awaited<ReturnType<typeof getMyUpcomingBattleEvents>> = [];
   let networkUpcoming: Awaited<ReturnType<typeof getUpcomingBattleEvents>> = [];
+  let growth: Awaited<ReturnType<typeof getCreatorProgressSummary>> | null = null;
 
   if (userId) {
-    const [rankRes, statsRes, myBattlesRes, networkBattlesRes] = await Promise.all([
+    const [rankRes, statsRes, myBattlesRes, networkBattlesRes, growthRes] = await Promise.all([
       getMyLeaderboardSummary(userId, "monthly").catch(() => null),
       getMyLatestImportedStats(userId).catch(() => null),
       getMyUpcomingBattleEvents(userId, 3).catch(() => []),
       getUpcomingBattleEvents(6).catch(() => []),
+      getCreatorProgressSummary(userId, { email }).catch(() => null),
     ]);
     rankingSummary = rankRes;
     myImportedStats = statsRes;
     myUpcoming = myBattlesRes;
     networkUpcoming = networkBattlesRes;
+    growth = growthRes;
   }
 
   const entry = rankingSummary?.entry ?? null;
@@ -95,18 +103,26 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
     "Creator";
   const avatarUrl = connection?.avatar_url || myImportedStats?.avatar_url || entry?.avatar_url || null;
 
-  const nextAction = resolveDashboardNextAction({
-    profile,
-    connection,
-    rankingEntry: entry,
-    importedStats: myImportedStats,
-    myUpcomingBattles: myUpcoming,
-  });
+  const nextAction = growth?.nextAction ?? {
+    label: "Continue training",
+    href: "/streameru",
+    reason: "Keep building consistency in StreamerU.",
+  };
 
   const greeting = timeOfDayGreeting(profile?.timezone);
 
+  void trackServerEvent({
+    event: AnalyticsEvents.DASHBOARD_VIEWED,
+    route: "/member/dashboard",
+  });
+  void trackServerEvent({
+    event: AnalyticsEvents.DASHBOARD_ENGAGED,
+    route: "/member/dashboard",
+  });
+
   return (
     <div className="border-b border-border/70 bg-muted-bg/40 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/50 sm:pt-10">
+      <MemberGrowthBootstrap />
       <Container className="max-w-6xl space-y-6 sm:space-y-8">
         {tiktokStatus === "connected" ? (
           <p className="rounded-xl border border-emerald-200/80 bg-emerald-50/80 px-4 py-3 text-sm font-medium text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
@@ -155,6 +171,20 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
           email={email}
         />
 
+        {growth ? (
+          <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
+            <MemberDashboardMissionsWidget
+              missions={growth.todayMissions}
+              seasonName={growth.season?.name ?? null}
+            />
+            <MemberDashboardStreakReputationWidget
+              streaks={growth.snapshot.streaks}
+              reputation={growth.snapshot.reputation}
+              seasonName={growth.season?.name ?? null}
+            />
+          </div>
+        ) : null}
+
         <MemberDashboardProgress
           entry={entry}
           leaderboardSize={rankingSummary?.leaderboardSize ?? 0}
@@ -165,6 +195,16 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
         <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
           <MemberDashboardStreamerUWidget />
           <MemberDashboardBattlesWidget myUpcoming={myUpcoming} networkUpcoming={networkUpcoming} />
+          {growth ? (
+            <MemberDashboardAchievementWidget achievement={growth.newestAchievement} />
+          ) : null}
+          {growth ? (
+            <MemberDashboardCommunityWidget
+              activity={growth.recentActivity}
+              referralCode={growth.referralCode}
+              unreadNotifications={growth.unreadNotifications}
+            />
+          ) : null}
           <MemberDashboardProfileWidget
             connection={connection}
             onboardingComplete={Boolean(profile?.onboarding_completed_at)}

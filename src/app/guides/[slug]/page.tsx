@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { GuidePageView } from "@/components/guides/GuidePageView";
+import { RecordGuideRead } from "@/components/guides/RecordGuideRead";
 import {
   getAllGuideSlugs,
   getGuideBySlug,
@@ -44,5 +45,10 @@ export default async function GuideSlugPage({ params }: Props) {
   const guide = getGuideBySlug(slug);
   if (!guide) notFound();
 
-  return <GuidePageView guide={guide} />;
+  return (
+    <>
+      <RecordGuideRead slug={guide.slug} />
+      <GuidePageView guide={guide} />
+    </>
+  );
 }

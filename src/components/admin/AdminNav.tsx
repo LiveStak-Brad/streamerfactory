@@ -21,6 +21,15 @@ const contentLinks = [
   { href: "/admin/streameru", label: "StreamerU" },
 ] as const;
 
+const growthLinks = [
+  { href: "/admin/seasons", label: "Seasons" },
+  { href: "/admin/missions", label: "Missions" },
+  { href: "/admin/achievements", label: "Achievements" },
+  { href: "/admin/onboarding-tasks", label: "Onboarding" },
+  { href: "/admin/streaks", label: "Streaks" },
+  { href: "/admin/reputation", label: "Reputation" },
+] as const;
+
 function isActive(pathname: string, href: string) {
   return href === "/admin" ? pathname === "/admin" : pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -55,7 +64,7 @@ export function AdminNav() {
   const menuId = useId();
   const [open, setOpen] = useState(false);
 
-  const allLinks = [...primaryLinks, ...opsLinks, ...contentLinks];
+  const allLinks = [...primaryLinks, ...opsLinks, ...contentLinks, ...growthLinks];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-surface/90 shadow-sm backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90">
@@ -87,6 +96,12 @@ export function AdminNav() {
           <span className="mx-1 h-4 w-px bg-border dark:bg-zinc-700" aria-hidden />
           <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Content">
             {contentLinks.map((l) => (
+              <NavLink key={l.href} {...l} pathname={pathname} />
+            ))}
+          </div>
+          <span className="mx-1 h-4 w-px bg-border dark:bg-zinc-700" aria-hidden />
+          <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Growth">
+            {growthLinks.map((l) => (
               <NavLink key={l.href} {...l} pathname={pathname} />
             ))}
           </div>

@@ -1,5 +1,6 @@
 import { RankingsPageView, parseRankingsSearchParams } from "@/components/rankings/RankingsPageView";
 import { Container } from "@/components/ui/Container";
+import { RecordRankingsViewed } from "@/components/member/RecordRankingsViewed";
 import { getSessionProfile } from "@/lib/auth/server";
 
 export const metadata = {
@@ -22,6 +23,7 @@ export default async function MemberLeaderboardPage({ searchParams }: PageProps)
 
   return (
     <div className="border-b border-border/70 bg-muted-bg/30 pb-16 pt-8 dark:border-zinc-800 dark:bg-zinc-950/40 sm:pt-10">
+      <RecordRankingsViewed />
       <Container className="max-w-6xl">
         <RankingsPageView
           periodKind={periodKind}

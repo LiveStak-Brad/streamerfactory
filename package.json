@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
+    "test:growth": "vitest run src/lib/growth",
     "generate:brand": "node scripts/generate-brand-assets.mjs",
     "db:apply-rankings": "node scripts/apply-rankings-migration.mjs",
     "db:seed-backstage": "npx tsx scripts/seed-backstage-stats.ts"
@@ -31,6 +33,7 @@
     "pg": "^8.21.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }

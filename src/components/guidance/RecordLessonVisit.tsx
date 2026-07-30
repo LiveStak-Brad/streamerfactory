@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { recordLessonStartedAction } from "@/lib/growth/actions";
 import { STREAMERU_LAST_LESSON_SLUG_KEY } from "@/lib/resources/recommended-lesson";
 
 /**
- * Records the current lesson as “last visited” for soft guidance (no server sync).
+ * Records last-visited lesson locally and emits lesson_started to the growth event stream.
  */
 export function RecordLessonVisit({ slug }: { slug: string }) {
   useEffect(() => {
@@ -13,6 +14,7 @@ export function RecordLessonVisit({ slug }: { slug: string }) {
     } catch {
       // ignore quota / private mode
     }
+    void recordLessonStartedAction(slug);
   }, [slug]);
 
   return null;

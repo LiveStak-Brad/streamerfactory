@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { recordStreamerUMissionCompletionAction } from "@/lib/growth/actions";
 import { missionDoneStorageKey } from "@/lib/resources/recommended-lesson";
 import { dispatchStreamerUProgressUpdate } from "@/lib/resources/streameru-progress-events";
 
@@ -15,12 +16,15 @@ type Props = {
 };
 
 /**
- * Persists “mission complete” in localStorage only (no server / gamification).
+ * Curriculum SoT remains localStorage. Dual-writes to the growth event stream
+ * so daily missions / achievements / reputation can observe completion.
  */
 export function LessonMissionComplete({ lessonSlug, missionId, nextLesson }: Props) {
   const key = missionDoneStorageKey(lessonSlug);
   const [done, setDone] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     setMounted(true);
@@ -38,9 +42,19 @@ export function LessonMissionComplete({ lessonSlug, missionId, nextLesson }: Pro
   const toggle = useCallback(() => {
     const next = !done;
     setDone(next);
+    setSyncNote(null);
     try {
       if (next) {
         localStorage.setItem(key, JSON.stringify({ missionId, at: new Date().toISOString() }));
+        startTransition(() => {
+          void recordStreamerUMissionCompletionAction({ lessonSlug, missionId }).then((res) => {
+            if ("error" in res && res.error) {
+              setSyncNote("Saved on this device. Server sync will retry next time you’re signed in.");
+            } else {
+              setSyncNote("Saved on this device and synced to your Factory progress.");
+            }
+          });
+        });
       } else {
         localStorage.removeItem(key);
       }
@@ -48,7 +62,7 @@ export function LessonMissionComplete({ lessonSlug, missionId, nextLesson }: Pro
     } catch {
       // ignore quota / private mode
     }
-  }, [done, key, missionId]);
+  }, [done, key, lessonSlug, missionId]);
 
   if (!mounted) {
     return (
@@ -72,7 +86,7 @@ export function LessonMissionComplete({ lessonSlug, missionId, nextLesson }: Pro
         </button>
         {done ? (
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Saved on this device. Sign-in sync can be added later.
+            {syncNote ?? "Saved on this device."}
           </p>
         ) : null}
       </div>
