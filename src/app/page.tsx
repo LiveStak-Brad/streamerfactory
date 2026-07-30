@@ -33,10 +33,16 @@ export const metadata: Metadata = createPageMetadata({
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [{ members }, board] = await Promise.all([
-    getNetworkMembersForDirectory(),
+  const [directory, board] = await Promise.all([
+    getNetworkMembersForDirectory().catch(() => ({
+      members: [],
+      importedAt: null,
+      fromImport: false,
+    })),
     getLeaderboard("monthly").catch(() => [] as Awaited<ReturnType<typeof getLeaderboard>>),
   ]);
+  const members = directory.members ?? [];
+  const rankings = board ?? [];
 
   return (
     <>
@@ -48,12 +54,12 @@ export default async function HomePage() {
       <HomeHero
         memberCount={members.length}
         previewMembers={members}
-        topCreators={board.slice(0, 5)}
+        topCreators={rankings.slice(0, 5)}
       />
       <HomeNetworkStrip members={members} memberCount={members.length} />
       <HomePlatformPreview />
       <WhatWeDo />
-      <HomeRankingPreview entries={board} totalCount={board.length} />
+      <HomeRankingPreview entries={rankings} totalCount={rankings.length} />
       <WhyStreamerFactory />
       <HomeMemberUnlock />
       <LatestResources />
