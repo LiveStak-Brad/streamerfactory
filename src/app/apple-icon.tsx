@@ -14,7 +14,7 @@ export default async function AppleIcon() {
         borderRadius={44}
         borderWidth={4}
         fontSize={96}
-        glow="0 0 0 2px rgba(76, 29, 149, 0.4), 0 12px 40px -8px rgba(91, 33, 182, 0.55)"
+        glow="0 0 0 2px rgba(160, 32, 240, 0.45), 0 12px 40px -8px rgba(0, 229, 255, 0.4)"
       />
     ),
     {

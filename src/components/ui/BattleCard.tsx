@@ -98,10 +98,10 @@ export function BattleCard({
     return (
       <Link
         href={href}
-        className={`group relative block overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] p-6 shadow-[0_24px_60px_-36px_rgba(236,72,153,0.35)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:p-8 ${className}`}
+        className={`group relative block overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] p-6 shadow-[0_24px_60px_-36px_rgba(255, 46, 209,0.35)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:p-8 ${className}`}
       >
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_0%_0%,rgba(236,72,153,0.28),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_20%,rgba(99,102,241,0.3),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_0%_0%,rgba(255, 46, 209,0.28),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_20%,rgba(91, 59, 255,0.3),transparent_50%)]"
           aria-hidden
         />
         <div className="relative">{body}</div>

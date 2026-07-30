@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "generate:brand": "node scripts/generate-brand-assets.mjs",
     "db:apply-rankings": "node scripts/apply-rankings-migration.mjs",
     "db:seed-backstage": "npx tsx scripts/seed-backstage-stats.ts"
   },

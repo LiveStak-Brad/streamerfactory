@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="wm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF2ED1" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <text x="256" y="310" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="220" font-weight="900" letter-spacing="-18" fill="url(#wm)" opacity="0.9">SF</text>
+  <text x="256" y="310" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="220" font-weight="900" letter-spacing="-18" fill="none" stroke="rgba(0,229,255,0.18)" stroke-width="3">SF</text>
+</svg>

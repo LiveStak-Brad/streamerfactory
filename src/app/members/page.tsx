@@ -6,17 +6,15 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { getNetworkMembersForDirectory } from "@/lib/members/members-directory-data";
 import { getLeaderboard } from "@/lib/rankings/queries";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Network members",
   description:
     "Streamer Factory network creators on TikTok — find handles and open profiles to follow each other.",
-  openGraph: {
-    title: "Network members | Streamer Factory",
-    description:
-      "Find TikTok profiles for Streamer Factory network members and follow each other on TikTok.",
-  },
-};
+  path: "/members",
+  ogImage: "/branding/og/members.png",
+});
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -32,7 +30,7 @@ export default async function MembersPage() {
       <Container className="max-w-6xl">
         <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-surface px-5 py-10 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/60 sm:px-8 sm:py-12">
           <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_100%_0%,rgba(99,102,241,0.14),transparent_55%)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_100%_0%,rgba(160,32,240,0.16),transparent_55%)]"
             aria-hidden
           />
           <div className="relative mx-auto max-w-3xl text-center">

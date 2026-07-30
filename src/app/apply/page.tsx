@@ -22,6 +22,7 @@ export const metadata: Metadata = createPageMetadata({
     "TikTok Creator Network apply",
     "Streamer Factory application",
   ],
+  ogImage: "/branding/og/join.png",
 });
 
 export default async function ApplyPage() {

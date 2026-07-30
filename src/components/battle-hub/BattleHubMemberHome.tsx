@@ -37,7 +37,7 @@ export function BattleHubMemberHome({ showOnboardingNudge = false, activity }: P
 
         <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-8 text-zinc-50 sm:px-8 sm:py-10">
           <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_90%_0%,rgba(236,72,153,0.28),transparent_55%),radial-gradient(ellipse_50%_50%_at_0%_40%,rgba(99,102,241,0.3),transparent_50%)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_90%_0%,rgba(255, 46, 209,0.28),transparent_55%),radial-gradient(ellipse_50%_50%_at_0%_40%,rgba(91, 59, 255,0.3),transparent_50%)]"
             aria-hidden
           />
           <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">

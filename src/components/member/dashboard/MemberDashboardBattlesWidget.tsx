@@ -52,6 +52,7 @@ export function MemberDashboardBattlesWidget({
         <EmptyState
           title="No upcoming battles scheduled"
           description="Browse the network calendar or schedule your next match so the crew can show up ready."
+          illustration="battles"
           action={
             <div className="flex flex-wrap gap-2">
               <Button href="/battle-hub/scheduler/new" variant="primary" className="min-h-[44px] px-4">

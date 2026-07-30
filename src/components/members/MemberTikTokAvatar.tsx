@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { brandAssets } from "@/lib/brand/assets";
+
 type MemberTikTokAvatarProps = {
   username: string;
   /** Tailwind classes for gradient circle when no photo loads. */
@@ -35,12 +37,16 @@ export function MemberTikTokAvatar({
       className={`relative shrink-0 overflow-hidden rounded-full shadow-inner ring-2 ring-white/25 dark:ring-zinc-700/80 ${className}`}
     >
       {load === "fail" ? (
-        <div
-          className={`flex h-full w-full items-center justify-center text-lg font-bold text-white ${fallbackBackdropClass}`}
+        // eslint-disable-next-line @next/next/no-img-element -- branded SF default avatar
+        <img
+          src={brandAssets.avatar.default}
+          alt=""
+          width={112}
+          height={112}
+          className={`h-full w-full object-cover ${fallbackBackdropClass}`}
           aria-hidden
-        >
-          {fallbackInitial}
-        </div>
+          data-fallback-initial={fallbackInitial}
+        />
       ) : (
         <>
           {load === "pending" ? (

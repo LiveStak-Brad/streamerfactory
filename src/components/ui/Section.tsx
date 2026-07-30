@@ -20,7 +20,7 @@ const variantDecor: Record<SectionVariant, string> = {
   elevated:
     "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent/25 before:to-transparent",
   inverse:
-    "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_90%_60%_at_50%_-30%,rgba(99,102,241,0.22),transparent_55%)] dark:before:bg-[radial-gradient(ellipse_90%_60%_at_50%_-30%,rgba(99,102,241,0.12),transparent_55%)] after:pointer-events-none after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/25 after:to-transparent dark:after:via-zinc-900/25",
+    "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_90%_60%_at_50%_-30%,rgba(91, 59, 255,0.22),transparent_55%)] dark:before:bg-[radial-gradient(ellipse_90%_60%_at_50%_-30%,rgba(91, 59, 255,0.12),transparent_55%)] after:pointer-events-none after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/25 after:to-transparent dark:after:via-zinc-900/25",
 };
 
 type SectionProps = {

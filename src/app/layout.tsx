@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { isOwnerRole } from "@/lib/auth/access";
 import { getOwnerNetworkViewMode } from "@/lib/auth/network-view";
 import { getSessionProfile } from "@/lib/auth/server";
+import { brandColors } from "@/lib/brand/assets";
 import { defaultMetadata } from "@/lib/metadata";
 import "./globals.css";
 
@@ -16,6 +17,14 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = defaultMetadata;
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: brandColors.navy },
+    { media: "(prefers-color-scheme: dark)", color: brandColors.navy },
+  ],
+  colorScheme: "dark light",
+};
 
 export default async function RootLayout({
   children,

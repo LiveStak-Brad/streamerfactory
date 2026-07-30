@@ -27,7 +27,7 @@ export default async function BattleCalendarPage() {
     return (
       <section className="relative pb-24 pt-14 sm:pt-20">
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(91, 59, 255,0.12),transparent_60%)]"
           aria-hidden
         />
         <Container className="relative max-w-6xl">
@@ -61,7 +61,7 @@ export default async function BattleCalendarPage() {
   return (
     <section className="relative pb-24 pt-14 sm:pt-20">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(91, 59, 255,0.12),transparent_60%)]"
         aria-hidden
       />
       <Container className="relative max-w-6xl">

@@ -11,7 +11,7 @@ export function FeaturedResource({
   curriculumTitle?: string | null;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-surface to-surface p-8 shadow-[0_28px_90px_-48px_rgba(99,102,241,0.55)] dark:from-accent/10 dark:via-zinc-950 dark:to-zinc-950 dark:shadow-[0_28px_90px_-48px_rgba(99,102,241,0.35)] sm:p-10">
+    <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/15 via-surface to-surface p-8 shadow-[0_28px_90px_-48px_rgba(91, 59, 255,0.55)] dark:from-accent/10 dark:via-zinc-950 dark:to-zinc-950 dark:shadow-[0_28px_90px_-48px_rgba(91, 59, 255,0.35)] sm:p-10">
       <div
         className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/20 blur-3xl dark:bg-accent/15"
         aria-hidden

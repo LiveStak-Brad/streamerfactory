@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { brandAssets } from "@/lib/brand/assets";
 import { site } from "@/lib/site";
 
 type PageMetadataInput = {
@@ -8,6 +9,8 @@ type PageMetadataInput = {
   keywords?: string[];
   ogType?: "website" | "article";
   noIndex?: boolean;
+  /** Absolute or site-relative OG image path. */
+  ogImage?: string;
 };
 
 /**
@@ -20,6 +23,7 @@ export function createPageMetadata({
   keywords,
   ogType = "website",
   noIndex = false,
+  ogImage = brandAssets.og.homepage,
 }: PageMetadataInput): Metadata {
   const canonicalPath = path.startsWith("/") ? path : `/${path}`;
   const url = `${site.url}${canonicalPath === "/" ? "" : canonicalPath}`;
@@ -40,11 +44,13 @@ export function createPageMetadata({
       siteName: site.name,
       title: fullTitle,
       description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: fullTitle }],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
+      images: [ogImage],
     },
     robots: noIndex
       ? { index: false, follow: false, googleBot: { index: false, follow: false } }

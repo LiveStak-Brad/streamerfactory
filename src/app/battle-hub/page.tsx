@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { BattleHubLockedGate } from "@/components/battle-hub/BattleHubLockedGate";
 import { BattleHubMemberHome } from "@/components/battle-hub/BattleHubMemberHome";
 import { BattleHubOwnerPreviewBanner } from "@/components/battle-hub/BattleHubOwnerPreviewBanner";
@@ -12,6 +13,20 @@ import {
   getMyUpcomingBattleEvents,
   getUpcomingBattleEvents,
 } from "@/lib/battle-hub/queries";
+
+export const metadata: Metadata = {
+  title: "Battle Hub",
+  description: "Schedule battles, drop flyers, and coordinate the Streamer Factory network calendar.",
+  openGraph: {
+    title: "Battle Hub | Streamer Factory",
+    description: "Schedule battles, drop flyers, and coordinate the Streamer Factory network calendar.",
+    images: [{ url: "/branding/og/battle-hub.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/branding/og/battle-hub.png"],
+  },
+};
 
 export const dynamic = "force-dynamic";
 

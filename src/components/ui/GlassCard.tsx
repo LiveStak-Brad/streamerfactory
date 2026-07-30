@@ -26,7 +26,7 @@ export function GlassCard({
     <Tag
       className={`relative overflow-hidden rounded-2xl border ${toneClass[tone]} ${
         hover
-          ? "transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_28px_56px_-28px_rgba(99,102,241,0.35)] motion-reduce:transform-none motion-reduce:transition-none"
+          ? "transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_28px_56px_-28px_rgba(91, 59, 255,0.35)] motion-reduce:transform-none motion-reduce:transition-none"
           : ""
       } ${className}`}
     >

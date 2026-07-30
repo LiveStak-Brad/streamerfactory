@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type RankBadgeProps = {
   rank: number;
   size?: "sm" | "md" | "lg";
@@ -9,6 +11,21 @@ const sizeClass = {
   md: "h-11 w-11 text-sm",
   lg: "h-14 w-14 text-lg",
 } as const;
+
+const sizePx = {
+  sm: 32,
+  md: 44,
+  lg: 56,
+} as const;
+
+function medalForRank(rank: number): string | null {
+  if (rank === 1) return "/branding/medals/1st.png";
+  if (rank === 2) return "/branding/medals/2nd.png";
+  if (rank === 3) return "/branding/medals/3rd.png";
+  if (rank <= 10) return "/branding/medals/top-10.png";
+  if (rank <= 25) return "/branding/medals/top-25.png";
+  return null;
+}
 
 function podiumTone(rank: number): string {
   if (rank === 1) {
@@ -24,6 +41,20 @@ function podiumTone(rank: number): string {
 }
 
 export function RankBadge({ rank, size = "md", className = "" }: RankBadgeProps) {
+  const medal = medalForRank(rank);
+  const px = sizePx[size];
+
+  if (medal && rank <= 3) {
+    return (
+      <span
+        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-xl ${sizeClass[size]} ${className}`}
+        aria-label={`Rank ${rank}`}
+      >
+        <Image src={medal} alt="" width={px} height={px} className="h-full w-full object-cover" />
+      </span>
+    );
+  }
+
   return (
     <span
       className={`inline-flex shrink-0 items-center justify-center rounded-xl font-bold tracking-tight ${sizeClass[size]} ${podiumTone(rank)} ${className}`}

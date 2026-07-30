@@ -28,6 +28,7 @@ export const metadata: Metadata = createPageMetadata({
     "Streamer Factory",
     "join TikTok LIVE agency",
   ],
+  ogImage: "/branding/og/homepage.png",
 });
 
 export const dynamic = "force-dynamic";

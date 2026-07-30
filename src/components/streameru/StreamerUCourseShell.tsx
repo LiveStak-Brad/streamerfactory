@@ -26,7 +26,7 @@ export function StreamerUCourseShell({ publishedSlugs, children }: Props) {
   return (
     <div className="relative min-h-screen">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[min(480px,70vh)] bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(99,102,241,0.16),transparent_68%)] dark:bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(99,102,241,0.1),transparent_68%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[min(480px,70vh)] bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(91, 59, 255,0.16),transparent_68%)] dark:bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(91, 59, 255,0.1),transparent_68%)]"
         aria-hidden
       />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent opacity-70" aria-hidden />

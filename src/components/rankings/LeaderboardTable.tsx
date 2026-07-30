@@ -51,6 +51,7 @@ export function LeaderboardTable({
       <EmptyState
         title="No rankings yet"
         description="Rankings will appear after the latest Creator Network snapshot is loaded."
+        illustration="rankings"
         className="py-12 text-center items-center"
       />
     );

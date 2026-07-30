@@ -14,7 +14,7 @@ export function BattleFinderLockedGate({ variant, sessionEmail, hasActiveApplica
   return (
     <div className="relative pb-24 pt-14 sm:pt-20">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[min(420px,65vh)] bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,rgba(99,102,241,0.14),transparent_65%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[min(420px,65vh)] bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,rgba(91, 59, 255,0.14),transparent_65%)]"
         aria-hidden
       />
       <Container className="relative max-w-3xl">

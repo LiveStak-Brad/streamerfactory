@@ -9,6 +9,16 @@ export const metadata: Metadata = {
   title: "StreamerU",
   description:
     "Structured TikTok LIVE training — Streamer University from Streamer Factory. One curriculum, 24 lessons.",
+  openGraph: {
+    title: "StreamerU | Streamer Factory",
+    description:
+      "Structured TikTok LIVE training — Streamer University from Streamer Factory. One curriculum, 24 lessons.",
+    images: [{ url: "/branding/og/streameru.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/branding/og/streameru.png"],
+  },
 };
 
 export default async function StreamerUPage() {

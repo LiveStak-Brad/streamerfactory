@@ -30,9 +30,9 @@ export function MemberDashboardWelcome({
   const initial = (displayName.replace(/[^\p{L}\p{N}]/gu, "")[0] || "?").toUpperCase();
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-6 text-zinc-50 shadow-[0_24px_60px_-36px_rgba(99,102,241,0.55)] sm:px-8 sm:py-8">
+    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B0F1A] px-5 py-6 text-zinc-50 shadow-[0_24px_60px_-36px_rgba(91, 59, 255,0.55)] sm:px-8 sm:py-8">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(99,102,241,0.35),transparent_55%),radial-gradient(ellipse_50%_60%_at_100%_20%,rgba(168,85,247,0.22),transparent_50%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(91, 59, 255,0.35),transparent_55%),radial-gradient(ellipse_50%_60%_at_100%_20%,rgba(160, 32, 240,0.22),transparent_50%)]"
         aria-hidden
       />
       <div

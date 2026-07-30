@@ -14,7 +14,7 @@ export default async function Icon() {
         borderRadius={8}
         borderWidth={1}
         fontSize={19}
-        glow="0 0 0 1px rgba(76, 29, 149, 0.35), 0 4px 14px -2px rgba(91, 33, 182, 0.45)"
+        glow="0 0 0 1px rgba(160, 32, 240, 0.4), 0 4px 14px -2px rgba(0, 229, 255, 0.35)"
       />
     ),
     {

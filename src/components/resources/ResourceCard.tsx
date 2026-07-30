@@ -22,7 +22,7 @@ export function ResourceCard({ post }: { post: ResourcePostWithCategory }) {
   return (
     <Link
       href={`/streameru/${post.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-surface/90 p-6 shadow-[0_1px_0_0_rgba(255,255,255,0.65)_inset] transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_50px_-28px_rgba(99,102,241,0.45)] dark:border-zinc-800/90 dark:bg-zinc-950/40 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] dark:hover:border-accent/30"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-surface/90 p-6 shadow-[0_1px_0_0_rgba(255,255,255,0.65)_inset] transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_50px_-28px_rgba(91, 59, 255,0.45)] dark:border-zinc-800/90 dark:bg-zinc-950/40 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] dark:hover:border-accent/30"
     >
       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent dark:text-accent-muted">
         <span>{trainingTrackLabel(post.training_track)}</span>

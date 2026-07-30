@@ -4,7 +4,7 @@ import type { StartHereResolvedItem } from "@/lib/resources/start-here";
 export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
   if (item.exists) {
     return (
-      <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-gradient-to-br from-surface to-muted-bg/50 p-6 shadow-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_48px_-28px_rgba(99,102,241,0.35)] dark:border-zinc-800 dark:from-zinc-950/80 dark:to-zinc-950/40 sm:p-8">
+      <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-gradient-to-br from-surface to-muted-bg/50 p-6 shadow-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_20px_48px_-28px_rgba(91, 59, 255,0.35)] dark:border-zinc-800 dark:from-zinc-950/80 dark:to-zinc-950/40 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-950 text-sm font-bold text-white dark:bg-white dark:text-zinc-950">
             {item.stepLabel}

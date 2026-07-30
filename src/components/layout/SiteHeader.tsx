@@ -120,7 +120,7 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
             <span className="transition-[transform,box-shadow] duration-300 ease-out group-hover:-translate-y-0.5">
               <SfLogoMark
                 size="lg"
-                className="group-hover:shadow-[0_0_0_1px_rgba(129,140,248,0.5),0_12px_36px_-8px_rgba(99,102,241,0.55)]"
+                className="group-hover:shadow-[0_0_0_1px_rgba(0,229,255,0.45),0_12px_36px_-8px_rgba(160,32,240,0.55)]"
               />
             </span>
             <div className="flex min-w-0 flex-col leading-none">

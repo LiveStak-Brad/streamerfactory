@@ -8,7 +8,7 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "border border-transparent bg-accent text-accent-foreground shadow-[0_1px_0_0_rgba(255,255,255,0.12)_inset,0_8px_24px_-4px_var(--accent-glow)] hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_1px_0_0_rgba(255,255,255,0.14)_inset,0_12px_32px_-4px_var(--accent-glow)] active:translate-y-0 active:shadow-[0_1px_0_0_rgba(255,255,255,0.1)_inset,0_4px_16px_-4px_var(--accent-glow)] dark:text-zinc-950",
+    "border border-transparent bg-gradient-brand text-white shadow-[0_1px_0_0_rgba(255,255,255,0.16)_inset,0_8px_24px_-4px_var(--accent-glow)] hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_1px_0_0_rgba(255,255,255,0.2)_inset,0_12px_32px_-4px_rgba(0,229,255,0.35)] active:translate-y-0 active:brightness-95 active:shadow-[0_1px_0_0_rgba(255,255,255,0.1)_inset,0_4px_16px_-4px_var(--accent-glow)] disabled:saturate-50",
   secondary:
     "border border-border/90 bg-surface text-foreground shadow-sm hover:-translate-y-0.5 hover:border-accent/35 hover:bg-muted-bg hover:shadow-md active:translate-y-0 dark:bg-surface-raised dark:hover:bg-zinc-800",
   secondaryOnDark:

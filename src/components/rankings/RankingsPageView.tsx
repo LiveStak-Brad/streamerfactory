@@ -104,7 +104,7 @@ export async function RankingsPageView({
     <>
       <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-10 text-zinc-50 sm:px-8 sm:py-12">
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_-20%,rgba(251,191,36,0.18),transparent_50%),radial-gradient(ellipse_60%_50%_at_90%_20%,rgba(139,92,246,0.25),transparent_50%),radial-gradient(ellipse_50%_40%_at_10%_80%,rgba(99,102,241,0.2),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_-20%,rgba(251,191,36,0.18),transparent_50%),radial-gradient(ellipse_60%_50%_at_90%_20%,rgba(160, 32, 240,0.25),transparent_50%),radial-gradient(ellipse_50%_40%_at_10%_80%,rgba(91, 59, 255,0.2),transparent_50%)]"
           aria-hidden
         />
         <div className="relative mx-auto max-w-3xl text-center">
@@ -191,6 +191,7 @@ export async function RankingsPageView({
           <EmptyState
             title="Rankings could not be loaded"
             description="Check the sync pipeline or contact support if this persists."
+            illustration="rankings"
             className="items-center text-center"
             action={
               <Link href="/rankings" className="text-sm font-semibold text-accent hover:underline dark:text-accent-muted">

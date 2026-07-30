@@ -198,12 +198,12 @@ function FlyerParticipantAvatar({
         className="pointer-events-none absolute -inset-1 rounded-full opacity-90 blur-md"
         style={{
           background: `radial-gradient(circle at 30% 25%, rgba(196,181,253,0.45), transparent 55%),
-            radial-gradient(circle at 70% 80%, rgba(99,102,241,0.35), transparent 50%)`,
+            radial-gradient(circle at 70% 80%, rgba(91, 59, 255,0.35), transparent 50%)`,
         }}
         aria-hidden
       />
       <div
-        className="relative flex h-full w-full items-center justify-center rounded-full p-[3px] shadow-[0_12px_40px_-12px_rgba(99,102,241,0.65),0_4px_16px_-6px_rgba(0,0,0,0.55)]"
+        className="relative flex h-full w-full items-center justify-center rounded-full p-[3px] shadow-[0_12px_40px_-12px_rgba(91, 59, 255,0.65),0_4px_16px_-6px_rgba(0,0,0,0.55)]"
         style={{
           background: `linear-gradient(145deg, rgba(255,255,255,0.55) 0%, rgba(167,139,250,0.35) 42%, rgba(79,70,229,0.45) 100%)`,
           boxShadow: `0 0 0 1px ${ring}35, inset 0 1px 0 rgba(255,255,255,0.25)`,
@@ -341,7 +341,7 @@ function ParticipantBlock({
 function VsPill({ compact = false }: { compact?: boolean }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full border border-accent/45 bg-gradient-to-b from-accent/25 to-accent/10 font-bold tracking-wide text-accent-muted shadow-[0_0_24px_-4px_rgba(99,102,241,0.5)] ${
+      className={`inline-flex shrink-0 items-center justify-center rounded-full border border-accent/45 bg-gradient-to-b from-accent/25 to-accent/10 font-bold tracking-wide text-accent-muted shadow-[0_0_24px_-4px_rgba(91, 59, 255,0.5)] ${
         compact ? "px-3 py-1.5 text-xs" : "px-4 py-2 text-sm"
       }`}
     >
@@ -598,7 +598,7 @@ export function BattleFlyerPreview({
   const cardInner = (
     <>
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_-20%,rgba(99,102,241,0.35),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_-20%,rgba(91, 59, 255,0.35),transparent_55%)]"
         aria-hidden
       />
       <div
@@ -826,7 +826,7 @@ export function BattleFlyerPreview({
         >
           <div
             ref={flyerExportRef}
-            className={`relative flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-accent/25 bg-zinc-950 px-3 pb-2 pt-3 text-zinc-50 shadow-[0_32px_100px_-40px_rgba(99,102,241,0.55)] sm:px-4 sm:pb-3 sm:pt-4 ${className} ${
+            className={`relative flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-accent/25 bg-zinc-950 px-3 pb-2 pt-3 text-zinc-50 shadow-[0_32px_100px_-40px_rgba(91, 59, 255,0.55)] sm:px-4 sm:pb-3 sm:pt-4 ${className} ${
               downloadable
                 ? "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
                 : ""
@@ -864,7 +864,7 @@ export function BattleFlyerPreview({
       ) : (
         <div
           ref={flyerExportRef}
-          className={`relative overflow-hidden rounded-3xl border border-accent/25 bg-zinc-950 p-8 text-zinc-50 shadow-[0_32px_100px_-40px_rgba(99,102,241,0.55)] sm:p-10 ${className} ${
+          className={`relative overflow-hidden rounded-3xl border border-accent/25 bg-zinc-950 p-8 text-zinc-50 shadow-[0_32px_100px_-40px_rgba(91, 59, 255,0.55)] sm:p-10 ${className} ${
             downloadable
               ? "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               : ""

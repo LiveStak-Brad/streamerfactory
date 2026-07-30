@@ -144,6 +144,7 @@ export function MembersDirectory({
           className="mt-10 items-center text-center"
           title="No matches"
           description="Try a different search term or clear the filter."
+          illustration="members"
           action={
             <button
               type="button"

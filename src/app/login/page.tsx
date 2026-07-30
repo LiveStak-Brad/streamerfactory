@@ -134,7 +134,7 @@ function LoginContent() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-20">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[320px] bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(99,102,241,0.18),transparent_65%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[320px] bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(160,32,240,0.22),transparent_65%)]"
         aria-hidden
       />
       <Container className="relative max-w-md">

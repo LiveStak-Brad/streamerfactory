@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { RankingsPageView, parseRankingsSearchParams } from "@/components/rankings/RankingsPageView";
 import { Container } from "@/components/ui/Container";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Factory rankings",
   description:
     "Streamer Factory network creator leaderboard — diamonds, stream hours, activeness, and battle performance.",
-};
+  path: "/rankings",
+  ogImage: "/branding/og/rankings.png",
+});
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

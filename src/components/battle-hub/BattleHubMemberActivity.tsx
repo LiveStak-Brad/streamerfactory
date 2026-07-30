@@ -148,6 +148,7 @@ function NextUpSection({
           className="items-center text-center py-10"
           title="No battles on the calendar yet"
           description="The network calendar fills up as members schedule battles. Add yours to kick things off — everyone with access will see it in one place."
+          illustration="battles"
           action={
             <div className="flex flex-wrap justify-center gap-2">
               <Button href="/battle-hub/scheduler" variant="primary" className="min-h-[48px] px-6">
@@ -197,6 +198,7 @@ function UpcomingListSection({
         <EmptyState
           title="No battles scheduled yet"
           description="Create your first battle to see it here and on the shared calendar."
+          illustration="battles"
           action={
             <div className="flex flex-wrap gap-2">
               <Button href="/battle-hub/scheduler" variant="primary" className="min-h-[44px] px-4">

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img">
+  <defs>
+    <linearGradient id="g" x1="40" y1="40" x2="200" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2ED1"/>
+      <stop offset="0.5" stop-color="#A020F0"/>
+      <stop offset="1" stop-color="#00E5FF"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#A020F0" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="240" height="240" rx="28" fill="#0B0F1A"/>
+  <rect width="240" height="240" rx="28" fill="url(#bg)"/>
+  <path d="M120 55a40 40 0 0 1 40 40v22l12 18H68l12-18V95A40 40 0 0 1 120 55Z" fill="none" stroke="url(#g)" stroke-width="3.5"/><path d="M108 155a12 12 0 0 0 24 0" stroke="url(#g)" stroke-width="3.5"/><circle cx="150" cy="70" r="10" fill="#FF2ED1"/><text x="120" y="210" text-anchor="middle" fill="#00E5FF" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" opacity="0.8">NO NOTIFICATIONS</text>
+</svg>

@@ -1,6 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { brandColors } from "@/lib/brand/assets";
+
 const FONT_PATH = join(process.cwd(), "assets/fonts/plus-jakarta-sans-700.woff");
 
 let fontData: ArrayBuffer | null = null;
@@ -23,12 +25,12 @@ type SfBadgeProps = {
   borderRadius: number;
   borderWidth: number;
   fontSize: number;
-  /** Outer glow (violet). */
+  /** Outer glow. */
   glow: string;
 };
 
 /**
- * “SF” wordmark: dark tile, violet rim, gradient wash, bold display type.
+ * SF mark for OG / favicon ImageResponse — navy tile, magenta→cyan rim.
  */
 export function SfBadgeMark({ borderRadius, borderWidth, fontSize, glow }: SfBadgeProps) {
   const letterSpacing = `${Math.round(fontSize * -0.065)}px`;
@@ -44,9 +46,9 @@ export function SfBadgeMark({ borderRadius, borderWidth, fontSize, glow }: SfBad
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
-        backgroundColor: "#0a0a0c",
+        backgroundColor: brandColors.navy,
         borderRadius,
-        border: `${borderWidth}px solid rgba(139, 92, 246, 0.5)`,
+        border: `${borderWidth}px solid rgba(160, 32, 240, 0.65)`,
         boxShadow: `${glow}, inset 0 1px 0 rgba(255,255,255,0.08)`,
       }}
     >
@@ -55,8 +57,7 @@ export function SfBadgeMark({ borderRadius, borderWidth, fontSize, glow }: SfBad
           position: "absolute",
           inset: 0,
           borderRadius,
-          background:
-            "linear-gradient(152deg, rgba(192, 181, 255, 0.4) 0%, rgba(99, 102, 241, 0.12) 38%, transparent 62%)",
+          background: `linear-gradient(152deg, rgba(255, 46, 209, 0.35) 0%, rgba(91, 59, 255, 0.18) 38%, rgba(0, 229, 255, 0.12) 70%, transparent 85%)`,
         }}
       />
       {showInnerHairline ? (
@@ -65,7 +66,7 @@ export function SfBadgeMark({ borderRadius, borderWidth, fontSize, glow }: SfBad
             position: "absolute",
             inset: borderWidth,
             borderRadius: innerRadius,
-            border: "1px solid rgba(255,255,255,0.07)",
+            border: "1px solid rgba(0, 229, 255, 0.25)",
           }}
         />
       ) : null}
@@ -80,8 +81,7 @@ export function SfBadgeMark({ borderRadius, borderWidth, fontSize, glow }: SfBad
           fontWeight: 700,
           letterSpacing,
           color: "#fafafa",
-          textShadow:
-            "0 1px 0 rgba(255,255,255,0.14), 0 2px 3px rgba(0,0,0,0.5), 0 0 16px rgba(167, 139, 250, 0.5)",
+          textShadow: `0 1px 0 rgba(255,255,255,0.14), 0 2px 3px rgba(0,0,0,0.5), 0 0 16px rgba(0, 229, 255, 0.45)`,
         }}
       >
         SF

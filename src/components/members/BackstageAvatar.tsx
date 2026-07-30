@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { brandAssets } from "@/lib/brand/assets";
+
 type BackstageAvatarProps = {
   /** Imported Creator Network / Backstage table photo only — never TikTok profile or unavatar. */
   backstageImageUrl?: string | null;
@@ -52,10 +54,18 @@ export function BackstageAvatar({
   if (!src || load === "fail") {
     return (
       <div
-        className={`flex shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-inner ring-2 ring-white/25 dark:ring-zinc-700/80 ${fallbackBackdropClass} ${className}`}
+        className={`relative shrink-0 overflow-hidden rounded-full shadow-inner ring-2 ring-white/25 dark:ring-zinc-700/80 ${className}`}
         aria-hidden
+        data-fallback-initial={fallbackInitial}
       >
-        {fallbackInitial}
+        {/* eslint-disable-next-line @next/next/no-img-element -- branded SF default avatar */}
+        <img
+          src={brandAssets.avatar.default}
+          alt=""
+          width={112}
+          height={112}
+          className={`h-full w-full object-cover ${fallbackBackdropClass}`}
+        />
       </div>
     );
   }

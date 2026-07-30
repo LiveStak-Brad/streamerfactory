@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Streamer Factory">
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF2ED1"/>
+      <stop offset="45%" stop-color="#A020F0"/>
+      <stop offset="100%" stop-color="#00E5FF"/>
+    </linearGradient>
+    <linearGradient id="sf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#E8E8F0"/>
+      <stop offset="100%" stop-color="#C8C8D8"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="15.36" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="256" fill="#0B0F1A"/>
+  <circle cx="256" cy="256" r="215.04" fill="none" stroke="url(#ring)" stroke-width="23.04" opacity="0.95" filter="url(#glow)" stroke-dasharray="903.168 118.272"/>
+  <circle cx="256" cy="256" r="178.176" fill="none" stroke="url(#ring)" stroke-width="10.368" opacity="0.55"/>
+  <text x="256" y="329.1" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="215" font-weight="900" letter-spacing="-20.48" fill="url(#sf)" filter="url(#glow)">SF</text>
+</svg>

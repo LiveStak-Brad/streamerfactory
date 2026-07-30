@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img">
+  <defs>
+    <linearGradient id="g" x1="40" y1="40" x2="200" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2ED1"/>
+      <stop offset="0.5" stop-color="#A020F0"/>
+      <stop offset="1" stop-color="#00E5FF"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#A020F0" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="240" height="240" rx="28" fill="#0B0F1A"/>
+  <rect width="240" height="240" rx="28" fill="url(#bg)"/>
+  <circle cx="120" cy="100" r="54" fill="none" stroke="url(#g)" stroke-width="3" opacity="0.35"/><path d="M88 78l24 24M80 96l28-10M152 78l-24 24M160 96l-28-10M108 118l-12 40M132 118l12 40M104 148h32" stroke="url(#g)" stroke-width="3.5" stroke-linecap="round"/><text x="120" y="210" text-anchor="middle" fill="#00E5FF" font-family="Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="2" opacity="0.8">NO BATTLES</text>
+</svg>

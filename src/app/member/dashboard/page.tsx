@@ -24,6 +24,11 @@ import { getSessionProfile } from "@/lib/auth/server";
 export const metadata = {
   title: "Member dashboard",
   description: "Your Streamer Factory member dashboard — rankings, training, and battles.",
+  openGraph: {
+    title: "Member Dashboard | Streamer Factory",
+    description: "Your Streamer Factory member dashboard — rankings, training, and battles.",
+    images: [{ url: "/branding/og/dashboard.png", width: 1200, height: 630 }],
+  },
 };
 
 export const dynamic = "force-dynamic";
