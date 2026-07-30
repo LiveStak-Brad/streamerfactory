@@ -39,9 +39,9 @@ export function HomeHero({
   const floating = previewMembers.slice(0, 6);
 
   return (
-    <section className="relative overflow-hidden border-b border-white/10 bg-[#07060c] pb-16 pt-12 text-zinc-50 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="relative overflow-hidden border-b border-white/10 bg-[#0B0F1A] pb-16 pt-12 text-zinc-50 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_20%_-10%,rgba(99,102,241,0.42),transparent_55%),radial-gradient(ellipse_60%_45%_at_90%_10%,rgba(168,85,247,0.28),transparent_50%),radial-gradient(ellipse_50%_40%_at_60%_90%,rgba(236,72,153,0.12),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_20%_-10%,rgba(91, 59, 255,0.42),transparent_55%),radial-gradient(ellipse_60%_45%_at_90%_10%,rgba(160, 32, 240,0.28),transparent_50%),radial-gradient(ellipse_50%_40%_at_60%_90%,rgba(255, 46, 209,0.12),transparent_55%)]"
         aria-hidden
       />
       <div
@@ -229,41 +229,6 @@ export function HomeHero({
                 ))}
               </div>
             </GlassCard>
-
-            {floating[0] ? (
-              <div className="absolute -left-2 top-8 hidden w-44 animate-float-soft sm:block lg:-left-8">
-                <GlassCard tone="dark" className="p-3">
-                  <div className="flex items-center gap-2.5">
-                    <CreatorAvatar
-                      username={floating[0].username}
-                      preferredImageUrl={floating[0].avatarUrl}
-                      fallbackBackdropClass={avatarTone(0)}
-                      fallbackInitial={fallbackInitial(floating[0].displayName)}
-                      className="h-9 w-9"
-                    />
-                    <div className="min-w-0">
-                      <p className="truncate text-xs font-semibold text-white">
-                        @{floating[0].username}
-                      </p>
-                      <p className="text-[0.65rem] text-emerald-400">In the network</p>
-                    </div>
-                  </div>
-                </GlassCard>
-              </div>
-            ) : null}
-
-            {floating[1] ? (
-              <div
-                className="absolute -right-1 bottom-16 hidden w-40 animate-float-soft sm:block lg:-right-6"
-                style={{ animationDelay: "1.2s" }}
-              >
-                <GlassCard tone="dark" className="p-3">
-                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">Next up</p>
-                  <p className="mt-1 text-xs font-semibold text-white">Battle Hub</p>
-                  <p className="mt-0.5 text-[0.7rem] text-zinc-400">Schedule · flyers · calendar</p>
-                </GlassCard>
-              </div>
-            ) : null}
           </div>
         </div>
       </Container>
