@@ -392,6 +392,7 @@ export default async function AdminHomePage() {
               { href: "/admin/members", label: "Members" },
               { href: "/admin/calendar", label: "Calendar" },
               { href: "/admin/rankings", label: "Rankings" },
+              { href: "/admin/hall-of-fame", label: "Hall of Fame" },
               { href: "/admin/creator-network", label: "CN imports" },
               { href: "/admin/streameru", label: "StreamerU" },
               { href: "/admin/analytics", label: "Analytics" },

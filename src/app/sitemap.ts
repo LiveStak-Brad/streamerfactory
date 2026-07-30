@@ -14,6 +14,7 @@ const STATIC_ROUTES: {
   { path: "/contact", changeFrequency: "monthly", priority: 0.6 },
   { path: "/members", changeFrequency: "daily", priority: 0.7 },
   { path: "/rankings", changeFrequency: "daily", priority: 0.75 },
+  { path: "/hall-of-fame", changeFrequency: "monthly", priority: 0.7 },
   { path: "/streameru", changeFrequency: "weekly", priority: 0.9 },
   { path: "/streameru/start-here", changeFrequency: "weekly", priority: 0.85 },
   { path: "/battle-hub", changeFrequency: "weekly", priority: 0.7 },

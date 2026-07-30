@@ -42,6 +42,11 @@ export function MemberDashboardQuickActions({
       href: "/member/notifications",
       description: "Missions, unlocks, reminders",
     },
+    {
+      label: "Hall of Fame",
+      href: "/hall-of-fame",
+      description: "Champions & monthly history",
+    },
     tiktokConnected && handle
       ? {
           label: "My rankings",

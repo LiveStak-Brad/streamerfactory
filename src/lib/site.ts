@@ -32,6 +32,7 @@ export const site = {
 export const mainNav = [
   { label: "Creators", href: "/members" },
   { label: "Rankings", href: "/rankings" },
+  { label: "Hall of Fame", href: "/hall-of-fame" },
   { label: "StreamerU", href: "/streameru" },
   { label: "About", href: "/about" },
   { label: "Join", href: "/apply" },
@@ -60,6 +61,7 @@ export const footerNav = [
   { label: "About", href: "/about" },
   { label: "Creators", href: "/members" },
   { label: "Rankings", href: "/rankings" },
+  { label: "Hall of Fame", href: "/hall-of-fame" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
   { label: "Guides", href: "/guides" },

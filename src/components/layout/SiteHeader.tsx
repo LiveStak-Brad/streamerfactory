@@ -321,6 +321,13 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
                           My rankings
                         </Link>
                         <Link
+                          href="/hall-of-fame"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Hall of Fame
+                        </Link>
+                        <Link
                           href="/member/notifications"
                           className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
                           onClick={() => setOpen(false)}

@@ -17,6 +17,7 @@ const opsLinks = [
 
 const contentLinks = [
   { href: "/admin/rankings", label: "Rankings" },
+  { href: "/admin/hall-of-fame", label: "Hall of Fame" },
   { href: "/admin/creator-network", label: "CN imports" },
   { href: "/admin/streameru", label: "StreamerU" },
 ] as const;

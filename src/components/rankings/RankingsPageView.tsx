@@ -152,6 +152,9 @@ export async function RankingsPageView({
           )}
 
           <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Button href="/hall-of-fame" variant="secondaryOnDark">
+              Hall of Fame
+            </Button>
             <Button href="/members" variant="secondaryOnDark">
               Member directory
             </Button>
