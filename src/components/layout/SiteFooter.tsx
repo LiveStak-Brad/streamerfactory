@@ -7,9 +7,11 @@ const GUIDE_LINKS = [
   { label: "TikTok LIVE Agency", href: "/guides/tiktok-live-agency" },
   { label: "Creator Network", href: "/guides/tiktok-creator-network" },
   { label: "How to Join", href: "/guides/how-to-join-tiktok-live-agency" },
+  { label: "Agency vs Solo", href: "/guides/tiktok-live-agency-vs-going-solo" },
   { label: "Monetization Guide", href: "/guides/tiktok-monetization-guide" },
-  { label: "Creator Academy", href: "/guides/creator-academy" },
+  { label: "Battles", href: "/guides/tiktok-live-battles" },
   { label: "All guides", href: "/guides" },
+  { label: "Editorial standards", href: "/guides/editorial-standards" },
 ] as const;
 
 export function SiteFooter() {
@@ -23,8 +25,8 @@ export function SiteFooter() {
               <p className="text-lg font-bold tracking-tight text-white">{site.name}</p>
             </div>
             <p className="text-base leading-relaxed text-zinc-400">
-              TikTok LIVE creator agency — recruitment, onboarding, training, and day-to-day management
-              for serious streamers.
+              Independent TikTok LIVE creator agency — recruitment, onboarding, training, and day-to-day
+              management for serious streamers. Not affiliated with TikTok as a corporate entity.
             </p>
             <p className="text-sm font-medium text-accent-muted">{site.domain}</p>
             <p className="text-sm">

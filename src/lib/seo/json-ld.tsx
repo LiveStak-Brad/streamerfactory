@@ -127,3 +127,22 @@ export function courseSchema(input: {
     isAccessibleForFree: true,
   };
 }
+
+export function howToSchema(input: {
+  name: string;
+  description: string;
+  steps: { name: string; text: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: input.name,
+    description: input.description,
+    step: input.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  };
+}

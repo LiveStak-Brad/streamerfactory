@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { GuidePageView } from "@/components/guides/GuidePageView";
-import { getAllGuideSlugs, getGuideBySlug } from "@/lib/guides/pillars";
+import {
+  getAllGuideSlugs,
+  getGuideBySlug,
+  GUIDE_REDIRECTS,
+} from "@/lib/guides";
 import { createPageMetadata } from "@/lib/seo/page-metadata";
 
 type Props = {
@@ -14,6 +18,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  if (GUIDE_REDIRECTS[slug]) {
+    return { title: "Guide" };
+  }
   const guide = getGuideBySlug(slug);
   if (!guide) return { title: "Guide" };
 
@@ -28,6 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GuideSlugPage({ params }: Props) {
   const { slug } = await params;
+
+  const redirectTo = GUIDE_REDIRECTS[slug];
+  if (redirectTo) {
+    redirect(`/guides/${redirectTo}`);
+  }
+
   const guide = getGuideBySlug(slug);
   if (!guide) notFound();
 

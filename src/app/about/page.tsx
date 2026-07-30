@@ -34,7 +34,7 @@ export default function AboutPage() {
       <Container className="max-w-6xl">
         <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-10 text-zinc-50 sm:px-10 sm:py-14">
           <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_20%_-10%,rgba(99,102,241,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(168,85,247,0.22),transparent_50%)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_20%_-10%,rgba(91, 59, 255,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(160, 32, 240,0.22),transparent_50%)]"
             aria-hidden
           />
           <div className="relative mx-auto max-w-3xl">
@@ -57,6 +57,18 @@ export default function AboutPage() {
           <p>
             Approved members use the same platform to learn (StreamerU), connect (Battle Finder), schedule
             (Battle Hub and the calendar), and grow — with support aligned to how you actually go live.
+          </p>
+          <p>
+            <strong className="text-foreground">Independent of TikTok.</strong> Streamer Factory operates a
+            Creator Network for LIVE creators and builds training/ops tools around it. We are not TikTok, and we
+            do not speak for TikTok policy. See our{" "}
+            <Link
+              href="/guides/editorial-standards"
+              className="font-semibold text-accent hover:underline dark:text-accent-muted"
+            >
+              editorial standards
+            </Link>
+            .
           </p>
         </section>
 

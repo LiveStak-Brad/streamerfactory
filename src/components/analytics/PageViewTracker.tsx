@@ -35,6 +35,7 @@ function resolvePageView(
     "/streameru": AnalyticsEvents.RESOURCES_PAGE_VIEWED,
     "/streameru/start-here": AnalyticsEvents.START_HERE_VIEWED,
     "/guides": AnalyticsEvents.GUIDES_HUB_VIEWED,
+    "/creator-stories": AnalyticsEvents.CREATOR_STORIES_VIEWED,
     "/about": AnalyticsEvents.ABOUT_VIEWED,
     "/contact": AnalyticsEvents.CONTACT_VIEWED,
     "/rankings": AnalyticsEvents.RANKINGS_VIEWED,
@@ -51,8 +52,16 @@ function resolvePageView(
     return { event: exact[pathname] };
   }
 
+  const categoryMatch = pathname.match(/^\/guides\/category\/([^/]+)/);
+  if (categoryMatch) {
+    return {
+      event: AnalyticsEvents.GUIDE_CATEGORY_VIEWED,
+      metadata: { category: categoryMatch[1] },
+    };
+  }
+
   const guideSlug = guideSlugFromPath(pathname);
-  if (guideSlug) {
+  if (guideSlug && guideSlug !== "editorial-standards" && guideSlug !== "category") {
     return {
       event: AnalyticsEvents.GUIDE_VIEWED,
       metadata: { guide_slug: guideSlug },

@@ -19,6 +19,7 @@ import { parseTrainingSectionsJson } from "@/lib/resources/training-sections";
 import { getCurriculumRelatedPosts, getPublishedPostBySlug } from "@/lib/resources/queries";
 import { isStartHereArticleSlug } from "@/lib/resources/start-here";
 import { getMissionForLessonSlug } from "@/lib/resources/training-missions";
+import { RelatedGuidesForLesson } from "@/components/guides/RelatedGuidesForLesson";
 import { getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
 import { JsonLd, articleSchema, breadcrumbSchema } from "@/lib/seo/json-ld";
 import { site } from "@/lib/site";
@@ -203,6 +204,7 @@ export default async function ResourcePostPage({ params }: Props) {
         ) : null}
 
         <div className="mt-14 space-y-12 border-t border-zinc-200/80 pt-12 dark:border-zinc-800/80">
+          <RelatedGuidesForLesson lessonSlug={slug} />
           <LessonQuickLinks />
           <RelatedResources posts={related} />
           <ResourceArticleCta />

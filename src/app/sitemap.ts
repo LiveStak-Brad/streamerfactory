@@ -1,9 +1,13 @@
 import type { MetadataRoute } from "next";
-import { GUIDE_PILLARS } from "@/lib/guides/pillars";
+import { ALL_GUIDES, GUIDE_CATEGORIES } from "@/lib/guides";
 import { CURRICULUM } from "@/lib/resources/curriculum";
 import { site } from "@/lib/site";
 
-const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]; priority: number }[] = [
+const STATIC_ROUTES: {
+  path: string;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+  priority: number;
+}[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/about", changeFrequency: "monthly", priority: 0.8 },
   { path: "/apply", changeFrequency: "weekly", priority: 0.95 },
@@ -13,7 +17,9 @@ const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[numb
   { path: "/streameru", changeFrequency: "weekly", priority: 0.9 },
   { path: "/streameru/start-here", changeFrequency: "weekly", priority: 0.85 },
   { path: "/battle-hub", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/guides", changeFrequency: "weekly", priority: 0.92 },
+  { path: "/guides", changeFrequency: "weekly", priority: 0.95 },
+  { path: "/guides/editorial-standards", changeFrequency: "yearly", priority: 0.4 },
+  { path: "/creator-stories", changeFrequency: "monthly", priority: 0.5 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
 ];
@@ -28,9 +34,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 
-  const guideEntries = GUIDE_PILLARS.map((guide) => ({
-    url: `${site.url}/guides/${guide.slug}`,
+  const categoryEntries = GUIDE_CATEGORIES.map((category) => ({
+    url: `${site.url}/guides/category/${category.id}`,
     lastModified,
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
+  const guideEntries = ALL_GUIDES.map((guide) => ({
+    url: `${site.url}/guides/${guide.slug}`,
+    lastModified: new Date(guide.dateModified),
     changeFrequency: "weekly" as const,
     priority: guide.priority,
   }));
@@ -42,5 +55,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...guideEntries, ...lessonEntries];
+  return [...staticEntries, ...categoryEntries, ...guideEntries, ...lessonEntries];
 }
