@@ -23,13 +23,13 @@ function MonthStandings({
   const showRunners = tracksRunnerUps(month.yearMonth);
 
   return (
-    <article className="min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-4 sm:p-7">
-      <header className="flex min-w-0 flex-wrap items-end justify-between gap-3 border-b border-white/10 pb-4">
+    <article className="min-w-0 overflow-hidden rounded-3xl bg-white/[0.03] px-3 py-6 sm:px-6 sm:py-8">
+      <header className="flex min-w-0 flex-col items-center gap-3 border-b border-white/10 pb-5 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
         <div className="min-w-0">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-zinc-500">
             {provisional ? "In progress" : "Archived"}
           </p>
-          <h3 className="mt-1 truncate text-xl font-bold tracking-tight text-white sm:text-2xl">
+          <h3 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">
             {formatYearMonthLabel(month.yearMonth)}
           </h3>
         </div>
@@ -45,7 +45,7 @@ function MonthStandings({
       </header>
 
       {champion ? (
-        <div className="mt-5 min-w-0 max-w-xl sm:mt-6">
+        <div className="mx-auto mt-6 w-full min-w-0 max-w-lg sm:mt-8">
           <ChampionCard
             placement={champion}
             yearMonth={month.yearMonth}
@@ -56,10 +56,12 @@ function MonthStandings({
       ) : null}
 
       {showRunners ? (
-        <div className="mt-5 min-w-0 sm:mt-6">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Runner-ups</p>
+        <div className="mt-6 min-w-0 sm:mt-8">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Runner-ups
+          </p>
           {runners.length > 0 ? (
-            <div className="mt-3 grid min-w-0 grid-cols-1 gap-3 sm:mt-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto mt-4 grid min-w-0 max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {runners.map((p) => (
                 <div key={`${month.yearMonth}-${p.place}`} className="min-w-0">
                   <RunnerUpCard placement={p} />
@@ -67,15 +69,14 @@ function MonthStandings({
               ))}
             </div>
           ) : (
-            <p className="mt-3 text-sm text-zinc-500">
+            <p className="mt-3 text-center text-sm text-zinc-500">
               Places 2–5 will appear when this month is locked.
             </p>
           )}
         </div>
       ) : (
-        <p className="mt-4 text-sm text-zinc-500">
-          Champion-only era — runner-up tracking starts{" "}
-          {formatYearMonthLabel("2026-07")}.
+        <p className="mt-5 text-center text-sm text-zinc-500">
+          Champion-only era — runner-up tracking starts {formatYearMonthLabel("2026-07")}.
         </p>
       )}
     </article>

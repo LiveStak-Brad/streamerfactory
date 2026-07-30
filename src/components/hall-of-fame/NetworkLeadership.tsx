@@ -19,7 +19,13 @@ export function NetworkLeadership({ managers }: NetworkLeadershipProps) {
         tone="inverse"
         align="center"
       />
-      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={`mt-10 grid gap-5 ${
+          sorted.length === 1
+            ? "mx-auto max-w-md grid-cols-1"
+            : "sm:grid-cols-2 lg:grid-cols-3"
+        }`}
+      >
         {sorted.map((manager, i) => {
           const handle = manager.contactHandle.replace(/^@/, "");
           return (
