@@ -55,10 +55,12 @@ function AvatarImageAttempt({
 }) {
   const [visible, setVisible] = useState(false);
 
+  // Only treat hang as failure while the image still hasn't shown.
   useEffect(() => {
+    if (visible) return;
     const t = window.setTimeout(onFailed, 5000);
     return () => window.clearTimeout(t);
-  }, [src, onFailed]);
+  }, [src, onFailed, visible]);
 
   return (
     <div
