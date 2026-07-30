@@ -49,12 +49,12 @@ export function AchievementBadge({ badge, className = "", size = "md" }: Achieve
 
   return (
     <span
-      className={`inline-flex items-center rounded-lg border font-bold uppercase tracking-[0.12em] ${sizeClass} ${tone} ${className}`}
+      className={`inline-flex max-w-full items-center rounded-lg border font-bold uppercase tracking-[0.12em] ${sizeClass} ${tone} ${className}`}
     >
       {icon ? (
         <Image src={icon} alt="" width={iconPx} height={iconPx} className="shrink-0" />
       ) : null}
-      {badge}
+      <span className="min-w-0 truncate">{badge}</span>
     </span>
   );
 }

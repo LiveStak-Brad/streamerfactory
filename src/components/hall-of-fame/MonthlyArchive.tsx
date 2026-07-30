@@ -23,29 +23,29 @@ function MonthStandings({
   const showRunners = tracksRunnerUps(month.yearMonth);
 
   return (
-    <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 sm:p-7">
-      <header className="flex flex-wrap items-end justify-between gap-3 border-b border-white/10 pb-4">
-        <div>
+    <article className="min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-4 sm:p-7">
+      <header className="flex min-w-0 flex-wrap items-end justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="min-w-0">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-zinc-500">
             {provisional ? "In progress" : "Archived"}
           </p>
-          <h3 className="mt-1 text-2xl font-bold tracking-tight text-white">
+          <h3 className="mt-1 truncate text-xl font-bold tracking-tight text-white sm:text-2xl">
             {formatYearMonthLabel(month.yearMonth)}
           </h3>
         </div>
         {provisional ? (
-          <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-cyan-200">
+          <span className="shrink-0 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-cyan-200">
             Live board
           </span>
         ) : (
-          <span className="rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-amber-100">
+          <span className="shrink-0 rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-amber-100">
             Locked forever
           </span>
         )}
       </header>
 
       {champion ? (
-        <div className="mt-6 max-w-xl">
+        <div className="mt-5 min-w-0 max-w-xl sm:mt-6">
           <ChampionCard
             placement={champion}
             yearMonth={month.yearMonth}
@@ -56,12 +56,14 @@ function MonthStandings({
       ) : null}
 
       {showRunners ? (
-        <div className="mt-6">
+        <div className="mt-5 min-w-0 sm:mt-6">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Runner-ups</p>
           {runners.length > 0 ? (
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-3 grid min-w-0 grid-cols-1 gap-3 sm:mt-4 sm:grid-cols-2 lg:grid-cols-4">
               {runners.map((p) => (
-                <RunnerUpCard key={`${month.yearMonth}-${p.place}`} placement={p} />
+                <div key={`${month.yearMonth}-${p.place}`} className="min-w-0">
+                  <RunnerUpCard placement={p} />
+                </div>
               ))}
             </div>
           ) : (
@@ -103,9 +105,9 @@ export function MonthlyArchive({
         Runner-Ups and Monthly Archive
       </h2>
 
-      <div className="mt-10 space-y-8">
+      <div className="mt-10 min-w-0 space-y-8">
         {showLive && liveMonth ? (
-          <Reveal>
+          <Reveal className="min-w-0">
             <MonthStandings month={liveMonth} provisional />
           </Reveal>
         ) : null}
@@ -116,7 +118,7 @@ export function MonthlyArchive({
           </p>
         ) : (
           months.map((month, i) => (
-            <Reveal key={month.yearMonth} delayMs={Math.min(i * 50, 200)}>
+            <Reveal key={month.yearMonth} className="min-w-0" delayMs={Math.min(i * 50, 200)}>
               <MonthStandings month={month} />
             </Reveal>
           ))

@@ -42,7 +42,7 @@ export async function HallOfFamePageView() {
         </div>
       </header>
 
-      <div className="relative space-y-20 px-5 py-14 sm:px-8 sm:py-16 lg:space-y-24">
+      <div className="relative space-y-20 px-3 py-14 sm:px-8 sm:py-16 lg:space-y-24">
         <NetworkLeadership managers={data.managers} />
         <MonthlyChampions months={data.archivedMonths} liveMonth={data.liveMonth} />
         <MonthlyArchive
