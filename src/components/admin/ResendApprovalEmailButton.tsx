@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/Button";
 
 type Props = {
@@ -13,12 +13,6 @@ export function ResendApprovalEmailButton({ userId }: Props) {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-
-  // Drop stale messages after navigation or deploy (older errors looked like the button was still broken).
-  useEffect(() => {
-    setError(null);
-    setSuccess(false);
-  }, [userId]);
 
   return (
     <div className="flex flex-col items-end gap-2">

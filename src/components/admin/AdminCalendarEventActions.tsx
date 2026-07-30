@@ -19,15 +19,15 @@ export function AdminCalendarEventActions({ eventId, status }: Props) {
     <div className="flex flex-wrap items-center gap-2">
       <Link
         href={`/admin/calendar/${eventId}/edit`}
-        className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm font-semibold text-zinc-800 hover:bg-muted-bg dark:border-zinc-700 dark:text-zinc-200"
+        className="rounded-lg border border-border/90 px-3 py-1.5 text-sm font-semibold text-foreground transition hover:bg-muted-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-zinc-700"
       >
         Edit
       </Link>
-      {canCancel && (
+      {canCancel ? (
         <button
           type="button"
           disabled={pending}
-          className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-950 hover:bg-amber-100 disabled:opacity-60 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100 dark:hover:bg-amber-950/70"
+          className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-950 transition hover:bg-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 disabled:opacity-60 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100 dark:hover:bg-amber-950/70"
           onClick={() =>
             startTransition(async () => {
               await cancelBattleEventAction(eventId);
@@ -37,11 +37,11 @@ export function AdminCalendarEventActions({ eventId, status }: Props) {
         >
           Cancel
         </button>
-      )}
+      ) : null}
       <button
         type="button"
         disabled={pending}
-        className="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-semibold text-red-900 hover:bg-red-100 disabled:opacity-60 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-200 dark:hover:bg-red-950/70"
+        className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm font-semibold text-rose-900 transition hover:bg-rose-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500 disabled:opacity-60 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-200 dark:hover:bg-rose-950/70"
         onClick={() => {
           if (!confirm("Permanently delete this event and all participants?")) return;
           startTransition(async () => {

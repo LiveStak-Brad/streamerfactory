@@ -11,6 +11,8 @@ import { periodBounds, formatPeriodLabel } from "@/lib/rankings/periods";
 import { ACTIVENESS_LEVELS, type ActivenessLevel, type RankingPeriod } from "@/lib/rankings/types";
 import type { PerformanceStatsRow } from "@/lib/rankings/types";
 import type { NetworkMemberListRow } from "@/lib/profiles/queries";
+import { adminFieldClass } from "@/components/admin/ui/admin-field";
+import { Button } from "@/components/ui/Button";
 
 type AdminRankingsFormProps = {
   members: NetworkMemberListRow[];
@@ -88,14 +90,16 @@ export function AdminRankingsForm({
   return (
     <div className="space-y-8">
       <section className="rounded-2xl border border-accent/30 bg-accent/5 p-6 dark:border-accent/25 dark:bg-accent/10">
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Import backstage snapshot</h2>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <h2 className="text-lg font-bold text-foreground">Import backstage snapshot</h2>
+        <p className="mt-1 text-sm text-muted">
           Loads Creator Network stats from the screenshots you provided (coins, live days, hours, TikTok
           levels → activeness). Matches members by <code className="text-xs">profiles.tiktok_username</code>{" "}
           or their application handle, then recalculates the monthly leaderboard.
         </p>
-        <button
+        <Button
           type="button"
+          variant="primary"
+          className="mt-4 min-h-[40px] px-5 text-sm"
           disabled={pending}
           onClick={() =>
             startTransition(async () => {
@@ -118,44 +122,43 @@ export function AdminRankingsForm({
               router.refresh();
             })
           }
-          className="mt-4 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground disabled:opacity-60 dark:text-zinc-950"
         >
           {pending ? "Importing…" : "Import backstage stats & rank"}
-        </button>
+        </Button>
       </section>
 
-      <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Month</h2>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+      <section className="rounded-2xl border border-border/80 bg-muted-bg/30 p-5 dark:border-zinc-800 dark:bg-zinc-950/30">
+        <h2 className="text-lg font-bold text-foreground">Month</h2>
+        <p className="mt-1 text-sm text-muted">
           Leaderboards are monthly only. Pick any date in the calendar month (UTC) to load or
           override.
         </p>
         <div className="mt-4 flex flex-wrap gap-4">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">Anchor date</span>
+            <span className="font-medium text-foreground">Anchor date</span>
             <input
               type="date"
               value={periodAnchor}
               onChange={(e) => setPeriodAnchor(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <button
             type="button"
             onClick={applyPeriodToUrl}
-            className="self-end rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-muted-bg dark:border-zinc-600"
+            className="self-end rounded-xl border border-border/90 px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted-bg dark:border-zinc-600"
           >
             Load month
           </button>
         </div>
-        <p className="mt-3 text-sm text-zinc-500">
+        <p className="mt-3 text-sm text-muted">
           Active range: {formatPeriodLabel(periodKind, bounds.periodStart, bounds.periodEnd)}
         </p>
       </section>
 
       <section className="rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/50">
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">Override one member (optional)</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-bold text-foreground">Override one member (optional)</h2>
+        <p className="mt-1 text-sm text-muted">
           Only needed to fix a single row. Monthly rankings use the latest Chrome extension sync when available.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -166,7 +169,7 @@ export function AdminRankingsForm({
               value={memberQuery}
               onChange={(e) => setMemberQuery(e.target.value)}
               placeholder="Email or @handle…"
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm sm:col-span-2">
@@ -174,7 +177,7 @@ export function AdminRankingsForm({
             <select
               value={profileId}
               onChange={(e) => loadMemberStats(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             >
               {filteredMembers.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -190,7 +193,7 @@ export function AdminRankingsForm({
               min={0}
               value={coins}
               onChange={(e) => setCoins(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -200,7 +203,7 @@ export function AdminRankingsForm({
               min={0}
               value={days}
               onChange={(e) => setDays(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -211,7 +214,7 @@ export function AdminRankingsForm({
               step={0.1}
               value={hours}
               onChange={(e) => setHours(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -219,7 +222,7 @@ export function AdminRankingsForm({
             <select
               value={activeness}
               onChange={(e) => setActiveness(e.target.value as ActivenessLevel)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             >
               {ACTIVENESS_LEVELS.map((a) => (
                 <option key={a} value={a}>
@@ -235,7 +238,7 @@ export function AdminRankingsForm({
               min={0}
               value={followers}
               onChange={(e) => setFollowers(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -244,7 +247,7 @@ export function AdminRankingsForm({
               type="number"
               value={followerGrowth}
               onChange={(e) => setFollowerGrowth(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -254,7 +257,7 @@ export function AdminRankingsForm({
               min={0}
               value={battlesPlayed}
               onChange={(e) => setBattlesPlayed(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -264,7 +267,7 @@ export function AdminRankingsForm({
               min={0}
               value={battlesWon}
               onChange={(e) => setBattlesWon(e.target.value)}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className={adminFieldClass}
             />
           </label>
         </div>
@@ -279,8 +282,10 @@ export function AdminRankingsForm({
         ) : null}
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <button
+          <Button
             type="button"
+            variant="primary"
+            className="min-h-[40px] px-5 text-sm"
             disabled={pending || !profileId}
             onClick={() =>
               startTransition(async () => {
@@ -306,12 +311,13 @@ export function AdminRankingsForm({
                 }
               })
             }
-            className="rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-60 dark:bg-white dark:text-zinc-950"
           >
             {pending ? "Saving…" : "Save & recalculate"}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="secondary"
+            className="min-h-[40px] px-5 text-sm"
             disabled={pending}
             onClick={() =>
               startTransition(async () => {
@@ -325,15 +331,14 @@ export function AdminRankingsForm({
                 }
               })
             }
-            className="rounded-xl border border-zinc-300 px-5 py-2.5 text-sm font-semibold dark:border-zinc-600"
           >
             Recalculate only
-          </button>
+          </Button>
         </div>
       </section>
 
       <section>
-        <h2 className="text-lg font-bold text-zinc-950 dark:text-zinc-50">
+        <h2 className="text-lg font-bold text-foreground">
           Stats entered this period ({existingStats.length})
         </h2>
         <ul className="mt-4 space-y-2 text-sm">
@@ -345,7 +350,7 @@ export function AdminRankingsForm({
               return (
                 <li
                   key={s.id}
-                  className="flex flex-wrap justify-between gap-2 rounded-lg border border-zinc-200/80 px-3 py-2 dark:border-zinc-800"
+                  className="flex flex-wrap justify-between gap-2 rounded-xl border border-border/70 px-3 py-2 dark:border-zinc-800"
                 >
                   <span className="font-medium">
                     {m?.tiktok_username ? `@${m.tiktok_username.replace(/^@/, "")}` : m?.email ?? s.profile_id.slice(0, 8)}

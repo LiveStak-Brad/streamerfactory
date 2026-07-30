@@ -16,7 +16,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-background">
       <AdminNav />
-      {children}
+      <div className="relative z-[1]">{children}</div>
     </div>
   );
 }

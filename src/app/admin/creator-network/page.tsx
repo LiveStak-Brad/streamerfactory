@@ -4,6 +4,8 @@ import {
   getRecentImportBatches,
 } from "@/lib/creator-network/queries";
 import { CreatorNetworkAdminPanel } from "@/components/admin/CreatorNetworkAdminPanel";
+import { AdminAlert } from "@/components/admin/ui/AdminAlert";
+import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { Container } from "@/components/ui/Container";
 
 export const metadata = {
@@ -42,27 +44,36 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
   }
 
   return (
-    <section className="py-12 sm:py-16">
-      <Container className="max-w-6xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-accent dark:text-accent-muted">Admin</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-          Creator Network imports
-        </h1>
-        <p className="mt-2 max-w-3xl text-zinc-600 dark:text-zinc-400">
-          Data is read from visible TikTok Backstage pages by authorized staff using the Chrome extension.
-          Nothing is scraped from TikTok cookies or hidden tokens.           Public <code className="text-xs">/rankings</code> uses the latest completed stats import when
-          available; otherwise it falls back to the seed snapshot.
-        </p>
+    <section className="py-10 sm:py-14">
+      <Container>
+        <AdminPageHeader
+          title="Creator Network imports"
+          description={
+            <>
+              Data is read from visible TikTok Backstage pages by authorized staff using the Chrome
+              extension. Nothing is scraped from TikTok cookies or hidden tokens. Public{" "}
+              <code className="rounded bg-muted-bg px-1 py-0.5 text-xs">/rankings</code> uses the
+              latest completed stats import when available; otherwise it falls back to the seed
+              snapshot.
+            </>
+          }
+          breadcrumbs={[
+            { label: "Admin", href: "/admin" },
+            { label: "CN imports" },
+          ]}
+        />
 
         {tablesMissing ? (
-          <p className="mt-6 rounded-xl border border-amber-200/80 bg-amber-50/80 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
-            Import tables are missing. Apply{" "}
-            <code className="text-xs">supabase/migrations/20250601120000_creator_network_import.sql</code> in
-            Supabase, then refresh.
-          </p>
+          <div className="mt-6">
+            <AdminAlert title="Import tables are missing" tone="warning">
+              Apply{" "}
+              <code className="text-xs">supabase/migrations/20250601120000_creator_network_import.sql</code>{" "}
+              in Supabase, then refresh.
+            </AdminAlert>
+          </div>
         ) : null}
 
-        <div className="mt-10">
+        <div className="mt-8">
           <CreatorNetworkAdminPanel
             batches={batches}
             stats={stats}

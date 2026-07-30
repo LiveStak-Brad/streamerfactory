@@ -1,62 +1,68 @@
 @import "tailwindcss";
 
-/* Streamer Factory — premium creator-network visual system */
+/* Streamer Factory — approved brand board visual system */
 :root {
-  --background: #f6f5fb;
-  --foreground: #0c0a14;
-  --muted: #6b6578;
-  --muted-bg: #efedf5;
-  --border: #e2dfea;
+  --background: #f4f6fb;
+  --foreground: #0b0f1a;
+  --muted: #5c6478;
+  --muted-bg: #eef1f8;
+  --border: #d8deeb;
   --surface: #ffffff;
   --surface-raised: #ffffff;
   --surface-glass: rgba(255, 255, 255, 0.72);
-  /* Brand violet/indigo — controlled, not neon everywhere */
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
+  /* Brand: indigo → purple → pink / cyan accent */
+  --accent: #5b3bff;
+  --accent-hover: #4a2be0;
   --accent-foreground: #ffffff;
-  --accent-soft: rgba(99, 102, 241, 0.12);
-  --accent-muted: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.45);
-  --accent-secondary: #a855f7;
-  --accent-hot: #ec4899;
-  --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 48%, #d946ef 100%);
-  --gradient-brand-soft: linear-gradient(135deg, rgba(99, 102, 241, 0.16), rgba(168, 85, 247, 0.1));
-  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.7) inset, 0 18px 44px -28px rgba(15, 23, 42, 0.32);
-  --shadow-glow: 0 0 40px -8px rgba(99, 102, 241, 0.45);
+  --accent-soft: rgba(91, 59, 255, 0.12);
+  --accent-muted: #7c6bff;
+  --accent-glow: rgba(160, 32, 240, 0.45);
+  --accent-secondary: #a020f0;
+  --accent-hot: #ff2ed1;
+  --accent-cyan: #00e5ff;
+  --gradient-brand: linear-gradient(135deg, #5b3bff 0%, #a020f0 48%, #ff2ed1 100%);
+  --gradient-brand-soft: linear-gradient(
+    135deg,
+    rgba(91, 59, 255, 0.16),
+    rgba(160, 32, 240, 0.1),
+    rgba(0, 229, 255, 0.08)
+  );
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.7) inset, 0 18px 44px -28px rgba(11, 15, 26, 0.32);
+  --shadow-glow: 0 0 40px -8px rgba(160, 32, 240, 0.45);
   --radius-card: 1rem;
-  /* Dark bands / footer */
-  --void: #09090b;
-  --void-elevated: #14121c;
+  /* Dark bands / footer — brand navy */
+  --void: #0b0f1a;
+  --void-elevated: #1a1f2e;
   --inverse-muted: #a1a1aa;
   /* CTA strip in dark mode: light surface */
-  --inverse-light-bg: #efedf5;
+  --inverse-light-bg: #eef1f8;
   --inverse-light-muted: #52525b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #07060c;
-    --foreground: #f5f3ff;
-    --muted: #a39eb3;
-    --muted-bg: #12101a;
-    --border: #2a2638;
-    --surface: #14121c;
-    --surface-raised: #1c1828;
-    --surface-glass: rgba(20, 18, 28, 0.72);
-    --accent: #818cf8;
-    --accent-hover: #a5b4fc;
-    --accent-foreground: #09090b;
-    --accent-soft: rgba(129, 140, 248, 0.14);
-    --accent-muted: #a5b4fc;
-    --accent-glow: rgba(129, 140, 248, 0.4);
-    --accent-secondary: #c084fc;
-    --accent-hot: #f472b6;
+    --background: #0b0f1a;
+    --foreground: #f5f7ff;
+    --muted: #9aa3b8;
+    --muted-bg: #121826;
+    --border: #2a3348;
+    --surface: #1a1f2e;
+    --surface-raised: #222838;
+    --surface-glass: rgba(26, 31, 46, 0.72);
+    --accent: #7c6bff;
+    --accent-hover: #9b8cff;
+    --accent-foreground: #0b0f1a;
+    --accent-soft: rgba(124, 107, 255, 0.16);
+    --accent-muted: #a89cff;
+    --accent-glow: rgba(0, 229, 255, 0.35);
+    --accent-secondary: #c44bff;
+    --accent-hot: #ff5ae0;
     --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset, 0 22px 48px -28px rgba(0, 0, 0, 0.7);
-    --shadow-glow: 0 0 40px -8px rgba(129, 140, 248, 0.35);
+    --shadow-glow: 0 0 40px -8px rgba(0, 229, 255, 0.3);
     --void: #fafafa;
     --void-elevated: #e4e4e7;
     --inverse-muted: #52525b;
-    --inverse-light-bg: #12101a;
+    --inverse-light-bg: #121826;
     --inverse-light-muted: #a1a1aa;
   }
 }
@@ -84,7 +90,37 @@
   --font-sans: var(--font-sans-variable);
 }
 
-/* Subtle page depth: grid + soft vignette (no beige) */
+/* Admin console skeleton shimmer */
+.admin-skeleton {
+  position: relative;
+  overflow: hidden;
+}
+.admin-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--accent) 12%, transparent),
+    transparent
+  );
+  animation: admin-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes admin-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-skeleton::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Subtle page depth: grid + soft brand vignette */
 .page-backdrop {
   pointer-events: none;
   position: fixed;
@@ -92,6 +128,8 @@
   z-index: 0;
   background-color: var(--background);
   background-image:
+    radial-gradient(ellipse 70% 50% at 15% -10%, rgba(160, 32, 240, 0.12), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 90% 0%, rgba(0, 229, 255, 0.08), transparent 50%),
     linear-gradient(to bottom, color-mix(in oklab, var(--background) 88%, #000) 0%, transparent 42%),
     linear-gradient(
       color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
@@ -104,6 +142,8 @@
     );
   background-size:
     auto,
+    auto,
+    auto,
     56px 56px,
     56px 56px;
   background-position: center top;
@@ -113,6 +153,8 @@
 @media (prefers-color-scheme: dark) {
   .page-backdrop {
     background-image:
+      radial-gradient(ellipse 70% 50% at 15% -10%, rgba(160, 32, 240, 0.22), transparent 55%),
+      radial-gradient(ellipse 55% 40% at 90% 0%, rgba(0, 229, 255, 0.14), transparent 50%),
       linear-gradient(to bottom, color-mix(in oklab, var(--background) 85%, #fff) 0%, transparent 45%),
       linear-gradient(
         color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
@@ -123,7 +165,7 @@
         color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
         transparent 1px
       );
-    background-size: auto, 56px 56px, 56px 56px;
+    background-size: auto, auto, auto, 56px 56px, 56px 56px;
     mask-image: radial-gradient(ellipse 90% 70% at 50% -10%, black 40%, transparent 78%);
   }
 }
@@ -135,6 +177,7 @@
     90deg,
     transparent,
     color-mix(in oklab, var(--accent) 65%, transparent),
+    color-mix(in oklab, var(--accent-cyan, #00e5ff) 55%, transparent),
     transparent
   );
 }
@@ -160,8 +203,8 @@
   height: 0.5rem;
   width: 0.5rem;
   border-radius: 9999px;
-  background: #22c55e;
-  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  background: #ef4444;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
 }
 
 .live-dot::after {
@@ -202,10 +245,68 @@
   animation: float-soft 5.5s ease-in-out infinite;
 }
 
+@keyframes sf-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes sf-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sf-loader-glow {
+  animation: sf-glow-pulse 2.4s ease-in-out infinite;
+}
+
+.sf-loader-ring {
+  animation: sf-ring-spin 8s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .live-dot::after,
-  .animate-float-soft {
+  .animate-float-soft,
+  .sf-loader-glow,
+  .sf-loader-ring {
     animation: none;
+  }
+}
+
+/* Admin console skeleton shimmer */
+.admin-skeleton {
+  position: relative;
+  overflow: hidden;
+}
+.admin-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--accent) 12%, transparent),
+    transparent
+  );
+  animation: admin-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes admin-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-skeleton::after {
+    animation: none;
+    opacity: 0;
   }
 }
 

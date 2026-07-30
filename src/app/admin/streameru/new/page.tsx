@@ -1,5 +1,7 @@
-import { Container } from "@/components/ui/Container";
+import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminPanel } from "@/components/admin/ui/AdminPanel";
 import { ResourceForm } from "@/components/admin/ResourceForm";
+import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getResourceCategories } from "@/lib/resources/queries";
 
@@ -8,20 +10,20 @@ export default async function NewResourcePage() {
   const categories = await getResourceCategories();
 
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-10 sm:py-14">
       <Container className="max-w-3xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-accent dark:text-accent-muted">
-          Admin · StreamerU
-        </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-          New resource
-        </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Drafts stay private until you publish. Slugs must stay URL-safe.
-        </p>
-        <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-8">
+        <AdminPageHeader
+          title="New resource"
+          description="Drafts stay private until you publish. Slugs must stay URL-safe."
+          breadcrumbs={[
+            { label: "Admin", href: "/admin" },
+            { label: "StreamerU", href: "/admin/streameru" },
+            { label: "New" },
+          ]}
+        />
+        <AdminPanel className="mt-8" raised>
           <ResourceForm categories={categories} mode="create" />
-        </div>
+        </AdminPanel>
       </Container>
     </section>
   );

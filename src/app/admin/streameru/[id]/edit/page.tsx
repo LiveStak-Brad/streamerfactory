@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/ui/Container";
+import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminPanel } from "@/components/admin/ui/AdminPanel";
+import { ResourceDeleteForm } from "@/components/admin/ResourceDeleteForm";
 import { ResourceForm } from "@/components/admin/ResourceForm";
-import { deleteResourcePost } from "@/lib/resources/actions";
+import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getResourceCategories, getResourcePostById } from "@/lib/resources/queries";
 
@@ -25,40 +27,41 @@ export default async function EditResourcePage({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-10 sm:py-14">
       <Container className="max-w-3xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-accent dark:text-accent-muted">
-          Admin · StreamerU
-        </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-          Edit resource
-        </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Post ID <span className="font-mono text-xs text-zinc-500">{post.id}</span>
-        </p>
+        <AdminPageHeader
+          title="Edit resource"
+          description={
+            <>
+              Post ID <span className="font-mono text-xs text-muted">{post.id}</span>
+            </>
+          }
+          breadcrumbs={[
+            { label: "Admin", href: "/admin" },
+            { label: "StreamerU", href: "/admin/streameru" },
+            { label: "Edit" },
+          ]}
+        />
 
-        <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-surface p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-8">
+        <AdminPanel className="mt-8" raised>
           <ResourceForm categories={categories} mode="edit" initial={post} />
-        </div>
+        </AdminPanel>
 
-        <div className="mt-8 rounded-2xl border border-red-200/80 bg-red-50/80 p-6 dark:border-red-900/50 dark:bg-red-950/30">
-          <h2 className="text-sm font-semibold text-red-900 dark:text-red-200">Danger zone</h2>
-          <p className="mt-1 text-sm text-red-800/90 dark:text-red-200/90">
+        <div className="mt-8 rounded-2xl border border-rose-200/80 bg-rose-50/80 p-6 dark:border-rose-900/50 dark:bg-rose-950/30">
+          <h2 className="text-sm font-semibold text-rose-900 dark:text-rose-200">Danger zone</h2>
+          <p className="mt-1 text-sm text-rose-800/90 dark:text-rose-200/90">
             Deleting removes this resource permanently (public URLs will 404).
           </p>
-          <form action={deleteResourcePost} className="mt-4">
-            <input type="hidden" name="id" value={post.id} />
-            <button
-              type="submit"
-              className="rounded-xl border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 shadow-sm transition-colors hover:bg-red-100 dark:border-red-800 dark:bg-red-950 dark:text-red-100 dark:hover:bg-red-900"
-            >
-              Delete resource
-            </button>
-          </form>
+          <div className="mt-4">
+            <ResourceDeleteForm resourceId={post.id} />
+          </div>
         </div>
 
-        <p className="mt-8 text-sm text-zinc-500">
-          <Link href="/admin/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+        <p className="mt-8 text-sm text-muted">
+          <Link
+            href="/admin/streameru"
+            className="font-semibold text-accent hover:underline dark:text-accent-muted"
+          >
             ← All lessons
           </Link>
         </p>

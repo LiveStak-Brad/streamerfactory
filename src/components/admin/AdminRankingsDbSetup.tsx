@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { AdminAlert } from "@/components/admin/ui/AdminAlert";
 
 export function AdminRankingsDbSetup({ tablesMissing }: { tablesMissing: boolean }) {
   const [pending, startTransition] = useTransition();
@@ -10,13 +11,13 @@ export function AdminRankingsDbSetup({ tablesMissing }: { tablesMissing: boolean
   if (!tablesMissing) return null;
 
   return (
-    <div className="mb-8 rounded-2xl border border-amber-200/90 bg-amber-50/80 p-5 dark:border-amber-900/50 dark:bg-amber-950/30">
-      <p className="font-semibold text-amber-950 dark:text-amber-100">Database setup required</p>
-      <p className="mt-2 text-sm text-amber-900/90 dark:text-amber-200/90">
+    <AdminAlert title="Database setup required" tone="warning">
+      <p>
         Rankings tables are not available yet. Either paste{" "}
-        <code className="rounded bg-amber-100/80 px-1 dark:bg-amber-900/40">supabase/apply-rankings-now.sql</code> in
-        Supabase SQL Editor, or set <code className="rounded bg-amber-100/80 px-1 dark:bg-amber-900/40">SUPABASE_DB_URL</code>{" "}
-        on the server and run setup below.
+        <code className="rounded bg-black/5 px-1 dark:bg-white/10">supabase/apply-rankings-now.sql</code>{" "}
+        in Supabase SQL Editor, or set{" "}
+        <code className="rounded bg-black/5 px-1 dark:bg-white/10">SUPABASE_DB_URL</code> on the server
+        and run setup below.
       </p>
       {error ? (
         <p className="mt-3 text-sm font-medium text-rose-700 dark:text-rose-300" role="alert">
@@ -29,7 +30,7 @@ export function AdminRankingsDbSetup({ tablesMissing }: { tablesMissing: boolean
       <button
         type="button"
         disabled={pending}
-        className="mt-4 rounded-xl bg-amber-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60 dark:bg-amber-100 dark:text-amber-950"
+        className="mt-4 rounded-xl bg-amber-900 px-4 py-2 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 disabled:opacity-60 dark:bg-amber-100 dark:text-amber-950"
         onClick={() =>
           startTransition(async () => {
             setError(null);
@@ -47,6 +48,6 @@ export function AdminRankingsDbSetup({ tablesMissing }: { tablesMissing: boolean
       >
         {pending ? "Applying…" : "Apply rankings migration (server)"}
       </button>
-    </div>
+    </AdminAlert>
   );
 }

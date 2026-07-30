@@ -55,21 +55,6 @@ function readCompletedSlugs(): Set<string> {
   return set;
 }
 
-function readSnapshot(): Snapshot {
-  const completedSlugs = readCompletedSlugs();
-  const recommended = computeRecommendedFromStorage();
-  const last = readLastVisitedSlugFromStorage();
-  const lastLesson = last ? getCurriculumLesson(last) : null;
-  return {
-    completedSlugs,
-    recommendedHref: recommended.href,
-    recommendedTitle: recommended.title,
-    recommendedOrder: recommended.globalOrder,
-    continueHref: last ? `/streameru/${last}` : null,
-    continueTitle: lastLesson?.title ?? null,
-  };
-}
-
 const emptySnapshot: Snapshot = {
   completedSlugs: new Set(),
   recommendedHref: getDefaultRecommendedLesson().href,
@@ -78,6 +63,42 @@ const emptySnapshot: Snapshot = {
   continueHref: null,
   continueTitle: null,
 };
+
+/** Cached so useSyncExternalStore getSnapshot stays referentially stable. */
+let cachedSnapshot: Snapshot = emptySnapshot;
+let cachedSnapshotKey = "";
+
+function readSnapshot(): Snapshot {
+  const completedSlugs = readCompletedSlugs();
+  const recommended = computeRecommendedFromStorage();
+  const last = readLastVisitedSlugFromStorage();
+  const lastLesson = last ? getCurriculumLesson(last) : null;
+  const continueHref = last ? `/streameru/${last}` : null;
+  const continueTitle = lastLesson?.title ?? null;
+  const key = [
+    [...completedSlugs].sort().join(","),
+    recommended.href,
+    recommended.title,
+    String(recommended.globalOrder),
+    continueHref ?? "",
+    continueTitle ?? "",
+  ].join("|");
+  if (key === cachedSnapshotKey) return cachedSnapshot;
+  cachedSnapshotKey = key;
+  cachedSnapshot = {
+    completedSlugs,
+    recommendedHref: recommended.href,
+    recommendedTitle: recommended.title,
+    recommendedOrder: recommended.globalOrder,
+    continueHref,
+    continueTitle,
+  };
+  return cachedSnapshot;
+}
+
+function getServerSnapshot(): Snapshot {
+  return emptySnapshot;
+}
 
 function subscribe(onStoreChange: () => void): () => void {
   if (typeof window === "undefined") return () => {};
@@ -110,7 +131,7 @@ function moduleStatus(
  * Does not invent XP or locked gates.
  */
 export function StreamerUAcademyHome({ publishedSlugs }: Props) {
-  const snapshot = useSyncExternalStore(subscribe, readSnapshot, () => emptySnapshot);
+  const snapshot = useSyncExternalStore(subscribe, readSnapshot, getServerSnapshot);
   const published = new Set(publishedSlugs);
   const completedCount = snapshot.completedSlugs.size;
   const percent = CURRICULUM_TOTAL_LESSONS > 0 ? (completedCount / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
@@ -131,7 +152,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
     <div className="space-y-10">
       <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-8 text-zinc-50 sm:px-8 sm:py-10">
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_10%_0%,rgba(99,102,241,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(168,85,247,0.22),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_10%_0%,rgba(91, 59, 255,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(160, 32, 240,0.22),transparent_50%)]"
           aria-hidden
         />
         <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">

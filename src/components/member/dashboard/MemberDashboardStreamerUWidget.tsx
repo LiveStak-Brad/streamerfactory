@@ -51,17 +51,38 @@ function countCompletedMissions(): number {
   return count;
 }
 
+/** Cached so useSyncExternalStore getSnapshot stays referentially stable. */
+let cachedSnapshot: TrainingSnapshot = emptySnapshot;
+let cachedSnapshotKey = "";
+
 function readTrainingSnapshot(): TrainingSnapshot {
   const done = countCompletedMissions();
   const next = computeRecommendedFromStorage();
   const last = readLastVisitedSlugFromStorage();
   const lastLesson = last ? getCurriculumLesson(last) : null;
-  return {
+  const continueHref = last ? `/streameru/${last}` : null;
+  const continueTitle = lastLesson?.title ?? null;
+  const key = [
+    String(done),
+    next.href,
+    next.title,
+    String(next.globalOrder),
+    continueHref ?? "",
+    continueTitle ?? "",
+  ].join("|");
+  if (key === cachedSnapshotKey) return cachedSnapshot;
+  cachedSnapshotKey = key;
+  cachedSnapshot = {
     completed: done,
     recommended: next,
-    continueHref: last ? `/streameru/${last}` : null,
-    continueTitle: lastLesson?.title ?? null,
+    continueHref,
+    continueTitle,
   };
+  return cachedSnapshot;
+}
+
+function getServerSnapshot(): TrainingSnapshot {
+  return emptySnapshot;
 }
 
 function subscribe(onStoreChange: () => void): () => void {
@@ -80,7 +101,7 @@ function subscribe(onStoreChange: () => void): () => void {
  * Shows real localStorage mission completions only — never invented XP.
  */
 export function MemberDashboardStreamerUWidget() {
-  const snapshot = useSyncExternalStore(subscribe, readTrainingSnapshot, () => emptySnapshot);
+  const snapshot = useSyncExternalStore(subscribe, readTrainingSnapshot, getServerSnapshot);
   const percent =
     CURRICULUM_TOTAL_LESSONS > 0 ? (snapshot.completed / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
 
@@ -96,6 +117,7 @@ export function MemberDashboardStreamerUWidget() {
         <EmptyState
           title="No lessons completed on this device yet"
           description="Progress is saved in this browser for now. Start the program and your next lesson will show here."
+          illustration="lessons"
           action={
             <Button href={snapshot.recommended.href} variant="primary" className="min-h-[44px] px-5">
               Start: {snapshot.recommended.title}

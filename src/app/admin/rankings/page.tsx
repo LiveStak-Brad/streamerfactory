@@ -2,8 +2,12 @@ import { Suspense } from "react";
 import { AdminRankingsDbSetup } from "@/components/admin/AdminRankingsDbSetup";
 import { AdminRankingsSnapshot } from "@/components/rankings/AdminRankingsSnapshot";
 import { AdminRankingsForm } from "@/components/rankings/AdminRankingsForm";
+import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminPanel } from "@/components/admin/ui/AdminPanel";
+import { AdminSkeleton } from "@/components/admin/ui/AdminSkeleton";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/Container";
+import { StatCard } from "@/components/ui/StatCard";
 import { periodBounds, toDateString } from "@/lib/rankings/periods";
 import { getPerformanceStatsForPeriod } from "@/lib/rankings/queries";
 import { parseRankingPeriod } from "@/lib/rankings/types";
@@ -55,25 +59,44 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
   }
 
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-10 sm:py-14">
       <Container className="max-w-3xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-accent dark:text-accent-muted">Admin</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-          Creator rankings
-        </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Stats from your Creator Network screenshots are already loaded. The public leaderboard updates from that
-          snapshot; use the form below only to override one member or sync into the database.
-        </p>
+        <AdminPageHeader
+          title="Creator rankings"
+          description="Stats from Creator Network screenshots drive the public leaderboard. Use the form below to override one member or sync into the database."
+          breadcrumbs={[
+            { label: "Admin", href: "/admin" },
+            { label: "Rankings" },
+          ]}
+        />
 
-        <AdminRankingsDbSetup tablesMissing={tablesMissing} />
-
-        <div className="mt-8">
-          <AdminRankingsSnapshot />
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <StatCard label="Network members" value={members.length} accent />
+          <StatCard
+            label="Stats this period"
+            value={existingStats.length}
+            hint={`${periodStart} → ${periodEnd}`}
+          />
         </div>
 
-        <div className="mt-10">
-          <Suspense fallback={<p className="text-sm text-zinc-500">Loading form…</p>}>
+        <div className="mt-6">
+          <AdminRankingsDbSetup tablesMissing={tablesMissing} />
+        </div>
+
+        <AdminPanel className="mt-8" raised>
+          <AdminRankingsSnapshot />
+        </AdminPanel>
+
+        <AdminPanel className="mt-8" raised>
+          <Suspense
+            fallback={
+              <div className="space-y-3" role="status" aria-label="Loading rankings form">
+                <AdminSkeleton className="h-6 w-40" />
+                <AdminSkeleton className="h-24 w-full" />
+                <AdminSkeleton className="h-40 w-full" />
+              </div>
+            }
+          >
             <AdminRankingsForm
               members={members}
               existingStats={existingStats}
@@ -81,7 +104,7 @@ export default async function AdminRankingsPage({ searchParams }: PageProps) {
               periodAnchor={anchor}
             />
           </Suspense>
-        </div>
+        </AdminPanel>
       </Container>
     </section>
   );
