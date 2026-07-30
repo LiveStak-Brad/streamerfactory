@@ -92,27 +92,6 @@ export function HomeHero({ memberCount, previewMembers, topCreators }: HomeHeroP
               </p>
             </div>
 
-            <ol className="mt-8 grid gap-3 text-sm text-zinc-300 sm:grid-cols-3 sm:gap-3 sm:text-[0.9rem]">
-              <li className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
-                <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
-                  What we offer
-                </span>
-                <span className="mt-1 block font-semibold text-white">Training · battles · rankings</span>
-              </li>
-              <li className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
-                <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
-                  Why join
-                </span>
-                <span className="mt-1 block font-semibold text-white">Systems that compound weekly</span>
-              </li>
-              <li className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
-                <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
-                  How to join
-                </span>
-                <span className="mt-1 block font-semibold text-white">TikTok → website access</span>
-              </li>
-            </ol>
-
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <TrackedCta
                 href={tiktokCreatorNetworkApplyUrl}
@@ -121,7 +100,7 @@ export function HomeHero({ memberCount, previewMembers, topCreators }: HomeHeroP
                 className="min-h-[52px] px-8 sm:min-w-[220px]"
                 eventMetadata={{ location: "home_hero", cta: "join_tiktok_cn" }}
               >
-                1. Join on TikTok
+                Join on TikTok
               </TrackedCta>
               <TrackedCta
                 href="/apply"
@@ -129,7 +108,7 @@ export function HomeHero({ memberCount, previewMembers, topCreators }: HomeHeroP
                 className="min-h-[52px] px-8 sm:min-w-[220px]"
                 eventMetadata={{ location: "home_hero", cta: "request_access" }}
               >
-                2. Request website access
+                Request website access
               </TrackedCta>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-500">
