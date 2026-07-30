@@ -10,6 +10,7 @@ import { LatestResources } from "@/components/home/LatestResources";
 import { WhatWeDo } from "@/components/home/WhatWeDo";
 import { WhyStreamerFactory } from "@/components/home/WhyStreamerFactory";
 import { getNetworkMembersForDirectory } from "@/lib/members/members-directory-data";
+import { orderMembersByActivity } from "@/lib/members/order-by-activity";
 import { getLeaderboard } from "@/lib/rankings/queries";
 import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { JsonLd, organizationSchema, websiteSchema } from "@/lib/seo/json-ld";
@@ -44,13 +45,8 @@ export default async function HomePage() {
   ]);
   const members = directory.members ?? [];
   const rankings = board ?? [];
-  /** Prefer creators with Backstage photos for above-the-fold hero avatars. */
-  const previewMembers = [...members].sort((a, b) => {
-    const aPhoto = a.avatarUrl ? 0 : 1;
-    const bPhoto = b.avatarUrl ? 0 : 1;
-    if (aPhoto !== bPhoto) return aPhoto - bPhoto;
-    return 0;
-  });
+  /** Hero + network strip: most active this month first (not A–Z / photo-only). */
+  const previewMembers = orderMembersByActivity(members, rankings);
 
   return (
     <>
