@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
-    "Learn how Streamer Factory helps TikTok LIVE creators grow with professional onboarding, training, and management.",
-};
+    "Learn how Streamer Factory helps TikTok LIVE creators grow with professional onboarding, StreamerU training, Battle Hub, and creator management.",
+  path: "/about",
+  keywords: ["Streamer Factory", "TikTok LIVE agency", "creator agency about"],
+});
 
 export default function AboutPage() {
   return (
@@ -69,6 +73,20 @@ export default function AboutPage() {
               Request website access
             </Button>
           </div>
+          <p className="mt-8 text-sm leading-relaxed text-muted">
+            Dig deeper:{" "}
+            <Link href="/guides/tiktok-live-agency" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+              TikTok LIVE Agency
+            </Link>
+            {" · "}
+            <Link href="/guides/how-to-join-tiktok-live-agency" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+              How to join
+            </Link>
+            {" · "}
+            <Link href="/guides/creator-academy" className="font-semibold text-accent hover:underline dark:text-accent-muted">
+              Creator Academy
+            </Link>
+          </p>
         </div>
       </Section>
     </>

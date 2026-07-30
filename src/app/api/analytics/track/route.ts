@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { CLIENT_ALLOWED_EVENTS } from "@/lib/analytics/events";
+import { clientIpFromRequest, rateLimit } from "@/lib/security/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,18 @@ type Body = {
  * Client-side analytics ingest (page views, etc.). Validates event allowlist.
  */
 export async function POST(request: Request) {
+  const ip = clientIpFromRequest(request);
+  const limited = rateLimit({ key: `analytics:${ip}`, limit: 60, windowMs: 60_000 });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { ok: false, error: "Rate limited" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfterSec) },
+      },
+    );
+  }
+
   let body: Body;
   try {
     body = (await request.json()) as Body;

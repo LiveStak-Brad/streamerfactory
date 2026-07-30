@@ -9,13 +9,20 @@ import { hasActiveNonRejectedApplication } from "@/lib/applications/helpers";
 import { getMyApplication } from "@/lib/applications/queries";
 import { canScheduleBattles } from "@/lib/auth/access";
 import { getSessionProfile } from "@/lib/auth/server";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Join",
+export const metadata: Metadata = createPageMetadata({
+  title: "Join the TikTok LIVE Creator Network",
   description:
-    "Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and StreamerU.",
-};
+    "Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and StreamerU training.",
+  path: "/apply",
+  keywords: [
+    "join TikTok LIVE agency",
+    "TikTok Creator Network apply",
+    "Streamer Factory application",
+  ],
+});
 
 export default async function ApplyPage() {
   const session = await getSessionProfile();

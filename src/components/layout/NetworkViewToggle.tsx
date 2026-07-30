@@ -23,17 +23,17 @@ export function NetworkViewToggle({ mode }: Props) {
 
   return (
     <div
-      className="inline-flex items-center rounded-xl border border-zinc-200/90 bg-muted-bg/60 p-0.5 text-xs font-semibold dark:border-zinc-700 dark:bg-zinc-900/60"
+      className="inline-flex w-full items-center rounded-lg bg-muted-bg p-0.5 text-[0.7rem] font-semibold dark:bg-zinc-900"
       role="group"
-      aria-label="Network view preview"
+      aria-label="Owner network view preview"
     >
       <button
         type="button"
         disabled={pending}
         onClick={() => setMode("visitor")}
-        className={`rounded-lg px-2.5 py-1.5 transition sm:px-3 ${
+        className={`flex-1 rounded-md px-2 py-1.5 transition ${
           mode === "visitor"
-            ? "bg-surface text-zinc-950 shadow-sm dark:bg-zinc-950 dark:text-zinc-50"
+            ? "bg-surface text-zinc-950 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
             : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
         }`}
       >
@@ -43,9 +43,9 @@ export function NetworkViewToggle({ mode }: Props) {
         type="button"
         disabled={pending}
         onClick={() => setMode("member")}
-        className={`rounded-lg px-2.5 py-1.5 transition sm:px-3 ${
+        className={`flex-1 rounded-md px-2 py-1.5 transition ${
           mode === "member"
-            ? "bg-surface text-zinc-950 shadow-sm dark:bg-zinc-950 dark:text-zinc-50"
+            ? "bg-surface text-zinc-950 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
             : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
         }`}
       >

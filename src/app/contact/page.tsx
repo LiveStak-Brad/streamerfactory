@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { site, tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Contact",
   description: `Contact ${site.name} — questions about partnership, website access, or TikTok LIVE creator support.`,
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

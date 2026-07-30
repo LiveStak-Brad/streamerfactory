@@ -9,6 +9,8 @@ import { Container } from "@/components/ui/Container";
 import { site } from "@/lib/site";
 import { safeNextPath } from "@/lib/auth/access";
 import { resolvePostLoginRedirect } from "@/lib/auth/post-login";
+import { AnalyticsEvents } from "@/lib/analytics/events";
+import { trackClientEvent } from "@/lib/analytics/client";
 import { createClient } from "@/lib/supabase/client";
 
 type Mode = "signin" | "signup";
@@ -24,6 +26,19 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  function switchMode(next: Mode) {
+    setMode(next);
+    setMessage(null);
+    setSuccess(null);
+    if (next === "signup") {
+      trackClientEvent({
+        event: AnalyticsEvents.SIGNUP_STARTED,
+        route: "/login",
+        metadata: { source: "mode_toggle" },
+      });
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -70,6 +85,12 @@ function LoginContent() {
       return;
     }
 
+    trackClientEvent({
+      event: AnalyticsEvents.SIGNUP_STARTED,
+      route: "/login",
+      metadata: { source: "form_submit" },
+    });
+
     const { data, error } = await supabase.auth.signUp({
       email: trimmed,
       password,
@@ -82,6 +103,11 @@ function LoginContent() {
       setMessage(error.message);
       return;
     }
+    trackClientEvent({
+      event: AnalyticsEvents.SIGNUP_COMPLETED,
+      route: "/login",
+      metadata: { has_session: Boolean(data.session) },
+    });
     if (data.session) {
       await router.refresh();
       const {
@@ -145,11 +171,7 @@ function LoginContent() {
         <div className="mt-8 flex rounded-xl border border-zinc-200 p-1 dark:border-zinc-700">
           <button
             type="button"
-            onClick={() => {
-              setMode("signin");
-              setMessage(null);
-              setSuccess(null);
-            }}
+            onClick={() => switchMode("signin")}
             className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
               mode === "signin"
                 ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950"
@@ -160,11 +182,7 @@ function LoginContent() {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setMode("signup");
-              setMessage(null);
-              setSuccess(null);
-            }}
+            onClick={() => switchMode("signup")}
             className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
               mode === "signup"
                 ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950"

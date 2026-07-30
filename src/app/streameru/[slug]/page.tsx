@@ -20,6 +20,7 @@ import { getCurriculumRelatedPosts, getPublishedPostBySlug } from "@/lib/resourc
 import { isStartHereArticleSlug } from "@/lib/resources/start-here";
 import { getMissionForLessonSlug } from "@/lib/resources/training-missions";
 import { getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
+import { JsonLd, articleSchema, breadcrumbSchema } from "@/lib/seo/json-ld";
 import { site } from "@/lib/site";
 
 type Props = {
@@ -35,10 +36,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description: post.excerpt ?? title,
+    alternates: {
+      canonical: `/streameru/${post.slug}`,
+    },
     openGraph: {
+      type: "article",
       title: `${title} | ${site.name}`,
       description: post.excerpt ?? undefined,
       url: `${site.url}/streameru/${post.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | ${site.name}`,
+      description: post.excerpt ?? title,
     },
   };
 }
@@ -68,6 +78,23 @@ export default async function ResourcePostPage({ params }: Props) {
 
   return (
     <article className="relative pb-20 pt-4 sm:pb-28 sm:pt-2">
+      <JsonLd
+        id="lesson-article"
+        data={articleSchema({
+          title: displayTitle,
+          description: post.excerpt ?? displayTitle,
+          path: `/streameru/${post.slug}`,
+          datePublished: post.published_at ?? undefined,
+        })}
+      />
+      <JsonLd
+        id="lesson-breadcrumb"
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "StreamerU", path: "/streameru" },
+          { name: displayTitle, path: `/streameru/${post.slug}` },
+        ])}
+      />
       <RecordLessonVisit slug={slug} />
       <div className="max-w-3xl">
         <ResourceBreadcrumb
@@ -119,8 +146,12 @@ export default async function ResourcePostPage({ params }: Props) {
 
         {post.cover_image_url && (
           <div className="mt-10 overflow-hidden rounded-2xl border border-zinc-200/80 bg-zinc-100 ring-1 ring-black/[0.04] dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/[0.06]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={post.cover_image_url} alt="" className="h-auto w-full object-cover" />
+            {/* eslint-disable-next-line @next/next/no-img-element -- remote CMS covers; next/image host allowlist may not cover all sources */}
+            <img
+              src={post.cover_image_url}
+              alt={`Cover image for ${displayTitle}`}
+              className="h-auto w-full object-cover"
+            />
           </div>
         )}
 

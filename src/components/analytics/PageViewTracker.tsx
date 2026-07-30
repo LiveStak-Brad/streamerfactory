@@ -8,14 +8,20 @@ import { trackClientEvent } from "@/lib/analytics/client";
 
 const STORAGE_PREFIX = "sf_analytics_pv_";
 
-/** Normalize /resources (rewritten) and /streameru (direct) for analytics. */
 function streameruSlugFromPath(pathname: string): string | null {
-  const m = pathname.match(/^\/(?:resources|streameru)\/([^/]+)/);
+  const m = pathname.match(/^\/streameru\/([^/]+)/);
   if (!m || m[1] === "start-here") return null;
   return m[1];
 }
 
-function resolvePageView(pathname: string): { event: string; resourceSlug?: string } | null {
+function guideSlugFromPath(pathname: string): string | null {
+  const m = pathname.match(/^\/guides\/([^/]+)/);
+  return m?.[1] ?? null;
+}
+
+function resolvePageView(
+  pathname: string,
+): { event: string; resourceSlug?: string; metadata?: Record<string, unknown> } | null {
   if (pathname.startsWith("/admin")) return null;
 
   if (pathname.startsWith("/battle-hub/finder")) {
@@ -27,17 +33,30 @@ function resolvePageView(pathname: string): { event: string; resourceSlug?: stri
     "/apply": AnalyticsEvents.APPLY_PAGE_VIEWED,
     "/application-status": AnalyticsEvents.APPLICATION_STATUS_VIEWED,
     "/streameru": AnalyticsEvents.RESOURCES_PAGE_VIEWED,
-    "/resources": AnalyticsEvents.RESOURCES_PAGE_VIEWED,
     "/streameru/start-here": AnalyticsEvents.START_HERE_VIEWED,
-    "/resources/start-here": AnalyticsEvents.START_HERE_VIEWED,
+    "/guides": AnalyticsEvents.GUIDES_HUB_VIEWED,
+    "/about": AnalyticsEvents.ABOUT_VIEWED,
+    "/contact": AnalyticsEvents.CONTACT_VIEWED,
+    "/rankings": AnalyticsEvents.RANKINGS_VIEWED,
+    "/members": AnalyticsEvents.MEMBERS_VIEWED,
     "/battle-hub": AnalyticsEvents.BATTLE_HUB_VIEWED,
     "/battle-hub/calendar": AnalyticsEvents.BATTLE_CALENDAR_VIEWED,
     "/battle-hub/scheduler": AnalyticsEvents.BATTLE_SCHEDULER_OPENED,
     "/battle-hub/scheduler/new": AnalyticsEvents.BATTLE_SCHEDULER_OPENED,
+    "/member/dashboard": AnalyticsEvents.DASHBOARD_VIEWED,
+    "/login": AnalyticsEvents.SIGNUP_STARTED,
   };
 
   if (exact[pathname]) {
     return { event: exact[pathname] };
+  }
+
+  const guideSlug = guideSlugFromPath(pathname);
+  if (guideSlug) {
+    return {
+      event: AnalyticsEvents.GUIDE_VIEWED,
+      metadata: { guide_slug: guideSlug },
+    };
   }
 
   const slug = streameruSlugFromPath(pathname);
@@ -75,6 +94,7 @@ export function PageViewTracker() {
       event: resolved.event as AnalyticsEventName,
       route: pathname,
       resourceSlug: resolved.resourceSlug,
+      metadata: resolved.metadata,
     });
   }, [pathname]);
 

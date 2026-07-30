@@ -1,3 +1,6 @@
+"use client";
+
+import { TrackedCta } from "@/components/analytics/TrackedCta";
 import Link from "next/link";
 
 /**
@@ -13,7 +16,10 @@ export function ResourceArticleCta() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_80%_0%,rgba(99,102,241,0.35),transparent_55%)]"
         aria-hidden
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent dark:from-black/40" aria-hidden />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent dark:from-black/40"
+        aria-hidden
+      />
       <div className="relative mx-auto max-w-2xl text-center">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent-muted">
           Ready for real support?
@@ -25,21 +31,23 @@ export function ResourceArticleCta() {
           Take the next step with Streamer Factory
         </h2>
         <p className="mt-4 text-base leading-relaxed text-zinc-400">
-          If you want structure, coaching, and a team behind your TikTok LIVE growth, apply and
-          tell us where you are today—we will take it from there.
+          If you want structure, coaching, and a team behind your TikTok LIVE growth, join the Creator
+          Network and request website access — we will take it from there.
         </p>
         <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <Link
+          <TrackedCta
             href="/apply"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-zinc-950 shadow-lg transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-xl"
+            variant="inverse"
+            className="min-h-[48px] px-6"
+            eventMetadata={{ location: "resource_article_cta", cta: "apply" }}
           >
             Apply now
-          </Link>
+          </TrackedCta>
           <Link
-            href="/about"
+            href="/guides/tiktok-live-agency"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/10"
           >
-            About Streamer Factory
+            TikTok LIVE Agency guide
           </Link>
           <Link
             href="/streameru/start-here"
@@ -48,16 +56,10 @@ export function ResourceArticleCta() {
             Start your training
           </Link>
           <Link
-            href="/battle-hub"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/35 hover:bg-white/10"
-          >
-            Battle Hub
-          </Link>
-          <Link
-            href="/streameru"
+            href="/guides"
             className="inline-flex min-h-[48px] items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold text-zinc-400 transition-colors hover:text-white"
           >
-            StreamerU home
+            All guides
           </Link>
         </div>
       </div>

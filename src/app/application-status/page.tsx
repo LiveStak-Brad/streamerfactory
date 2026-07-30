@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: "Application status",
   description:
     "Track your Streamer Factory website access request after joining the TikTok Creator Network — from submission to member tools.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/application-status" },
 };
 
 export const dynamic = "force-dynamic";

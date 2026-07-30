@@ -26,7 +26,7 @@ type ButtonProps = {
   external?: boolean;
   type?: "button" | "submit";
   disabled?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
   title?: string;
 };
 
@@ -46,20 +46,32 @@ export function Button({
   if (href) {
     if (external) {
       return (
-        <a href={href} className={classes} target="_blank" rel="noopener noreferrer">
+        <a
+          href={href}
+          className={classes}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClick as MouseEventHandler<HTMLAnchorElement> | undefined}
+        >
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} className={classes} onClick={onClick as MouseEventHandler<HTMLAnchorElement> | undefined}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={classes} disabled={disabled} onClick={onClick} title={title}>
+    <button
+      type={type}
+      className={classes}
+      disabled={disabled}
+      onClick={onClick as MouseEventHandler<HTMLButtonElement> | undefined}
+      title={title}
+    >
       {children}
     </button>
   );

@@ -12,22 +12,43 @@ export const site = {
   url: "https://thestreamerfactory.com",
 } as const;
 
+/** Top-level public links shown in the header (compact). */
 export const mainNav = [
-  { label: "About", href: "/about" },
-  { label: "Members", href: "/members" },
+  { label: "Creators", href: "/members" },
   { label: "Rankings", href: "/rankings" },
   { label: "StreamerU", href: "/streameru" },
-  { label: "Battle Hub", href: "/battle-hub" },
+  { label: "About", href: "/about" },
   { label: "Join", href: "/apply" },
-  { label: "Contact", href: "/contact" },
+] as const;
+
+/** Platform tools grouped under a header dropdown. */
+export const platformNav = [
+  {
+    label: "Battle Hub",
+    href: "/battle-hub",
+    description: "Schedule battles, flyers, and network calendar",
+  },
+  {
+    label: "Guides",
+    href: "/guides",
+    description: "How to join and grow with the agency",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+    description: "Talk with the Streamer Factory team",
+  },
 ] as const;
 
 export const footerNav = [
   { label: "About", href: "/about" },
-  { label: "Members", href: "/members" },
+  { label: "Creators", href: "/members" },
   { label: "Rankings", href: "/rankings" },
   { label: "StreamerU", href: "/streameru" },
   { label: "Battle Hub", href: "/battle-hub" },
+  { label: "Guides", href: "/guides" },
+  { label: "TikTok LIVE Agency", href: "/guides/tiktok-live-agency" },
+  { label: "Creator Network", href: "/guides/tiktok-creator-network" },
   { label: "Join", href: "/apply" },
   { label: "Contact", href: "/contact" },
   { label: "Sign in", href: "/login" },
