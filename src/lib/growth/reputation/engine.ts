@@ -10,9 +10,12 @@ import {
 import { buildProgressSnapshot } from "@/lib/growth/progress/snapshot-build";
 import { evaluateRequirement } from "@/lib/growth/requirements/evaluate";
 import { getActiveSeason } from "@/lib/growth/seasons/service";
+import { STAFF_APPOINTMENT_TITLE_KEYS } from "@/lib/growth/career/path";
 import { parseRequirement, type ProgressEventRow } from "@/lib/growth/types";
 
 export type ProjectOpts = { depth?: number };
+
+const STAFF_ONLY_TITLES = new Set<string>(STAFF_APPOINTMENT_TITLE_KEYS);
 
 async function lifetimeReputation(memberId: string): Promise<number> {
   const supabase = await createClient();
@@ -153,6 +156,8 @@ export async function projectReputationFromEvent(
   const ownedKeys = new Set((owned ?? []).map((r) => r.title_key));
 
   for (const title of titles) {
+    // Mentor / Manager are appointments — eligibility is tracked separately.
+    if (STAFF_ONLY_TITLES.has(title.key)) continue;
     if (ownedKeys.has(title.key)) continue;
     if (total < (title.min_reputation ?? 0)) continue;
 

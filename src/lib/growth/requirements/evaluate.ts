@@ -3,12 +3,24 @@
  * No database access — fully unit-testable.
  */
 
+import {
+  periodKeyForDate,
+  weekPeriodKey,
+} from "@/lib/growth/progress/period";
 import type {
   GrowthRequirement,
   ProgressEventRow,
   ProgressSnapshot,
   RequirementResult,
 } from "@/lib/growth/types";
+
+export type EvaluateContext = {
+  /** Mission period key (YYYY-MM-DD or YYYY-Www) — scopes countable events. */
+  periodKey?: string;
+  periodKind?: "day" | "week";
+  /** Member timezone — must match mission assignment for weekly boundaries. */
+  timezone?: string | null;
+};
 
 function ok(progress = 1, target = 1, detail?: string): RequirementResult {
   return { satisfied: progress >= target, progress, target, detail };
@@ -25,6 +37,34 @@ function filterSeason(
 ): ProgressEventRow[] {
   if (!seasonScoped || !seasonId) return events;
   return events.filter((e) => e.season_id === seasonId);
+}
+
+function eventInPeriod(
+  event: ProgressEventRow,
+  ctx?: EvaluateContext,
+): boolean {
+  if (!ctx?.periodKey || !ctx.periodKind) return true;
+  const metaPeriod =
+    typeof event.metadata?.period_key === "string"
+      ? event.metadata.period_key
+      : null;
+  if (metaPeriod && metaPeriod === ctx.periodKey) return true;
+  const at = new Date(event.created_at);
+  if (ctx.periodKind === "day") {
+    if (event.subject_key === ctx.periodKey) return true;
+    return periodKeyForDate(at, ctx.timezone) === ctx.periodKey;
+  }
+  // week — same helper + timezone used by ensureWeeklyMissions
+  if (event.subject_key === ctx.periodKey) return true;
+  return weekPeriodKey(at, ctx.timezone) === ctx.periodKey;
+}
+
+function filterPeriod(
+  events: ProgressEventRow[],
+  ctx?: EvaluateContext,
+): ProgressEventRow[] {
+  if (!ctx?.periodKey || !ctx.periodKind) return events;
+  return events.filter((e) => eventInPeriod(e, ctx));
 }
 
 function countType(
@@ -50,24 +90,28 @@ function hasType(
 export function evaluateRequirement(
   requirement: GrowthRequirement,
   snapshot: ProgressSnapshot,
+  ctx?: EvaluateContext,
 ): RequirementResult {
   if (requirement.all?.length) {
-    const results = requirement.all.map((r) => evaluateRequirement(r, snapshot));
+    const results = requirement.all.map((r) =>
+      evaluateRequirement(r, snapshot, ctx),
+    );
     const satisfied = results.every((r) => r.satisfied);
     const progress = results.filter((r) => r.satisfied).length;
     return { satisfied, progress, target: results.length };
   }
 
   if (requirement.anyOf?.length) {
-    const results = requirement.anyOf.map((r) => evaluateRequirement(r, snapshot));
+    const results = requirement.anyOf.map((r) =>
+      evaluateRequirement(r, snapshot, ctx),
+    );
     const hit = results.find((r) => r.satisfied);
     return hit ?? fail(0, 1, "none matched");
   }
 
-  const events = filterSeason(
-    snapshot.events,
-    snapshot.seasonId,
-    requirement.seasonScoped,
+  const events = filterPeriod(
+    filterSeason(snapshot.events, snapshot.seasonId, requirement.seasonScoped),
+    ctx,
   );
   const params = requirement.params ?? {};
 
@@ -85,6 +129,11 @@ export function evaluateRequirement(
       return ok(Math.min(n, target), target);
     }
     case "complete_module": {
+      if (params.any) {
+        return countType(events, "module_completed") > 0
+          ? ok()
+          : fail(0, 1, "any module");
+      }
       const key = String(params.module ?? params.slug ?? "");
       return hasType(events, "module_completed", key || null)
         ? ok()
@@ -102,9 +151,11 @@ export function evaluateRequirement(
       return hit || eventHit ? ok() : fail();
     }
     case "complete_any_streameru_live_mission": {
+      const fromEvents = countType(events, "streameru_live_mission_completed");
       const n =
-        snapshot.streameruMissionCompletions.length ||
-        countType(events, "streameru_live_mission_completed");
+        ctx?.periodKey != null
+          ? fromEvents
+          : Math.max(snapshot.streameruMissionCompletions.length, fromEvents);
       const target = Number(params.count ?? 1);
       return ok(Math.min(n, target), target);
     }
@@ -159,14 +210,16 @@ export function evaluateRequirement(
     }
     case "read_guide": {
       const slug = String(params.slug ?? "");
+      const target = Number(params.count ?? 1);
       if (params.any || !slug) {
-        return countType(events, "guide_read") + countType(events, "guide_completed") > 0
-          ? ok()
-          : fail();
+        const n =
+          countType(events, "guide_read") + countType(events, "guide_completed");
+        return ok(Math.min(n, target), target);
       }
-      return hasType(events, "guide_read", slug) || hasType(events, "guide_completed", slug)
-        ? ok()
-        : fail();
+      const n =
+        countType(events, "guide_read", slug) +
+        countType(events, "guide_completed", slug);
+      return ok(Math.min(n, Math.max(1, target)), Math.max(1, target));
     }
     case "view_announcement": {
       return hasType(events, "guide_read", String(params.slug ?? "") || null)
@@ -174,7 +227,9 @@ export function evaluateRequirement(
         : fail();
     }
     case "daily_login": {
-      return hasType(events, "daily_login") ? ok() : fail();
+      const target = Number(params.count ?? 1);
+      const n = countType(events, "daily_login");
+      return ok(Math.min(n, target), target);
     }
     case "complete_mission": {
       if (params.any) {
@@ -213,6 +268,64 @@ export function evaluateRequirement(
       const n =
         snapshot.referralsAccepted || countType(events, "referral_accepted");
       return ok(Math.min(n, target), target);
+    }
+    case "pass_lesson_quiz": {
+      const passed = events.filter((e) => e.event_type === "quiz_passed");
+      if (params.perfect) {
+        const hit = passed.some((e) => e.metadata?.perfect === true);
+        return hit ? ok() : fail(0, 1, "perfect quiz");
+      }
+      if (params.any) {
+        return passed.length > 0 ? ok() : fail(0, 1, "any quiz");
+      }
+      const slug = String(params.lesson_slug ?? params.slug ?? "");
+      if (slug) {
+        const hit = passed.some(
+          (e) =>
+            e.metadata?.lesson_slug === slug ||
+            e.subject_key === `quiz:${slug}`,
+        );
+        return hit ? ok() : fail(0, 1, slug);
+      }
+      const target = Number(params.count ?? 1);
+      return ok(Math.min(passed.length, target), target);
+    }
+    case "pass_program_final": {
+      const passed = events.filter(
+        (e) => e.event_type === "program_final_passed",
+      );
+      if (params.any) {
+        return passed.length > 0 ? ok() : fail(0, 1, "any final");
+      }
+      const program = String(params.program ?? params.program_key ?? "");
+      if (program) {
+        const hit = passed.some(
+          (e) =>
+            e.metadata?.program_key === program ||
+            e.subject_key === `final:${program}`,
+        );
+        return hit ? ok() : fail(0, 1, program);
+      }
+      const target = Number(params.count ?? 1);
+      const unique = new Set(
+        passed.map(
+          (e) =>
+            (e.metadata?.program_key as string | undefined) ??
+            e.subject_key ??
+            e.id,
+        ),
+      );
+      return ok(Math.min(unique.size, target), target);
+    }
+    case "pass_graduation_exam": {
+      return hasType(events, "graduation_exam_passed") ? ok() : fail();
+    }
+    case "reach_streameru_xp": {
+      const target = Number(params.amount ?? params.xp ?? 0);
+      const n = events
+        .filter((e) => e.event_type === "streameru_xp_earned")
+        .reduce((sum, e) => sum + Number(e.metadata?.amount ?? 0), 0);
+      return ok(Math.min(n, target || 1), target || 1);
     }
     default:
       return fail(0, 1, "unknown requirement");

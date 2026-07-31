@@ -16,9 +16,10 @@ import {
   completeOnboardingTask,
   syncOnboardingChecklist,
 } from "@/lib/growth/onboarding/checklist";
-import { ensureDailyMissions } from "@/lib/growth/missions/engine";
+import { ensureEngagementMissions } from "@/lib/growth/missions/engine";
 import { markNotificationRead } from "@/lib/growth/notifications/service";
 import { claimReferralCode } from "@/lib/growth/referrals/service";
+import { celebrateGraduation } from "@/lib/growth/certificates/engine";
 
 export type GrowthActionResult = { ok: true } | { error: string };
 
@@ -32,6 +33,7 @@ async function requireNetworkMemberSession() {
 
 function revalidateMemberGrowthPaths() {
   revalidatePath("/member/dashboard");
+  revalidatePath("/member/progress");
   revalidatePath("/member/onboarding");
   revalidatePath("/member/notifications");
 }
@@ -212,7 +214,7 @@ export async function ensureGrowthStateAction(): Promise<GrowthActionResult> {
   }
 
   try {
-    await ensureDailyMissions(memberId, timezone ?? undefined);
+    await ensureEngagementMissions(memberId, timezone ?? undefined);
   } catch {
     // Engine may still be wiring up
   }
@@ -225,6 +227,23 @@ export async function ensureGrowthStateAction(): Promise<GrowthActionResult> {
 
   trackGrowth(GrowthAnalyticsEvents.DAILY_LOGIN, "/member/dashboard");
   revalidateMemberGrowthPaths();
+  return { ok: true };
+}
+
+export async function celebrateGraduationAction(): Promise<GrowthActionResult> {
+  const session = await requireNetworkMemberSession();
+  if (!session) return { error: "Unauthorized" };
+
+  try {
+    const result = await celebrateGraduation(session.user.id);
+    if ("error" in result) return result;
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Failed to celebrate" };
+  }
+
+  trackGrowth(GrowthAnalyticsEvents.GRADUATION_CELEBRATED, "/member/progress");
+  revalidateMemberGrowthPaths();
+  revalidatePath("/hall-of-fame");
   return { ok: true };
 }
 

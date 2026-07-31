@@ -23,6 +23,11 @@ const NOTIFY_TYPES = new Set([
   "achievement_unlocked",
   "onboarding_completed",
   "title_unlocked",
+  "certificate_issued",
+  "graduated",
+  "creator_rank_up",
+  "mentor_eligible",
+  "manager_eligible",
 ]);
 
 function notificationContent(event: ProgressEventRow): {
@@ -37,10 +42,11 @@ function notificationContent(event: ProgressEventRow): {
         (typeof meta.title === "string" && meta.title) ||
         event.subject_key ||
         "Daily mission";
+      const xp = typeof meta.xp === "number" && meta.xp > 0 ? ` (+${meta.xp} XP)` : "";
       return {
         title: "Mission complete",
-        body: `You completed: ${name}`,
-        href: "/member/dashboard",
+        body: `You completed: ${name}${xp}`,
+        href: "/member/progress",
       };
     }
     case "achievement_unlocked": {
@@ -51,7 +57,7 @@ function notificationContent(event: ProgressEventRow): {
       return {
         title: "Achievement unlocked",
         body: name,
-        href: "/member/dashboard",
+        href: "/member/progress",
       };
     }
     case "onboarding_completed":
@@ -68,9 +74,49 @@ function notificationContent(event: ProgressEventRow): {
       return {
         title: "Title unlocked",
         body: `You earned: ${name}`,
-        href: "/member/dashboard",
+        href: "/member/progress",
       };
     }
+    case "certificate_issued": {
+      const name =
+        (typeof meta.name === "string" && meta.name) ||
+        event.subject_key ||
+        "Certificate";
+      return {
+        title: "Certificate earned",
+        body: name,
+        href: "/member/progress#certificates",
+      };
+    }
+    case "graduated":
+      return {
+        title: "Graduation unlocked",
+        body: "You finished StreamerU — your ceremony is ready.",
+        href: "/member/progress#graduation",
+      };
+    case "creator_rank_up": {
+      const name =
+        (typeof meta.tier_name === "string" && meta.tier_name) ||
+        event.subject_key ||
+        "new rank";
+      return {
+        title: "Creator Rank up",
+        body: `You reached ${name}`,
+        href: "/member/progress",
+      };
+    }
+    case "mentor_eligible":
+      return {
+        title: "Mentor eligibility unlocked",
+        body: "You meet the bar — staff approval is still required before you mentor.",
+        href: "/member/progress#career",
+      };
+    case "manager_eligible":
+      return {
+        title: "Manager eligibility unlocked",
+        body: "You meet the bar for consideration — manager is a staff appointment.",
+        href: "/member/progress#career",
+      };
     default:
       return null;
   }

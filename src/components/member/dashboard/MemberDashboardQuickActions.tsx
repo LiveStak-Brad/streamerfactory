@@ -28,10 +28,15 @@ export function MemberDashboardQuickActions({
           description: "Finish your Factory checklist",
         }
       : {
-          label: "Continue training",
-          href: "/streameru",
-          description: "StreamerU lessons & missions",
+          label: "Your progress",
+          href: "/member/progress",
+          description: "XP, streaks, certificates, career",
         },
+    {
+      label: "Continue training",
+      href: "/streameru",
+      description: "StreamerU lessons & missions",
+    },
     {
       label: "Find a battle",
       href: "/battle-hub",
@@ -41,11 +46,6 @@ export function MemberDashboardQuickActions({
       label: unreadNotifications > 0 ? `Inbox (${unreadNotifications})` : "Inbox",
       href: "/member/notifications",
       description: "Missions, unlocks, reminders",
-    },
-    {
-      label: "Hall of Fame",
-      href: "/hall-of-fame",
-      description: "Champions & monthly history",
     },
     tiktokConnected && handle
       ? {

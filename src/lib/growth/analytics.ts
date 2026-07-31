@@ -22,6 +22,12 @@ export const GrowthAnalyticsEvents = {
   REPUTATION_EARNED: "reputation_earned",
   TITLE_UNLOCKED: "title_unlocked",
   NOTIFICATION_READ: "notification_read",
+  CERTIFICATE_ISSUED: "certificate_issued",
+  GRADUATED: "graduated",
+  GRADUATION_CELEBRATED: "graduation_celebrated",
+  CREATOR_RANK_UP: "creator_rank_up",
+  MENTOR_ELIGIBLE: "mentor_eligible",
+  MANAGER_ELIGIBLE: "manager_eligible",
 } as const;
 
 export type GrowthAnalyticsEventName =

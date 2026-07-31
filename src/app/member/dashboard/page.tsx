@@ -7,6 +7,8 @@ import { MemberDashboardProgress } from "@/components/member/dashboard/MemberDas
 import { MemberDashboardQuickActions } from "@/components/member/dashboard/MemberDashboardQuickActions";
 import { MemberDashboardStreakReputationWidget } from "@/components/member/dashboard/MemberDashboardStreakReputationWidget";
 import { MemberDashboardStreamerUWidget } from "@/components/member/dashboard/MemberDashboardStreamerUWidget";
+import { MemberDashboardWeeklyWidget } from "@/components/member/dashboard/MemberDashboardWeeklyWidget";
+import { MemberDashboardXpRankWidget } from "@/components/member/dashboard/MemberDashboardXpRankWidget";
 import { MemberDashboardWelcome } from "@/components/member/dashboard/MemberDashboardWelcome";
 import { MemberGrowthBootstrap } from "@/components/member/dashboard/MemberGrowthBootstrap";
 import { DashboardWidget } from "@/components/ui/DashboardWidget";
@@ -168,18 +170,28 @@ export default async function MemberDashboardPage({ searchParams }: PageProps) {
           badge={badge}
           nextAction={nextAction}
           email={email}
+          creatorRankLabel={
+            growth ? `Lv ${growth.xp.level} ${growth.xp.tierName}` : null
+          }
+          xpTotal={growth?.xp.total ?? null}
         />
 
         {growth ? (
           <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
+            <MemberDashboardXpRankWidget
+              xp={growth.xp}
+              seasonName={growth.season?.name ?? null}
+            />
             <MemberDashboardMissionsWidget
               missions={growth.todayMissions}
               seasonName={growth.season?.name ?? null}
             />
+            <MemberDashboardWeeklyWidget challenges={growth.weeklyChallenges} />
             <MemberDashboardStreakReputationWidget
               streaks={growth.snapshot.streaks}
               reputation={growth.snapshot.reputation}
               seasonName={growth.season?.name ?? null}
+              creatorRank={growth.xp}
             />
           </div>
         ) : null}

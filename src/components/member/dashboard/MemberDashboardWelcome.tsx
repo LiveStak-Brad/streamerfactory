@@ -15,6 +15,8 @@ type MemberDashboardWelcomeProps = {
   badge: RankingBadge;
   nextAction: DashboardNextAction;
   email: string | null;
+  creatorRankLabel?: string | null;
+  xpTotal?: number | null;
 };
 
 export function MemberDashboardWelcome({
@@ -26,11 +28,13 @@ export function MemberDashboardWelcome({
   badge,
   nextAction,
   email,
+  creatorRankLabel = null,
+  xpTotal = null,
 }: MemberDashboardWelcomeProps) {
   const initial = (displayName.replace(/[^\p{L}\p{N}]/gu, "")[0] || "?").toUpperCase();
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B0F1A] px-5 py-6 text-zinc-50 shadow-[0_24px_60px_-36px_rgba(91, 59, 255,0.55)] sm:px-8 sm:py-8">
+    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B0F1A] px-5 py-6 text-zinc-50 shadow-[0_24px_60px_-36px_rgba(232,168,74,0.35)] sm:px-8 sm:py-8">
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(91, 59, 255,0.35),transparent_55%),radial-gradient(ellipse_50%_60%_at_100%_20%,rgba(160, 32, 240,0.22),transparent_50%)]"
         aria-hidden
@@ -70,13 +74,19 @@ export function MemberDashboardWelcome({
                 <span className="truncate text-sm text-zinc-400">{email}</span>
               ) : null}
               <AchievementBadge badge={badge} size="sm" />
+              {creatorRankLabel ? (
+                <span className="rounded-lg border border-amber-300/30 bg-amber-400/15 px-2 py-0.5 text-xs font-bold text-amber-100">
+                  {creatorRankLabel}
+                  {xpTotal != null ? ` · ${xpTotal} Factory XP` : ""}
+                </span>
+              ) : null}
               {rankPosition != null ? (
                 <span className="rounded-lg border border-white/10 bg-white/[0.06] px-2 py-0.5 text-xs font-bold text-zinc-200">
-                  Rank #{rankPosition}
+                  Board #{rankPosition}
                 </span>
               ) : (
                 <span className="rounded-lg border border-white/10 bg-white/[0.06] px-2 py-0.5 text-xs font-bold text-zinc-400">
-                  Rank pending
+                  Board pending
                 </span>
               )}
             </div>

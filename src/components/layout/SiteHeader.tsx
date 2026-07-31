@@ -308,6 +308,13 @@ export function SiteHeader({ ownerNetworkViewMode = null }: HeaderProps) {
                           Dashboard
                         </Link>
                         <Link
+                          href="/member/progress"
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          Progress
+                        </Link>
+                        <Link
                           href="/member/onboarding"
                           className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted-bg sm:py-2"
                           onClick={() => setOpen(false)}

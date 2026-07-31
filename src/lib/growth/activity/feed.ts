@@ -16,6 +16,11 @@ const ACTIVITY_ALLOWLIST = new Set([
   "title_unlocked",
   "referral_accepted",
   "streameru_live_mission_completed",
+  "certificate_issued",
+  "graduated",
+  "creator_rank_up",
+  "mentor_eligible",
+  "manager_eligible",
 ]);
 
 function summaryForEvent(event: ProgressEventRow): string | null {
@@ -64,6 +69,26 @@ function summaryForEvent(event: ProgressEventRow): string | null {
       return subject
         ? `Completed StreamerU LIVE mission (${subject})`
         : "Completed a StreamerU LIVE mission";
+    case "certificate_issued": {
+      const name =
+        typeof meta.name === "string" && meta.name.trim()
+          ? meta.name.trim()
+          : subject;
+      return name ? `Earned certificate: ${name}` : "Earned a certificate";
+    }
+    case "graduated":
+      return "Became StreamerU graduation eligible";
+    case "creator_rank_up": {
+      const name =
+        typeof meta.tier_name === "string" && meta.tier_name.trim()
+          ? meta.tier_name.trim()
+          : subject;
+      return name ? `Ranked up to ${name}` : "Creator Rank up";
+    }
+    case "mentor_eligible":
+      return "Unlocked mentor eligibility";
+    case "manager_eligible":
+      return "Unlocked manager eligibility";
     default:
       return null;
   }

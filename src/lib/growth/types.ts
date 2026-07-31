@@ -29,6 +29,16 @@ export const PROGRESS_EVENT_TYPES = [
   "referral_accepted",
   "reputation_earned",
   "title_unlocked",
+  "certificate_issued",
+  "graduated",
+  "creator_rank_up",
+  "mentor_eligible",
+  "manager_eligible",
+  "quiz_passed",
+  "quiz_failed",
+  "program_final_passed",
+  "graduation_exam_passed",
+  "streameru_xp_earned",
 ] as const;
 
 export type ProgressEventType = (typeof PROGRESS_EVENT_TYPES)[number];
@@ -54,6 +64,10 @@ export const REQUIREMENT_TYPES = [
   "maintain_streak",
   "reach_rank",
   "referral_accepted",
+  "pass_lesson_quiz",
+  "pass_program_final",
+  "pass_graduation_exam",
+  "reach_streameru_xp",
 ] as const;
 
 export type RequirementType = (typeof REQUIREMENT_TYPES)[number];
@@ -165,19 +179,23 @@ export type CreatorSnapshot = {
   recent_events: Array<{ type: string; subject_key: string | null; at: string }>;
 };
 
+export type EngagementMissionSummary = {
+  id: string;
+  key: string;
+  title: string;
+  description: string | null;
+  category: MissionCategory;
+  status: MissionStatus;
+  href: string | null;
+  xpReward?: number;
+};
+
 export type CreatorProgressSummary = {
   greetingName: string;
   season: SeasonRow | null;
   snapshot: CreatorSnapshot;
-  todayMissions: Array<{
-    id: string;
-    key: string;
-    title: string;
-    description: string | null;
-    category: MissionCategory;
-    status: MissionStatus;
-    href: string | null;
-  }>;
+  todayMissions: EngagementMissionSummary[];
+  weeklyChallenges: EngagementMissionSummary[];
   newestAchievement: {
     key: string;
     name: string;
@@ -194,6 +212,50 @@ export type CreatorProgressSummary = {
     created_at: string;
   }>;
   referralCode: string | null;
+  /** Factory XP (= lifetime reputation) + Creator Rank */
+  xp: {
+    total: number;
+    season: number;
+    level: number;
+    tierKey: string;
+    tierName: string;
+    nextTierName: string | null;
+    xpForNext: number;
+    percentToNext: number;
+    blurb: string;
+  };
+  career: {
+    stageKey: string;
+    stageName: string;
+    nextStageName: string | null;
+    percent: number;
+    mentorEligible: boolean;
+    managerEligible: boolean;
+    mentorAppointed: boolean;
+    managerAppointed: boolean;
+    mentorMissing: string[];
+    managerMissing: string[];
+  };
+  semesters: Array<{
+    programKey: string;
+    programName: string;
+    completed: number;
+    total: number;
+    percent: number;
+    complete: boolean;
+  }>;
+  certificates: Array<{
+    key: string;
+    name: string;
+    programKey: string;
+    issuedAt: string;
+  }>;
+  graduation: {
+    status: "locked" | "eligible" | "celebrated" | "archived";
+    eligibleAt: string | null;
+    celebratedAt: string | null;
+  };
+  dailyLoginReasons: Array<{ label: string; detail: string; href: string }>;
 };
 
 export function isProgressEventType(value: string): value is ProgressEventType {

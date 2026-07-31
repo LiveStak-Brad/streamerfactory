@@ -1,5 +1,5 @@
 /**
- * Creator Home summary: snapshot + today missions + next action + feed signals.
+ * Creator Home summary: snapshot + missions + XP/career + next action + feed.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -7,11 +7,26 @@ import { getActiveSeason } from "@/lib/growth/seasons/service";
 import { getCreatorSnapshot } from "@/lib/growth/progress/snapshot";
 import { periodKeyForDate } from "@/lib/growth/progress/events";
 import { ensureReferralCode } from "@/lib/growth/referrals/service";
-import { listTodayMissions } from "@/lib/growth/missions/engine";
+import {
+  listTodayMissions,
+  listWeekChallenges,
+} from "@/lib/growth/missions/engine";
 import { getOnboardingChecklist } from "@/lib/growth/onboarding/checklist";
 import { unreadCount } from "@/lib/growth/notifications/service";
+import {
+  listMemberCertificates,
+  getGraduationState,
+} from "@/lib/growth/certificates/engine";
+import {
+  buildCareerSummary,
+  buildDailyLoginReasons,
+  buildSemesterSummary,
+  buildXpSummary,
+  mergeCompletedSlugs,
+} from "@/lib/growth/progress/engagement-summary";
 import type {
   CreatorProgressSummary,
+  EngagementMissionSummary,
   MissionCategory,
   MissionStatus,
   SeasonRow,
@@ -22,53 +37,30 @@ const CATEGORY_HREF: Record<string, string> = {
   community: "/guides",
   battles: "/battle-hub",
   profile: "/member/onboarding",
-  creator_growth: "/member/dashboard",
-  platform: "/member/dashboard",
+  creator_growth: "/member/progress",
+  platform: "/member/progress",
 };
 
-type TodayMissionRow = CreatorProgressSummary["todayMissions"][number];
-
-async function queryTodayMissions(
-  memberId: string,
-  timezone?: string | null,
-): Promise<TodayMissionRow[]> {
-  const supabase = await createClient();
-  const periodKey = periodKeyForDate(new Date(), timezone);
-  const { data } = await supabase
-    .from("member_missions")
-    .select(
-      "id, status, mission_templates!inner(key, title, description, category)",
-    )
-    .eq("member_id", memberId)
-    .eq("period_key", periodKey)
-    .order("created_at", { ascending: true });
-
-  return (data ?? []).map((row) => {
-    const t = row.mission_templates as unknown as
-      | {
-          key: string;
-          title: string;
-          description: string | null;
-          category: MissionCategory;
-        }
-      | Array<{
-          key: string;
-          title: string;
-          description: string | null;
-          category: MissionCategory;
-        }>;
-    const tpl = Array.isArray(t) ? t[0] : t;
-    const category = (tpl?.category ?? "platform") as MissionCategory;
-    return {
-      id: String(row.id),
-      key: tpl?.key ?? "",
-      title: tpl?.title ?? "Mission",
-      description: tpl?.description ?? null,
-      category,
-      status: row.status as MissionStatus,
-      href: CATEGORY_HREF[category] ?? "/member/dashboard",
-    };
-  });
+function mapMission(m: {
+  id: string;
+  key: string;
+  title: string;
+  description: string | null;
+  category: MissionCategory;
+  status: MissionStatus;
+  href: string | null;
+  xpReward?: number;
+}): EngagementMissionSummary {
+  return {
+    id: m.id,
+    key: m.key,
+    title: m.title,
+    description: m.description,
+    category: m.category,
+    status: m.status,
+    href: m.href ?? CATEGORY_HREF[m.category] ?? "/member/dashboard",
+    xpReward: m.xpReward,
+  };
 }
 
 function greetingFromOpts(opts?: {
@@ -87,8 +79,19 @@ function greetingFromOpts(opts?: {
 
 function resolveNextAction(input: {
   incompleteOnboarding: Array<{ key: string; title: string; href: string | null }>;
-  todayMissions: TodayMissionRow[];
+  todayMissions: EngagementMissionSummary[];
+  weeklyChallenges: EngagementMissionSummary[];
+  loginReasons: CreatorProgressSummary["dailyLoginReasons"];
+  graduation: CreatorProgressSummary["graduation"];
 }): CreatorProgressSummary["nextAction"] {
+  if (input.graduation.status === "eligible") {
+    return {
+      label: "Celebrate graduation",
+      href: "/member/progress#graduation",
+      reason: "You finished StreamerU — your ceremony is waiting.",
+    };
+  }
+
   const task = input.incompleteOnboarding[0];
   if (task) {
     return {
@@ -98,14 +101,30 @@ function resolveNextAction(input: {
     };
   }
 
-  const mission = input.todayMissions.find(
-    (m) => m.status === "active" || m.status === "failed",
-  );
-  if (mission && mission.status === "active") {
+  const mission = input.todayMissions.find((m) => m.status === "active");
+  if (mission) {
     return {
-      label: "Today's mission",
+      label: "Claim today's Factory XP",
       href: mission.href || CATEGORY_HREF[mission.category] || "/member/dashboard",
       reason: mission.title,
+    };
+  }
+
+  const weekly = input.weeklyChallenges.find((m) => m.status === "active");
+  if (weekly) {
+    return {
+      label: "Weekly challenge",
+      href: "/member/progress",
+      reason: weekly.title,
+    };
+  }
+
+  const reason = input.loginReasons[0];
+  if (reason) {
+    return {
+      label: reason.label,
+      href: reason.href,
+      reason: reason.detail,
     };
   }
 
@@ -134,20 +153,63 @@ export async function getCreatorProgressSummary(
 
   const timezone = profile?.timezone ?? null;
 
-  let todayMissions: TodayMissionRow[] = [];
+  let todayMissions: EngagementMissionSummary[] = [];
+  let weeklyChallenges: EngagementMissionSummary[] = [];
   try {
-    const listed = await listTodayMissions(memberId, timezone ?? undefined);
-    todayMissions = listed.map((m) => ({
-      id: m.id,
-      key: m.key,
-      title: m.title,
-      description: m.description,
-      category: m.category,
-      status: m.status,
-      href: m.href ?? CATEGORY_HREF[m.category] ?? null,
-    }));
+    const [daily, weekly] = await Promise.all([
+      listTodayMissions(memberId, timezone ?? undefined),
+      listWeekChallenges(memberId, timezone ?? undefined),
+    ]);
+    todayMissions = daily.map((m) =>
+      mapMission({
+        ...m,
+        href: m.href ?? CATEGORY_HREF[m.category] ?? null,
+      }),
+    );
+    weeklyChallenges = weekly.map((m) =>
+      mapMission({
+        ...m,
+        href: m.href ?? CATEGORY_HREF[m.category] ?? null,
+      }),
+    );
   } catch {
-    todayMissions = await queryTodayMissions(memberId, timezone);
+    const periodKey = periodKeyForDate(new Date(), timezone);
+    const { data } = await supabase
+      .from("member_missions")
+      .select(
+        "id, status, mission_templates!inner(key, title, description, category, reputation_points)",
+      )
+      .eq("member_id", memberId)
+      .eq("period_key", periodKey);
+    todayMissions = (data ?? []).map((row) => {
+      const t = row.mission_templates as unknown as
+        | {
+            key: string;
+            title: string;
+            description: string | null;
+            category: MissionCategory;
+            reputation_points?: number;
+          }
+        | Array<{
+            key: string;
+            title: string;
+            description: string | null;
+            category: MissionCategory;
+            reputation_points?: number;
+          }>;
+      const tpl = Array.isArray(t) ? t[0] : t;
+      const category = (tpl?.category ?? "platform") as MissionCategory;
+      return {
+        id: String(row.id),
+        key: tpl?.key ?? "",
+        title: tpl?.title ?? "Mission",
+        description: tpl?.description ?? null,
+        category,
+        status: row.status as MissionStatus,
+        href: CATEGORY_HREF[category] ?? "/member/dashboard",
+        xpReward: tpl?.reputation_points ?? 0,
+      };
+    });
   }
 
   let incompleteOnboarding: Array<{
@@ -221,6 +283,93 @@ export async function getCreatorProgressSummary(
     snapshot.referrals.code ??
     (await ensureReferralCode(memberId).catch(() => null));
 
+  const completedLessonSlugs = mergeCompletedSlugs(
+    snapshot.lessons_completed,
+    // StreamerU dual-write may only land in completions table; snapshot lessons
+    // come from lesson_completed events. Prefer union via recent events in snapshot.
+    snapshot.recent_events
+      .filter((e) => e.type === "streameru_live_mission_completed" && e.subject_key)
+      .map((e) => e.subject_key as string),
+  );
+
+  // Prefer authoritative streameru completions when available
+  const { data: streameruRows } = await supabase
+    .from("streameru_mission_completions")
+    .select("lesson_slug")
+    .eq("member_id", memberId);
+  const slugs = mergeCompletedSlugs(
+    completedLessonSlugs,
+    (streameruRows ?? []).map((r) => r.lesson_slug as string),
+  );
+
+  // Certificate / graduation tables may be absent until engagement migration.
+  let certificates: CreatorProgressSummary["certificates"] = [];
+  let graduation: CreatorProgressSummary["graduation"] = {
+    status: "locked",
+    eligibleAt: null,
+    celebratedAt: null,
+  };
+  try {
+    const [certs, graduationState] = await Promise.all([
+      listMemberCertificates(memberId),
+      getGraduationState(memberId),
+    ]);
+    certificates = certs;
+    if (graduationState) {
+      graduation = {
+        status: graduationState.status,
+        eligibleAt: graduationState.eligibleAt,
+        celebratedAt: graduationState.celebratedAt,
+      };
+    }
+  } catch {
+    certificates = [];
+    graduation = { status: "locked", eligibleAt: null, celebratedAt: null };
+  }
+
+  const xp = buildXpSummary(snapshot);
+  let career: CreatorProgressSummary["career"];
+  let semesters: CreatorProgressSummary["semesters"];
+  let dailyLoginReasons: CreatorProgressSummary["dailyLoginReasons"];
+  try {
+    career = buildCareerSummary(
+      snapshot,
+      slugs,
+      graduation.status !== "locked",
+    );
+    semesters = buildSemesterSummary(slugs);
+    dailyLoginReasons = buildDailyLoginReasons({
+      xp,
+      streaks: snapshot.streaks,
+      todayMissions,
+      weeklyChallenges,
+      career,
+      semesters,
+      graduation,
+    });
+  } catch {
+    career = {
+      stageKey: "recruit",
+      stageName: "Recruit",
+      nextStageName: "Creator",
+      percent: 0,
+      mentorEligible: false,
+      managerEligible: false,
+      mentorAppointed: false,
+      managerAppointed: false,
+      mentorMissing: [],
+      managerMissing: [],
+    };
+    semesters = [];
+    dailyLoginReasons = [
+      {
+        label: "Check in for Factory XP",
+        detail: "Daily missions and streaks unlock as Growth finishes loading.",
+        href: "/member/dashboard",
+      },
+    ];
+  }
+
   const displayName =
     opts?.displayName?.trim() ||
     profile?.tiktok_username?.trim() ||
@@ -234,8 +383,15 @@ export async function getCreatorProgressSummary(
     season: season as SeasonRow | null,
     snapshot,
     todayMissions,
+    weeklyChallenges,
     newestAchievement,
-    nextAction: resolveNextAction({ incompleteOnboarding, todayMissions }),
+    nextAction: resolveNextAction({
+      incompleteOnboarding,
+      todayMissions,
+      weeklyChallenges,
+      loginReasons: dailyLoginReasons,
+      graduation,
+    }),
     unreadNotifications,
     recentActivity: (activityRows ?? []).map((r) => ({
       id: String(r.id),
@@ -244,5 +400,11 @@ export async function getCreatorProgressSummary(
       created_at: String(r.created_at),
     })),
     referralCode,
+    xp,
+    career,
+    semesters,
+    certificates,
+    graduation,
+    dailyLoginReasons,
   };
 }

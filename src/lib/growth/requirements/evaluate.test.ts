@@ -43,6 +43,35 @@ function evt(
   };
 }
 
+describe("evaluateRequirement period scope", () => {
+  it("counts only events in the mission week", () => {
+    const snap = emptySnapshot({
+      events: [
+        evt("streameru_live_mission_completed", {
+          subject_key: "a",
+          created_at: "2026-07-20T12:00:00.000Z",
+        }),
+        evt("streameru_live_mission_completed", {
+          subject_key: "b",
+          created_at: "2026-07-28T12:00:00.000Z",
+        }),
+        evt("streameru_live_mission_completed", {
+          subject_key: "c",
+          created_at: "2026-07-29T12:00:00.000Z",
+        }),
+      ],
+    });
+    const result = evaluateRequirement(
+      { type: "complete_any_streameru_live_mission", params: { count: 3 } },
+      snap,
+      { periodKey: "2026-W31", periodKind: "week", timezone: "UTC" },
+    );
+    // Jul 28–29 are week 31; Jul 20 is earlier — need 3, have 2
+    expect(result.satisfied).toBe(false);
+    expect(result.progress).toBe(2);
+  });
+});
+
 describe("evaluateRequirement", () => {
   it("satisfies complete_any_streameru_live_mission from completions", () => {
     const snap = emptySnapshot({
