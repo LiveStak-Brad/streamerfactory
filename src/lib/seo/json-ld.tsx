@@ -75,6 +75,52 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
   };
 }
 
+export function personSchema(input: {
+  name: string;
+  alternateName?: string;
+  jobTitle: string;
+  description: string;
+  image: string;
+  path: string;
+  sameAs?: string[];
+  knowsAbout?: string[];
+  founderOfName?: string;
+  founderOfUrl?: string;
+}) {
+  const imageUrl = input.image.startsWith("http")
+    ? input.image
+    : `${site.url}${input.image.startsWith("/") ? "" : "/"}${input.image}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: input.name,
+    ...(input.alternateName ? { alternateName: input.alternateName } : {}),
+    jobTitle: input.jobTitle,
+    description: input.description,
+    image: imageUrl,
+    url: `${site.url}${input.path}`,
+    ...(input.sameAs && input.sameAs.length > 0 ? { sameAs: input.sameAs } : {}),
+    ...(input.knowsAbout && input.knowsAbout.length > 0
+      ? { knowsAbout: input.knowsAbout }
+      : {}),
+    worksFor: {
+      "@type": "Organization",
+      name: input.founderOfName ?? site.name,
+      url: input.founderOfUrl ?? site.url,
+    },
+    ...(input.founderOfName
+      ? {
+          founderOf: {
+            "@type": "Organization",
+            name: input.founderOfName,
+            url: input.founderOfUrl ?? site.url,
+          },
+        }
+      : {}),
+  };
+}
+
 export function articleSchema(input: {
   title: string;
   description: string;

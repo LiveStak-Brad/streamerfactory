@@ -34,6 +34,7 @@ export const mainNav = [
   { label: "Rankings", href: "/rankings" },
   { label: "HOF", href: "/hall-of-fame" },
   { label: "StreamerU", href: "/streameru" },
+  { label: "Founder", href: "/founder" },
   { label: "About", href: "/about" },
   { label: "Join", href: "/apply" },
 ] as const;
@@ -59,6 +60,7 @@ export const platformNav = [
 
 export const footerNav = [
   { label: "About", href: "/about" },
+  { label: "Founder", href: "/founder" },
   { label: "Creators", href: "/members" },
   { label: "Rankings", href: "/rankings" },
   { label: "Hall of Fame", href: "/hall-of-fame" },

@@ -271,11 +271,64 @@
   animation: sf-ring-spin 8s linear infinite;
 }
 
+@keyframes founder-particle-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+    opacity: 0.95;
+  }
+}
+
+.founder-particle {
+  animation: founder-particle-drift 5.5s ease-in-out infinite;
+}
+
+.founder-glass {
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 45%,
+    rgba(0, 229, 255, 0.06) 100%
+  );
+  backdrop-filter: blur(18px);
+}
+
+.founder-mission-gradient {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(91, 59, 255, 0.35), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 20% 100%, rgba(0, 229, 255, 0.12), transparent 50%),
+    radial-gradient(ellipse 45% 35% at 85% 70%, rgba(255, 46, 209, 0.12), transparent 50%);
+}
+
+.founder-cta-gradient {
+  background:
+    linear-gradient(120deg, rgba(91, 59, 255, 0.35), rgba(160, 32, 240, 0.2), rgba(0, 229, 255, 0.18)),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255, 46, 209, 0.18), transparent 55%);
+  background-size: 200% 200%, auto;
+  animation: founder-gradient-shift 14s ease-in-out infinite;
+}
+
+@keyframes founder-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 40%, center;
+  }
+  50% {
+    background-position: 100% 60%, center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .live-dot::after,
   .animate-float-soft,
   .sf-loader-glow,
-  .sf-loader-ring {
+  .sf-loader-ring,
+  .founder-particle,
+  .founder-cta-gradient {
     animation: none;
   }
 }
