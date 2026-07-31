@@ -11,7 +11,8 @@ import {
   STREAMERU_QUIZ_PASSED_KEY_PREFIX,
 } from "@/lib/assessments/progress-local";
 import { buildMasterySnapshot } from "@/lib/assessments/mastery";
-import { CURRICULUM } from "@/lib/resources/curriculum";
+import { CORE_CURRICULUM_TOTAL_LESSONS } from "@/lib/growth/semester/programs";
+import { CURRICULUM_TOTAL_LESSONS } from "@/lib/resources/curriculum";
 import {
   countCompletedLessons,
   getCompletedLessonSlugsServerSnapshot,
@@ -143,8 +144,9 @@ export function AcademyAssessmentStrip() {
       </ol>
 
       <p className="mt-4 text-xs text-muted">
-        Quizzes passed {snap.quizzesPassed}/{CURRICULUM.length} · Program finals {snap.finalsPassed}/
-        {programs.length} · LIVE missions {snap.missionsDone}/{CURRICULUM.length}
+        Quizzes passed {snap.quizzesPassed}/{CURRICULUM_TOTAL_LESSONS} · Program finals{" "}
+        {snap.finalsPassed}/{programs.length} · LIVE missions {snap.missionsDone}/
+        {CURRICULUM_TOTAL_LESSONS}
         {snap.graduationPassed ? " · Graduation exam passed" : ""}
       </p>
 
@@ -156,7 +158,6 @@ export function AcademyAssessmentStrip() {
           const hasLessons = program.lessons.length > 0;
           const missionsDone = hasLessons && missions >= program.lessons.length;
           const recommendedReady = missionsDone;
-          const isAdvancedRoadmap = !hasLessons;
           return (
             <li
               key={program.programKey}
@@ -166,44 +167,29 @@ export function AcademyAssessmentStrip() {
                 <p className="text-sm font-semibold text-foreground">
                   Program {index + 1}: {program.programName}
                 </p>
-                {isAdvancedRoadmap ? (
-                  <p className="text-xs text-muted">
-                    Lessons in development — Program Final unlocks when Advanced Creator content
-                    ships.
+                <p className="text-xs text-muted">
+                  Quizzes {quizzes}/{program.lessons.length} · Missions {missions}/
+                  {program.lessons.length}
+                  {finalOk ? " · Final passed" : ""}
+                  {finalOk && missionsDone ? " · Program Certificate ready" : ""}
+                </p>
+                {!finalOk && !recommendedReady ? (
+                  <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">
+                    Recommended after all LIVE exams in this program. Finals stay open — no hard
+                    lock.
                   </p>
-                ) : (
-                  <>
-                    <p className="text-xs text-muted">
-                      Quizzes {quizzes}/{program.lessons.length} · Missions {missions}/
-                      {program.lessons.length}
-                      {finalOk ? " · Final passed" : ""}
-                      {finalOk && missionsDone ? " · Program Certificate ready" : ""}
-                    </p>
-                    {!finalOk && !recommendedReady ? (
-                      <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">
-                        Recommended after all LIVE exams in this program. Finals stay open — no hard
-                        lock.
-                      </p>
-                    ) : null}
-                  </>
-                )}
+                ) : null}
               </div>
-              {isAdvancedRoadmap ? (
-                <span className="inline-flex min-h-[40px] items-center justify-center rounded-xl border border-border/80 bg-muted-bg/60 px-4 text-sm font-semibold text-muted dark:border-zinc-800">
-                  Coming soon
-                </span>
-              ) : (
-                <Link
-                  href={`/streameru/programs/${program.programKey}/final`}
-                  className={`inline-flex min-h-[40px] items-center justify-center rounded-xl border px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                    finalOk || recommendedReady
-                      ? "border-accent/35 bg-accent/10 text-accent dark:text-accent-muted"
-                      : "border-border/80 bg-muted-bg/60 text-muted dark:border-zinc-800"
-                  }`}
-                >
-                  {finalOk ? "Review Program Final" : "Program Final Exam"}
-                </Link>
-              )}
+              <Link
+                href={`/streameru/programs/${program.programKey}/final`}
+                className={`inline-flex min-h-[40px] items-center justify-center rounded-xl border px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                  finalOk || recommendedReady
+                    ? "border-accent/35 bg-accent/10 text-accent dark:text-accent-muted"
+                    : "border-border/80 bg-muted-bg/60 text-muted dark:border-zinc-800"
+                }`}
+              >
+                {finalOk ? "Review Program Final" : "Program Final Exam"}
+              </Link>
             </li>
           );
         })}
@@ -213,7 +199,7 @@ export function AcademyAssessmentStrip() {
         <Link
           href="/streameru/graduation"
           className={`inline-flex min-h-[44px] items-center justify-center rounded-xl px-5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-            snap.missionsDone >= CURRICULUM.length
+            snap.missionsDone >= CORE_CURRICULUM_TOTAL_LESSONS
               ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950"
               : "border border-border/80 bg-muted-bg/60 text-muted dark:border-zinc-800"
           }`}
@@ -222,8 +208,8 @@ export function AcademyAssessmentStrip() {
         </Link>
         {!snap.graduationPassed ? (
           <p className="text-xs text-muted">
-            Best after all published LIVE exams and active Program Finals — earns the StreamerU
-            Diploma. Advanced Creator expands as new lessons ship.
+            Best after all {CORE_CURRICULUM_TOTAL_LESSONS} Core LIVE exams and Core Program Finals —
+            earns the StreamerU Diploma. Advanced Creator is a separate black-belt certificate.
           </p>
         ) : null}
       </div>

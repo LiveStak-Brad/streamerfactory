@@ -33,7 +33,6 @@ import {
 } from "@/lib/assessments/progress-local";
 import { STREAMERU_XP } from "@/lib/assessments/xp";
 import {
-  ADVANCED_CREATOR_ROADMAP_TOPICS,
   CURRICULUM,
   CURRICULUM_TOTAL_LESSONS,
   FIRST_PROGRAM_LESSON_SLUG,
@@ -148,7 +147,7 @@ const moduleDescriptions: Record<string, string> = {
   "Battles & Collaboration": "Battle prep, formats, and collaborating with the network.",
   "Growth & Monetization": "Audience growth and sustainable LIVE income habits.",
   "Advanced Creator":
-    "Long-term success — branding, analytics, creator business, and advanced growth strategy.",
+    "The black-belt bridge — how professionals operate: systems, brand, analytics, standards, and judgment.",
 };
 
 /**
@@ -476,8 +475,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
           <h2 className="mt-1 text-2xl font-bold tracking-tight text-foreground">Programs</h2>
           <p className="mt-1 text-sm text-muted">
             {PUBLISHED_LESSON_COUNT} lessons available now across {activeProgramCount} active
-            programs, plus Advanced Creator expanding. Follow the numbered path — we recommend order,
-            we don&apos;t hard-lock lessons.
+            programs. Follow the numbered path — we recommend order, we don&apos;t hard-lock
+            lessons.
           </p>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
@@ -489,47 +488,40 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               program.lessons.find((l) => published.has(l.slug))?.slug ??
               program.lessons[0]?.slug;
             const isAdvanced = program.programName === "Advanced Creator";
-            const status = isAdvanced
-              ? "unpublished"
-              : moduleStatus(
-                  program.lessons,
-                  snapshot.completedSlugs,
-                  published,
-                  recommendedSlug,
-                );
+            const status = moduleStatus(
+              program.lessons,
+              snapshot.completedSlugs,
+              published,
+              recommendedSlug,
+            );
             const trackId = program.lessons[0]?.trackId;
             const academyProgram = academyPrograms[index];
             const nextProgram = programs[index + 1];
             const isBeginner = program.programName === "Beginner Foundations";
-            const unlocks = isAdvanced
-              ? [
-                  { label: "Program Certificate", detail: "when Advanced Creator lessons ship" },
-                  {
-                    label: "Roadmap topics",
-                    detail: ADVANCED_CREATOR_ROADMAP_TOPICS.join(" · "),
-                  },
-                  {
-                    label: "Graduation progress",
-                    detail: "capstone path after Growth & Monetization",
-                  },
-                ]
-              : [
-                  { label: "Program Certificate", detail: "after LIVE exams + Program Final" },
-                  {
-                    label: `+${STREAMERU_XP.programFinalPass + STREAMERU_XP.programCertificate} StreamerU XP`,
-                    detail: "final pass + certificate awards",
-                  },
-                  nextProgram
-                    ? { label: "Next program", detail: nextProgram.programName }
-                    : {
-                        label: "Graduation progress",
-                        detail: "unlocks path to Graduation Exam & StreamerU Diploma",
-                      },
-                  {
-                    label: "Career-path progress",
-                    detail: "counts toward StreamerU Graduate recognition",
-                  },
-                ];
+            const unlocks = [
+              { label: "Program Certificate", detail: "after LIVE exams + Program Final" },
+              {
+                label: `+${STREAMERU_XP.programFinalPass + STREAMERU_XP.programCertificate} StreamerU XP`,
+                detail: "final pass + certificate awards",
+              },
+              nextProgram
+                ? { label: "Next program", detail: nextProgram.programName }
+                : isAdvanced
+                  ? {
+                      label: "Mastery Paths",
+                      detail: "unlocks Presence, Content Creation, Growth, and more",
+                    }
+                  : {
+                      label: "Graduation progress",
+                      detail: "unlocks path to Graduation Exam & StreamerU Diploma",
+                    },
+              {
+                label: isAdvanced ? "Black-belt bridge" : "Career-path progress",
+                detail: isAdvanced
+                  ? "how professionals think — required before Mastery Paths"
+                  : "counts toward StreamerU Graduate recognition",
+              },
+            ];
             return (
               <li key={program.programName}>
                 <CourseModuleCard
@@ -548,13 +540,11 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                         : lessonDifficulty(trackId, program.lessons[0]?.slug) ||
                           trackDefaultDifficulty(trackId)
                   }
-                  badgeLabel={isBeginner ? "Includes essential safety" : isAdvanced ? "Coming soon" : null}
+                  badgeLabel={isBeginner ? "Includes essential safety" : null}
                   guidanceNote={
                     isBeginner
                       ? `Lessons ${firstSafety.globalOrder}–6 cover platform rules, bans, violations, and account safety before regular LIVE.`
-                      : isAdvanced
-                        ? "Professional creator curriculum in development — branding, analytics, business, and advanced strategy."
-                        : null
+                      : null
                   }
                   estimatedStudyMinutes={
                     program.lessons.length > 0

@@ -10,77 +10,125 @@ export const exam = programFinal({
   programName: "Advanced Creator",
   title: "Program Final: Advanced Creator",
   questions: [
-    question("ac1", "Advanced Creator training focuses on…", [
-      ["Long-term brand, analytics, business, and growth strategy", true, "Correct — professional durability beyond first LIVE habits."],
-      ["Skipping platform rules forever", false, "Wrong — safety was covered in Beginner Foundations."],
-      ["Only buying followers", false, "Wrong — unhealthy and risky."],
-      ["Ending the academy early", false, "Wrong — this is the capstone program path."],
+    question("ac1", "Advanced Creator exists to mark the shift from…", [
+      [
+        "I can stream → I operate like a professional",
+        true,
+        "Correct — the black-belt bridge after Core.",
+      ],
+      ["Hobbyist → agency owner who recruits creators", false, "Wrong — StreamerU does not teach agency ownership."],
+      ["Core Graduate → finished learning forever", false, "Wrong — Mastery Paths continue after."],
+      ["Safe creator → rules no longer matter", false, "Wrong — safety stays."],
     ]),
-    question("ac2", "Brand systems help because…", [
-      ["Consistent identity compounds recognition across sessions", true, "Correct — branding is a retention asset."],
-      ["You never need a niche", false, "Wrong — clarity still matters."],
-      ["Rules no longer apply", false, "Wrong — compliance always applies."],
-      ["Analytics become optional", false, "Wrong — measurement still matters."],
+    question("ac2", "A Creator Operating System is best described as…", [
+      [
+        "A one-page weekly agreement: aim, calendar, one metric, capacity rules, review",
+        true,
+        "Correct — AC-01.",
+      ],
+      ["A binder of every dashboard metric available", false, "Wrong — one metric leads."],
+      ["A motivational quote board", false, "Wrong — not operational."],
+      ["An agency SOP for managing other creators", false, "Wrong — outside scope."],
     ]),
-    question("ac3", "LIVE analytics are most useful when…", [
-      ["They inform one clear change for the next session", true, "Correct — data should drive iteration."],
-      ["They replace talking to chat", false, "Wrong — craft still comes first."],
-      ["You ignore retention entirely", false, "Wrong — retention is core."],
-      ["You only check once a year", false, "Wrong — too slow to improve."],
+    question("ac3", "Brand that survives the feed is primarily…", [
+      [
+        "A three-second promise plus three proof behaviors",
+        true,
+        "Correct — AC-02.",
+      ],
+      ["A finished logo before any LIVE habits", false, "Wrong — promise first."],
+      ["A new persona every session", false, "Wrong — that creates confusion."],
+      ["Whatever is trending this hour", false, "Wrong — brand leaks."],
     ]),
-    question("ac4", "Creator business foundations include…", [
-      ["Treating income, expenses, and offers as a real operation", true, "Correct — professionalism protects longevity."],
-      ["Never tracking anything", false, "Wrong — blindness creates risk."],
-      ["Only chasing viral one-offs", false, "Wrong — systems beat spikes."],
-      ["Avoiding goals on stream", false, "Wrong — goals can still be healthy."],
+    question("ac4", "Weekly LIVE analytics literacy means…", [
+      [
+        "Three metrics (Integrity, Experience, Relationship) and one decision",
+        true,
+        "Correct — AC-03.",
+      ],
+      ["Screenshotting peaks and calling it a system", false, "Wrong — screenshots ≠ analysis."],
+      ["Making someone else's gift total your OS metric", false, "Wrong — vanity trap."],
+      ["Ignoring missed days if one peak felt good", false, "Wrong — Integrity vetoes that."],
     ]),
-    question("ac5", "Advanced growth strategy should…", [
-      ["Stack proven loops without abandoning safety or consistency", true, "Correct — scale on a stable base."],
-      ["Trade compliance for reach", false, "Wrong — short-term reach, long-term loss."],
-      ["Reset your schedule every day randomly", false, "Wrong — rhythm trains audiences."],
-      ["Ignore battles and collabs forever", false, "Wrong — they remain tools when used well."],
+    question("ac5", "Creative planning for real weeks requires…", [
+      [
+        "A two-week plan and a reusable segment bank (10+), not inventing the show at Go Live",
+        true,
+        "Correct — AC-04.",
+      ],
+      ["A year-long novel script before every session", false, "Wrong — overplanning trap."],
+      ["Zero prep to stay authentic", false, "Wrong — panic is not authenticity."],
+      ["Changing niche every LIVE for novelty", false, "Wrong — brand leak."],
     ]),
-    question("ac6", "Scaling works best when…", [
-      ["Volume increases only as quality and recovery stay sustainable", true, "Correct — burnout kills compounding."],
-      ["You double hours with no review", false, "Wrong — fatigue shows on stream."],
-      ["You skip debriefs", false, "Wrong — review fuels improvement."],
-      ["You abandon beginner structure", false, "Wrong — foundations still apply."],
+    question("ac6", "A professional growth experiment…", [
+      [
+        "Changes one ethical variable with success criteria and a kill rule",
+        true,
+        "Correct — AC-05.",
+      ],
+      ["Changes niche, schedule, and CTA in the same week", false, "Wrong — thrash."],
+      ["Breaks safety if reach might improve", false, "Wrong — never."],
+      ["Needs no log if you feel confident", false, "Wrong — no log, no learning."],
     ]),
-    question("ac7", "Professional creators protect the account by…", [
-      ["Keeping Beginner Foundations safety habits as they scale", true, "Correct — safety is not a temporary module."],
-      ["Assuming size grants immunity", false, "Wrong — enforcement still applies."],
-      ["Copying banned creators for growth", false, "Wrong — inherits risk."],
-      ["Disabling moderation to look 'raw'", false, "Wrong — raises risk."],
+    question("ac7", "Professional standards on LIVE prioritize…", [
+      [
+        "Predictable time, chat, recovery, and reputation hygiene — written for tired days",
+        true,
+        "Correct — AC-06.",
+      ],
+      ["Being corporate and joyless at all times", false, "Wrong — reliable, not joyless."],
+      ["Rage content whenever growth stalls", false, "Wrong — reputation risk."],
+      ["Silent cancellations as a growth hack", false, "Wrong — silence trains distrust."],
     ]),
-    question("ac8", "A strong creator brand is…", [
-      ["A repeatable promise viewers can recognize", true, "Correct — clarity builds loyalty."],
-      ["A new persona every stream", false, "Wrong — confusion hurts retention."],
-      ["Only a logo file", false, "Wrong — incomplete."],
-      ["Optional after graduation", false, "Wrong — it compounds forever."],
+    question("ac8", "Privacy and security hygiene means…", [
+      [
+        "Account recovery/2FA habits, pattern control, and clear never-on-LIVE boundaries",
+        true,
+        "Correct — AC-07.",
+      ],
+      ["Sharing your address to seem authentic", false, "Wrong — unsafe."],
+      ["Letting sketchy growth tools hold your login", false, "Wrong — security failure."],
+      ["Skipping Core safety because you are advanced", false, "Wrong — safety scales with you."],
     ]),
-    question("ac9", "When metrics dip you should…", [
-      ["Diagnose one bottleneck and run a controlled fix", true, "Correct — calm iteration beats panic."],
-      ["Break policy for a spike", false, "Wrong — never."],
-      ["Quit the schedule permanently", false, "Wrong — review first."],
-      ["Delete the account", false, "Wrong — extreme and unnecessary."],
+    question("ac9", "The Advanced Creator Capstone is…", [
+      [
+        "A 30-day Pro Sprint with a reviewable dossier and before/after retrospective",
+        true,
+        "Correct — AC-08.",
+      ],
+      ["Watching the final lesson without running the month", false, "Wrong — time evidence required."],
+      ["An agency launch project", false, "Wrong — outside scope."],
+      ["Optional fluff with no packet", false, "Wrong — objectively reviewable."],
     ]),
-    question("ac10", "Creator business tracking exists to…", [
-      ["Make income decisions with evidence, not vibes alone", true, "Correct — operations need numbers."],
-      ["Replace LIVE skill", false, "Wrong — both required."],
-      ["Hide losses forever", false, "Wrong — honesty matters."],
-      ["Skip taxes and records", false, "Wrong — professionalism includes records."],
+    question("ac10", "Honors Labs after Advanced Creator…", [
+      [
+        "Are optional portfolio/mentor reviews and never gate the certificate",
+        true,
+        "Correct — honors, not gates.",
+      ],
+      ["Must be finished before Capstone counts", false, "Wrong — non-gating."],
+      ["Replace the Program Final", false, "Wrong — final still required."],
+      ["Are required for Core Graduation", false, "Wrong — Advanced Creator optional honors."],
     ]),
     question("ac11", "This program certificate requires…", [
-      ["Published Advanced Creator lessons complete plus this final passed", true, "Correct — exam-gated when lessons ship."],
-      ["Ignoring brand and analytics", false, "Wrong — they are the focus."],
-      ["Failing Beginner Foundations on purpose", false, "Wrong — foundations stay required."],
-      ["Manager payment", false, "Wrong — false."],
+      [
+        "Advanced Creator lessons complete (including Capstone path) plus this final passed",
+        true,
+        "Correct — exam-gated black belt.",
+      ],
+      ["Ignoring brand, analytics, and standards", false, "Wrong — they are the focus."],
+      ["Failing Beginner Foundations on purpose", false, "Wrong — Core stays required."],
+      ["Paying for Manager College", false, "Wrong — false."],
     ]),
     question("ac12", "After Advanced Creator you are preparing to…", [
-      ["Operate like a durable professional and pursue graduation", true, "Correct — diploma path continues."],
-      ["Treat rules as optional", false, "Wrong — never."],
-      ["Stop learning", false, "Wrong — StreamerU keeps growing."],
-      ["Skip the Graduation Exam", false, "Wrong — diploma still needs it."],
+      [
+        "Specialize via Mastery Paths — Presence recommended first for most creators",
+        true,
+        "Correct — black belt unlocks craft specialization.",
+      ],
+      ["Treat platform rules as optional", false, "Wrong — never."],
+      ["Stop learning because the university is finished", false, "Wrong — Mastery Paths continue."],
+      ["Skip all further credentials", false, "Wrong — Professional/Career ladders continue."],
     ]),
   ],
 });

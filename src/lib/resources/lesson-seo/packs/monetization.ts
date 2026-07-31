@@ -312,9 +312,9 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
           "Cut low-return experiments first—random battle spam, unclear LIVEs with no outline, or late-night sessions that wreck sleep. Protect the slots that serve your core audience and your health.",
       },
       {
-        question: "What comes after Scaling consistency, the final StreamerU lesson?",
+        question: "What comes after Scaling consistency, the final Growth & Monetization lesson?",
         answer:
-          "The Growth & Monetization Program Final, then the Graduation Exam for your StreamerU Diploma. Advanced Creator topics—branding, analytics, and creator business foundations—are on the roadmap next and will build on the habits from this published path, not replace them.",
+          "Take the Growth & Monetization Program Final and Graduation Exam for your StreamerU Diploma (Core Graduate), and/or continue into Advanced Creator with Your Creator Operating System—the black-belt bridge that teaches how professionals operate on top of the Core foundation.",
       },
     ],
     relatedGuideSlugs: [
@@ -325,6 +325,10 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
     ],
     internalLinks: [
       { label: "Previous: Building income habits", href: "/streameru/building-income-habits" },
+      {
+        label: "Next: Your Creator Operating System",
+        href: "/streameru/your-creator-operating-system",
+      },
       { label: "Growth & Monetization Program Final", href: "/streameru/programs/monetization/final" },
       { label: "Graduation Exam", href: "/streameru/graduation" },
       { label: "Apply to Streamer Factory", href: "/apply" },

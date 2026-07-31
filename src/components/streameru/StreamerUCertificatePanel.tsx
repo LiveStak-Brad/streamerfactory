@@ -9,13 +9,14 @@ import {
   readFinalPassed,
   readGraduationPassed,
 } from "@/lib/assessments/progress-local";
-import { CURRICULUM_TOTAL_LESSONS } from "@/lib/resources/curriculum";
 import {
-  getCompletedLessonSlugsServerSnapshot,
+  CORE_CURRICULUM_TOTAL_LESSONS,
+  CORE_PROGRAM_NAMES,
+} from "@/lib/growth/semester/programs";
+import {
   getCompletedLessonSlugsSnapshot,
   subscribeStreamerUProgress,
 } from "@/lib/resources/streameru-progress";
-import { PUBLISHED_LESSON_COUNT, getActiveProgramCount } from "@/lib/streameru/academy-meta";
 
 type Props = {
   /** Compact variant for lesson footers */
@@ -31,15 +32,26 @@ type DiplomaSnap = {
   programCount: number;
 };
 
+const CORE_PROGRAM_NAME_SET = new Set<string>(CORE_PROGRAM_NAMES);
+
+/** StreamerU Diploma tracks Core programs only — Advanced Creator is a separate black-belt certificate. */
+function coreAcademyPrograms() {
+  return listAcademyPrograms().filter(
+    (p) => p.lessons.length > 0 && CORE_PROGRAM_NAME_SET.has(p.programName),
+  );
+}
+
 function readDiplomaSnap(): DiplomaSnap {
   const completed = getCompletedLessonSlugsSnapshot();
-  const programs = listAcademyPrograms().filter((p) => p.lessons.length > 0);
+  const programs = coreAcademyPrograms();
+  const coreSlugs = new Set(programs.flatMap((p) => p.lessons.map((l) => l.slug)));
+  const missionsDone = [...completed].filter((slug) => coreSlugs.has(slug)).length;
   const programsMissionComplete = programs.filter((p) =>
     p.lessons.every((l) => completed.has(l.slug)),
   ).length;
   const finalsPassed = programs.filter((p) => readFinalPassed(p.programKey)).length;
   return {
-    missionsDone: completed.size,
+    missionsDone,
     programsMissionComplete,
     finalsPassed,
     graduationPassed: readGraduationPassed(),
@@ -52,7 +64,7 @@ const emptySnap: DiplomaSnap = {
   programsMissionComplete: 0,
   finalsPassed: 0,
   graduationPassed: false,
-  programCount: getActiveProgramCount(),
+  programCount: CORE_PROGRAM_NAMES.length,
 };
 
 let cache = emptySnap;
@@ -69,23 +81,19 @@ function getSnap(): DiplomaSnap {
 
 /**
  * Graduate diploma destination — matches real rules:
- * all LIVE exams in the five-program academy + Graduation Exam.
- * Server diploma issuance also requires those; local UI mirrors device progress.
+ * all Core LIVE exams (Programs 1–4) + Core Program Finals + Graduation Exam.
+ * Advanced Creator is a separate black-belt certificate and does not gate the diploma.
+ * Server diploma issuance also requires Core completion; local UI mirrors device progress.
  */
 export function StreamerUCertificatePanel({ variant = "full", className = "" }: Props) {
   const snap = useSyncExternalStore(subscribeStreamerUProgress, getSnap, () => emptySnap);
-  const completed = useSyncExternalStore(
-    subscribeStreamerUProgress,
-    getCompletedLessonSlugsSnapshot,
-    getCompletedLessonSlugsServerSnapshot,
-  );
 
-  const missionsComplete = completed.size >= CURRICULUM_TOTAL_LESSONS;
+  const coreSlugCount = coreAcademyPrograms().flatMap((p) => p.lessons).length || CORE_CURRICULUM_TOTAL_LESSONS;
+  const missionsComplete = snap.missionsDone >= coreSlugCount;
   const programsReady =
     snap.programsMissionComplete >= snap.programCount && snap.finalsPassed >= snap.programCount;
   const graduated = missionsComplete && snap.graduationPassed;
-  const missionPercent =
-    CURRICULUM_TOTAL_LESSONS > 0 ? (snap.missionsDone / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
+  const missionPercent = coreSlugCount > 0 ? (snap.missionsDone / coreSlugCount) * 100 : 0;
 
   // Weighted path: missions (50%) + program finals (30%) + graduation exam (20%)
   const pathPercent = Math.min(
@@ -141,16 +149,17 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
           </p>
           {graduated ? (
             <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              You completed the five-program academy path and passed the Graduation Exam. Unlock
-              Certified LIVE Creator recognition — celebrate on your member dashboard and the Hall of
-              Fame graduates board when your ceremony is eligible.
+              You completed the Core academy path and passed the Graduation Exam. Unlock Certified
+              LIVE Creator recognition — celebrate on your member dashboard and the Hall of Fame
+              graduates board when your ceremony is eligible.
             </p>
           ) : (
             <>
               <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                Complete all {PUBLISHED_LESSON_COUNT} LIVE exams (Beginner Foundations includes
-                essential safety), pass each active Program Final, then pass the Graduation Exam to
-                earn the StreamerU Diploma. Advanced Creator expands as new lessons ship.
+                Complete all {CORE_CURRICULUM_TOTAL_LESSONS} Core LIVE exams (Beginner Foundations
+                includes essential safety), pass each Core Program Final, then pass the Graduation
+                Exam to earn the StreamerU Diploma. Advanced Creator is a separate black-belt
+                certificate after Core.
               </p>
               <div className="mt-4 space-y-3">
                 <div>
@@ -166,7 +175,7 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
                 </div>
                 <ul className="grid gap-1.5 text-xs text-zinc-400 sm:grid-cols-2">
                   <li>
-                    LIVE exams {snap.missionsDone}/{PUBLISHED_LESSON_COUNT}
+                    LIVE exams {snap.missionsDone}/{CORE_CURRICULUM_TOTAL_LESSONS}
                     {missionsComplete ? " ✓" : ""}
                   </li>
                   <li>

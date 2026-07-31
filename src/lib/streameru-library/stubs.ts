@@ -87,10 +87,11 @@ const CHECKLIST_TITLE_BY_SLUG: Record<string, string> = {
   "setting-goals-during-lives": "Goals Mission Checklist",
   "scaling-consistency": "Volume Day Mission Checklist",
   "building-income-habits": "Income Habits Mission Checklist",
+  "your-creator-operating-system": "OS Proof Mission Checklist",
 };
 
-/** Lessons covered by gold-standard packs in beginner-foundations.ts / essential-safety.ts (not stubbed). */
-const BEGINNER_PACK_SLUGS = new Set([
+/** Lessons covered by gold-standard packs (not stubbed with placeholders). */
+const GOLD_PACK_SLUGS = new Set([
   "start-strong-on-tiktok-live",
   "your-first-live-structure",
   "first-10-tiktok-live-sessions",
@@ -100,13 +101,21 @@ const BEGINNER_PACK_SLUGS = new Set([
   "what-gets-you-banned",
   "how-to-avoid-violations",
   "long-term-account-safety",
+  "your-creator-operating-system",
+  "creator-brand-that-survives-the-feed",
+  "reading-your-live-numbers",
+  "creative-planning-for-real-weeks",
+  "growth-experiments-that-dont-wreck-your-show",
+  "professional-standards-on-live",
+  "privacy-security-and-personal-boundaries",
+  "advanced-creator-capstone-30-day-pro-sprint",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {
   const out: LibraryResource[] = [];
 
   for (const lesson of CURRICULUM) {
-    if (BEGINNER_PACK_SLUGS.has(lesson.slug)) continue;
+    if (GOLD_PACK_SLUGS.has(lesson.slug)) continue;
 
     const checklist = buildMissionChecklistResource(lesson.slug, {
       title: CHECKLIST_TITLE_BY_SLUG[lesson.slug],

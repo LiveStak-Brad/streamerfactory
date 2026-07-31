@@ -55,14 +55,14 @@ export default async function GraduationPage() {
           {exam.title}
         </h1>
         <p className="mt-4 text-base text-zinc-600 dark:text-zinc-400">
-          Comprehensive exam across the published academy path. Pass at 80% after completing all
-          LIVE exams and active Program Finals to earn your StreamerU Diploma — the Professional LIVE
-          Creator credential. Advanced Creator expands as new lessons ship.
+          Comprehensive exam across the published Core path. Pass at 80% after completing all LIVE
+          exams and Core Program Finals to earn your StreamerU Diploma — the Professional LIVE Creator
+          credential. Advanced Creator (Program 5) is the black-belt bridge after Core.
         </p>
         <p className="mt-3 text-sm text-zinc-500">
           Path: Beginner Foundations (includes safety) → Mastery → Battles → Monetization →{" "}
           <span className="font-semibold text-zinc-800 dark:text-zinc-200">Graduation Exam</span> →
-          StreamerU Diploma → Advanced Creator + Manager College (expanding)
+          StreamerU Diploma → Advanced Creator → Manager College (expanding)
         </p>
       </header>
 

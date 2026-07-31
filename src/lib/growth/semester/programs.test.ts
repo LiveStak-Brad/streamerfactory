@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  CORE_CURRICULUM_TOTAL_LESSONS,
   countCompletedPrograms,
+  getCoreCurriculumLessons,
   isFullGraduate,
   listSemesterPrograms,
   programProgress,
@@ -26,14 +28,23 @@ describe("programProgress", () => {
     expect(isFullGraduate(slugs)).toBe(false);
   });
 
-  it("detects Core 24 graduate without counting empty Advanced Creator as a program completion", () => {
-    const all = CURRICULUM.map((l) => l.slug);
-    expect(all.length).toBe(24);
-    expect(isFullGraduate(all)).toBe(true);
-    // Four active programs; Advanced Creator remains Coming Soon (0 lessons → not complete)
-    expect(countCompletedPrograms(all)).toBe(4);
-    const advanced = programProgress(all).find((p) => p.programKey === "rules");
-    expect(advanced?.total).toBe(0);
+  it("detects Core 24 graduate without requiring Advanced Creator lessons", () => {
+    const core = getCoreCurriculumLessons().map((l) => l.slug);
+    expect(core.length).toBe(24);
+    expect(CORE_CURRICULUM_TOTAL_LESSONS).toBe(24);
+    expect(isFullGraduate(core)).toBe(true);
+    expect(countCompletedPrograms(core)).toBe(4);
+
+    const advanced = programProgress(core).find((p) => p.programKey === "rules");
+    expect(advanced?.total).toBeGreaterThanOrEqual(1);
     expect(advanced?.complete).toBe(false);
+  });
+
+  it("does not treat unfinished Advanced Creator as blocking Core graduation", () => {
+    const allPublished = CURRICULUM.map((l) => l.slug);
+    expect(allPublished.length).toBeGreaterThan(24);
+    const coreOnly = getCoreCurriculumLessons().map((l) => l.slug);
+    expect(isFullGraduate(coreOnly)).toBe(true);
+    expect(isFullGraduate(allPublished)).toBe(true);
   });
 });

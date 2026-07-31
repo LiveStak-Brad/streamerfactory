@@ -47,11 +47,19 @@ export const quiz = lessonQuiz({
       ["You should immediately add more streaming days to your calendar", false, "Wrong — one strong day isn't sufficient evidence to permanently expand your schedule."],
       ["The 60–120 minute range no longer applies to you", false, "Wrong — the range still reflects a sustainable target, regardless of one strong day."],
     ]),
-    question("q8", "This is the final lesson in the published StreamerU path. What comes next, honestly?", [
-      ["The Growth & Monetization Program Final and the Graduation Exam, with Advanced Creator topics on the roadmap", true, "Correct — Advanced Creator topics are planned next, built on the foundation this path just completed."],
-      ["Nothing — there is no further path once this lesson is complete", false, "Wrong — the Program Final and Graduation Exam are the immediate next steps."],
-      ["Advanced Creator lessons are already published and ready to start immediately", false, "Wrong — Advanced Creator topics are on the roadmap, not yet published lesson content."],
-      ["You must restart the entire curriculum from Lesson 1 to continue progressing", false, "Wrong — completing this lesson moves you toward the Program Final and Graduation Exam, not backward."],
+    question("q8", "This is the final Growth & Monetization lesson. What comes next, honestly?", [
+      [
+        "The Program Final and Graduation Exam for your Core Diploma, and/or Advanced Creator starting with Your Creator Operating System",
+        true,
+        "Correct — Core diploma path and Advanced Creator black-belt bridge are both valid next steps on the foundation you just finished.",
+      ],
+      ["Nothing — there is no further path once this lesson is complete", false, "Wrong — Core finals/graduation and Advanced Creator both continue from here."],
+      [
+        "You must finish every Mastery Path before you can take the Graduation Exam",
+        false,
+        "Wrong — StreamerU Diploma rests on Core completion plus the Graduation Exam, not Mastery Paths.",
+      ],
+      ["You must restart the entire curriculum from Lesson 1 to continue progressing", false, "Wrong — completing this lesson moves you forward, not backward."],
     ]),
   ],
 });

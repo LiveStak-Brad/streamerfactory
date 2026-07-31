@@ -12,6 +12,7 @@
 import type { CreatorSnapshot } from "@/lib/growth/types";
 import { getCreatorRank } from "@/lib/growth/xp/creator-rank";
 import {
+  CORE_CURRICULUM_TOTAL_LESSONS,
   countCompletedPrograms,
   CURRICULUM_TOTAL_LESSONS,
   programProgress,
@@ -124,7 +125,7 @@ export function evaluateCareerEligibility(
   if (rank.level < 3) mentorMissing.push("Reach Creator Rank 3");
 
   const managerMissing: string[] = [];
-  if (!graduated && completedLessonSlugs.length < CURRICULUM_TOTAL_LESSONS) {
+  if (!graduated && completedLessonSlugs.length < CORE_CURRICULUM_TOTAL_LESSONS) {
     managerMissing.push("Graduate StreamerU first");
   }
   if (xp < 750) managerMissing.push(`Reach 750 Factory XP (${xp}/750)`);
@@ -165,7 +166,7 @@ export function resolveCareerStage(
   const rank = getCreatorRank(snapshot.reputation.lifetime);
   const onboardingDone = snapshot.onboarding.completed;
   const isGraduate =
-    graduated || completedLessonSlugs.length >= CURRICULUM_TOTAL_LESSONS;
+    graduated || completedLessonSlugs.length >= CORE_CURRICULUM_TOTAL_LESSONS;
 
   let stageKey: CareerStageKey = "recruit";
   if (eligibility.managerAppointed) {

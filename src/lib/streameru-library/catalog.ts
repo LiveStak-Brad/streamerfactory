@@ -10,6 +10,7 @@ import { BEGINNER_FOUNDATIONS_RESOURCES } from "@/content/streameru/library/begi
 import { ESSENTIAL_SAFETY_RESOURCES } from "@/content/streameru/library/essential-safety";
 import { LIVE_STREAMING_MASTERY_RESOURCES } from "@/content/streameru/library/live-streaming-mastery";
 import { BATTLES_RESOURCES } from "@/content/streameru/library/battles";
+import { ADVANCED_CREATOR_RESOURCES } from "@/content/streameru/library/advanced-creator";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -34,6 +35,7 @@ const MERGED: LibraryResource[] = [
   ...ESSENTIAL_SAFETY_RESOURCES,
   ...LIVE_STREAMING_MASTERY_RESOURCES,
   ...BATTLES_RESOURCES,
+  ...ADVANCED_CREATOR_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];

@@ -39,6 +39,14 @@ import { quiz as platformRulesNewLiveCreators } from "@/lib/assessments/quizzes/
 import { quiz as whatGetsYouBanned } from "@/lib/assessments/quizzes/rules/what-gets-you-banned";
 import { quiz as howToAvoidViolations } from "@/lib/assessments/quizzes/rules/how-to-avoid-violations";
 import { quiz as longTermAccountSafety } from "@/lib/assessments/quizzes/rules/long-term-account-safety";
+import { quiz as yourCreatorOperatingSystem } from "@/lib/assessments/quizzes/rules/your-creator-operating-system";
+import { quiz as creatorBrandThatSurvivesTheFeed } from "@/lib/assessments/quizzes/rules/creator-brand-that-survives-the-feed";
+import { quiz as readingYourLiveNumbers } from "@/lib/assessments/quizzes/rules/reading-your-live-numbers";
+import { quiz as creativePlanningForRealWeeks } from "@/lib/assessments/quizzes/rules/creative-planning-for-real-weeks";
+import { quiz as growthExperimentsThatDontWreckYourShow } from "@/lib/assessments/quizzes/rules/growth-experiments-that-dont-wreck-your-show";
+import { quiz as professionalStandardsOnLive } from "@/lib/assessments/quizzes/rules/professional-standards-on-live";
+import { quiz as privacySecurityAndPersonalBoundaries } from "@/lib/assessments/quizzes/rules/privacy-security-and-personal-boundaries";
+import { quiz as advancedCreatorCapstone30DayProSprint } from "@/lib/assessments/quizzes/rules/advanced-creator-capstone-30-day-pro-sprint";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -72,6 +80,14 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   whatGetsYouBanned,
   howToAvoidViolations,
   longTermAccountSafety,
+  yourCreatorOperatingSystem,
+  creatorBrandThatSurvivesTheFeed,
+  readingYourLiveNumbers,
+  creativePlanningForRealWeeks,
+  growthExperimentsThatDontWreckYourShow,
+  professionalStandardsOnLive,
+  privacySecurityAndPersonalBoundaries,
+  advancedCreatorCapstone30DayProSprint,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [

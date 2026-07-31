@@ -4,6 +4,7 @@ import { BATTLES_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/battles";
 import { MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/mastery";
 import { MONETIZATION_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/monetization";
 import { RULES_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/rules";
+import { ADVANCED_CREATOR_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/advanced-creator";
 import type { LessonSeoPack } from "@/lib/resources/lesson-seo/types";
 
 export type { LessonSeoPack, LessonFaq, LessonInternalLink, LessonContentSuggestion } from "@/lib/resources/lesson-seo/types";
@@ -14,6 +15,7 @@ const ALL_PACKS: LessonSeoPack[] = [
   ...BATTLES_LESSON_SEO,
   ...MONETIZATION_LESSON_SEO,
   ...RULES_LESSON_SEO,
+  ...ADVANCED_CREATOR_LESSON_SEO,
 ];
 
 const PACKS_BY_SLUG = new Map(ALL_PACKS.map((pack) => [pack.slug, pack]));

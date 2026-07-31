@@ -23,6 +23,14 @@ import { lesson as creatingReasonsToGift } from "./creating-reasons-to-gift";
 import { lesson as settingGoalsDuringLives } from "./setting-goals-during-lives";
 import { lesson as buildingIncomeHabits } from "./building-income-habits";
 import { lesson as scalingConsistency } from "./scaling-consistency";
+import { lesson as yourCreatorOperatingSystem } from "./your-creator-operating-system";
+import { lesson as creatorBrandThatSurvivesTheFeed } from "./creator-brand-that-survives-the-feed";
+import { lesson as readingYourLiveNumbers } from "./reading-your-live-numbers";
+import { lesson as creativePlanningForRealWeeks } from "./creative-planning-for-real-weeks";
+import { lesson as growthExperimentsThatDontWreckYourShow } from "./growth-experiments-that-dont-wreck-your-show";
+import { lesson as professionalStandardsOnLive } from "./professional-standards-on-live";
+import { lesson as privacySecurityAndPersonalBoundaries } from "./privacy-security-and-personal-boundaries";
+import { lesson as advancedCreatorCapstone30DayProSprint } from "./advanced-creator-capstone-30-day-pro-sprint";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -54,6 +62,14 @@ const LESSONS: ExpandedLesson[] = [
   settingGoalsDuringLives,
   buildingIncomeHabits,
   scalingConsistency,
+  yourCreatorOperatingSystem,
+  creatorBrandThatSurvivesTheFeed,
+  readingYourLiveNumbers,
+  creativePlanningForRealWeeks,
+  growthExperimentsThatDontWreckYourShow,
+  professionalStandardsOnLive,
+  privacySecurityAndPersonalBoundaries,
+  advancedCreatorCapstone30DayProSprint,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

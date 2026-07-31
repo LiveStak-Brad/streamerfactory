@@ -1,5 +1,4 @@
 import { SuProgressBar } from "@/components/streameru/SuProgressBar";
-import { ADVANCED_CREATOR_ROADMAP_TOPICS } from "@/lib/resources/curriculum";
 import {
   ACADEMY_RELEASE,
   PLANNED_CURRICULUM_LESSON_COUNT,
@@ -14,9 +13,6 @@ const CURRENTLY_BUILDING = [
   { label: "Music Creator Academy", status: "Planned" },
   { label: "Leadership", status: "Planned" },
   { label: "Moderation", status: "Planned" },
-  ...ADVANCED_CREATOR_ROADMAP_TOPICS.filter(
-    (t) => !["Creator brand systems", "Analytics for LIVE growth"].includes(t),
-  ).map((label) => ({ label, status: "Planned" as const })),
 ] as const;
 
 const COMING_NEXT = [
@@ -54,8 +50,8 @@ export function StreamerUGrowingRoadmap() {
         StreamerU is growing
       </h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-        {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Program 5 is
-        Advanced Creator — expanding as new lessons ship toward a{" "}
+        {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Program 5 —
+        Advanced Creator — is the published black-belt bridge (8 lessons) on the road to a{" "}
         {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
       </p>
 
@@ -126,7 +122,7 @@ export function StreamerUGrowingRoadmap() {
           <dd className="mt-1 text-lg font-bold tabular-nums text-foreground">
             {PUBLISHED_LESSON_COUNT} lessons
           </dd>
-          <p className="mt-0.5 text-xs text-muted">{programs} active programs + Advanced Creator</p>
+          <p className="mt-0.5 text-xs text-muted">{programs} active programs</p>
         </div>
         <div className="rounded-xl border border-border/70 bg-surface/90 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950/60">
           <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">
@@ -139,7 +135,7 @@ export function StreamerUGrowingRoadmap() {
         </div>
         <div className="rounded-xl border border-border/70 bg-surface/90 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950/60">
           <dt className="text-[0.65rem] font-bold uppercase tracking-wider text-muted">Status</dt>
-          <dd className="mt-1 text-lg font-bold text-foreground">Expanding</dd>
+          <dd className="mt-1 text-lg font-bold text-foreground">Growing</dd>
           <p className="mt-0.5 text-xs text-muted">{ACADEMY_RELEASE.cadence}</p>
         </div>
       </dl>

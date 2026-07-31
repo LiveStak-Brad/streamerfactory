@@ -19,8 +19,8 @@ export const PUBLISHED_LESSON_COUNT = CURRICULUM_TOTAL_LESSONS;
  * Bump version / dates when a meaningful lesson batch ships.
  */
 export const ACADEMY_RELEASE = {
-  version: "1.0",
-  versionLabel: "StreamerU v1.0",
+  version: "1.2",
+  versionLabel: "StreamerU v1.2",
   currentReleaseLabel: "Current Release",
   lastUpdatedLabel: "July 2026",
   lastLessonAddedLabel: "July 2026",
@@ -43,12 +43,12 @@ export function getPublishedAcademyStudyHoursLabel(): string {
   return `${low}–${high} hours`;
 }
 
-/** Programs in the academy roadmap (includes Advanced Creator even before its lessons ship). */
+/** All programs in the academy roadmap (Programs 1–5). */
 export function getPublishedProgramCount(): number {
   return curriculumByProgram().length;
 }
 
-/** Programs that currently have published lesson rows. */
+/** Programs that currently have curriculum lessons. */
 export function getActiveProgramCount(): number {
   return curriculumByProgram().filter((p) => p.lessons.length > 0).length;
 }
@@ -150,5 +150,5 @@ export function getFirstSafetyLessonMeta() {
 
 export function catalogAvailabilityLine(): string {
   const programs = getActiveProgramCount();
-  return `${PUBLISHED_LESSON_COUNT} lessons available now · ${programs} active programs · Advanced Creator expanding · ${PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum planned`;
+  return `${PUBLISHED_LESSON_COUNT} lessons available now · ${programs} active programs · ${PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum planned`;
 }

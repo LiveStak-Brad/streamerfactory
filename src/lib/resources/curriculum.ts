@@ -13,7 +13,7 @@
  * 2. Live Streaming Mastery
  * 3. Battles & Collaboration
  * 4. Growth & Monetization
- * 5. Advanced Creator — long-term scaling, branding, and creator business (lessons shipping next)
+ * 5. Advanced Creator — black-belt bridge: how professionals operate
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -46,14 +46,6 @@ export const STREAMERU_PROGRAM_NAMES = [
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
-
-/** Planned Advanced Creator topics until lesson bodies ship (not curriculum slugs). */
-export const ADVANCED_CREATOR_ROADMAP_TOPICS = [
-  "Creator brand systems",
-  "Analytics for LIVE growth",
-  "Creator business foundations",
-  "Advanced growth strategy",
-] as const;
 
 /** Strict global order — the only sequence users should follow for the full course. */
 export const CURRICULUM: CurriculumLesson[] = [
@@ -276,6 +268,79 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Growth & Monetization",
     lessonInProgram: 5,
     lessonsInProgram: 5,
+  },
+  // ADVANCED CREATOR (8) — black-belt bridge after Core Certification
+  {
+    globalOrder: 25,
+    slug: "your-creator-operating-system",
+    title: "Your Creator Operating System",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 1,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 26,
+    slug: "creator-brand-that-survives-the-feed",
+    title: "Creator Brand That Survives the Feed",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 2,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 27,
+    slug: "reading-your-live-numbers",
+    title: "Reading Your LIVE Numbers Without Lying to Yourself",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 3,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 28,
+    slug: "creative-planning-for-real-weeks",
+    title: "Creative Planning for Real Weeks",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 4,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 29,
+    slug: "growth-experiments-that-dont-wreck-your-show",
+    title: "Growth Experiments That Don't Wreck Your Show",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 5,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 30,
+    slug: "professional-standards-on-live",
+    title: "Professional Standards on LIVE",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 6,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 31,
+    slug: "privacy-security-and-personal-boundaries",
+    title: "Privacy, Security, and Personal Boundaries",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 7,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 32,
+    slug: "advanced-creator-capstone-30-day-pro-sprint",
+    title: "Advanced Creator Capstone: 30-Day Pro Sprint",
+    trackId: "rules",
+    programName: "Advanced Creator",
+    lessonInProgram: 8,
+    lessonsInProgram: 8,
   },
 ];
 

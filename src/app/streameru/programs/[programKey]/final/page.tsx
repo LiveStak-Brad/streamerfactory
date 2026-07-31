@@ -55,7 +55,7 @@ export default async function ProgramFinalPage({ params }: Props) {
         </h1>
         <p className="mt-4 text-base text-zinc-600 dark:text-zinc-400">
           {program.lessons.length === 0
-            ? `${program.programName} lessons are still shipping. This Program Final stays available for review; the Program Certificate issues when the published path is complete.`
+            ? `${program.programName} has no published lessons yet. This Program Final stays available for review; the Program Certificate issues when the path is complete.`
             : `Pass at 80% to unlock the ${program.programName} Certificate (after all LIVE missions in this program are complete). Earns StreamerU XP.`}
         </p>
         <p className="mt-3 text-sm text-zinc-500">

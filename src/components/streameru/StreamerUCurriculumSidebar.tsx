@@ -6,7 +6,6 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/Button";
 import { SuProgressBar } from "@/components/streameru/SuProgressBar";
 import {
-  ADVANCED_CREATOR_ROADMAP_TOPICS,
   curriculumByProgram,
   CURRICULUM_TOTAL_LESSONS,
   FIRST_PROGRAM_LESSON_SLUG,
@@ -164,7 +163,6 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
             const programPct =
               lessons.length > 0 ? (doneInProgram / lessons.length) * 100 : 0;
             const isBeginner = programName === "Beginner Foundations";
-            const isAdvanced = programName === "Advanced Creator";
             return (
               <ModuleGroup
                 key={`${programName}-${currentSlug ?? "none"}-${openDefault ? "open" : "closed"}`}
@@ -176,14 +174,11 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
                       <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-accent dark:text-accent-muted">
                         Program {programIndex + 1}
                         {isBeginner ? " · Safety inside" : ""}
-                        {isAdvanced ? " · Expanding" : ""}
                       </span>
                       <span className="mt-0.5 block truncate">{programName}</span>
                     </span>
                     <span className="shrink-0 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
-                      {isAdvanced && lessons.length === 0
-                        ? "Soon"
-                        : `${doneInProgram}/${lessons.length}`}
+                      {doneInProgram}/{lessons.length}
                     </span>
                   </span>
                   {lessons.length > 0 ? (
@@ -195,65 +190,54 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
                     />
                   ) : null}
                 </summary>
-                {isAdvanced && lessons.length === 0 ? (
-                  <ul className="space-y-1 border-t border-zinc-200/70 px-3 py-3 text-[11px] leading-snug text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-500">
-                    <li className="font-medium text-zinc-600 dark:text-zinc-400">
-                      Lessons in development:
+                <ul className="space-y-0.5 border-t border-zinc-200/70 px-2 py-2 dark:border-zinc-800/80">
+                  {isBeginner ? (
+                    <li className="px-2 pb-2 text-[11px] leading-snug text-teal-800 dark:text-teal-200">
+                      Essential safety is taught here before regular LIVE — not as a separate later
+                      program.
                     </li>
-                    {ADVANCED_CREATOR_ROADMAP_TOPICS.map((topic) => (
-                      <li key={topic}>· {topic}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <ul className="space-y-0.5 border-t border-zinc-200/70 px-2 py-2 dark:border-zinc-800/80">
-                    {isBeginner ? (
-                      <li className="px-2 pb-2 text-[11px] leading-snug text-teal-800 dark:text-teal-200">
-                        Essential safety is taught here before regular LIVE — not as a separate later
-                        program.
+                  ) : null}
+                  {lessons.map((lesson) => {
+                    const published = publishedSlugs.has(lesson.slug);
+                    const done = completedSlugs.has(lesson.slug);
+                    const active = lesson.slug === currentSlug;
+                    const isSafety = isEssentialSafetyLesson(lesson.slug);
+                    const isFirstSafety = lesson.slug === FIRST_SAFETY_LESSON_SLUG;
+                    return (
+                      <li key={lesson.slug}>
+                        <Link
+                          href={`/streameru/${lesson.slug}`}
+                          className={`flex items-start gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                            active
+                              ? "bg-accent/15 font-semibold text-zinc-950 shadow-sm ring-1 ring-accent/35 dark:bg-accent/12 dark:text-zinc-50 dark:ring-accent/30"
+                              : "text-zinc-700 hover:bg-zinc-100/90 dark:text-zinc-300 dark:hover:bg-zinc-800/60"
+                          } ${!published ? "opacity-60" : ""}`}
+                        >
+                          <CheckIcon done={done} />
+                          <span className="min-w-0 flex-1">
+                            <span className="font-mono text-[11px] font-semibold text-zinc-400 dark:text-zinc-500">
+                              {lesson.globalOrder}.
+                            </span>{" "}
+                            <span className="leading-snug">{lesson.title}</span>
+                            {!published ? (
+                              <span className="mt-0.5 block text-[11px] font-normal text-amber-700/90 dark:text-amber-400/90">
+                                Coming soon
+                              </span>
+                            ) : (
+                              <span className="mt-0.5 block text-[11px] font-normal text-zinc-500 dark:text-zinc-500">
+                                {isFirstSafety
+                                  ? "Essential safety starts here"
+                                  : isSafety
+                                    ? "Essential safety"
+                                    : lesson.programName}
+                              </span>
+                            )}
+                          </span>
+                        </Link>
                       </li>
-                    ) : null}
-                    {lessons.map((lesson) => {
-                      const published = publishedSlugs.has(lesson.slug);
-                      const done = completedSlugs.has(lesson.slug);
-                      const active = lesson.slug === currentSlug;
-                      const isSafety = isEssentialSafetyLesson(lesson.slug);
-                      const isFirstSafety = lesson.slug === FIRST_SAFETY_LESSON_SLUG;
-                      return (
-                        <li key={lesson.slug}>
-                          <Link
-                            href={`/streameru/${lesson.slug}`}
-                            className={`flex items-start gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                              active
-                                ? "bg-accent/15 font-semibold text-zinc-950 shadow-sm ring-1 ring-accent/35 dark:bg-accent/12 dark:text-zinc-50 dark:ring-accent/30"
-                                : "text-zinc-700 hover:bg-zinc-100/90 dark:text-zinc-300 dark:hover:bg-zinc-800/60"
-                            } ${!published ? "opacity-60" : ""}`}
-                          >
-                            <CheckIcon done={done} />
-                            <span className="min-w-0 flex-1">
-                              <span className="font-mono text-[11px] font-semibold text-zinc-400 dark:text-zinc-500">
-                                {lesson.globalOrder}.
-                              </span>{" "}
-                              <span className="leading-snug">{lesson.title}</span>
-                              {!published ? (
-                                <span className="mt-0.5 block text-[11px] font-normal text-amber-700/90 dark:text-amber-400/90">
-                                  Coming soon
-                                </span>
-                              ) : (
-                                <span className="mt-0.5 block text-[11px] font-normal text-zinc-500 dark:text-zinc-500">
-                                  {isFirstSafety
-                                    ? "Essential safety starts here"
-                                    : isSafety
-                                      ? "Essential safety"
-                                      : lesson.programName}
-                                </span>
-                              )}
-                            </span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
+                    );
+                  })}
+                </ul>
               </ModuleGroup>
             );
           })}

@@ -279,17 +279,19 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-13-first-battle",
     mission_title: "Session: Run your first network battle",
     mission_description:
-      "Coordinate a real battle using Battle Hub — then complete the LIVE battle block.",
+      "Coordinate a real battle using Battle Hub, host it with real structure, and debrief it the same night — this is game day, not another rehearsal.",
     mission_steps: [
-      "Schedule the battle in Battle Hub with time + format visible to partners.",
-      "Invite at least one partner and confirm.",
+      "Schedule the battle in Battle Hub with a real date, time, and format visible to both sides.",
+      "Invite at least one partner and get an explicit confirmation — not a soft maybe.",
+      "Run your full promotion sequence for real: announcement video, hashtags, story reminder.",
       ...PRE_LIVE_STANDARD,
       liveSessionStep(60),
-      "During battle: engage viewers, call energy, and finish the session — no ghosting mid-match.",
+      "Host with open → play → recover → close, call scoreboard swings with steady energy, and close with genuine sportsmanship regardless of the result — no ghosting mid-match.",
+      "Within an hour of ending, write your three-question debrief: what worked, one specific fix, what you'll test next time.",
       ...BEHAVIOR_STANDARD,
     ],
     mission_goal:
-      "Ship one full battle cycle: schedule → partners → promoted LIVE → completed battle.",
+      "Ship one full battle cycle: schedule → confirmed partner → promoted LIVE → completed battle with sportsmanship → same-night written debrief.",
     links: [
       { label: "Open Battle Hub", href: "/battle-hub" },
       { label: "Battle promotion tips", href: "/streameru/promote-your-battles-without-spamming" },
@@ -300,15 +302,20 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-14-battle-performance",
     mission_title: "Session: Battle debrief LIVE",
     mission_description:
-      "After a battle, run a 60-minute LIVE that includes structured debrief + one improvement for next time.",
+      "After a battle, run a 60-minute LIVE that opens with a real debrief and puts one specific fix into practice — not another rehearsal, a deliberate loop.",
     mission_steps: steps(
-      ["Open with a 5-minute debrief of your last battle (what worked / one fix)."],
+      [
+        "Write your three-question debrief of your last battle if you haven't already: what worked, one specific fix, what you're testing tonight.",
+      ],
       60,
-      [],
+      [
+        "Apply that one fix deliberately throughout the session, practicing anticipatory energy calls and momentum language — never guilt or pressure.",
+        "Log this session in your battle iteration tracker immediately afterward.",
+      ],
       habitDailyByStage("late"),
     ),
     mission_goal:
-      "60+ minute LIVE proving you iterate on battle performance, not repeat the same mistakes.",
+      "60+ minute LIVE with a genuine on-camera debrief, one concrete fix applied live, and a logged entry — proving you iterate instead of repeating the same mistakes.",
     links: [{ label: "Battle Hub", href: "/battle-hub" }],
   },
 
@@ -316,10 +323,19 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-15-partners",
     mission_title: "Session: Collab-forward LIVE",
     mission_description:
-      "Your mission includes shout-outs, partner promo, and a clear ask for next collab — still a full LIVE.",
-    mission_steps: steps([], 60, [], habitDailyByStage("late")),
+      "Your mission includes two genuine shout-outs, matched promotional effort, and a direct on-camera ask for the next collab — still a full LIVE.",
+    mission_steps: steps(
+      ["Identify or confirm a real (or planned) partner through Battle Finder or your existing network."],
+      60,
+      [
+        "Give at least one specific, genuine shout-out early in the session and another near the close.",
+        "Before you end, ask directly, on camera, for a next collab — name something specific you enjoyed and propose a next step.",
+        "Log this collaboration in your partner tracker immediately afterward.",
+      ],
+      habitDailyByStage("late"),
+    ),
     mission_goal:
-      "60+ minute LIVE that explicitly builds a pipeline for future battles or duets.",
+      "60+ minute collab-forward LIVE with two genuine shout-outs, a direct next-collab ask, and a logged entry — building a pipeline, not a one-off match.",
     links: [{ label: "Battle Hub", href: "/battle-hub" }, { label: "Battle Finder", href: "/battle-hub/finder" }],
   },
 
@@ -328,10 +344,18 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-16-gifting",
     mission_title: "Session: Gift literacy LIVE",
     mission_description:
-      "Run a monetization-focused session: explain gifts clearly without begging; stay live 60+ minutes.",
-    mission_steps: steps([], 60, [], habitDailyByStage("late")),
+      "Run a normal, well-hosted LIVE that happens to include gifting — not a fundraiser. State one honest goal, practice varied gratitude, and hold the line against begging.",
+    mission_steps: steps(
+      ["Write one transparent goal in advance: what you're working toward and why it matters to you."],
+      60,
+      [
+        "State the goal once near the start in a single honest sentence, then let it sit in the background.",
+        "Practice your gratitude rotation on every gift that comes in, regardless of size, and self-check your language against the momentum test throughout.",
+      ],
+      habitDailyByStage("late"),
+    ),
     mission_goal:
-      "60+ minute LIVE with transparent goals and gratitude — no guilt-tripping viewers.",
+      "60+ minute LIVE with a transparent goal stated once, prompt varied gratitude for every gift, and zero begging or guilt language.",
     links: [{ label: "StreamerU hub", href: "/streameru" }],
   },
 
@@ -485,6 +509,265 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
       { label: "StreamerU hub", href: "/streameru" },
       { label: "Account Stewardship Audit", href: "/streameru/library/account-stewardship-audit" },
       { label: "Monthly Safety Self-Audit", href: "/streameru/library/monthly-safety-self-audit" },
+    ],
+  },
+
+  // —— Advanced Creator ——
+  "your-creator-operating-system": {
+    id: "mission-25-creator-os",
+    mission_title: "Session: OS Proof LIVE",
+    mission_description:
+      "Prove your Creator Operating System is real: run a 45+ minute LIVE from a written weekly OS, then log Plan / Actual / One change.",
+    mission_steps: steps(
+      [
+        "Complete the Creator Weekly Operating System worksheet (aim, calendar, one metric, capacity rules) before you go live.",
+        "Write today's one-sentence session aim under the weekly aim and circle today's calendar block.",
+      ],
+      45,
+      [
+        "Open with what today is for, protect at least one planned segment, and close naming your next planned LIVE day.",
+        "Within 15 minutes of ending, fill Plan / Actual / One change and put this week's review block on the calendar.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a written one-page OS plus a 45+ minute LIVE that followed it — behavior proof, not viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Creator Weekly Operating System",
+        href: "/streameru/library/creator-weekly-operating-system",
+      },
+      {
+        label: "Weekly Review Ritual Checklist",
+        href: "/streameru/library/weekly-review-ritual-checklist",
+      },
+      {
+        label: "One Metric This Month Scorecard",
+        href: "/streameru/library/one-metric-this-month-scorecard",
+      },
+    ],
+  },
+
+  "creator-brand-that-survives-the-feed": {
+    id: "mission-26-creator-brand",
+    mission_title: "Session: Brand Proof LIVE",
+    mission_description:
+      "Prove your brand is real: run a 45+ minute LIVE from a Brand One-Pager — promise in the open, all three proof behaviors on camera, close with who it's for + next LIVE time.",
+    mission_steps: steps(
+      [
+        "Complete the Brand One-Pager and Profile / LIVE Alignment Checklist before you go live.",
+        "Update or confirm your bio so it matches the promise and a realistic OS calendar.",
+      ],
+      45,
+      [
+        "Open with the promise in one sentence, demonstrate all three proof behaviors at least once, and close with who it's for + next LIVE time.",
+        "After the LIVE, note which proof behavior felt natural and which felt forced.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a Brand One-Pager plus a 45+ minute LIVE that proves the promise — clarity and follow-through, not follower count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Brand One-Pager", href: "/streameru/library/brand-one-pager" },
+      {
+        label: "Profile / LIVE Alignment Checklist",
+        href: "/streameru/library/profile-live-alignment-checklist",
+      },
+      { label: "Brand Leak Repair Sheet", href: "/streameru/library/brand-leak-repair-sheet" },
+    ],
+  },
+
+  "reading-your-live-numbers": {
+    id: "mission-27-live-numbers",
+    mission_title: "Session: Scorecard Decision LIVE",
+    mission_description:
+      "Complete a weekly LIVE analytics scorecard, choose one change, and run a 45+ minute LIVE that names and protects that focus.",
+    mission_steps: steps(
+      [
+        "Complete the Weekly LIVE Analytics Scorecard for your last week (or last 3–7 sessions).",
+        "Write exactly one change for this week's Creator OS.",
+      ],
+      45,
+      [
+        "Near the open, name that focus in plain language (not a stats lecture) and protect the behavior it requires.",
+        "After the LIVE, add one line: did today's session support the decision?",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship an honest three-metric scorecard with one decision, proven on a 45+ minute LIVE — not a bigger peak.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Weekly LIVE Analytics Scorecard",
+        href: "/streameru/library/weekly-live-analytics-scorecard",
+      },
+      {
+        label: "Vanity Metrics Parking Lot",
+        href: "/streameru/library/vanity-metrics-parking-lot",
+      },
+      { label: "One-Decision Log", href: "/streameru/library/one-decision-log" },
+    ],
+  },
+
+  "creative-planning-for-real-weeks": {
+    id: "mission-28-creative-planning",
+    mission_title: "Session: Planned Show LIVE",
+    mission_description:
+      "Run a 45+ minute LIVE from a two-week creative plan — written hook plus at least two banked segments.",
+    mission_steps: steps(
+      [
+        "Complete the Two-Week Creative Plan and a Segment Bank of at least ten items before you go live.",
+        "Choose today's open hook and primary + backup segments from the bank.",
+      ],
+      45,
+      [
+        "Deliver the written open hook and run at least two banked segments.",
+        "After the LIVE, star one segment to reuse and note one to rewrite.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Prove prep on camera: planned hook + two banked segments on a 45+ minute LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Two-Week Creative Plan", href: "/streameru/library/two-week-creative-plan" },
+      { label: "Segment Bank (10+)", href: "/streameru/library/segment-bank-10" },
+      { label: "Hooks Library Card", href: "/streameru/library/hooks-library-card" },
+    ],
+  },
+
+  "growth-experiments-that-dont-wreck-your-show": {
+    id: "mission-29-growth-experiments",
+    mission_title: "Session: Experiment Day-One LIVE",
+    mission_description:
+      "Execute day one of a two-week growth experiment from a written brief with success criteria and a kill rule.",
+    mission_steps: steps(
+      [
+        "Complete the Experiment Brief (one variable, success criteria, kill rule, window dates).",
+        "Confirm today's creative plan includes the experiment variable.",
+      ],
+      45,
+      [
+        "Run the variable on purpose while keeping brand and capacity rules intact.",
+        "Fill the first Results Log row immediately after the LIVE.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a clean experiment brief plus honest day-one execution on a 45+ minute LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Experiment Brief", href: "/streameru/library/experiment-brief" },
+      { label: "Experiment Results Log", href: "/streameru/library/experiment-results-log" },
+      {
+        label: "Keep / Adapt / Kill Decision Card",
+        href: "/streameru/library/keep-adapt-kill-decision-card",
+      },
+    ],
+  },
+
+  "professional-standards-on-live": {
+    id: "mission-30-professional-standards",
+    mission_title: "Session: Standards on Camera LIVE",
+    mission_description:
+      "Demonstrate three written professional standards on a 45+ minute LIVE — time, chat/recovery, reputation habits.",
+    mission_steps: steps(
+      [
+        "Complete the Personal Professional Standards Sheet before you go live.",
+        "Pick three standards you will deliberately demonstrate today.",
+      ],
+      45,
+      [
+        "Show those three standards on camera without turning the LIVE into a lecture.",
+        "After the LIVE, note one standard that felt easy and one to tighten.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Make reliability visible: three written standards proven on a 45+ minute LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Personal Professional Standards Sheet",
+        href: "/streameru/library/personal-professional-standards-sheet",
+      },
+      { label: "Recovery Script Card", href: "/streameru/library/recovery-script-card" },
+      {
+        label: "Delay & Cancel Communication Checklist",
+        href: "/streameru/library/delay-cancel-communication-checklist",
+      },
+    ],
+  },
+
+  "privacy-security-and-personal-boundaries": {
+    id: "mission-31-privacy-security",
+    mission_title: "Session: Boundary-Safe LIVE",
+    mission_description:
+      "Apply the privacy & security checklist, scan your environment, and run a 45+ minute boundary-safe LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Privacy & Security Checklist on your real accounts and write three boundary scripts.",
+        "Do a 60-second environment scan before going live (windows, mail, badges, people who might enter).",
+      ],
+      45,
+      [
+        "Stay inside your boundaries; if chat pushes, use a script once and continue.",
+        "Mark at least one real security/privacy fix completed today.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship an applied privacy checklist plus a clean 45+ minute boundary-safe LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Privacy & Security Checklist",
+        href: "/streameru/library/privacy-security-checklist",
+      },
+      {
+        label: "On-Camera Boundaries List",
+        href: "/streameru/library/on-camera-boundaries-list",
+      },
+      { label: "Boundary Script Card", href: "/streameru/library/boundary-script-card" },
+    ],
+  },
+
+  "advanced-creator-capstone-30-day-pro-sprint": {
+    id: "mission-32-ac-capstone",
+    mission_title: "Session: Capstone Kickoff LIVE",
+    mission_description:
+      "Assemble the Capstone dossier/sprint plan and kick off your 30-day professional sprint on a 45+ minute LIVE.",
+    mission_steps: steps(
+      [
+        "Assemble the Capstone Dossier Checklist and 30-Day Sprint Planner (goal, capacity, experiment window, review date, before snapshot).",
+        "Confirm standards sheet and privacy checklist are filed in the dossier.",
+      ],
+      45,
+      [
+        "State your sprint goal in plain language, run at least one banked segment, and close with next LIVE day.",
+        "Start the thirty-day clock and file kickoff notes in the dossier the same day.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Kick off a reviewable 30-day Pro Sprint with a complete plan packet and a real LIVE start.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Capstone Dossier Checklist",
+        href: "/streameru/library/capstone-dossier-checklist",
+      },
+      {
+        label: "30-Day Pro Sprint Planner",
+        href: "/streameru/library/thirty-day-pro-sprint-planner",
+      },
+      {
+        label: "Before/After Retrospective Worksheet",
+        href: "/streameru/library/before-after-retrospective-worksheet",
+      },
     ],
   },
 };

@@ -100,7 +100,7 @@ export function programProgress(
       completed,
       total,
       percent: total === 0 ? 0 : Math.round((completed / total) * 100),
-      /** Empty roadmap programs (Advanced Creator until lessons ship) are not complete. */
+      /** Programs with no lessons are not complete. */
       complete: total > 0 && completed >= total,
       remainingSlugs: program.lessons
         .filter((l) => !done.has(l.slug))
@@ -113,9 +113,28 @@ export function countCompletedPrograms(completedLessonSlugs: string[]): number {
   return programProgress(completedLessonSlugs).filter((p) => p.complete).length;
 }
 
+/**
+ * Core Certification programs only (Beginner → Growth & Monetization).
+ * Advanced Creator is the black-belt bridge after Core — it must never gate the StreamerU Diploma.
+ */
+export const CORE_PROGRAM_NAMES: readonly StreamerUProgramName[] = [
+  "Beginner Foundations",
+  "Live Streaming Mastery",
+  "Battles & Collaboration",
+  "Growth & Monetization",
+] as const;
+
+export function getCoreCurriculumLessons(): CurriculumLesson[] {
+  const core = new Set<string>(CORE_PROGRAM_NAMES);
+  return CURRICULUM.filter((l) => core.has(l.programName));
+}
+
+export const CORE_CURRICULUM_TOTAL_LESSONS = getCoreCurriculumLessons().length;
+
+/** StreamerU Diploma / Core Graduate — all Core lessons complete (not Advanced Creator). */
 export function isFullGraduate(completedLessonSlugs: string[]): boolean {
   const done = new Set(completedLessonSlugs);
-  return CURRICULUM.every((l) => done.has(l.slug));
+  return getCoreCurriculumLessons().every((l) => done.has(l.slug));
 }
 
 export function completedSlugsFromEvents(

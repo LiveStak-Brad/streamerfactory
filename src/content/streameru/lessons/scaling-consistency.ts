@@ -3,11 +3,11 @@ import type { ExpandedLesson } from "@/content/streameru/types";
 export const lesson: ExpandedLesson = {
   slug: "scaling-consistency",
   excerpt:
-    "Grow your total LIVE volume sustainably using calendars, session stacking, and real recovery — the final lesson in the published StreamerU path.",
+    "Grow your total LIVE volume sustainably using calendars, session stacking, and real recovery — the final lesson in Growth & Monetization before Advanced Creator.",
   estimatedMinutes: 25,
   content: `## Introduction
 
-You've made it to the last lesson in the published StreamerU path. You now have a real toolkit for a monetization-focused session: value moments worth supporting, a goal that carries its own honest story, and the tracking and pacing habits that keep income steady across weeks. This lesson isn't about doing any of that better — it's about doing more of it, sustainably.
+You've made it to the last lesson in Growth & Monetization — the close of StreamerU Core before the Advanced Creator black-belt bridge. You now have a real toolkit for a monetization-focused session: value moments worth supporting, a goal that carries its own honest story, and the tracking and pacing habits that keep income steady across weeks. This lesson isn't about doing any of that better — it's about doing more of it, sustainably.
 
 Scaling consistency means increasing your total LIVE volume without letting the quality of any single session quietly erode in the process. This is a common trap in the early growth stage. A creator sees more streaming time correlate with more everything — more viewers, more gifts, more momentum — and responds by just streaming longer or more often without a plan. That works for a week, maybe two, and then it collapses into missed days, low-energy sessions, or outright burnout.
 
@@ -18,10 +18,10 @@ This lesson gives you the structural tools — calendars, session stacking, and 
 Sequence you are in:
 
 - **Previous:** the tracking and pacing habits that make income sustainable over months
-- **This lesson:** raising your total LIVE volume without losing quality — the final lesson in the published academy path
-- **Next:** the Graduation Exam, and Advanced Creator topics as they ship
+- **This lesson:** raising your total LIVE volume without losing quality — the final Growth & Monetization lesson
+- **Next:** Your Creator Operating System (Advanced Creator) — plus your Program Final and Graduation Exam on the Core diploma path
 
-Everything before this lesson taught you how to run one excellent session. Scaling consistency is the last skill because it only makes sense once the underlying session quality is already solid — volume without quality just multiplies the same weak session, while volume built on a strong foundation compounds into a real career.
+Everything before this lesson taught you how to run one excellent session. Scaling consistency is the last Core monetization skill because it only makes sense once the underlying session quality is already solid — volume without quality just multiplies the same weak session, while volume built on a strong foundation compounds into a real career.
 
 ## Learning Objectives
 
@@ -149,7 +149,7 @@ The creators I've seen build the longest careers were almost never the ones who 
 
 Some weeks you'll land at the bottom of the 60–120 minute range, and that's a completely valid result — it tells you where your real capacity sits right now, which is exactly the point of this mission. Other weeks you'll comfortably clear it. Neither outcome is a verdict on whether you're cut out for this.
 
-This is also the final lesson in the published StreamerU path, which means it's worth saying plainly: finishing here doesn't mean you've learned everything there is to know about building a LIVE career. It means you've built the real foundation — setup, structure, safety, retention, battles, and monetization — that every future skill builds on top of. Advanced Creator topics like branding, analytics, and creator business strategy are on the roadmap next; they'll go further once this foundation is second nature.
+This is also the final Growth & Monetization lesson, which means it's worth saying plainly: finishing here doesn't mean you've learned everything there is to know about building a LIVE career. It means you've built the real Core foundation — setup, structure, safety, retention, battles, and monetization — that every future skill builds on top of. Advanced Creator starts next with Your Creator Operating System: how professionals think and operate once this foundation is second nature.
 
 ## Summary
 
@@ -193,7 +193,7 @@ Read every explanation — wrong answers teach as much as right ones.
 - Watch for flattening energy, repeated content, and clock-watching as early warning signs
 - Recovery is a planned part of scaling, not an afterthought
 - Keep value moments, goal checkpoints, and income tracking intact as volume rises
-- This is the foundation everything future — including Advanced Creator topics — builds on
+- This is the foundation Advanced Creator — starting with Your Creator Operating System — builds on
 
 ## Before You Move On
 
@@ -207,16 +207,19 @@ Read every explanation — wrong answers teach as much as right ones.
 
 ☐ Logged honestly which approach you used and how quality held up
 
-☐ Completed the Growth & Monetization Program Final
+☐ Completed the Growth & Monetization Program Final (Core diploma path)
 
-☐ Ready for the Graduation Exam
+☐ Ready for the Graduation Exam and/or Advanced Creator Lesson 1
 
 ## Next Lesson Preview
 
-This is the final lesson in the published StreamerU path — congratulations on building a real foundation across setup, structure, safety, retention, battles, and monetization.
+Congratulations on closing Growth & Monetization — the end of StreamerU Core's published skill ladder across setup, structure, safety, retention, battles, and monetization.
 
-From here, take the **Growth & Monetization Program Final**, then the **Graduation Exam** to earn your StreamerU Diploma. Advanced Creator — covering creator brand systems, analytics for LIVE growth, and creator business foundations — is on the roadmap next and will build directly on the habits you've practiced in every lesson so far. Nothing about that future track is promised beyond its topics; when it ships, it will assume the exact foundation you just finished proving you can run.
+**Two doors from here (both valid):**
 
-Open the Graduation Exam when your quiz and mission here are done. You built the floor. Everything after this is what you build on top of it.
+1. Take the **Growth & Monetization Program Final**, then the **Graduation Exam**, to earn your StreamerU Diploma (Core Graduate).
+2. Continue into **Advanced Creator** with **Your Creator Operating System** — the black-belt bridge that teaches how professionals think and operate.
+
+Advanced Creator assumes the exact foundation you just finished proving you can run. You built the floor. Next you build the operating system on top of it.
 `,
 };
