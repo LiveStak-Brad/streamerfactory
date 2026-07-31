@@ -26,7 +26,7 @@ export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
               </span>
             ) : null}
             <span className="rounded-full border border-emerald-200/80 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-200">
-              Semester 1
+              Program 1
             </span>
           </div>
         </div>

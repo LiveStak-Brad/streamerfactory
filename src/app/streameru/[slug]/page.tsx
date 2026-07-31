@@ -28,6 +28,7 @@ import {
   getCurriculumLesson,
   getCurriculumNeighbors,
 } from "@/lib/resources/curriculum";
+import { lessonDifficulty } from "@/lib/resources/difficulty-styles";
 import { getLessonEstimate } from "@/lib/resources/lesson-estimate";
 import { buildLessonDownloads } from "@/lib/resources/lesson-downloads";
 import { getLessonSeo, getLessonSeoKeywords } from "@/lib/resources/lesson-seo";
@@ -179,7 +180,11 @@ export default async function ResourcePostPage({ params }: Props) {
                 lesson={curriculum}
                 semesterIndex={semesterIndexForProgram(curriculum.programName)}
                 estimate={estimate}
-                difficulty={post.difficulty ?? null}
+                difficulty={
+                  lessonDifficulty(curriculum.trackId, curriculum.slug) ??
+                  post.difficulty ??
+                  null
+                }
               />
             </div>
           ) : null}

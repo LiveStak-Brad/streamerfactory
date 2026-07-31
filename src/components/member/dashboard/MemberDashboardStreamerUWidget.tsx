@@ -92,7 +92,7 @@ export function MemberDashboardStreamerUWidget() {
       {snapshot.completed === 0 && !snapshot.continueHref ? (
         <EmptyState
           title="No Live Exams completed on this device yet"
-          description="Progress is saved in this browser for now. Start Semester 1 and your next lesson will show here."
+          description="Progress is saved in this browser for now. Start Program 1 · Lesson 1 and your next lesson will show here."
           illustration="lessons"
           action={
             <Button href={snapshot.recommended.href} variant="primary" className="min-h-[44px] px-5">

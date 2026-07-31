@@ -50,18 +50,34 @@ export function difficultyTrackAccentClass(level: string | null | undefined): st
   }
 }
 
-/** Map curriculum track → typical difficulty band for semester UI. */
+/**
+ * Map curriculum track → typical difficulty band for program UI.
+ * Rules & Safety is essential from day one (not advanced-only).
+ * Long-term compliance depth still sits later in the curriculum order.
+ */
 export function trackDefaultDifficulty(trackId: string | null | undefined): DifficultyLevel {
   switch (trackId) {
     case "beginner":
+    case "rules":
       return "beginner";
     case "content":
     case "battles":
       return "intermediate";
     case "monetization":
-    case "rules":
       return "advanced";
     default:
       return "beginner";
   }
+}
+
+/** Per-lesson override — advanced compliance stays later in Rules & Safety. */
+export function lessonDifficulty(
+  trackId: string | null | undefined,
+  slug: string | null | undefined,
+): DifficultyLevel {
+  if (slug === "long-term-account-safety") return "advanced";
+  if (slug === "how-to-avoid-violations" || slug === "what-gets-you-banned") {
+    return "intermediate";
+  }
+  return trackDefaultDifficulty(trackId);
 }

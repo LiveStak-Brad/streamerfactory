@@ -8,9 +8,9 @@ const pillars = [
     href: "/streameru",
     eyebrow: "Academy",
     title: "StreamerU",
-    body: "Curriculum-style training with clear next lessons — onboarding, LIVE craft, and monetization that compounds.",
+    body: "The internet’s free live streaming academy — lessons, quizzes, LIVE exams, printables, certificates, and graduation. No course fees.",
     accent: "from-indigo-500/20 via-transparent to-transparent",
-    chip: "Modules · missions · progress",
+    chip: "Free · quizzes · certificates",
   },
   {
     href: "/battle-hub",

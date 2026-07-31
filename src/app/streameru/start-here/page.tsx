@@ -9,10 +9,10 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Start your training",
   description:
-    "The first four lessons of the StreamerU program — same curriculum order as the full course. TikTok LIVE training from Streamer Factory.",
+    "Start free StreamerU training — the first four lessons of Beginner Foundations. No subscription or course fees.",
   openGraph: {
     title: `Start your training | ${site.name}`,
-    description: "First four lessons of the StreamerU program in order.",
+    description: "First four lessons of StreamerU Program 1 — free live streaming academy.",
     url: `${site.url}/streameru/start-here`,
   },
 };
@@ -31,19 +31,29 @@ export default async function StartHerePage() {
         />
 
         <p className="mt-8 text-xs font-bold uppercase tracking-[0.24em] text-accent dark:text-accent-muted">
-          StreamerU · Semester 1 · lessons 1–4
+          StreamerU · Program 1 · lessons 1–4
         </p>
         <h1 className="mt-4 text-4xl font-bold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50 sm:text-5xl lg:text-[3.1rem] lg:leading-[1.06]">
           Start your training
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
           This is the opening sprint of{" "}
-          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Semester 1</strong> in the
-          same StreamerU academy — lessons{" "}
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Program 1 · Beginner Foundations</strong>{" "}
+          in the free StreamerU academy — lessons{" "}
           <strong className="font-semibold text-zinc-800 dark:text-zinc-200">1 through 4</strong> in
-          order. Study each lesson, pass the Live Exam, then use{" "}
+          order. Study each lesson, pass the quiz and Live Exam, then use{" "}
           <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Next lesson</strong> at the
           bottom — or follow the path below.
+        </p>
+        <p className="mt-4 rounded-xl border border-teal-500/25 bg-teal-500/10 px-4 py-3 text-sm leading-relaxed text-teal-950 dark:border-teal-400/25 dark:bg-teal-500/10 dark:text-teal-100">
+          Protect first: before you stream regularly, also take{" "}
+          <Link
+            href="/streameru/platform-rules-new-live-creators"
+            className="font-semibold underline-offset-2 hover:underline"
+          >
+            Lesson 21 · TikTok rules explained
+          </Link>{" "}
+          in Rules &amp; Safety — essential safety is required from the beginning.
         </p>
 
         <ol className="mt-8 list-decimal space-y-2 pl-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">

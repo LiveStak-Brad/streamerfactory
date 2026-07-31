@@ -4,14 +4,15 @@ import { CURRICULUM } from "@/lib/resources/curriculum";
 import { getPublishedPostsInCurriculumOrder } from "@/lib/resources/queries";
 import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { JsonLd, courseSchema } from "@/lib/seo/json-ld";
+import { ACADEMY_SEO, PUBLISHED_LESSON_COUNT } from "@/lib/streameru/academy-meta";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "StreamerU — TikTok LIVE Creator Academy",
-  description:
-    "Streamer University — structured TikTok LIVE training with a clear 24-lesson curriculum, missions, and creator academy paths.",
+  title: ACADEMY_SEO.title,
+  description: ACADEMY_SEO.description,
   path: "/streameru",
   keywords: [
     "StreamerU",
+    "free live streaming academy",
     "TikTok LIVE training",
     "creator academy",
     "TikTok LIVE tips",
@@ -37,9 +38,8 @@ export default async function StreamerULayout({
       <JsonLd
         id="streameru-course"
         data={courseSchema({
-          name: "StreamerU — TikTok LIVE Creator Academy",
-          description:
-            "Structured TikTok LIVE training with curriculum lessons and execution missions for Streamer Factory creators.",
+          name: ACADEMY_SEO.title,
+          description: `${ACADEMY_SEO.shortDescription} ${PUBLISHED_LESSON_COUNT} lessons available now.`,
           path: "/streameru",
           lessonsCount: CURRICULUM.length,
         })}

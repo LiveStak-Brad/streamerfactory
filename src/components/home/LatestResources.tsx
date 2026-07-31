@@ -25,10 +25,11 @@ export async function LatestResources() {
           StreamerU
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">
-          Continue training
+          Train free in StreamerU
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Next lessons in the StreamerU program (published so far, in curriculum order — not &quot;newest&quot;).
+          Lessons available now from the free live streaming academy (curriculum order — not
+          &quot;newest&quot;). Learn before you apply.
         </p>
       </div>
 
@@ -48,7 +49,7 @@ export async function LatestResources() {
           href="/streameru"
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200/90 bg-surface px-7 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-accent/35"
         >
-          Follow the program
+          Open StreamerU
         </Link>
         <Link
           href="/apply"

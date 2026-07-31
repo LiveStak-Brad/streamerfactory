@@ -1,0 +1,48 @@
+/**
+ * Single source of truth for StreamerU downloadable / printable resources.
+ *
+ * When adding a curriculum lesson:
+ * 1. Append to CURRICULUM + training-missions.ts
+ * 2. Register at least one library resource here (checklist minimum)
+ */
+
+import { BEGINNER_FOUNDATIONS_RESOURCES } from "@/content/streameru/library/beginner-foundations";
+import {
+  buildStubLessonResources,
+  CATEGORY_SEED_PLACEHOLDERS,
+} from "@/lib/streameru-library/stubs";
+import type { LibraryResource } from "@/lib/streameru-library/types";
+
+function assertUniqueIds(resources: LibraryResource[]): void {
+  const seen = new Set<string>();
+  for (const r of resources) {
+    if (seen.has(r.id)) {
+      throw new Error(`Duplicate StreamerU library resource id: ${r.id}`);
+    }
+    seen.add(r.id);
+    if (r.status === "ready" && (!r.blocks || r.blocks.length === 0)) {
+      throw new Error(`Ready library resource missing blocks: ${r.id}`);
+    }
+  }
+}
+
+const MERGED: LibraryResource[] = [
+  ...BEGINNER_FOUNDATIONS_RESOURCES,
+  ...buildStubLessonResources(),
+  ...CATEGORY_SEED_PLACEHOLDERS,
+];
+
+assertUniqueIds(MERGED);
+
+/** Full library catalog (ready + placeholder). */
+export const LIBRARY_CATALOG: LibraryResource[] = MERGED;
+
+const BY_ID = new Map(LIBRARY_CATALOG.map((r) => [r.id, r]));
+
+export function getLibraryResource(id: string): LibraryResource | null {
+  return BY_ID.get(id) ?? null;
+}
+
+export function getAllLibraryResources(): LibraryResource[] {
+  return LIBRARY_CATALOG;
+}

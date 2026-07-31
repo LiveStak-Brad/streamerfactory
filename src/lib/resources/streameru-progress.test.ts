@@ -14,16 +14,16 @@ describe("StreamerU progress and estimate sources of truth", () => {
     expect(lessonCount).toBe(CURRICULUM_TOTAL_LESSONS);
   });
 
-  it("semester study totals use the shared lesson-estimate helper", () => {
+  it("program study totals use the shared lesson-estimate helper", () => {
     const programs = curriculumByProgram();
     const grand = sumStudyMinutesForSlugs(
       programs.flatMap((p) => p.lessons.map((l) => l.slug)),
     );
-    const bySemester = programs.reduce(
+    const byProgram = programs.reduce(
       (n, p) => n + sumStudyMinutesForSlugs(p.lessons.map((l) => l.slug)),
       0,
     );
-    expect(grand).toBe(bySemester);
+    expect(grand).toBe(byProgram);
     expect(grand).toBeGreaterThan(0);
   });
 });

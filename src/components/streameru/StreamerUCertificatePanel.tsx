@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { SuProgressBar } from "@/components/streameru/SuProgressBar";
+import { listAcademyPrograms } from "@/lib/assessments/programs";
+import {
+  readFinalPassed,
+  readGraduationPassed,
+} from "@/lib/assessments/progress-local";
 import { brandAssets } from "@/lib/brand/assets";
 import { CURRICULUM_TOTAL_LESSONS } from "@/lib/resources/curriculum";
 import {
-  countCompletedLessons,
+  getCompletedLessonSlugsServerSnapshot,
+  getCompletedLessonSlugsSnapshot,
   subscribeStreamerUProgress,
 } from "@/lib/resources/streameru-progress";
+import { PUBLISHED_LESSON_COUNT, getPublishedProgramCount } from "@/lib/streameru/academy-meta";
 
 type Props = {
   /** Compact variant for lesson footers */
@@ -16,32 +23,79 @@ type Props = {
   className?: string;
 };
 
-let cached = 0;
-let cachedKey = "";
+type DiplomaSnap = {
+  missionsDone: number;
+  programsMissionComplete: number;
+  finalsPassed: number;
+  graduationPassed: boolean;
+  programCount: number;
+};
 
-function readCompleted(): number {
-  const n = countCompletedLessons();
-  const key = String(n);
-  if (key === cachedKey) return cached;
-  cachedKey = key;
-  cached = n;
-  return cached;
+function readDiplomaSnap(): DiplomaSnap {
+  const completed = getCompletedLessonSlugsSnapshot();
+  const programs = listAcademyPrograms();
+  const programsMissionComplete = programs.filter((p) =>
+    p.lessons.every((l) => completed.has(l.slug)),
+  ).length;
+  const finalsPassed = programs.filter((p) => readFinalPassed(p.programKey)).length;
+  return {
+    missionsDone: completed.size,
+    programsMissionComplete,
+    finalsPassed,
+    graduationPassed: readGraduationPassed(),
+    programCount: programs.length,
+  };
+}
+
+const emptySnap: DiplomaSnap = {
+  missionsDone: 0,
+  programsMissionComplete: 0,
+  finalsPassed: 0,
+  graduationPassed: false,
+  programCount: getPublishedProgramCount(),
+};
+
+let cache = emptySnap;
+let cacheKey = "";
+
+function getSnap(): DiplomaSnap {
+  const s = readDiplomaSnap();
+  const key = `${s.missionsDone}|${s.programsMissionComplete}|${s.finalsPassed}|${s.graduationPassed}|${s.programCount}`;
+  if (key === cacheKey) return cache;
+  cacheKey = key;
+  cache = s;
+  return cache;
 }
 
 /**
- * Graduate certificate progress — uses real device-local mission completions only.
+ * Graduate diploma destination — matches real rules:
+ * all LIVE exams in the five-program academy + Graduation Exam.
+ * Server diploma issuance also requires those; local UI mirrors device progress.
  */
 export function StreamerUCertificatePanel({ variant = "full", className = "" }: Props) {
+  const snap = useSyncExternalStore(subscribeStreamerUProgress, getSnap, () => emptySnap);
   const completed = useSyncExternalStore(
     subscribeStreamerUProgress,
-    readCompleted,
-    () => 0,
+    getCompletedLessonSlugsSnapshot,
+    getCompletedLessonSlugsServerSnapshot,
   );
-  const percent =
-    CURRICULUM_TOTAL_LESSONS > 0 ? (completed / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
-  const graduated = completed >= CURRICULUM_TOTAL_LESSONS;
 
-  if (variant === "compact" && completed === 0) return null;
+  const missionsComplete = completed.size >= CURRICULUM_TOTAL_LESSONS;
+  const programsReady =
+    snap.programsMissionComplete >= snap.programCount && snap.finalsPassed >= snap.programCount;
+  const graduated = missionsComplete && snap.graduationPassed;
+  const missionPercent =
+    CURRICULUM_TOTAL_LESSONS > 0 ? (snap.missionsDone / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
+
+  // Weighted path: missions (50%) + program finals (30%) + graduation exam (20%)
+  const pathPercent = Math.min(
+    100,
+    missionPercent * 0.5 +
+      (snap.programCount > 0 ? (snap.finalsPassed / snap.programCount) * 30 : 0) +
+      (snap.graduationPassed ? 20 : 0),
+  );
+
+  if (variant === "compact" && snap.missionsDone === 0) return null;
 
   return (
     <section
@@ -60,60 +114,97 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
             alt="StreamerU Graduate badge"
             width={112}
             height={112}
-            className={`h-full w-full object-contain ${graduated ? "" : "opacity-40 grayscale"}`}
+            className={`h-full w-full object-contain transition-opacity ${graduated ? "" : "opacity-40 grayscale"}`}
           />
+          {!graduated ? (
+            <span className="absolute inset-x-0 bottom-0 rounded-md bg-black/55 px-1 py-0.5 text-center text-[10px] font-bold uppercase tracking-wider text-zinc-300">
+              Locked
+            </span>
+          ) : (
+            <span className="absolute inset-x-0 bottom-0 rounded-md bg-emerald-500/90 px-1 py-0.5 text-center text-[10px] font-bold uppercase tracking-wider text-white">
+              Unlocked
+            </span>
+          )}
         </div>
         <div className="min-w-0 flex-1 text-center sm:text-left">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-accent-muted">
-            Credential
+            Credential destination
           </p>
           <h2
             id="su-certificate-heading"
             className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl"
           >
-            {graduated ? "StreamerU Graduate" : "StreamerU Graduate Certificate"}
+            {graduated
+              ? "StreamerU Graduate"
+              : "Become a StreamerU Graduate"}
           </h2>
+          <p className="mt-1 text-sm font-medium text-zinc-300">
+            Earn the Professional LIVE Creator Diploma
+          </p>
           {graduated ? (
             <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              You completed all {CURRICULUM_TOTAL_LESSONS} Live Exams on this device. Wear the graduate
-              badge with pride — keep sharpening on the Battle Hub.
+              You completed the five-program academy path and passed the Graduation Exam. Unlock
+              Certified LIVE Creator recognition — celebrate on your member dashboard and the Hall of
+              Fame graduates board when your ceremony is eligible.
             </p>
           ) : (
             <>
               <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                Complete every Live Exam in the 24-lesson academy to unlock your StreamerU Graduate
-                credential on this device.
+                Complete all {PUBLISHED_LESSON_COUNT} LIVE exams across {snap.programCount} programs,
+                pass each Program Final, then pass the Graduation Exam to earn the StreamerU Diploma.
+                Graduation is not awarded from LIVE exams alone.
               </p>
-              <div className="mt-4">
-                <div className="mb-1.5 flex justify-between text-xs font-semibold text-zinc-400">
-                  <span>Progress toward certificate</span>
-                  <span className="tabular-nums text-zinc-200">
-                    {completed}/{CURRICULUM_TOTAL_LESSONS}
-                  </span>
+              <div className="mt-4 space-y-3">
+                <div>
+                  <div className="mb-1.5 flex justify-between text-xs font-semibold text-zinc-400">
+                    <span>Progress toward diploma</span>
+                    <span className="tabular-nums text-zinc-200">{Math.round(pathPercent)}%</span>
+                  </div>
+                  <SuProgressBar
+                    value={pathPercent}
+                    label="Diploma progress"
+                    trackClassName="h-2 bg-white/10"
+                  />
                 </div>
-                <SuProgressBar
-                  value={percent}
-                  label="Certificate progress"
-                  trackClassName="h-2 bg-white/10"
-                />
+                <ul className="grid gap-1.5 text-xs text-zinc-400 sm:grid-cols-2">
+                  <li>
+                    LIVE exams {snap.missionsDone}/{PUBLISHED_LESSON_COUNT}
+                    {missionsComplete ? " ✓" : ""}
+                  </li>
+                  <li>
+                    Program Finals {snap.finalsPassed}/{snap.programCount}
+                    {programsReady ? " ✓" : ""}
+                  </li>
+                  <li>
+                    Graduation Exam {snap.graduationPassed ? "passed ✓" : "not yet"}
+                  </li>
+                  <li>Career path: StreamerU Graduate → Manager College (expanding)</li>
+                </ul>
               </div>
             </>
           )}
           <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
             <Link
-              href="/streameru"
-              className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-zinc-950 transition-[transform] hover:-translate-y-0.5"
+              href={graduated ? "/hall-of-fame" : "/streameru/graduation"}
+              className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-zinc-950 transition-[transform] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transform-none"
             >
-              {graduated ? "Back to academy" : "View course roadmap"}
+              {graduated ? "Hall of Fame Graduates" : "Graduation Exam"}
             </Link>
-            {graduated ? (
+            {!graduated ? (
+              <Link
+                href="#course-roadmap"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                View course roadmap
+              </Link>
+            ) : (
               <Link
                 href="/battle-hub"
                 className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
               >
                 Battle Hub →
               </Link>
-            ) : null}
+            )}
           </div>
         </div>
       </div>

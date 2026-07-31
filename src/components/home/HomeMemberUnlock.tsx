@@ -8,7 +8,7 @@ import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 const unlocks = [
   {
     title: "Learn",
-    body: "Structured onboarding and StreamerU training — so expectations are clear before you go live with the network.",
+    body: "Free StreamerU academy training — lessons, quizzes, and LIVE exams so expectations are clear before you go live with the network.",
     hue: "bg-indigo-500",
   },
   {

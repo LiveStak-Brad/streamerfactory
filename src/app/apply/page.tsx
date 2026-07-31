@@ -15,7 +15,7 @@ import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Join the TikTok LIVE Creator Network",
   description:
-    "Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and StreamerU training.",
+    "Learn free in StreamerU anytime. Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and member tools.",
   path: "/apply",
   keywords: [
     "join TikTok LIVE agency",
@@ -111,7 +111,8 @@ export default async function ApplyPage() {
           <Link href="/streameru" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
             StreamerU
           </Link>{" "}
-          on this website.
+          on this website. You can start StreamerU lessons free before you apply — no subscription or
+          course fees.
         </p>
         </div>
 

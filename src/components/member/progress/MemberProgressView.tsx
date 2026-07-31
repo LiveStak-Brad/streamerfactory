@@ -224,7 +224,7 @@ export function MemberProgressView({ growth }: Props) {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
-        <DashboardWidget eyebrow="StreamerU" title="Semester progress">
+        <DashboardWidget eyebrow="StreamerU" title="Program progress">
           <ul className="space-y-3">
             {growth.semesters.map((s) => (
               <li key={s.programKey} className="space-y-1.5">
@@ -251,7 +251,7 @@ export function MemberProgressView({ growth }: Props) {
           <DashboardWidget eyebrow="Rewards" title="Certificates">
             {growth.certificates.length === 0 ? (
               <p className="text-sm leading-relaxed text-muted">
-                Finish a StreamerU semester to earn your first certificate.
+                Finish a StreamerU program (LIVE exams + Program Final) to earn your first Program Certificate.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -276,7 +276,7 @@ export function MemberProgressView({ growth }: Props) {
         <DashboardWidget eyebrow="Ceremony" title="Graduation">
           {growth.graduation.status === "locked" ? (
             <p className="text-sm leading-relaxed text-muted">
-              Complete all five StreamerU semesters to unlock your graduation ceremony.
+              Complete all five StreamerU programs and the Graduation Exam to unlock your diploma ceremony.
             </p>
           ) : growth.graduation.status === "celebrated" ? (
             <div className="space-y-2">

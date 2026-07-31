@@ -73,7 +73,7 @@ export function HomeHero({
               <span className="text-gradient-brand">thriving creator network</span>.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-              Train in StreamerU, climb factory rankings, schedule battles in Battle Hub, and grow with creators who
+              Train free in StreamerU, climb factory rankings, schedule battles in Battle Hub, and grow with creators who
               treat LIVE like a business — not a dead Discord invite.
             </p>
 

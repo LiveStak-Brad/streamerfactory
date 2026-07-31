@@ -15,8 +15,8 @@ export function HomeCta() {
             Ready to grow your LIVE business with a real partner?
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-zinc-400 dark:text-zinc-600">
-            Step 1: join the Creator Network on TikTok. Step 2: request website access for StreamerU and
-            Battle Hub after verification.
+            Train free in StreamerU anytime. To join the network: Step 1 join the Creator Network on
+            TikTok. Step 2 request website access for Battle Hub and member tools after verification.
           </p>
         </div>
         <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:items-end">
