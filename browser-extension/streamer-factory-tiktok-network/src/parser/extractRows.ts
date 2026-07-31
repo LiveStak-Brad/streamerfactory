@@ -323,7 +323,7 @@ function parseStatsRow(row: Element, _doc: Document = document): ParsedCreatorRo
     coinsEarned: coins,
     diamondsEarned: diamonds,
     engagements,
-    daysStreamed: days ?? 0,
+    daysStreamed: days,
     hoursStreamed: hours,
     liveDurationText,
     liveDurationSeconds,
@@ -355,10 +355,10 @@ export function extractCreatorRowsFromPage(
   const rows: ParsedCreatorRow[] = [];
 
   for (const el of rowEls) {
-    if (pageType === "manage_relationship") {
+    if (pageType === "creator_roster") {
       const parsed = parseRelationshipRow(el, relationshipTab);
       if (parsed) rows.push(parsed);
-    } else if (pageType === "creator_stats" || pageType === "unknown") {
+    } else if (pageType === "activity_incentive" || pageType === "unknown") {
       const parsed = parseStatsRow(el, doc);
       if (parsed) rows.push(parsed);
     }

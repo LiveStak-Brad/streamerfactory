@@ -69,40 +69,108 @@ export function CreatorNetworkAdminPanel({ batches, stats, matchReview, initialB
               description="Sync from the Chrome extension while viewing TikTok Backstage."
             />
           ) : (
-            <AdminTable caption="Import batches" minWidth="640px">
+            <AdminTable caption="Import batches" minWidth="960px">
               <AdminTableHead>
                 <AdminTr>
                   <AdminTh>When</AdminTh>
-                  <AdminTh>Page type</AdminTh>
+                  <AdminTh>Dataset</AdminTh>
+                  <AdminTh>Parser</AdminTh>
+                  <AdminTh>Conf</AdminTh>
                   <AdminTh>Status</AdminTh>
-                  <AdminTh>Accepted</AdminTh>
-                  <AdminTh>Rejected</AdminTh>
+                  <AdminTh>Rows</AdminTh>
+                  <AdminTh>Diagnostics</AdminTh>
                   <AdminTh>Batch</AdminTh>
                 </AdminTr>
               </AdminTableHead>
               <tbody>
-                {batches.map((b) => (
-                  <AdminTr key={b.id}>
-                    <AdminTd className="whitespace-nowrap text-muted">{formatWhen(b.created_at)}</AdminTd>
-                    <AdminTd>
-                      {b.detected_page_type ?? "—"}
-                      {b.relationship_tab ? ` · ${b.relationship_tab}` : ""}
-                    </AdminTd>
-                    <AdminTd>
-                      <AdminStatusBadge tone="neutral">{b.status}</AdminStatusBadge>
-                    </AdminTd>
-                    <AdminTd className="tabular-nums">{b.accepted_rows_count}</AdminTd>
-                    <AdminTd className="tabular-nums">{b.rejected_rows_count}</AdminTd>
-                    <AdminTd>
-                      <Link
-                        href={`/admin/creator-network?batchId=${b.id}`}
-                        className="font-mono text-xs font-semibold text-accent hover:underline dark:text-accent-muted"
-                      >
-                        {b.id.slice(0, 8)}…
-                      </Link>
-                    </AdminTd>
-                  </AdminTr>
-                ))}
+                {batches.map((b) => {
+                  const failures = Array.isArray(b.validation_failures)
+                    ? b.validation_failures
+                    : [];
+                  const warnings = Array.isArray(b.validation_warnings)
+                    ? b.validation_warnings
+                    : [];
+                  const fieldsUpdated = Array.isArray(b.fields_updated) ? b.fields_updated : [];
+                  const fieldsPreserved = Array.isArray(b.fields_preserved)
+                    ? b.fields_preserved
+                    : [];
+                  const roster = b.roster_diff_preview;
+                  return (
+                    <AdminTr key={b.id}>
+                      <AdminTd className="whitespace-nowrap text-muted">
+                        {formatWhen(b.created_at)}
+                      </AdminTd>
+                      <AdminTd>
+                        <div>{b.dataset_type ?? b.detected_page_type ?? "—"}</div>
+                        {b.relationship_tab ? (
+                          <div className="text-xs text-muted">{b.relationship_tab}</div>
+                        ) : null}
+                      </AdminTd>
+                      <AdminTd className="font-mono text-xs">
+                        {b.parser_version ?? "—"}
+                        {b.extension_version ? (
+                          <div className="text-muted">ext {b.extension_version}</div>
+                        ) : null}
+                      </AdminTd>
+                      <AdminTd className="tabular-nums">
+                        {b.confidence != null ? `${Math.round(Number(b.confidence) * 100)}%` : "—"}
+                      </AdminTd>
+                      <AdminTd>
+                        <AdminStatusBadge
+                          tone={
+                            b.status === "failed"
+                              ? "danger"
+                              : b.status === "completed"
+                                ? "success"
+                                : "neutral"
+                          }
+                        >
+                          {b.status}
+                        </AdminStatusBadge>
+                        {b.error_message ? (
+                          <div className="mt-1 max-w-[220px] text-xs text-danger">
+                            {b.error_message}
+                          </div>
+                        ) : null}
+                      </AdminTd>
+                      <AdminTd className="tabular-nums text-xs">
+                        <div>raw {b.raw_rows_count}</div>
+                        <div>ok {b.accepted_rows_count}</div>
+                        <div>rej {b.rejected_rows_count}</div>
+                      </AdminTd>
+                      <AdminTd className="max-w-[280px] text-xs text-muted">
+                        {failures.length > 0 ? (
+                          <div className="text-danger">Blocked: {failures.slice(0, 2).join("; ")}</div>
+                        ) : null}
+                        {warnings.length > 0 ? (
+                          <div>Warn: {warnings.slice(0, 2).join("; ")}</div>
+                        ) : null}
+                        {fieldsUpdated.length > 0 ? (
+                          <div>Updated: {fieldsUpdated.join(", ")}</div>
+                        ) : null}
+                        {fieldsPreserved.length > 0 ? (
+                          <div>Preserved: {fieldsPreserved.slice(0, 3).join(", ")}</div>
+                        ) : null}
+                        {roster ? (
+                          <div>
+                            Roster preview: {(roster.missingFromBackstage ?? []).length} missing ·{" "}
+                            {(roster.newCreatorCandidates ?? []).length} new ·{" "}
+                            {(roster.websiteOnlyStaticEntries ?? []).length} static-only
+                          </div>
+                        ) : null}
+                        {b.captured_at ? <div>Captured {formatWhen(b.captured_at)}</div> : null}
+                      </AdminTd>
+                      <AdminTd>
+                        <Link
+                          href={`/admin/creator-network?batchId=${b.id}`}
+                          className="font-mono text-xs font-semibold text-accent hover:underline dark:text-accent-muted"
+                        >
+                          {b.id.slice(0, 8)}…
+                        </Link>
+                      </AdminTd>
+                    </AdminTr>
+                  );
+                })}
               </tbody>
             </AdminTable>
           )}
@@ -202,9 +270,19 @@ export function CreatorNetworkAdminPanel({ batches, stats, matchReview, initialB
                       <AdminTd className="hidden text-xs text-muted md:table-cell">
                         {s.username_source ?? "—"}
                       </AdminTd>
-                      <AdminTd className="tabular-nums">{s.coins_earned.toLocaleString()}</AdminTd>
-                      <AdminTd className="tabular-nums">{Number(s.hours_streamed).toFixed(1)}</AdminTd>
-                      <AdminTd className="hidden tabular-nums sm:table-cell">{s.days_streamed}</AdminTd>
+                      <AdminTd className="tabular-nums">
+                        {s.coins_earned == null && s.diamonds_earned == null
+                          ? "—"
+                          : (s.diamonds_earned ?? s.coins_earned)!.toLocaleString()}
+                      </AdminTd>
+                      <AdminTd className="tabular-nums">
+                        {s.hours_streamed == null
+                          ? "—"
+                          : Number(s.hours_streamed).toFixed(1)}
+                      </AdminTd>
+                      <AdminTd className="hidden tabular-nums sm:table-cell">
+                        {s.days_streamed == null ? "—" : s.days_streamed}
+                      </AdminTd>
                       <AdminTd className="hidden lg:table-cell">{s.activeness_level}</AdminTd>
                       <AdminTd className="hidden text-muted xl:table-cell">
                         {s.creator_network_status ?? s.invite_status ?? "—"}

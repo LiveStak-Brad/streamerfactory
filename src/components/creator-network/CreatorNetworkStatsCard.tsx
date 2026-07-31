@@ -62,18 +62,24 @@ export function CreatorNetworkStatsCard({ stats }: Props) {
         <div>
           <dt className="text-xs uppercase tracking-wide text-zinc-500">Diamonds earned</dt>
           <dd className="mt-1 text-lg font-bold text-zinc-950 dark:text-zinc-50">
-            {(stats.diamonds_earned ?? stats.coins_earned ?? 0).toLocaleString()}
+            {stats.diamonds_earned != null || stats.coins_earned != null
+              ? (stats.diamonds_earned ?? stats.coins_earned)!.toLocaleString()
+              : "Not available in today’s sync"}
           </dd>
         </div>
         <div>
           <dt className="text-xs uppercase tracking-wide text-zinc-500">Hours streamed</dt>
           <dd className="mt-1 text-lg font-bold text-zinc-950 dark:text-zinc-50">
-            {Number(stats.hours_streamed).toFixed(1)}
+            {stats.hours_streamed == null
+              ? "Waiting for Activeness data"
+              : Number(stats.hours_streamed).toFixed(1)}
           </dd>
         </div>
         <div>
           <dt className="text-xs uppercase tracking-wide text-zinc-500">Days streamed</dt>
-          <dd className="mt-1 text-lg font-bold text-zinc-950 dark:text-zinc-50">{stats.days_streamed}</dd>
+          <dd className="mt-1 text-lg font-bold text-zinc-950 dark:text-zinc-50">
+            {stats.days_streamed == null ? "Not available" : stats.days_streamed}
+          </dd>
         </div>
         <div>
           <dt className="text-xs uppercase tracking-wide text-zinc-500">Activeness</dt>

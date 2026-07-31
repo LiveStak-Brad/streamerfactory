@@ -31,26 +31,77 @@ export function splitCellLines(text: string): string[] {
 
 /** Grid/table that has Creator + Diamonds columns (Contribution details). */
 export function findCreatorContributionGrid(doc: Document): Element | null {
-  const candidates = [...doc.querySelectorAll('[role="grid"], table')];
+  return findStatsTableContainer(doc, { requireDiamonds: true });
+}
+
+/**
+ * Broad stats/activeness table finder.
+ * Activeness pages may label diamonds differently or split header vs body containers.
+ */
+export function findStatsTableContainer(
+  doc: Document,
+  opts?: { requireDiamonds?: boolean },
+): Element | null {
+  const requireDiamonds = opts?.requireDiamonds === true;
+  const candidates = [
+    ...doc.querySelectorAll(
+      '[role="grid"], table, [class*="semi-table"], [class*="SemiTable"], [class*="table-wrapper"], [class*="TableWrapper"]',
+    ),
+  ];
   let best: Element | null = null;
-  let bestRows = 0;
+  let bestScore = 0;
 
   for (const container of candidates) {
-    const headerEls = [...container.querySelectorAll('[role="columnheader"], thead th')];
+    const headerEls = [
+      ...container.querySelectorAll(
+        '[role="columnheader"], thead th, [class*="column-header"], [class*="ColumnHeader"]',
+      ),
+    ];
     const headerTexts = headerEls.map((h) => (h.textContent ?? "").trim().toLowerCase());
-    const hasDiamonds = headerTexts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
-    const hasCreator = headerTexts.some((h) => /creator|username/i.test(h));
-    if (!hasDiamonds || !hasCreator) continue;
+    if (headerTexts.length === 0) continue;
 
-    const dataRows = [...container.querySelectorAll('[role="row"], tbody tr')].filter(
-      (r) =>
-        !r.querySelector('[role="columnheader"]') &&
-        (r.textContent?.length ?? 0) > 20 &&
-        /\d/.test(r.textContent ?? ""),
+    const hasDiamonds = headerTexts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
+    const hasCreator = headerTexts.some((h) => /creator|username|handle/i.test(h));
+    const hasLiveDays = headerTexts.some((h) =>
+      /valid\s*go\s*live|live\s*days?|days?\s*streamed/i.test(h),
     );
-    if (dataRows.length > bestRows) {
-      bestRows = dataRows.length;
+    const hasDuration = headerTexts.some((h) => /live\s*duration|stream\s*duration|\bhours?\b/i.test(h));
+
+    if (requireDiamonds && (!hasDiamonds || !hasCreator)) continue;
+    if (!requireDiamonds && !(hasCreator && (hasLiveDays || hasDuration || hasDiamonds))) continue;
+
+    const dataRows = [
+      ...container.querySelectorAll(
+        '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"]',
+      ),
+    ].filter(
+      (r) =>
+        !r.querySelector('[role="columnheader"], th') &&
+        (r.textContent?.length ?? 0) > 12,
+    );
+
+    let score = headerTexts.length + dataRows.length * 2;
+    if (hasLiveDays) score += 3;
+    if (hasDuration) score += 3;
+    if (hasDiamonds) score += 2;
+    if (dataRows.length === 0) score += 1; // still useful as header anchor
+
+    if (score > bestScore) {
+      bestScore = score;
       best = container;
+    }
+  }
+
+  // If header-only table won, try nearest sibling/parent that has more rows
+  if (best) {
+    const parent = best.parentElement;
+    if (parent) {
+      const parentRows = [
+        ...parent.querySelectorAll(
+          '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"]',
+        ),
+      ].filter((r) => !r.querySelector('[role="columnheader"], th') && (r.textContent?.length ?? 0) > 12);
+      if (parentRows.length > 0) return parent;
     }
   }
 
@@ -58,8 +109,12 @@ export function findCreatorContributionGrid(doc: Document): Element | null {
 }
 
 export function dataRowsInContainer(container: Element): Element[] {
-  return [...container.querySelectorAll('[role="row"], tbody tr')].filter(
-    (r) => !r.querySelector('[role="columnheader"]') && (r.textContent?.length ?? 0) > 15,
+  return [
+    ...container.querySelectorAll(
+      '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"], [class*="TableRow"]',
+    ),
+  ].filter(
+    (r) => !r.querySelector('[role="columnheader"], th') && (r.textContent?.length ?? 0) > 12,
   );
 }
 

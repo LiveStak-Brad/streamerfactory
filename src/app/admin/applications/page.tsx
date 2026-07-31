@@ -24,7 +24,7 @@ export default async function AdminApplicationsPage() {
       <Container className="max-w-4xl">
         <AdminPageHeader
           title="Applications"
-          description="TikTok Creator Network applications from the public Join page. Confirm Creator Network membership on TikTok before promoting accounts to member."
+          description="TikTok Creator Network applications from the public Join page. Confirm Creator Network membership on TikTok, then Approve or Reject here."
           breadcrumbs={[
             { label: "Admin", href: "/admin" },
             { label: "Applications" },

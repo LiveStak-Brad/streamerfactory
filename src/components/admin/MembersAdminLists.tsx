@@ -34,7 +34,7 @@ export function MembersAdminLists({ applicants, members }: Props) {
       <section>
         <AdminSectionTitle
           title="Pending applicants"
-          description="Only users with role applicant appear here."
+          description="Accounts still marked applicant. You can also Approve from Applications when a form is linked."
         />
         {applicants.length === 0 ? (
           <div className="mt-4">

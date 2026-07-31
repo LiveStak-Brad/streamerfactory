@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { normalizeActiveness } from "@/lib/creator-network/match-profiles";
-import { sanitizeLiveDaysForPeriod } from "@/lib/creator-network/stat-period";
+import { sanitizeLiveDaysForPeriodNullable } from "@/lib/creator-network/stat-period";
 import { parsePlausibleImportedDiamonds } from "@/lib/creator-network/stat-sanity";
 import type { ImportRowPayload } from "@/lib/creator-network/types";
 
@@ -8,19 +8,20 @@ export type MonthlyPerformanceUpsert = {
   profileId: string;
   periodStart: string;
   periodEnd: string;
-  coinsEarned: number;
-  daysStreamed: number;
-  hoursStreamed: number;
+  coinsEarned: number | null;
+  daysStreamed: number | null;
+  hoursStreamed: number | null;
   activenessLevel: string;
 };
 
-function sanitizeHours(hours: number | undefined): number {
-  return Math.round(Math.max(0, Number(hours ?? 0)) * 10) / 10;
+function sanitizeHoursNullable(hours: number | undefined | null): number | null {
+  if (hours === undefined || hours === null || !Number.isFinite(hours)) return null;
+  return Math.round(Math.max(0, hours) * 10) / 10;
 }
 
 /**
- * Mirror the latest monthly Backstage sync into creator_performance_stats
- * (matched profiles only) for admin overrides and DB-backed monthly ranks.
+ * Mirror the latest monthly Backstage activity sync into creator_performance_stats
+ * (matched profiles only). Null metrics stay null — never invent zeros.
  */
 export async function upsertMonthlyPerformanceStatsFromImport(
   supabase: SupabaseClient,
@@ -32,9 +33,9 @@ export async function upsertMonthlyPerformanceStatsFromImport(
     profile_id: r.profileId,
     period_start: r.periodStart,
     period_end: r.periodEnd,
-    coins_earned: Math.max(0, Math.round(r.coinsEarned)),
-    days_streamed: Math.max(0, Math.round(r.daysStreamed)),
-    hours_streamed: sanitizeHours(r.hoursStreamed),
+    coins_earned: r.coinsEarned === null ? null : Math.max(0, Math.round(r.coinsEarned)),
+    days_streamed: r.daysStreamed === null ? null : Math.max(0, Math.round(r.daysStreamed)),
+    hours_streamed: sanitizeHoursNullable(r.hoursStreamed),
     activeness_level: normalizeActiveness(r.activenessLevel),
     follower_count: 0,
     follower_growth: 0,
@@ -55,20 +56,19 @@ export function monthlyPerformanceUpsertFromImportRow(
   periodStart: string,
   periodEnd: string,
 ): MonthlyPerformanceUpsert {
-  const diamonds =
-    parsePlausibleImportedDiamonds(
-      row.diamondsEarned,
-      row.coinsEarned,
-      row.hoursStreamed,
-      row.daysStreamed,
-    ) ?? 0;
+  const diamonds = parsePlausibleImportedDiamonds(
+    row.diamondsEarned,
+    row.coinsEarned,
+    row.hoursStreamed,
+    row.daysStreamed,
+  );
   return {
     profileId,
     periodStart,
     periodEnd,
     coinsEarned: diamonds,
-    daysStreamed: sanitizeLiveDaysForPeriod(row.daysStreamed),
-    hoursStreamed: sanitizeHours(row.hoursStreamed),
+    daysStreamed: sanitizeLiveDaysForPeriodNullable(row.daysStreamed),
+    hoursStreamed: sanitizeHoursNullable(row.hoursStreamed),
     activenessLevel: row.activenessLevel ?? "none",
   };
 }

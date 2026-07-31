@@ -1,6 +1,6 @@
 /**
- * Gold-standard printable packs for Battles & Collaboration lessons 15–16
- * (understanding-battles, preparing-for-your-first-battle).
+ * Gold-standard printable packs for Battles & Collaboration lessons 15–19
+ * (understanding-battles through building-battle-partners).
  * Matches the depth of the Beginner Foundations / Live Streaming Mastery packs.
  */
 
@@ -208,6 +208,239 @@ export const BATTLES_RESOURCES: LibraryResource[] = [
       {
         type: "callout",
         text: "A battle that only exists in a screenshot of a DM is easy to forget, double-book, or dispute later. Once you're ready to book for real, Battle Hub's scheduler is the source of truth.",
+      },
+    ],
+  },
+
+  // —— Running your first battle ——
+  {
+    id: "battle-week-checklist",
+    title: "Battle Week Checklist",
+    description:
+      "Scheduling, explicit partner confirmation, day-of promotion, and hosting structure for the week you run your first real battle.",
+    category: "battles",
+    kind: "checklist",
+    status: "ready",
+    lessonSlugs: ["structure-your-first-battle-week"],
+    blocks: [
+      {
+        type: "intro",
+        text: "This is game day, not another rehearsal. Work through this before you promote anything, and keep it visible during the battle itself.",
+      },
+      {
+        type: "checkbox_list",
+        title: "Scheduling & confirmation",
+        items: [
+          "Battle scheduled in Battle Hub with a real date, start time, and format visible to the network",
+          "Explicit yes received from your partner — 'confirmed, see you then,' not a soft maybe",
+          "Reschedule plan and tone boundaries already agreed on from your partner agreement",
+        ],
+      },
+      {
+        type: "fill_lines",
+        title: "Day-of promotion timeline",
+        lines: [
+          { label: "Announcement video (posted day before or morning of)", rows: 1 },
+          { label: "Hashtags used (3–5, specific and relevant)", rows: 1 },
+          { label: "Story reminder (time visible)", rows: 1 },
+          { label: "Optional cross-post closer to start time", rows: 1 },
+        ],
+      },
+      {
+        type: "checkbox_list",
+        title: "Hosting shape — Open, Play, Recover, Close",
+        items: [
+          "Open: welcomed both rooms, named the format, set the tone",
+          "Play: called scoreboard swings with steady energy in either direction",
+          "Recover: used gaps between rounds deliberately — recap, thank-you, setup",
+          "Close: thanked opponent by name, thanked both chats, named what's next",
+        ],
+      },
+      {
+        type: "callout",
+        text: "The single rule this week: no ghosting. If something goes wrong, say so out loud and finish the commitment — communicating through a problem is professional, disappearing is not.",
+      },
+    ],
+  },
+  {
+    id: "three-question-debrief-card",
+    title: "Three-Question Debrief Card",
+    description:
+      "The same-night debrief framework that turns one battle into real, trackable improvement instead of a vibe check.",
+    category: "battles",
+    kind: "journal",
+    status: "ready",
+    lessonSlugs: ["structure-your-first-battle-week", "improving-battle-performance"],
+    blocks: [
+      {
+        type: "intro",
+        text: "Fill this out within an hour of ending the LIVE, while the match is still fresh. Skipping this is the single most common reason creators battle repeatedly without visibly improving.",
+      },
+      {
+        type: "fill_lines",
+        title: "Tonight's debrief",
+        lines: [
+          { label: "What worked?", rows: 2 },
+          { label: "What's one specific thing that didn't, or could be better?", rows: 2 },
+          { label: "What will I test next time?", rows: 2 },
+        ],
+      },
+      {
+        type: "callout",
+        text: "One specific, testable change compounds fast across five or six matches. Ten vague ones don't compound at all — they just create a pile of guilt. Pick one.",
+      },
+      {
+        type: "notes",
+        title: "Next battle: did the fix I tested actually work?",
+        lines: 3,
+      },
+    ],
+  },
+
+  // —— Improving battle performance ——
+  {
+    id: "battle-iteration-log",
+    title: "Battle Iteration Log",
+    description:
+      "Track battles over time — date, partner, tested change, result — so you respond to real patterns instead of one outlier.",
+    category: "battles",
+    kind: "tracker",
+    status: "ready",
+    lessonSlugs: ["improving-battle-performance"],
+    blocks: [
+      {
+        type: "intro",
+        text: "One battle tells you almost nothing reliable. Five battles, logged and reviewed, tell you a lot. Log every match here, even briefly.",
+      },
+      {
+        type: "table",
+        title: "Battle log",
+        columns: ["Date", "Partner", "One thing tested", "Result / what happened"],
+        rows: 6,
+      },
+      {
+        type: "checkbox_list",
+        title: "Review every 3–5 battles",
+        items: [
+          "Do I consistently lose energy in a specific round?",
+          "Does a particular type of energy call reliably get a response?",
+          "Are certain partners consistently more collaborative than others?",
+        ],
+      },
+      {
+        type: "callout",
+        text: "Treat each battle as one rep in a longer pattern, not a referendum on your ability. Recovery time between battles is part of the improvement loop, not a break from it.",
+      },
+    ],
+  },
+  {
+    id: "healthy-vs-toxic-ask-reference",
+    title: "Healthy vs. Toxic Ask Language Reference Sheet",
+    description:
+      "The momentum-vs-begging distinction with example phrases, plus the removal test to run on your own language mid-stream.",
+    category: "battles",
+    kind: "guide",
+    status: "ready",
+    lessonSlugs: ["improving-battle-performance"],
+    blocks: [
+      {
+        type: "intro",
+        text: "Momentum is energy-forward and inclusive. Begging is need-forward and exclusionary. Keep this nearby until the distinction is automatic.",
+      },
+      {
+        type: "table",
+        title: "Momentum vs. begging examples",
+        columns: ["Healthy momentum", "Toxic pressure (avoid)"],
+        rows: 4,
+        hint: "Example: 'We're closing the gap fast, I think we've got this' vs. 'Come on, nobody's gifted in five minutes.'",
+      },
+      {
+        type: "checkbox_list",
+        title: "The removal test",
+        items: [
+          "Would this line still make sense if I removed all mention of gifting?",
+          "If it collapses into nothing without the ask attached, rewrite it before saying it again.",
+        ],
+      },
+      {
+        type: "callout",
+        text: "Say thank you before you ask for anything else, every single time. Protect what worked just as carefully as you fix what didn't.",
+      },
+    ],
+  },
+
+  // —— Building battle partners ——
+  {
+    id: "battle-finder-outreach-template",
+    title: "Battle Finder Outreach Message Template",
+    description:
+      "A specific, low-pressure first-contact script for reaching new partners through Battle Finder.",
+    category: "battles",
+    kind: "template",
+    status: "ready",
+    lessonSlugs: ["building-battle-partners"],
+    blocks: [
+      {
+        type: "intro",
+        text: "A specific first message gets a faster, clearer answer than an open-ended one, and signals you're someone who plans.",
+      },
+      {
+        type: "fill_lines",
+        title: "First outreach message",
+        lines: [
+          { label: "Who you are / what you do", rows: 1 },
+          { label: "Why your styles or audience sizes fit", rows: 1 },
+          { label: "One concrete day range or format proposed", rows: 1 },
+        ],
+      },
+      {
+        type: "checkbox_list",
+        title: "Fit checklist before you reach out",
+        items: [
+          "Similar audience size",
+          "Overlapping availability",
+          "Complementary, not directly competing, content style",
+        ],
+      },
+      {
+        type: "callout",
+        text: "Battle Hub is a relationship tool, not just a scoreboard. Use it the way you'd use a real professional network — specific asks, honest follow-through.",
+      },
+    ],
+  },
+  {
+    id: "partner-reliability-tracker",
+    title: "Partner Reliability Tracker",
+    description:
+      "Track name, date, effort match, and follow-through across collaborations so your go-to bench is built on evidence, not one impression.",
+    category: "battles",
+    kind: "tracker",
+    status: "ready",
+    lessonSlugs: ["building-battle-partners"],
+    blocks: [
+      {
+        type: "table",
+        title: "Partner log",
+        columns: ["Name", "Date", "Promotion / energy match", "Followed through on next step?"],
+        rows: 6,
+      },
+      {
+        type: "checkbox_list",
+        title: "Every collab-forward session",
+        items: [
+          "Gave at least one specific, genuine shout-out early in the session",
+          "Gave a second shout-out near the close",
+          "Asked directly, on camera, for a next collab before ending",
+        ],
+      },
+      {
+        type: "callout",
+        text: "Reputation compounds whether you notice it or not. A creator known for reliability gets asked back — a creator known for flakiness gets quietly removed from people's shortlist.",
+      },
+      {
+        type: "notes",
+        title: "Reciprocity check-in — is promotional effort roughly balanced?",
+        lines: 2,
       },
     ],
   },

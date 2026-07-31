@@ -20,7 +20,7 @@ This lesson opens Growth & Monetization, and it exists to fix a real gap: most b
 Sequence you are in:
 
 - **Previous:** completed Battles & Collaboration — structure, sportsmanship, and a real partner pipeline
-- **This lesson:** understand how gifting works and why people actually gift, so you can talk about it with confidence instead of anxiety
+- **This lesson:** understand how gifting works and why people gift, so you can talk about it with confidence
 - **Next:** design specific, honest reasons for viewers to want to support your LIVE
 
 Everything in this program assumes you can run a full LIVE with structure and presence — skills you built across earlier programs. Monetization is not a separate personality you switch into. It's one more thing a well-run room can include naturally.
@@ -174,11 +174,11 @@ This mission asks you to run a normal, well-hosted LIVE that happens to include 
 
 **What you will do**
 
-1. Write one transparent goal in advance: what you're working toward and why it matters to you.
+1. Write one transparent goal in advance: what you're working toward and why.
 2. Go LIVE for **60+ minutes**.
-3. State the goal once near the start, in a single honest sentence, then let it sit in the background.
+3. State the goal once near the start, then let it sit in the background.
 4. Practice your gratitude rotation on every gift that comes in, regardless of size.
-5. Throughout the session, self-check your language against the momentum test.
+5. Self-check your language against the momentum test throughout the session.
 
 **What success looks like**
 
@@ -210,9 +210,9 @@ Read every explanation — wrong answers teach as much as right ones.
 
 - The gifting flow is simple: real money → coins → gifts → creator value
 - People gift for recognition, status, reciprocity, belonging, and genuine support
-- State a transparent goal once, then let it sit in the background of the stream
-- Gratitude is a practiced, varied skill that should scale evenly across gift sizes
-- Momentum invites; begging pressures — run the removal test on your own language
+- State a transparent goal once, then let it sit in the background
+- Gratitude is a practiced, varied skill that scales evenly across gift sizes
+- Momentum invites; begging pressures — run the removal test on your language
 - Never quote exact payout numbers you're not certain of
 - This lesson is education, not a sales technique
 

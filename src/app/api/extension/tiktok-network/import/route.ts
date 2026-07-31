@@ -40,8 +40,9 @@ export async function POST(request: Request) {
   }
   const result = imported as ImportResult;
 
-  const updatesRankings = parsed.data.detectedPageType === "creator_stats";
-  if (updatesRankings && result.acceptedRows > 0) {
+  const datasetType = parsed.data.datasetType ?? parsed.data.detectedPageType;
+  const updatesRankings = datasetType === "activity_incentive" || datasetType === "creator_stats";
+  if (updatesRankings && result.acceptedRows > 0 && !result.syncBlocked) {
     revalidateCreatorNetworkSitePages();
   }
   if ((result.liveRowsAccepted ?? 0) > 0) {
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ...result,
-    siteUpdated: updatesRankings && result.acceptedRows > 0,
+    siteUpdated: updatesRankings && result.acceptedRows > 0 && !result.syncBlocked,
     rankingsPath: "/rankings",
   });
 }

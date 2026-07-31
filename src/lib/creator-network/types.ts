@@ -1,10 +1,19 @@
 import type { ActivenessLevel } from "@/lib/rankings/types";
+import type { DatasetType } from "@/lib/creator-network/dataset-types";
+import type { MetricField } from "@/lib/creator-network/metric-field";
+import type { RosterDiffPreview } from "@/lib/creator-network/roster-diff";
 
+/** @deprecated Prefer DatasetType — kept for wire compatibility. */
 export const DETECTED_PAGE_TYPES = [
   "manage_relationship",
   "creator_stats",
   "live_now",
   "unknown",
+  "activity_incentive",
+  "rank_up_incentive",
+  "incremental_incentive",
+  "creator_roster",
+  "workspace_metrics",
 ] as const;
 
 export type DetectedPageType = (typeof DETECTED_PAGE_TYPES)[number];
@@ -16,11 +25,18 @@ export type ImportRowPayload = {
   usernameSource?: "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
   displayName?: string;
   avatarUrl?: string;
+  tiktokCreatorId?: string;
   coinsEarned?: number;
   diamondsEarned?: number;
   engagements?: number;
   daysStreamed?: number;
   hoursStreamed?: number;
+  /** Explicit metric fields (preferred over bare numbers). */
+  coinsEarnedField?: MetricField<number>;
+  diamondsEarnedField?: MetricField<number>;
+  engagementsField?: MetricField<number>;
+  daysStreamedField?: MetricField<number>;
+  hoursStreamedField?: MetricField<number>;
   liveDurationText?: string;
   liveDurationSeconds?: number;
   activenessLevel?: string;
@@ -30,6 +46,12 @@ export type ImportRowPayload = {
   riskFlag?: string;
   relationshipReason?: string;
   relationshipRequestDate?: string;
+  /** Rank-up incentive fields */
+  tierCurrent?: string;
+  tierPrevious?: string;
+  rankUpStatus?: string;
+  maintainTierStatus?: string;
+  estimatedContribution?: string;
 };
 
 export type LiveRowPayload = {
@@ -46,6 +68,9 @@ export type LiveRowPayload = {
 
 export type ImportPayload = {
   sourcePageUrl: string;
+  /** Canonical dataset type (preferred). */
+  datasetType?: string;
+  /** Legacy / display page type. */
   detectedPageType: string;
   relationshipTab?: string;
   statPeriodLabel?: string;
@@ -55,6 +80,16 @@ export type ImportPayload = {
   statPeriodKind?: "monthly" | "weekly";
   rows: ImportRowPayload[];
   liveRows?: LiveRowPayload[];
+  parserVersion?: string;
+  extensionVersion?: string;
+  confidence?: number;
+  matchedSignals?: string[];
+  missingSignals?: string[];
+  validationWarnings?: string[];
+  validationFailures?: string[];
+  capturedAt?: string;
+  /** Client aborted — record batch, write nothing. */
+  syncBlocked?: boolean;
 };
 
 export type ImportBatchRow = {
@@ -71,6 +106,17 @@ export type ImportBatchRow = {
   error_message: string | null;
   created_at: string;
   completed_at: string | null;
+  dataset_type?: string | null;
+  parser_version?: string | null;
+  extension_version?: string | null;
+  confidence?: number | null;
+  validation_warnings?: string[] | null;
+  validation_failures?: string[] | null;
+  matched_signals?: string[] | null;
+  captured_at?: string | null;
+  fields_updated?: string[] | null;
+  fields_preserved?: string[] | null;
+  roster_diff_preview?: RosterDiffPreview | null;
 };
 
 export type MemberStatRow = {
@@ -84,13 +130,13 @@ export type MemberStatRow = {
   username_source: string | null;
   avatar_url: string | null;
   creator_network_status: string | null;
-  coins_earned: number;
-  diamonds_earned: number;
-  engagements: number;
-  days_streamed: number;
-  hours_streamed: number;
+  coins_earned: number | null;
+  diamonds_earned: number | null;
+  engagements: number | null;
+  days_streamed: number | null;
+  hours_streamed: number | null;
   activeness_level: ActivenessLevel;
-  live_duration_seconds: number;
+  live_duration_seconds: number | null;
   invite_status: string | null;
   violation_status: string | null;
   risk_flag: string | null;
@@ -104,6 +150,7 @@ export type MemberStatRow = {
   imported_at: string;
   created_at: string;
   updated_at: string;
+  dataset_type?: string | null;
 };
 
 export type LiveSnapshotRow = {
@@ -142,15 +189,15 @@ export type MemberSafeStatView = {
   tiktok_display_name: string | null;
   avatar_url: string | null;
   activeness_level: ActivenessLevel;
-  days_streamed: number;
-  hours_streamed: number;
+  days_streamed: number | null;
+  hours_streamed: number | null;
   creator_network_status: string | null;
   invite_status: string | null;
   imported_at: string;
   /** Only populated when viewing own stats. */
-  coins_earned?: number;
-  diamonds_earned?: number;
-  engagements?: number;
+  coins_earned?: number | null;
+  diamonds_earned?: number | null;
+  engagements?: number | null;
 };
 
 export type ImportResult = {
@@ -163,4 +210,9 @@ export type ImportResult = {
   liveRowsAccepted?: number;
   /** Rankings mirror failed (table missing) but import rows may have saved. */
   performanceStatsWarning?: string;
+  datasetType?: DatasetType | string;
+  syncBlocked?: boolean;
+  rosterDiff?: RosterDiffPreview;
+  fieldsUpdated?: string[];
+  fieldsPreserved?: string[];
 };

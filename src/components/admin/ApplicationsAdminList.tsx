@@ -245,7 +245,11 @@ export function ApplicationsAdminList({ rows }: Props) {
                     </p>
                   ) : null}
                 </div>
-                <ApplicationStatusAdminControls applicationId={app.id} status={app.status} />
+                <ApplicationStatusAdminControls
+                  applicationId={app.id}
+                  userId={app.user_id}
+                  status={app.status}
+                />
                 <ApplicationDeleteButton applicationId={app.id} />
               </AdminPanel>
             </li>

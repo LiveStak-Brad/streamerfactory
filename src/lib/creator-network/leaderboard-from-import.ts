@@ -19,7 +19,8 @@ import { normalizeHandle, resolveCanonicalHandle } from "@/lib/rankings/backstag
 import { assignRanks, computeRankings } from "@/lib/rankings/scoring";
 import type { ActivenessLevel, LeaderboardEntry, RankingPeriod } from "@/lib/rankings/types";
 
-const STATS_PAGE_TYPES = ["creator_stats"] as const;
+/** Activity incentive writes rankings. Legacy creator_stats batches still count. */
+const STATS_PAGE_TYPES = ["activity_incentive", "creator_stats"] as const;
 
 export type CreatorNetworkSyncMeta = {
   importedAt: string;

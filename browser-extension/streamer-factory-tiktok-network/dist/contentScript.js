@@ -46,247 +46,51 @@
     };
   }
 
-  // src/parser/detectPage.ts
-  var BACKSTAGE_HOSTS = ["live-backstage.tiktok.com", "seller-us.tiktok.com", "seller.tiktok.com"];
-  function isTikTokCreatorNetworkHost(url) {
-    try {
-      const u = new URL(url);
-      return BACKSTAGE_HOSTS.some((h) => u.hostname === h || u.hostname.endsWith(`.${h}`));
-    } catch {
-      return false;
-    }
-  }
-  function readActiveRelationshipTab(doc) {
-    if (typeof doc.querySelector !== "function") return void 0;
-    const tabSelectors = [
-      '[role="tab"][aria-selected="true"]',
-      ".semi-tabs-tab-active",
-      '[class*="tab"][class*="active"]',
-      '[class*="Tab"][class*="active"]'
-    ];
-    for (const sel of tabSelectors) {
-      const el = doc.querySelector(sel);
-      const text = el?.textContent?.trim();
-      if (text && text.length < 40) return text.replace(/\d+/g, "").trim();
-    }
-    return void 0;
-  }
-  function readPeriodLabel(doc) {
-    if (typeof doc.querySelectorAll !== "function") return void 0;
-    const headings = Array.from(doc.querySelectorAll("h1, h2, h3, [class*='title'], [class*='Title']"));
-    for (const h of headings) {
-      const t = h.textContent?.trim() ?? "";
-      if (/contribution|performance|creator|week|month|period/i.test(t) && t.length < 120) {
-        return t;
-      }
-    }
-    return void 0;
-  }
-  function withStatPeriod(doc, base) {
-    if (base.detectedPageType !== "creator_stats" && base.detectedPageType !== "manage_relationship") {
-      return base;
-    }
-    const period = resolveStatPeriodForSync(doc, base.statPeriodLabel);
-    return {
-      ...base,
-      statPeriodLabel: period.statPeriodLabel ?? base.statPeriodLabel,
-      statPeriodKind: period.statPeriodKind,
-      statPeriodStart: period.statPeriodStart,
-      statPeriodEnd: period.statPeriodEnd
-    };
-  }
-  function detectTikTokCreatorNetworkPage(url, doc = document) {
-    if (!isTikTokCreatorNetworkHost(url)) {
-      return { detectedPageType: "unknown" };
-    }
-    let path = "";
-    try {
-      path = new URL(url).pathname.toLowerCase();
-    } catch {
-      path = "";
-    }
-    const title = doc.title.toLowerCase();
-    const bodyText = (doc.body?.innerText ?? doc.body?.textContent ?? "").slice(0, 4e3).toLowerCase();
-    if (path.includes("/anchor/live") || path.includes("/live-now") || path.includes("livenow") || path.includes("/live") && !path.includes("/relation") || title.includes("live now") || bodyText.includes("creators who are live now") || bodyText.includes("promote their live")) {
-      return { detectedPageType: "live_now" };
-    }
-    if (path.includes("/revenue") || path.includes("/incentive") || path.includes("/performance") || path.includes("/contribution") || path.includes("/data/") || path.includes("/analytics") || title.includes("incentive") || title.includes("performance") || title.includes("contribution") || bodyText.includes("contribution details") || bodyText.includes("estimated bonus") || bodyText.includes("valid go live") || bodyText.includes("activeness incentive")) {
-      return withStatPeriod(doc, {
-        detectedPageType: "creator_stats",
-        statPeriodLabel: readPeriodLabel(doc),
-        relationshipTab: readActiveRelationshipTab(doc)
-      });
-    }
-    if (path.includes("/relation") || path.includes("/relationship") || title.includes("manage relationship")) {
-      return {
-        detectedPageType: "manage_relationship",
-        relationshipTab: readActiveRelationshipTab(doc)
-      };
-    }
-    if (path.includes("/creator") || bodyText.includes("coins earned") || bodyText.includes("diamonds")) {
-      return withStatPeriod(doc, {
-        detectedPageType: "creator_stats",
-        statPeriodLabel: readPeriodLabel(doc),
-        relationshipTab: readActiveRelationshipTab(doc)
-      });
-    }
-    return { detectedPageType: "unknown" };
-  }
-
-  // src/parser/avatar.ts
-  function avatarFromRow(row) {
-    const cells = row.querySelectorAll('[role="cell"], td');
-    const creatorCell = cells[0] ?? row;
-    return pickBestAvatarUrl(creatorCell) ?? pickBestAvatarUrl(row);
-  }
-  function pickBestAvatarUrl(root) {
-    const candidates = [];
-    for (const img of root.querySelectorAll("img")) {
-      const url = bestImgSrc(img);
-      if (!url) continue;
-      candidates.push({ url, score: scoreAvatarImg(img, url, root) });
-    }
-    for (const source of root.querySelectorAll("picture source[srcset], picture source[src]")) {
-      const url = bestImgSrc(source);
-      if (url) candidates.push({ url, score: scoreAvatarImg(source, url, root) + 1 });
-    }
-    const lazyHost = root.querySelector("[data-src], [data-lazy-src], [data-original]");
-    if (lazyHost) {
-      const url = bestImgSrc(lazyHost);
-      if (url) candidates.push({ url, score: scoreAvatarImg(lazyHost, url, root) });
-    }
-    const withBg = root.querySelector("[style*='background-image']");
-    const bg = withBg?.style?.backgroundImage;
-    if (bg) {
-      const m = bg.match(/url\(["']?([^"')]+)["']?\)/i);
-      if (m?.[1] && isUsableAvatarUrl(m[1])) {
-        candidates.push({ url: m[1], score: scoreAvatarImg(withBg, m[1], root) + 2 });
-      }
-    }
-    candidates.sort((a, b) => b.score - a.score);
-    return candidates[0]?.url;
-  }
-  function scoreAvatarImg(el, url, root) {
-    let score = 0;
-    const lowerUrl = url.toLowerCase();
-    const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
-    if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
-    if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
-    if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
-    const w = parseInt(el.getAttribute("width") ?? "", 10);
-    const h = parseInt(el.getAttribute("height") ?? "", 10);
-    if (!Number.isNaN(w) && w >= 28 && w <= 96) score += 4;
-    if (!Number.isNaN(h) && h >= 28 && h <= 96) score += 4;
-    if (!Number.isNaN(w) && w > 120 || !Number.isNaN(h) && h > 120) score -= 4;
-    if (root.matches('[role="cell"], td') || root.querySelector('[role="cell"]')?.contains(el)) {
-      score += 3;
-    }
-    if (/tiktokcdn|ibytedapm|byteimg/i.test(lowerUrl)) score += 2;
-    return score;
-  }
-  function bestImgSrc(el) {
-    const attrs = ["src", "data-src", "data-lazy-src", "data-original", "data-url"];
-    for (const attr of attrs) {
-      const v = el.getAttribute(attr)?.trim();
-      if (v && isUsableAvatarUrl(v)) return v;
-    }
-    const srcset = el.getAttribute("srcset");
-    if (srcset) {
-      const first = srcset.split(",")[0]?.trim().split(/\s+/)[0]?.trim();
-      if (first && isUsableAvatarUrl(first)) return first;
-    }
-    return void 0;
-  }
-  function isUsableAvatarUrl(url) {
-    if (!url || url.startsWith("data:") || url.startsWith("blob:") || url.length < 12) return false;
-    if (/placeholder|blank|1x1|sprite|favicon/i.test(url)) return false;
-    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
-  }
-
-  // src/parser/dom-deep.ts
-  function isDocumentNode(root) {
-    return root.nodeType === 9;
-  }
-  function isShadowRootNode(node) {
-    return node.nodeType === 11;
-  }
-  function deepQueryAll(root, selector) {
-    const results = [];
-    const seen = /* @__PURE__ */ new Set();
-    function visit(node) {
-      if (node.nodeType === 1) {
-        const el = node;
-        el.querySelectorAll(selector).forEach((match) => {
-          if (!seen.has(match)) {
-            seen.add(match);
-            results.push(match);
-          }
-        });
-        el.querySelectorAll("*").forEach((child) => {
-          if (child.shadowRoot) visit(child.shadowRoot);
-        });
-        return;
-      }
-      if (isDocumentNode(node)) {
-        visit(node.documentElement);
-        return;
-      }
-      if (isShadowRootNode(node)) {
-        const sr = node;
-        sr.querySelectorAll(selector).forEach((match) => {
-          if (!seen.has(match)) {
-            seen.add(match);
-            results.push(match);
-          }
-        });
-        sr.querySelectorAll("*").forEach((child) => {
-          if (child.shadowRoot) visit(child.shadowRoot);
-        });
-      }
-    }
-    if (isDocumentNode(root)) visit(root);
-    else {
-      if (!seen.has(root) && root.matches(selector)) {
-        seen.add(root);
-        results.push(root);
-      }
-      visit(root);
-      if (root.shadowRoot) visit(root.shadowRoot);
-    }
-    return results;
-  }
-  function isNodeInside(el, scope) {
-    if (isDocumentNode(scope)) {
-      return scope.documentElement.contains(el);
-    }
-    let node = el;
-    while (node) {
-      if (node === scope) return true;
-      if (isShadowRootNode(node)) {
-        node = node.host;
-        continue;
-      }
-      node = node.parentNode;
-    }
+  // src/parser/username.ts
+  var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive|nogroup|no_?group|effective|total|summary|aggregate|ungrouped|all|estimated|contribution|duration|incentive|valid|maintain|tier|rank|status|joined|followers?|likes?|username|items?|page|transfer|activeness|activity)$/i;
+  var BACKSTAGE_HEADER_PHRASE_RE = /estimated\s*bonus|bonus\s*contribution|valid\s*go\s*live|live\s*duration|stream\s*duration|incentive\s*days?|activeness\s*incentive|relationship\s*status|items?\s*per\s*page|transfer\s*creators?/i;
+  var BACKSTAGE_UI_HANDLES = /* @__PURE__ */ new Set([
+    "estimatedbonuscontribution",
+    "estimatedbonus",
+    "bonuscontribution",
+    "validgolivedays",
+    "validgolive",
+    "golivedays",
+    "livedays",
+    "liveduration",
+    "streamduration",
+    "incentivedays",
+    "eligibleincentivedays",
+    "activenessincentive",
+    "activityincentive",
+    "relationshipstatus",
+    "creatorusername",
+    "itemsperpage",
+    "transfercreators",
+    "diamonds",
+    "engagements",
+    "interactions"
+  ]);
+  function isBackstageUiHandle(raw) {
+    if (!raw) return true;
+    const compact = raw.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (!compact) return true;
+    if (BACKSTAGE_UI_HANDLES.has(compact)) return true;
+    if (compact.includes("bonus") && compact.includes("contribution")) return true;
+    if (compact.includes("valid") && compact.includes("live") && compact.includes("day")) return true;
+    if (compact.includes("live") && compact.includes("duration")) return true;
+    if (compact.includes("incentive") && compact.includes("day")) return true;
+    if (compact.includes("estimated") && compact.includes("bonus")) return true;
+    if (compact.includes("activeness") && compact.includes("incentive")) return true;
+    if (compact.includes("relationship") && compact.includes("status")) return true;
     return false;
   }
-
-  // src/parser/live-card-stats.ts
-  function elementVisibleText(el) {
-    const html = el;
-    return (html.innerText ?? el.textContent ?? "").trim();
+  function isBackstageHeaderText(text) {
+    if (!text) return false;
+    if (BACKSTAGE_HEADER_PHRASE_RE.test(text)) return true;
+    const compact = text.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return BACKSTAGE_UI_HANDLES.has(compact) || isBackstageUiHandle(compact);
   }
-  function textHasLiveCardStats(text) {
-    const t = text.trim();
-    if (t.length < 12) return false;
-    const hasLive = /live\s*(?:time|dur(?:ation)?)/i.test(t) || /\blive\b[^\n]{0,24}\d+\s*[hms]\b/i.test(t);
-    const hasEarnings = /diamonds?|gifts?|coins?\s*earned/i.test(t);
-    const hasAudience = /viewers?|watching|current\s*viewers?|audience/i.test(t);
-    return hasLive && hasEarnings && hasAudience;
-  }
-
-  // src/parser/username.ts
-  var RESERVED_HANDLE_WORDS = /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive)$/i;
   function stripBadgeText(text) {
     return text.replace(/\bno\s*level\b/gi, "\n").replace(/\blevel\s*\d+\b/gi, "\n").replace(/\bnotable\b/gi, "\n").replace(/\beligible\b/gi, "\n").replace(/\b(eligible|notable|inactive|invited|removed|following|quit|new|view\s*details?)\b/gi, "\n").replace(/\b(activeness|activity)\s*(incentive|level)?\b/gi, "\n");
   }
@@ -312,7 +116,9 @@
     let t = stripGluedBadgeSuffix(compact.toLowerCase());
     if (!/^[a-z0-9._]{2,40}$/.test(t)) return void 0;
     if (RESERVED_HANDLE_WORDS.test(t)) return void 0;
+    if (isBackstageUiHandle(t)) return void 0;
     if (/^\d+$/.test(t)) return void 0;
+    if (/^[\d.]+v[s.]?$/i.test(t) || /^0\.?\d*v?s?\.?$/i.test(t)) return void 0;
     if (!/[a-z]/.test(t)) return void 0;
     if (!/[_.]/.test(t) && !/\d/.test(t) && t.length < 6) return void 0;
     return t;
@@ -407,6 +213,1067 @@
   }
   function extractUsernameFromText(text) {
     return extractUsernameWithConfidence(text).username;
+  }
+
+  // src/parser/numbers.ts
+  function normalizeNumericText(raw) {
+    return raw.trim().replace(/[\u00a0\u202f]/g, " ").replace(/,/g, "").replace(/(\d)\s+(?=\d)/g, "$1");
+  }
+  function parseCompactNumber(raw) {
+    if (!raw) return void 0;
+    const t = normalizeNumericText(raw);
+    if (!t) return void 0;
+    const m = t.match(/^([+-]?\d+(?:\.\d+)?)\s*([kmb])?$/i);
+    if (!m) {
+      const digits = t.replace(/[^\d.-]/g, "");
+      if (!digits) return void 0;
+      const n = Number(digits);
+      return Number.isFinite(n) ? Math.round(n) : void 0;
+    }
+    const base = Number(m[1]);
+    if (!Number.isFinite(base)) return void 0;
+    const suffix = (m[2] ?? "").toLowerCase();
+    let mult = 1;
+    if (suffix === "k") mult = 1e3;
+    if (suffix === "m") mult = 1e6;
+    if (suffix === "b") mult = 1e9;
+    return Math.round(base * mult);
+  }
+  function isPlainFormattedNumber(text) {
+    return /^[\s$€£+-]*[\d,.\s]+[kmb]?$/i.test(text.trim());
+  }
+  function firstCompactNumber(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return void 0;
+    if (isPlainFormattedNumber(trimmed)) {
+      const direct = parseCompactNumber(trimmed);
+      if (direct !== void 0) return direct;
+    }
+    const noCommas = trimmed.replace(/,/g, "");
+    const m = noCommas.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
+    if (!m) return void 0;
+    return parseCompactNumber(`${m[1]}${m[2] ?? ""}`);
+  }
+  function isNonDiamondStatCell(cell) {
+    const t = cell.trim();
+    if (!t) return true;
+    if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
+    if (/^\$[\d,.]+$/.test(t)) return true;
+    if (/^\blevel\s*\d/i.test(t)) return true;
+    if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
+    if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
+    return false;
+  }
+  function isNumericStatCell(cell) {
+    const t = cell.trim();
+    if (!t || isNonDiamondStatCell(t)) return false;
+    return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
+  }
+  function parseStatNumber(cell) {
+    if (isNonDiamondStatCell(cell)) return void 0;
+    return parseCompactNumber(cell) ?? firstCompactNumber(cell);
+  }
+
+  // src/parser/gridTable.ts
+  function readCellText(cell) {
+    const bits = [];
+    for (const attr of ["aria-label", "title"]) {
+      const v = cell.getAttribute(attr)?.trim();
+      if (v) bits.push(v);
+    }
+    const text = (cell.textContent ?? "").trim();
+    if (text) bits.push(text);
+    return [...new Set(bits)].join(" ").trim();
+  }
+  function readStatCellText(cell) {
+    const visible = (cell.textContent ?? "").trim();
+    if (visible) return visible;
+    return cell.getAttribute("aria-label")?.trim() ?? cell.getAttribute("title")?.trim() ?? "";
+  }
+  function splitCellLines(text) {
+    return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
+  }
+  function findCreatorContributionGrid(doc) {
+    return findStatsTableContainer(doc, { requireDiamonds: true });
+  }
+  function findStatsTableContainer(doc, opts) {
+    const requireDiamonds = opts?.requireDiamonds === true;
+    const candidates = [
+      ...doc.querySelectorAll(
+        '[role="grid"], table, [class*="semi-table"], [class*="SemiTable"], [class*="table-wrapper"], [class*="TableWrapper"]'
+      )
+    ];
+    let best = null;
+    let bestScore = 0;
+    for (const container of candidates) {
+      const headerEls = [
+        ...container.querySelectorAll(
+          '[role="columnheader"], thead th, [class*="column-header"], [class*="ColumnHeader"]'
+        )
+      ];
+      const headerTexts = headerEls.map((h) => (h.textContent ?? "").trim().toLowerCase());
+      if (headerTexts.length === 0) continue;
+      const hasDiamonds = headerTexts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
+      const hasCreator = headerTexts.some((h) => /creator|username|handle/i.test(h));
+      const hasLiveDays = headerTexts.some(
+        (h) => /valid\s*go\s*live|live\s*days?|days?\s*streamed/i.test(h)
+      );
+      const hasDuration = headerTexts.some((h) => /live\s*duration|stream\s*duration|\bhours?\b/i.test(h));
+      if (requireDiamonds && (!hasDiamonds || !hasCreator)) continue;
+      if (!requireDiamonds && !(hasCreator && (hasLiveDays || hasDuration || hasDiamonds))) continue;
+      const dataRows = [
+        ...container.querySelectorAll(
+          '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"]'
+        )
+      ].filter(
+        (r) => !r.querySelector('[role="columnheader"], th') && (r.textContent?.length ?? 0) > 12
+      );
+      let score = headerTexts.length + dataRows.length * 2;
+      if (hasLiveDays) score += 3;
+      if (hasDuration) score += 3;
+      if (hasDiamonds) score += 2;
+      if (dataRows.length === 0) score += 1;
+      if (score > bestScore) {
+        bestScore = score;
+        best = container;
+      }
+    }
+    if (best) {
+      const parent = best.parentElement;
+      if (parent) {
+        const parentRows = [
+          ...parent.querySelectorAll(
+            '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"]'
+          )
+        ].filter((r) => !r.querySelector('[role="columnheader"], th') && (r.textContent?.length ?? 0) > 12);
+        if (parentRows.length > 0) return parent;
+      }
+    }
+    return best;
+  }
+  function dataRowsInContainer(container) {
+    return [
+      ...container.querySelectorAll(
+        '[role="row"], tbody tr, .semi-table-tbody .semi-table-row, [class*="semi-table-row"], [class*="TableRow"]'
+      )
+    ].filter(
+      (r) => !r.querySelector('[role="columnheader"], th') && (r.textContent?.length ?? 0) > 12
+    );
+  }
+  function headerElementsForContainer(container) {
+    return [...container.querySelectorAll('[role="columnheader"], thead th')];
+  }
+  function statTextFromRowColumn(row, headerIndex, cellEls) {
+    const grid = row.closest('[role="grid"], table');
+    if (grid) {
+      const headerEls = headerElementsForContainer(grid);
+      const headerEl = headerEls[headerIndex];
+      const ariaRaw = parseInt(headerEl?.getAttribute("aria-colindex") ?? "", 10);
+      const tryIndexes = /* @__PURE__ */ new Set();
+      if (!Number.isNaN(ariaRaw)) {
+        tryIndexes.add(ariaRaw);
+        tryIndexes.add(ariaRaw + 1);
+      }
+      tryIndexes.add(headerIndex + 1);
+      tryIndexes.add(headerIndex);
+      for (const idx of tryIndexes) {
+        const text = statCellTextAtColIndex(row, idx);
+        if (text?.trim()) return text;
+      }
+    }
+    const el = cellEls[headerIndex];
+    return el ? readStatCellText(el) : void 0;
+  }
+  function statCellTextAtColIndex(row, colIndex) {
+    for (const sel of [
+      `[role="cell"][aria-colindex="${colIndex}"]`,
+      `[aria-colindex="${colIndex}"]`
+    ]) {
+      const direct = row.querySelector(sel);
+      if (direct) return readStatCellText(direct);
+    }
+    for (const cell of row.querySelectorAll('[role="cell"], td')) {
+      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+      if (idx === colIndex) return readStatCellText(cell);
+    }
+    return void 0;
+  }
+  function cellTextAtColIndex(row, colIndex) {
+    for (const sel of [
+      `[role="cell"][aria-colindex="${colIndex}"]`,
+      `[aria-colindex="${colIndex}"]`
+    ]) {
+      const direct = row.querySelector(sel);
+      if (direct) return readCellText(direct);
+    }
+    for (const cell of row.querySelectorAll('[role="cell"], td')) {
+      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
+      if (idx === colIndex) return readCellText(cell);
+    }
+    return void 0;
+  }
+  function parseDiamondValue(text) {
+    if (!text) return void 0;
+    const n = parseStatNumber(text);
+    if (n === void 0 || n < 50) return void 0;
+    if (/^\$/.test(text.trim()) || /%$/.test(text.trim())) return void 0;
+    return n;
+  }
+  function diamondsFromRowGrid(row) {
+    const grid = row.closest('[role="grid"], table');
+    if (!grid) return void 0;
+    const headerEls = headerElementsForContainer(grid);
+    let diamondsHeaderEl;
+    let diamondsHeaderPos = -1;
+    headerEls.forEach((h, i) => {
+      if (/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) {
+        diamondsHeaderEl = h;
+        diamondsHeaderPos = i;
+      }
+    });
+    if (!diamondsHeaderEl && diamondsHeaderPos < 0) return void 0;
+    const ariaRaw = parseInt(diamondsHeaderEl?.getAttribute("aria-colindex") ?? "", 10);
+    const tryColIndexes = /* @__PURE__ */ new Set();
+    if (!Number.isNaN(ariaRaw)) {
+      tryColIndexes.add(ariaRaw);
+      tryColIndexes.add(ariaRaw + 1);
+      tryColIndexes.add(ariaRaw - 1);
+    }
+    if (diamondsHeaderPos >= 0) tryColIndexes.add(diamondsHeaderPos);
+    for (const idx of tryColIndexes) {
+      const n = parseDiamondValue(cellTextAtColIndex(row, idx));
+      if (n !== void 0) return n;
+    }
+    const rowCells = [...row.querySelectorAll('[role="cell"], td')];
+    if (diamondsHeaderPos >= 0 && diamondsHeaderPos < rowCells.length) {
+      const n = parseDiamondValue(readCellText(rowCells[diamondsHeaderPos]));
+      if (n !== void 0) return n;
+    }
+    return void 0;
+  }
+  function pickLargestDiamondLikeValue(cellLines, username) {
+    let best;
+    for (const part of cellLines) {
+      if (username && part.toLowerCase().includes(username.toLowerCase())) continue;
+      if (isNonDiamondStatCell(part)) continue;
+      if (/^\$/.test(part) || /%$/.test(part)) continue;
+      if (extractUsernameFromText(part)) continue;
+      let n;
+      if (isNumericStatCell(part)) {
+        n = parseStatNumber(part);
+      } else {
+        n = parseStatNumber(part);
+      }
+      if (n === void 0 || n < 100) continue;
+      if (best === void 0 || n > best) best = n;
+    }
+    return best;
+  }
+
+  // src/parser/avatar.ts
+  function avatarFromRow(row) {
+    const cells = row.querySelectorAll('[role="cell"], td');
+    const creatorCell = cells[0] ?? row;
+    return pickBestAvatarUrl(creatorCell) ?? pickBestAvatarUrl(row);
+  }
+  function pickBestAvatarUrl(root) {
+    const candidates = [];
+    for (const img of root.querySelectorAll("img")) {
+      const url = bestImgSrc(img);
+      if (!url) continue;
+      candidates.push({ url, score: scoreAvatarImg(img, url, root) });
+    }
+    for (const source of root.querySelectorAll("picture source[srcset], picture source[src]")) {
+      const url = bestImgSrc(source);
+      if (url) candidates.push({ url, score: scoreAvatarImg(source, url, root) + 1 });
+    }
+    const lazyHost = root.querySelector("[data-src], [data-lazy-src], [data-original]");
+    if (lazyHost) {
+      const url = bestImgSrc(lazyHost);
+      if (url) candidates.push({ url, score: scoreAvatarImg(lazyHost, url, root) });
+    }
+    const withBg = root.querySelector("[style*='background-image']");
+    const bg = withBg?.style?.backgroundImage;
+    if (bg) {
+      const m = bg.match(/url\(["']?([^"')]+)["']?\)/i);
+      if (m?.[1] && isUsableAvatarUrl(m[1])) {
+        candidates.push({ url: m[1], score: scoreAvatarImg(withBg, m[1], root) + 2 });
+      }
+    }
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates[0]?.url;
+  }
+  function scoreAvatarImg(el, url, root) {
+    let score = 0;
+    const lowerUrl = url.toLowerCase();
+    const cls = `${elementClassText(el)} ${el.parentElement ? elementClassText(el.parentElement) : ""}`.toLowerCase();
+    if (/avatar|portrait|profile|creator|thumb|head/i.test(cls)) score += 8;
+    if (/story|badge|icon|logo|level|rank|medal|frame/i.test(cls)) score -= 12;
+    if (/story|badge|icon-logo|default_avatar/i.test(lowerUrl)) score -= 12;
+    const w = parseInt(el.getAttribute("width") ?? "", 10);
+    const h = parseInt(el.getAttribute("height") ?? "", 10);
+    if (!Number.isNaN(w) && w >= 28 && w <= 96) score += 4;
+    if (!Number.isNaN(h) && h >= 28 && h <= 96) score += 4;
+    if (!Number.isNaN(w) && w > 120 || !Number.isNaN(h) && h > 120) score -= 4;
+    if (root.matches('[role="cell"], td') || root.querySelector('[role="cell"]')?.contains(el)) {
+      score += 3;
+    }
+    if (/tiktokcdn|ibytedapm|byteimg/i.test(lowerUrl)) score += 2;
+    return score;
+  }
+  function bestImgSrc(el) {
+    const attrs = ["src", "data-src", "data-lazy-src", "data-original", "data-url"];
+    for (const attr of attrs) {
+      const v = el.getAttribute(attr)?.trim();
+      if (v && isUsableAvatarUrl(v)) return v;
+    }
+    const srcset = el.getAttribute("srcset");
+    if (srcset) {
+      const first = srcset.split(",")[0]?.trim().split(/\s+/)[0]?.trim();
+      if (first && isUsableAvatarUrl(first)) return first;
+    }
+    return void 0;
+  }
+  function isUsableAvatarUrl(url) {
+    if (!url || url.startsWith("data:") || url.startsWith("blob:") || url.length < 12) return false;
+    if (/placeholder|blank|1x1|sprite|favicon/i.test(url)) return false;
+    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("//");
+  }
+
+  // src/parser/parsers/shared.ts
+  var ROW_SELECTORS = [
+    '[role="row"]',
+    "table tbody tr",
+    ".semi-table-tbody .semi-table-row",
+    '[class*="semi-table-row"]:not([class*="row-head"]):not([class*="header"])',
+    '[class*="TableBody"] [class*="Row"]',
+    '[class*="table-body"] [class*="row"]',
+    '[class*="TableRow"]'
+  ].join(", ");
+  function isHeaderChrome(el) {
+    if (el.getAttribute("role") === "columnheader" || el.tagName === "TH") return true;
+    if (el.querySelector('[role="columnheader"], th')) return true;
+    if (el.closest('[role="columnheader"], thead, [class*="row-head"], [class*="table-header"], [class*="TableHeader"]')) {
+      return true;
+    }
+    const cls = typeof el.className === "string" ? el.className : "";
+    if (/row-head|column-header|table-header|TableHeader|semi-table-row-head/i.test(cls)) return true;
+    const text = (el.textContent ?? "").replace(/\s+/g, " ").trim();
+    if (isBackstageHeaderText(text) && !/\d+\s*d\s*[\/／]/.test(text) && !/\d+\s*h\s*[\/／]/i.test(text)) {
+      if (!/\d{2,}/.test(text.replace(/\s/g, ""))) return true;
+    }
+    return false;
+  }
+  function looksLikeDataRow(el) {
+    if (isHeaderChrome(el)) return false;
+    const text = (el.textContent ?? "").replace(/\s+/g, " ").trim();
+    if (text.length < 8 || text.length > 900) return false;
+    const hasProgress = /\d+\s*d\s*[\/／]/.test(text) || /\d+\s*h(?:\s*\d+\s*m)?\s*[\/／]/i.test(text) || /\b\d{1,3}(?:,\d{3})+\b/.test(text);
+    const username = extractUsernameWithConfidence(text, { fromUsernameColumn: true }).username;
+    if (username && isBackstageUiHandle(username)) return false;
+    if (hasProgress && username) return true;
+    if (hasProgress && el.querySelector('[role="cell"], td, [class*="cell"], [class*="Cell"]')) return true;
+    if (username && !isBackstageUiHandle(username) && el.querySelector('[role="cell"], td, [class*="cell"], [class*="Cell"]') && text.length > 20) {
+      return true;
+    }
+    return false;
+  }
+  function uniqueElements(els) {
+    const seen = /* @__PURE__ */ new Set();
+    const out = [];
+    for (const el of els) {
+      if (seen.has(el)) continue;
+      if (els.some((other) => other !== el && other.contains(el))) continue;
+      seen.add(el);
+      out.push(el);
+    }
+    return out;
+  }
+  function rowLikeElements(doc) {
+    const containers = [];
+    const contributionGrid = findCreatorContributionGrid(doc);
+    if (contributionGrid) containers.push(contributionGrid);
+    const statsTable = findStatsTableContainer(doc);
+    if (statsTable && statsTable !== contributionGrid) containers.push(statsTable);
+    for (const container of containers) {
+      const rows = dataRowsInContainer(container).filter(looksLikeDataRow);
+      if (rows.length > 0) return uniqueElements(rows);
+      const semiInContainer = Array.from(
+        container.querySelectorAll(
+          '.semi-table-tbody .semi-table-row, [class*="semi-table-row"]:not([class*="row-head"])'
+        )
+      ).filter(looksLikeDataRow);
+      if (semiInContainer.length > 0) return uniqueElements(semiInContainer);
+    }
+    const gridRows = Array.from(doc.querySelectorAll(ROW_SELECTORS)).filter(looksLikeDataRow);
+    if (gridRows.length > 0) return uniqueElements(gridRows);
+    const climbed = [];
+    const progressNodes = Array.from(doc.querySelectorAll("div, span, td, [role='cell'], p"));
+    for (const el of progressNodes) {
+      if (isHeaderChrome(el)) continue;
+      const t = (el.textContent ?? "").trim();
+      if (!/\d+\s*d\s*[\/／]\s*\d+\s*d/i.test(t) && !/\d+\s*h(?:\s*\d+\s*m)?\s*[\/／]\s*\d+\s*h/i.test(t)) {
+        continue;
+      }
+      let cur = el;
+      for (let i = 0; i < 10 && cur; i++) {
+        const rowText = (cur.textContent ?? "").replace(/\s+/g, " ").trim();
+        const u = extractUsernameWithConfidence(rowText, { fromUsernameColumn: true }).username;
+        if (u && !isBackstageUiHandle(u) && rowText.length > 15 && rowText.length < 900 && !isHeaderChrome(cur)) {
+          climbed.push(cur);
+          break;
+        }
+        cur = cur.parentElement;
+      }
+    }
+    if (climbed.length > 0) return uniqueElements(climbed);
+    return [];
+  }
+  function tableCells(row) {
+    const cells = Array.from(
+      row.querySelectorAll(
+        "td, [role='cell'], [class*='semi-table-row-cell'], [class*='cell'], [class*='Cell']"
+      )
+    ).filter((c) => !isHeaderChrome(c));
+    if (cells.length > 0) {
+      return cells.filter((c) => !cells.some((other) => other !== c && other.contains(c)));
+    }
+    return [];
+  }
+  function cellTexts(row) {
+    const cells = tableCells(row);
+    if (cells.length > 0) {
+      const lines = [];
+      for (const cell of cells) {
+        lines.push(...splitCellLines(readCellText(cell)));
+      }
+      return lines;
+    }
+    return splitCellLines((row.textContent ?? "").trim());
+  }
+  function headerTextsForRow(row) {
+    const table = row.closest("table");
+    if (table) {
+      const headers = Array.from(table.querySelectorAll("thead th, thead td, [role='columnheader']"));
+      const fromTable = headers.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+      if (fromTable.length >= 2) return fromTable;
+    }
+    const grid = row.closest('[role="grid"], table, [class*="semi-table"], [class*="Table"]');
+    if (grid) {
+      const headers = [
+        ...grid.querySelectorAll(
+          '[role="columnheader"], thead th, [class*="column-header"], [class*="ColumnHeader"], [class*="semi-table-row-head"] [role="columnheader"]'
+        )
+      ].map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
+      if (headers.length >= 2) return headers;
+    }
+    return collectPageHeaders(row.ownerDocument ?? document);
+  }
+  function collectPageHeaders(doc) {
+    if (typeof doc.querySelectorAll !== "function") return [];
+    const headers = Array.from(
+      doc.querySelectorAll(
+        '[role="columnheader"], thead th, thead td, [class*="column-header"], [class*="ColumnHeader"]'
+      )
+    ).map((h) => (h.textContent ?? "").trim().toLowerCase()).filter((t) => t.length > 0 && t.length < 80);
+    return [...new Set(headers)];
+  }
+  function displayNameFromRow(row, username) {
+    const imgs = Array.from(row.querySelectorAll("img[alt]"));
+    for (const img of imgs) {
+      const alt = img.getAttribute("alt")?.trim();
+      if (alt && alt.length > 1 && alt.toLowerCase() !== username?.toLowerCase()) return alt;
+    }
+    return void 0;
+  }
+  function usernameFromCreatorCell(cellText, row) {
+    return extractUsernameWithConfidence(cellText, {
+      fromUsernameColumn: true,
+      displayName: displayNameFromRow(row)
+    });
+  }
+
+  // src/parser/version.ts
+  var PARSER_VERSION = "1a.5";
+  var EXTENSION_VERSION = "0.2.7";
+
+  // src/parser/duration.ts
+  function progressActualSegment(raw) {
+    const t = raw.trim();
+    const slash = t.search(/\s*[\/／]\s*/);
+    if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
+    return t.slice(0, slash).replace(/\(level\s*\d+\)/gi, "").trim();
+  }
+  function parseLiveDaysFromCell(raw) {
+    if (!raw) return void 0;
+    const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
+    if (progress) return Number(progress[1]);
+    const segment = progressActualSegment(raw);
+    const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
+    if (dayMatch) {
+      const n = Number(dayMatch[1]);
+      if (n >= 30) return 0;
+      return n;
+    }
+    if (/^\d+$/.test(segment)) {
+      const n = Number(segment);
+      return n >= 30 ? 0 : n;
+    }
+    if (!raw.includes("/") && !raw.includes("\uFF0F")) {
+      const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
+      if (m) {
+        const n = Number(m[1]);
+        return n >= 30 ? 0 : n;
+      }
+      const compact = parseCompactNumber(raw);
+      if (compact !== void 0 && compact <= 7) return compact;
+      if (compact !== void 0 && compact > 7) return 0;
+      return void 0;
+    }
+    return void 0;
+  }
+  function parseStreamHoursFromCell(raw) {
+    if (!raw) return void 0;
+    const segment = progressActualSegment(raw);
+    if (!segment) {
+      if (/^0\s*h/i.test(raw.trim())) return 0;
+      return void 0;
+    }
+    const seconds = parseDurationToSeconds(segment);
+    if (seconds !== void 0) return Math.round(seconds / 3600 * 10) / 10;
+    if (/^0\s*h/i.test(segment)) return 0;
+    if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
+      const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
+      if (Number.isFinite(h)) return h;
+    }
+    return void 0;
+  }
+  function parseDurationToSeconds(raw) {
+    if (!raw) return void 0;
+    const t = progressActualSegment(raw).toLowerCase();
+    if (!t) return void 0;
+    let total = 0;
+    let matched = false;
+    const dayMatch = t.match(/(\d+(?:\.\d+)?)\s*d(?:ays?)?/);
+    if (dayMatch) {
+      total += Number(dayMatch[1]) * 86400;
+      matched = true;
+    }
+    const hourMatch = t.match(/(\d+(?:\.\d+)?)\s*h(?:ours?|rs?)?/);
+    if (hourMatch) {
+      total += Number(hourMatch[1]) * 3600;
+      matched = true;
+    } else if (/^\d+(?:\.\d+)?\s*h?$/.test(t) && t.includes("h")) {
+      const n = Number(t.replace(/h/g, ""));
+      if (Number.isFinite(n)) {
+        total += n * 3600;
+        matched = true;
+      }
+    }
+    const minMatch = t.match(/(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?/);
+    if (minMatch) {
+      total += Number(minMatch[1]) * 60;
+      matched = true;
+    }
+    const secMatch = t.match(/(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?/);
+    if (secMatch) {
+      total += Number(secMatch[1]);
+      matched = true;
+    }
+    if (!matched) {
+      const plainHours = t.match(/^(\d+(?:\.\d+)?)$/);
+      if (plainHours && t.length <= 6) {
+        return Math.round(Number(plainHours[1]) * 3600);
+      }
+      return void 0;
+    }
+    return Math.round(total);
+  }
+
+  // src/parser/metricField.ts
+  function presentMetric(value) {
+    return { status: "present", value };
+  }
+  function missingMetric() {
+    return { status: "missing" };
+  }
+
+  // src/parser/parsers/activityIncentive.ts
+  function inferActivityColumnMap(headers) {
+    const map = {};
+    headers.forEach((h, idx) => {
+      if (/(creator|username|handle)/i.test(h)) map.creator = idx;
+      if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.coins = idx;
+      else if (/\bcoins?\b/i.test(h) && !/incentive|contribution|bonus/i.test(h)) map.coins = idx;
+      if (/(engagements?|interactions?)/i.test(h) && !/incentive/i.test(h)) map.engagements = idx;
+      if (!/eligible\s*incentive/i.test(h) && /(valid\s*go\s*live|valid.*live.*days?|days?\s*streamed|live\s*days?)/i.test(h)) {
+        map.days = idx;
+      }
+      if (/(stream duration|live duration)/i.test(h) || /\bhours?\b/.test(h)) map.hours = idx;
+      if (/(activeness|activity level|active level)/i.test(h)) map.activeness = idx;
+    });
+    return map;
+  }
+  function parseActiveness(text) {
+    const t = text.toLowerCase();
+    if (/\belite\b/.test(t)) return "elite";
+    if (/\bhigh\b|\bactive\b/.test(t)) return "high";
+    if (/\bmedium\b|\bmed\b/.test(t)) return "medium";
+    if (/\blow\b/.test(t)) return "low";
+    if (/\bnone\b|\bunknown\b/.test(t)) return "none";
+    return void 0;
+  }
+  function extractDiamondsFromRowText(rowText, username) {
+    let text = rowText;
+    if (username) {
+      text = text.replace(
+        new RegExp(username.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+        " "
+      );
+    }
+    const fromLines = pickLargestDiamondLikeValue(splitCellLines(text), username);
+    if (fromLines !== void 0) return fromLines;
+    const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 100);
+    if (commaMatches.length > 0) return Math.max(...commaMatches);
+    return void 0;
+  }
+  function parseActivityRow(row) {
+    const cells = cellTexts(row);
+    const cellEls = tableCells(row);
+    if (cells.length === 0) return null;
+    const headers = headerTextsForRow(row);
+    const columnMap = inferActivityColumnMap(headers);
+    const creatorText = columnMap.creator !== void 0 ? cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
+    const usernameRaw = creatorText.trim().slice(0, 200) || void 0;
+    const usernameCandidate = usernameFromCreatorCell(creatorText, row);
+    const username = usernameCandidate.username;
+    if (!username) return null;
+    const joined = cells.join("\n");
+    let diamonds;
+    let days;
+    let hours;
+    let engagements;
+    let activeness;
+    let liveDurationText;
+    let liveDurationSeconds;
+    diamonds = diamondsFromRowGrid(row);
+    if (columnMap.engagements !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.engagements, cellEls);
+      if (text) engagements = parseStatNumber(text);
+    }
+    if (columnMap.days !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.days, cellEls);
+      if (text) days = parseLiveDaysFromCell(text);
+    }
+    if (columnMap.hours !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.hours, cellEls);
+      if (text) {
+        hours = parseStreamHoursFromCell(text);
+        if (hours !== void 0) {
+          liveDurationText = text;
+          liveDurationSeconds = Math.round(hours * 3600);
+        }
+      }
+    }
+    if (columnMap.activeness !== void 0) {
+      const text = statTextFromRowColumn(row, columnMap.activeness, cellEls);
+      if (text) activeness = parseActiveness(text);
+    }
+    for (const cellEl of cellEls) {
+      const cell = readStatCellText(cellEl);
+      const lower = cell.toLowerCase();
+      if (diamonds === void 0 && /\bdiamonds?\b/i.test(cell)) {
+        const n = parseStatNumber(cell);
+        if (n !== void 0) diamonds = n;
+      }
+      if (days === void 0 && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\s*[\/／]/.test(cell) || /^\d+\s*d(?:ays?)?\b/i.test(cell.trim()))) {
+        const parsed = parseLiveDaysFromCell(cell);
+        if (parsed !== void 0) days = parsed;
+      }
+      if (hours === void 0 && (/\d+\s*h\s*[\/／]/.test(cell) || /\d+\s*h(?:\s*\d+\s*m)?\b/i.test(cell) || lower.includes("duration") && /\d/.test(cell))) {
+        const parsed = parseStreamHoursFromCell(cell);
+        if (parsed !== void 0) {
+          hours = parsed;
+          liveDurationText = cell;
+          liveDurationSeconds = Math.round(parsed * 3600);
+        }
+      }
+      if (engagements === void 0 && (lower.includes("engagement") || lower.includes("interaction") || lower.includes("comment") || lower.includes("like")) && !isNonDiamondStatCell(cell)) {
+        engagements = firstCompactNumber(cell);
+      }
+      if (!activeness) activeness = parseActiveness(cell);
+    }
+    if (diamonds === void 0) {
+      diamonds = pickLargestDiamondLikeValue(cells, username);
+    }
+    if (diamonds === void 0) {
+      const inner = row.innerText?.trim() ?? joined;
+      diamonds = extractDiamondsFromRowText(inner, username);
+    }
+    if (!username || username.length < 2) return null;
+    if (isBackstageUiHandle(username)) return null;
+    if (diamonds === void 0 && days === void 0 && hours === void 0) return null;
+    const hoursField = hours !== void 0 ? presentMetric(hours) : missingMetric();
+    const daysField = days !== void 0 ? presentMetric(days) : missingMetric();
+    const diamondsField = diamonds !== void 0 ? presentMetric(diamonds) : missingMetric();
+    const engagementsField = engagements !== void 0 ? presentMetric(engagements) : missingMetric();
+    return {
+      tiktokUsername: username,
+      tiktokUsernameRaw: usernameRaw,
+      usernameConfidence: usernameCandidate.confidence,
+      usernameSource: usernameCandidate.source,
+      displayName: displayNameFromRow(row, username),
+      avatarUrl: avatarFromRow(row),
+      // Bare numbers only when present (legacy consumers); never invent 0.
+      coinsEarned: diamonds,
+      diamondsEarned: diamonds,
+      engagements,
+      daysStreamed: days,
+      hoursStreamed: hours,
+      hoursStreamedField: hoursField,
+      daysStreamedField: daysField,
+      diamondsEarnedField: diamondsField,
+      coinsEarnedField: diamondsField,
+      engagementsField,
+      liveDurationText,
+      liveDurationSeconds,
+      activenessLevel: activeness,
+      rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
+    };
+  }
+  function dedupeRows(rows) {
+    const seen = /* @__PURE__ */ new Set();
+    const out = [];
+    for (const r of rows) {
+      const key = normalizeTikTokUsername(r.tiktokUsername) ?? r.rawTextPreview ?? "";
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      out.push(r);
+    }
+    return out;
+  }
+  function parseActivityIncentivePage(ctx) {
+    const rowEls = rowLikeElements(ctx.doc);
+    const rows = [];
+    for (const el of rowEls) {
+      const parsed = parseActivityRow(el);
+      if (parsed) rows.push(parsed);
+    }
+    const deduped = dedupeRows(rows);
+    const metricsAvailable = [];
+    if (deduped.some((r) => r.diamondsEarned !== void 0)) metricsAvailable.push("diamonds");
+    if (deduped.some((r) => r.daysStreamed !== void 0)) metricsAvailable.push("valid_live_days");
+    if (deduped.some((r) => r.hoursStreamed !== void 0)) metricsAvailable.push("live_duration");
+    if (deduped.some((r) => r.activenessLevel)) metricsAvailable.push("activeness_level");
+    return {
+      rows: deduped,
+      liveRows: [],
+      headersFound: ctx.headersFound,
+      metricsAvailable
+    };
+  }
+
+  // src/parser/parsers/rankUpIncentive.ts
+  function inferRankUpColumnMap(headers) {
+    const map = {};
+    headers.forEach((h, idx) => {
+      if (/(creator|username|handle)/i.test(h)) map.creator = idx;
+      if (/(maintain|keep\s*tier)/i.test(h)) {
+        map.maintain = idx;
+        return;
+      }
+      if (/(tier\s*last\s*month|previous\s*tier|last\s*tier)/i.test(h)) map.tierPrevious = idx;
+      else if (/(current\s*tier|tier\s*this\s*month|tier\s*status)/i.test(h)) map.tierCurrent = idx;
+      if (/(rank[\s-]?up|upgrade\s*status)/i.test(h)) map.rankUp = idx;
+      if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.diamonds = idx;
+      if (/(valid\s*go\s*live|valid.*live.*days?|live\s*days?)/i.test(h)) map.days = idx;
+      if (/(live duration|stream duration|\bhours?\b)/i.test(h)) map.hours = idx;
+      if (/(estimated|contribution|bonus)/i.test(h)) map.contribution = idx;
+    });
+    return map;
+  }
+  function parseRankUpRow(row) {
+    const cells = cellTexts(row);
+    const cellEls = tableCells(row);
+    if (cells.length === 0) return null;
+    const headers = headerTextsForRow(row);
+    const map = inferRankUpColumnMap(headers);
+    const creatorText = map.creator !== void 0 ? cellEls[map.creator]?.textContent ?? cells[map.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
+    const usernameCandidate = usernameFromCreatorCell(creatorText, row);
+    const username = usernameCandidate.username;
+    if (!username) return null;
+    const textAt = (idx) => idx === void 0 ? void 0 : statTextFromRowColumn(row, idx, cellEls) || void 0;
+    let diamonds;
+    let days;
+    let hours;
+    if (map.diamonds !== void 0) {
+      const t = textAt(map.diamonds);
+      if (t) diamonds = parseStatNumber(t);
+    }
+    if (map.days !== void 0) {
+      const t = textAt(map.days);
+      if (t) days = parseLiveDaysFromCell(t);
+    }
+    if (map.hours !== void 0) {
+      const t = textAt(map.hours);
+      if (t) hours = parseStreamHoursFromCell(t);
+    }
+    for (const cellEl of cellEls) {
+      const cell = readStatCellText(cellEl);
+      const lower = cell.toLowerCase();
+      if (diamonds === void 0 && /\bdiamonds?\b/i.test(lower)) {
+        diamonds = parseStatNumber(cell);
+      }
+    }
+    const tierCurrent = textAt(map.tierCurrent);
+    const tierPrevious = textAt(map.tierPrevious);
+    const rankUpStatus = textAt(map.rankUp);
+    const maintainTierStatus = textAt(map.maintain);
+    const estimatedContribution = textAt(map.contribution);
+    return {
+      tiktokUsername: username,
+      tiktokUsernameRaw: creatorText.trim().slice(0, 200) || void 0,
+      usernameConfidence: usernameCandidate.confidence,
+      usernameSource: usernameCandidate.source,
+      displayName: displayNameFromRow(row, username),
+      avatarUrl: avatarFromRow(row),
+      diamondsEarned: diamonds,
+      daysStreamed: days,
+      hoursStreamed: hours,
+      diamondsEarnedField: diamonds !== void 0 ? presentMetric(diamonds) : missingMetric(),
+      daysStreamedField: days !== void 0 ? presentMetric(days) : missingMetric(),
+      hoursStreamedField: hours !== void 0 ? presentMetric(hours) : missingMetric(),
+      tierCurrent,
+      tierPrevious,
+      rankUpStatus,
+      maintainTierStatus,
+      estimatedContribution,
+      rawTextPreview: cells.join(" ").replace(/\s+/g, " ").slice(0, 180)
+    };
+  }
+  function parseRankUpIncentivePage(ctx) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of rowLikeElements(ctx.doc)) {
+      const parsed = parseRankUpRow(el);
+      if (!parsed?.tiktokUsername) continue;
+      const key = normalizeTikTokUsername(parsed.tiktokUsername);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      rows.push(parsed);
+    }
+    const metricsAvailable = [];
+    if (rows.some((r) => r.tierCurrent || r.tierPrevious)) metricsAvailable.push("tier");
+    if (rows.some((r) => r.rankUpStatus)) metricsAvailable.push("rank_up_status");
+    if (rows.some((r) => r.maintainTierStatus)) metricsAvailable.push("maintain_tier_status");
+    if (rows.some((r) => r.diamondsEarned !== void 0)) metricsAvailable.push("diamonds");
+    if (rows.some((r) => r.daysStreamed !== void 0)) metricsAvailable.push("valid_live_days");
+    if (rows.some((r) => r.hoursStreamed !== void 0)) metricsAvailable.push("live_duration");
+    if (rows.some((r) => r.estimatedContribution)) metricsAvailable.push("estimated_contribution");
+    return { rows, liveRows: [], headersFound: ctx.headersFound, metricsAvailable };
+  }
+
+  // src/parser/parsers/incrementalIncentive.ts
+  function inferIncrementalMap(headers) {
+    const map = {};
+    headers.forEach((h, idx) => {
+      if (/(creator|username|handle)/i.test(h)) map.creator = idx;
+      if (/\bdiamonds?\b|\brevenue\b|\bincremental\b/i.test(h)) map.diamonds = idx;
+      if (/(estimated|contribution|bonus)/i.test(h)) map.contribution = idx;
+    });
+    return map;
+  }
+  function parseIncrementalIncentivePage(ctx) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of rowLikeElements(ctx.doc)) {
+      const cells = cellTexts(el);
+      const cellEls = tableCells(el);
+      if (cells.length === 0) continue;
+      const headers = headerTextsForRow(el);
+      const map = inferIncrementalMap(headers);
+      const creatorText = map.creator !== void 0 ? cellEls[map.creator]?.textContent ?? cells[map.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
+      const usernameCandidate = usernameFromCreatorCell(creatorText, el);
+      const username = usernameCandidate.username;
+      if (!username) continue;
+      const key = normalizeTikTokUsername(username);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      let diamonds;
+      if (map.diamonds !== void 0) {
+        const t = statTextFromRowColumn(el, map.diamonds, cellEls);
+        if (t) diamonds = parseStatNumber(t);
+      }
+      const contribution = map.contribution !== void 0 ? statTextFromRowColumn(el, map.contribution, cellEls) || void 0 : void 0;
+      rows.push({
+        tiktokUsername: username,
+        tiktokUsernameRaw: creatorText.trim().slice(0, 200) || void 0,
+        usernameConfidence: usernameCandidate.confidence,
+        usernameSource: usernameCandidate.source,
+        displayName: displayNameFromRow(el, username),
+        avatarUrl: avatarFromRow(el),
+        diamondsEarned: diamonds,
+        diamondsEarnedField: diamonds !== void 0 ? presentMetric(diamonds) : missingMetric(),
+        estimatedContribution: contribution,
+        rawTextPreview: cells.join(" ").replace(/\s+/g, " ").slice(0, 180)
+      });
+    }
+    const metricsAvailable = [];
+    if (rows.some((r) => r.diamondsEarned !== void 0)) metricsAvailable.push("diamonds");
+    if (rows.some((r) => r.estimatedContribution)) metricsAvailable.push("estimated_contribution");
+    return { rows, liveRows: [], headersFound: ctx.headersFound, metricsAvailable };
+  }
+
+  // src/parser/parsers/creatorRoster.ts
+  function inferRosterColumnMap(headers) {
+    const map = {};
+    headers.forEach((h, idx) => {
+      if (/(creator|username|handle)/i.test(h)) map.creator = idx;
+      if (/(relationship\s*status|invite\s*status|\bstatus\b)/i.test(h)) map.status = idx;
+      if (/(joined|join\s*time|request\s*date|\bdate\b)/i.test(h)) map.joined = idx;
+    });
+    return map;
+  }
+  function parseRosterRow(row, tabStatus) {
+    const cells = cellTexts(row);
+    const cellEls = tableCells(row);
+    if (cells.length === 0) return null;
+    const headers = headerTextsForRow(row);
+    const map = inferRosterColumnMap(headers);
+    const creatorText = map.creator !== void 0 ? cellEls[map.creator]?.textContent ?? cells[map.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
+    const joined = cells.join("\n");
+    const usernameRaw = creatorText.trim().slice(0, 200) || void 0;
+    const usernameCandidate = usernameFromCreatorCell(creatorText, row);
+    const username = usernameCandidate.username;
+    if (!username) return null;
+    const statusFromCol = map.status !== void 0 ? statTextFromRowColumn(row, map.status, cellEls) || void 0 : void 0;
+    const joinedFromCol = map.joined !== void 0 ? statTextFromRowColumn(row, map.joined, cellEls) || void 0 : void 0;
+    let dateCell = joinedFromCol;
+    let reasonCell;
+    if (!dateCell) {
+      for (const cell of cells) {
+        if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(cell) && !dateCell) dateCell = cell.trim();
+        else if (cell.length > 3 && cell !== dateCell && !reasonCell && cell !== creatorText && !/^\d[\d,.]*$/.test(cell.replace(/\s/g, ""))) {
+          if (!/followers?|likes?|diamonds?/i.test(cell)) {
+            reasonCell = cell.trim().slice(0, 200);
+          }
+        }
+      }
+    }
+    const networkStatus = statusFromCol || tabStatus;
+    return {
+      tiktokUsername: username,
+      tiktokUsernameRaw: usernameRaw,
+      usernameConfidence: usernameCandidate.confidence,
+      usernameSource: usernameCandidate.source,
+      displayName: displayNameFromRow(row, username),
+      avatarUrl: avatarFromRow(row),
+      creatorNetworkStatus: networkStatus,
+      inviteStatus: networkStatus,
+      relationshipRequestDate: dateCell,
+      relationshipReason: reasonCell && reasonCell !== dateCell ? reasonCell : void 0,
+      rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
+    };
+  }
+  function parseCreatorRosterPage(ctx) {
+    const rows = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const el of rowLikeElements(ctx.doc)) {
+      const parsed = parseRosterRow(el, ctx.relationshipTab);
+      if (!parsed?.tiktokUsername) continue;
+      const key = normalizeTikTokUsername(parsed.tiktokUsername);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      rows.push(parsed);
+    }
+    return {
+      rows,
+      liveRows: [],
+      headersFound: ctx.headersFound,
+      metricsAvailable: ["roster_presence", "network_status"]
+    };
+  }
+
+  // src/parser/dom-deep.ts
+  function isDocumentNode(root) {
+    return root.nodeType === 9;
+  }
+  function isShadowRootNode(node) {
+    return node.nodeType === 11;
+  }
+  function deepQueryAll(root, selector) {
+    const results = [];
+    const seen = /* @__PURE__ */ new Set();
+    function visit(node) {
+      if (node.nodeType === 1) {
+        const el = node;
+        el.querySelectorAll(selector).forEach((match) => {
+          if (!seen.has(match)) {
+            seen.add(match);
+            results.push(match);
+          }
+        });
+        el.querySelectorAll("*").forEach((child) => {
+          if (child.shadowRoot) visit(child.shadowRoot);
+        });
+        return;
+      }
+      if (isDocumentNode(node)) {
+        visit(node.documentElement);
+        return;
+      }
+      if (isShadowRootNode(node)) {
+        const sr = node;
+        sr.querySelectorAll(selector).forEach((match) => {
+          if (!seen.has(match)) {
+            seen.add(match);
+            results.push(match);
+          }
+        });
+        sr.querySelectorAll("*").forEach((child) => {
+          if (child.shadowRoot) visit(child.shadowRoot);
+        });
+      }
+    }
+    if (isDocumentNode(root)) visit(root);
+    else {
+      if (!seen.has(root) && root.matches(selector)) {
+        seen.add(root);
+        results.push(root);
+      }
+      visit(root);
+      if (root.shadowRoot) visit(root.shadowRoot);
+    }
+    return results;
+  }
+  function isNodeInside(el, scope) {
+    if (isDocumentNode(scope)) {
+      return scope.documentElement.contains(el);
+    }
+    let node = el;
+    while (node) {
+      if (node === scope) return true;
+      if (isShadowRootNode(node)) {
+        node = node.host;
+        continue;
+      }
+      node = node.parentNode;
+    }
+    return false;
+  }
+
+  // src/parser/live-card-stats.ts
+  function elementVisibleText(el) {
+    const html = el;
+    return (html.innerText ?? el.textContent ?? "").trim();
+  }
+  function textHasLiveCardStats(text) {
+    const t = text.trim();
+    if (t.length < 12) return false;
+    const hasLive = /live\s*(?:time|dur(?:ation)?)/i.test(t) || /\blive\b[^\n]{0,24}\d+\s*[hms]\b/i.test(t);
+    const hasEarnings = /diamonds?|gifts?|coins?\s*earned/i.test(t);
+    const hasAudience = /viewers?|watching|current\s*viewers?|audience/i.test(t);
+    return hasLive && hasEarnings && hasAudience;
   }
 
   // src/parser/live-username.ts
@@ -1247,219 +2114,6 @@
     return docs;
   }
 
-  // src/parser/numbers.ts
-  function normalizeNumericText(raw) {
-    return raw.trim().replace(/[\u00a0\u202f]/g, " ").replace(/,/g, "").replace(/(\d)\s+(?=\d)/g, "$1");
-  }
-  function parseCompactNumber(raw) {
-    if (!raw) return void 0;
-    const t = normalizeNumericText(raw);
-    if (!t) return void 0;
-    const m = t.match(/^([+-]?\d+(?:\.\d+)?)\s*([kmb])?$/i);
-    if (!m) {
-      const digits = t.replace(/[^\d.-]/g, "");
-      if (!digits) return void 0;
-      const n = Number(digits);
-      return Number.isFinite(n) ? Math.round(n) : void 0;
-    }
-    const base = Number(m[1]);
-    if (!Number.isFinite(base)) return void 0;
-    const suffix = (m[2] ?? "").toLowerCase();
-    let mult = 1;
-    if (suffix === "k") mult = 1e3;
-    if (suffix === "m") mult = 1e6;
-    if (suffix === "b") mult = 1e9;
-    return Math.round(base * mult);
-  }
-  function isPlainFormattedNumber(text) {
-    return /^[\s$€£+-]*[\d,.\s]+[kmb]?$/i.test(text.trim());
-  }
-  function firstCompactNumber(text) {
-    const trimmed = text.trim();
-    if (!trimmed) return void 0;
-    if (isPlainFormattedNumber(trimmed)) {
-      const direct = parseCompactNumber(trimmed);
-      if (direct !== void 0) return direct;
-    }
-    const noCommas = trimmed.replace(/,/g, "");
-    const m = noCommas.match(/(\d+(?:\.\d+)?)\s*([kmb])?\b/i);
-    if (!m) return void 0;
-    return parseCompactNumber(`${m[1]}${m[2] ?? ""}`);
-  }
-  function isNonDiamondStatCell(cell) {
-    const t = cell.trim();
-    if (!t) return true;
-    if (/^\d+\s*%$/.test(t) || /^\$?0\.00$/.test(t)) return true;
-    if (/^\$[\d,.]+$/.test(t)) return true;
-    if (/^\blevel\s*\d/i.test(t)) return true;
-    if (/^\d+\s*h(?:\s*\d*m)?/i.test(t) || /^\d+h\s*\/\s*\d+h/i.test(t)) return true;
-    if (/^\d+\s*d(?:ays?)?/i.test(t) && !/\d,\d{3}/.test(t)) return true;
-    return false;
-  }
-  function isNumericStatCell(cell) {
-    const t = cell.trim();
-    if (!t || isNonDiamondStatCell(t)) return false;
-    return /^[\d,.\s]+[kmb]?$/i.test(t) && /\d/.test(t);
-  }
-  function parseStatNumber(cell) {
-    if (isNonDiamondStatCell(cell)) return void 0;
-    return parseCompactNumber(cell) ?? firstCompactNumber(cell);
-  }
-
-  // src/parser/gridTable.ts
-  function readCellText(cell) {
-    const bits = [];
-    for (const attr of ["aria-label", "title"]) {
-      const v = cell.getAttribute(attr)?.trim();
-      if (v) bits.push(v);
-    }
-    const text = (cell.textContent ?? "").trim();
-    if (text) bits.push(text);
-    return [...new Set(bits)].join(" ").trim();
-  }
-  function readStatCellText(cell) {
-    const visible = (cell.textContent ?? "").trim();
-    if (visible) return visible;
-    return cell.getAttribute("aria-label")?.trim() ?? cell.getAttribute("title")?.trim() ?? "";
-  }
-  function splitCellLines(text) {
-    return text.split(/\n/).map((s) => s.trim()).filter(Boolean);
-  }
-  function findCreatorContributionGrid(doc) {
-    const candidates = [...doc.querySelectorAll('[role="grid"], table')];
-    let best = null;
-    let bestRows = 0;
-    for (const container of candidates) {
-      const headerEls = [...container.querySelectorAll('[role="columnheader"], thead th')];
-      const headerTexts = headerEls.map((h) => (h.textContent ?? "").trim().toLowerCase());
-      const hasDiamonds = headerTexts.some((h) => /\bdiamonds?\b|\bgifts?\b/i.test(h));
-      const hasCreator = headerTexts.some((h) => /creator|username/i.test(h));
-      if (!hasDiamonds || !hasCreator) continue;
-      const dataRows = [...container.querySelectorAll('[role="row"], tbody tr')].filter(
-        (r) => !r.querySelector('[role="columnheader"]') && (r.textContent?.length ?? 0) > 20 && /\d/.test(r.textContent ?? "")
-      );
-      if (dataRows.length > bestRows) {
-        bestRows = dataRows.length;
-        best = container;
-      }
-    }
-    return best;
-  }
-  function dataRowsInContainer(container) {
-    return [...container.querySelectorAll('[role="row"], tbody tr')].filter(
-      (r) => !r.querySelector('[role="columnheader"]') && (r.textContent?.length ?? 0) > 15
-    );
-  }
-  function headerElementsForContainer(container) {
-    return [...container.querySelectorAll('[role="columnheader"], thead th')];
-  }
-  function statTextFromRowColumn(row, headerIndex, cellEls) {
-    const grid = row.closest('[role="grid"], table');
-    if (grid) {
-      const headerEls = headerElementsForContainer(grid);
-      const headerEl = headerEls[headerIndex];
-      const ariaRaw = parseInt(headerEl?.getAttribute("aria-colindex") ?? "", 10);
-      const tryIndexes = /* @__PURE__ */ new Set();
-      if (!Number.isNaN(ariaRaw)) {
-        tryIndexes.add(ariaRaw);
-        tryIndexes.add(ariaRaw + 1);
-      }
-      tryIndexes.add(headerIndex + 1);
-      tryIndexes.add(headerIndex);
-      for (const idx of tryIndexes) {
-        const text = statCellTextAtColIndex(row, idx);
-        if (text?.trim()) return text;
-      }
-    }
-    const el = cellEls[headerIndex];
-    return el ? readStatCellText(el) : void 0;
-  }
-  function statCellTextAtColIndex(row, colIndex) {
-    for (const sel of [
-      `[role="cell"][aria-colindex="${colIndex}"]`,
-      `[aria-colindex="${colIndex}"]`
-    ]) {
-      const direct = row.querySelector(sel);
-      if (direct) return readStatCellText(direct);
-    }
-    for (const cell of row.querySelectorAll('[role="cell"], td')) {
-      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
-      if (idx === colIndex) return readStatCellText(cell);
-    }
-    return void 0;
-  }
-  function cellTextAtColIndex(row, colIndex) {
-    for (const sel of [
-      `[role="cell"][aria-colindex="${colIndex}"]`,
-      `[aria-colindex="${colIndex}"]`
-    ]) {
-      const direct = row.querySelector(sel);
-      if (direct) return readCellText(direct);
-    }
-    for (const cell of row.querySelectorAll('[role="cell"], td')) {
-      const idx = parseInt(cell.getAttribute("aria-colindex") ?? "", 10);
-      if (idx === colIndex) return readCellText(cell);
-    }
-    return void 0;
-  }
-  function parseDiamondValue(text) {
-    if (!text) return void 0;
-    const n = parseStatNumber(text);
-    if (n === void 0 || n < 50) return void 0;
-    if (/^\$/.test(text.trim()) || /%$/.test(text.trim())) return void 0;
-    return n;
-  }
-  function diamondsFromRowGrid(row) {
-    const grid = row.closest('[role="grid"], table');
-    if (!grid) return void 0;
-    const headerEls = headerElementsForContainer(grid);
-    let diamondsHeaderEl;
-    let diamondsHeaderPos = -1;
-    headerEls.forEach((h, i) => {
-      if (/\bdiamonds?\b|\bgifts?\b/i.test(h.textContent ?? "")) {
-        diamondsHeaderEl = h;
-        diamondsHeaderPos = i;
-      }
-    });
-    if (!diamondsHeaderEl && diamondsHeaderPos < 0) return void 0;
-    const ariaRaw = parseInt(diamondsHeaderEl?.getAttribute("aria-colindex") ?? "", 10);
-    const tryColIndexes = /* @__PURE__ */ new Set();
-    if (!Number.isNaN(ariaRaw)) {
-      tryColIndexes.add(ariaRaw);
-      tryColIndexes.add(ariaRaw + 1);
-      tryColIndexes.add(ariaRaw - 1);
-    }
-    if (diamondsHeaderPos >= 0) tryColIndexes.add(diamondsHeaderPos);
-    for (const idx of tryColIndexes) {
-      const n = parseDiamondValue(cellTextAtColIndex(row, idx));
-      if (n !== void 0) return n;
-    }
-    const rowCells = [...row.querySelectorAll('[role="cell"], td')];
-    if (diamondsHeaderPos >= 0 && diamondsHeaderPos < rowCells.length) {
-      const n = parseDiamondValue(readCellText(rowCells[diamondsHeaderPos]));
-      if (n !== void 0) return n;
-    }
-    return void 0;
-  }
-  function pickLargestDiamondLikeValue(cellLines, username) {
-    let best;
-    for (const part of cellLines) {
-      if (username && part.toLowerCase().includes(username.toLowerCase())) continue;
-      if (isNonDiamondStatCell(part)) continue;
-      if (/^\$/.test(part) || /%$/.test(part)) continue;
-      if (extractUsernameFromText(part)) continue;
-      let n;
-      if (isNumericStatCell(part)) {
-        n = parseStatNumber(part);
-      } else {
-        n = parseStatNumber(part);
-      }
-      if (n === void 0 || n < 100) continue;
-      if (best === void 0 || n > best) best = n;
-    }
-    return best;
-  }
-
   // src/parser/extractLiveNow.ts
   var DOC_POS_FOLLOWING2 = 4;
   var DOC_POS_PRECEDING = 2;
@@ -1885,373 +2539,6 @@
     return dedupeLive(rows);
   }
 
-  // src/parser/duration.ts
-  function progressActualSegment(raw) {
-    const t = raw.trim();
-    const slash = t.search(/\s*[\/／]\s*/);
-    if (slash === -1) return t.replace(/\(level\s*\d+\)/gi, "").trim();
-    return t.slice(0, slash).replace(/\(level\s*\d+\)/gi, "").trim();
-  }
-  function parseLiveDaysFromCell(raw) {
-    if (!raw) return void 0;
-    const progress = raw.match(/(\d+)\s*d(?:ays?)?\s*[\/／]\s*(\d+)\s*d(?:ays?)?/i);
-    if (progress) return Number(progress[1]);
-    const segment = progressActualSegment(raw);
-    const dayMatch = segment.match(/(\d+)\s*d(?:ays?)?/i);
-    if (dayMatch) {
-      const n = Number(dayMatch[1]);
-      if (n >= 30) return 0;
-      return n;
-    }
-    if (/^\d+$/.test(segment)) {
-      const n = Number(segment);
-      return n >= 30 ? 0 : n;
-    }
-    if (!raw.includes("/") && !raw.includes("\uFF0F")) {
-      const m = raw.trim().match(/(\d+)\s*d(?:ays?)?/i);
-      if (m) {
-        const n = Number(m[1]);
-        return n >= 30 ? 0 : n;
-      }
-      const compact = parseCompactNumber(raw);
-      if (compact !== void 0 && compact <= 7) return compact;
-      if (compact !== void 0 && compact > 7) return 0;
-      return void 0;
-    }
-    return void 0;
-  }
-  function parseStreamHoursFromCell(raw) {
-    if (!raw) return void 0;
-    const segment = progressActualSegment(raw);
-    if (!segment) {
-      if (/^0\s*h/i.test(raw.trim())) return 0;
-      return void 0;
-    }
-    const seconds = parseDurationToSeconds(segment);
-    if (seconds !== void 0) return Math.round(seconds / 3600 * 10) / 10;
-    if (/^0\s*h/i.test(segment)) return 0;
-    if (/^\d+(?:\.\d+)?\s*h/i.test(segment)) {
-      const h = Number(segment.match(/^(\d+(?:\.\d+)?)/)?.[1]);
-      if (Number.isFinite(h)) return h;
-    }
-    return void 0;
-  }
-  function parseDurationToSeconds(raw) {
-    if (!raw) return void 0;
-    const t = progressActualSegment(raw).toLowerCase();
-    if (!t) return void 0;
-    let total = 0;
-    let matched = false;
-    const dayMatch = t.match(/(\d+(?:\.\d+)?)\s*d(?:ays?)?/);
-    if (dayMatch) {
-      total += Number(dayMatch[1]) * 86400;
-      matched = true;
-    }
-    const hourMatch = t.match(/(\d+(?:\.\d+)?)\s*h(?:ours?|rs?)?/);
-    if (hourMatch) {
-      total += Number(hourMatch[1]) * 3600;
-      matched = true;
-    } else if (/^\d+(?:\.\d+)?\s*h?$/.test(t) && t.includes("h")) {
-      const n = Number(t.replace(/h/g, ""));
-      if (Number.isFinite(n)) {
-        total += n * 3600;
-        matched = true;
-      }
-    }
-    const minMatch = t.match(/(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?/);
-    if (minMatch) {
-      total += Number(minMatch[1]) * 60;
-      matched = true;
-    }
-    const secMatch = t.match(/(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?/);
-    if (secMatch) {
-      total += Number(secMatch[1]);
-      matched = true;
-    }
-    if (!matched) {
-      const plainHours = t.match(/^(\d+(?:\.\d+)?)$/);
-      if (plainHours && t.length <= 6) {
-        return Math.round(Number(plainHours[1]) * 3600);
-      }
-      return void 0;
-    }
-    return Math.round(total);
-  }
-
-  // src/parser/extractRows.ts
-  function rowLikeElements(doc) {
-    const contributionGrid = findCreatorContributionGrid(doc);
-    if (contributionGrid) {
-      const rows = dataRowsInContainer(contributionGrid);
-      if (rows.length > 0) return rows;
-    }
-    const gridRows = Array.from(doc.querySelectorAll('[role="row"]')).filter(
-      (el) => !el.querySelector('[role="columnheader"]') && (el.querySelector('[role="cell"]') || el.querySelector("td")) && (el.textContent?.length ?? 0) > 15
-    );
-    const fromTable = Array.from(doc.querySelectorAll("table tbody tr")).filter(
-      (tr) => (tr.textContent?.length ?? 0) > 15
-    );
-    if (gridRows.length >= Math.max(fromTable.length, 1)) return gridRows;
-    if (fromTable.length > 0) return fromTable;
-    const semiRows = Array.from(
-      doc.querySelectorAll('[class*="table"] [class*="row"], [class*="Table"] [class*="Row"]')
-    );
-    if (semiRows.length > 1) return semiRows;
-    return Array.from(doc.querySelectorAll("li, [class*='list-item'], [class*='ListItem']")).filter(
-      (el) => (el.textContent?.length ?? 0) > 10 && (el.textContent?.length ?? 0) < 500
-    );
-  }
-  function cellTexts(row) {
-    const cells = Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
-    if (cells.length > 0) {
-      const lines = [];
-      for (const cell of cells) {
-        lines.push(...splitCellLines(readCellText(cell)));
-      }
-      return lines;
-    }
-    return splitCellLines((row.textContent ?? "").trim());
-  }
-  function tableCells(row) {
-    return Array.from(row.querySelectorAll("td, [role='cell'], [class*='cell'], [class*='Cell']"));
-  }
-  function headerTextsForTable(row) {
-    const table = row.closest("table");
-    if (!table) return [];
-    const headers = Array.from(table.querySelectorAll("thead th, thead td, [role='columnheader']"));
-    return headers.map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-  }
-  function headerTextsForRow(row) {
-    const fromTable = headerTextsForTable(row);
-    if (fromTable.length >= 3) return fromTable;
-    const grid = row.closest('[role="grid"], table');
-    if (grid) {
-      const headers = [...grid.querySelectorAll('[role="columnheader"], thead th')].map((h) => (h.textContent ?? "").trim().toLowerCase()).filter(Boolean);
-      if (headers.length >= 3) return headers;
-    }
-    return fromTable;
-  }
-  function extractDiamondsFromRowText(rowText, username) {
-    let text = rowText;
-    if (username) {
-      text = text.replace(
-        new RegExp(username.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
-        " "
-      );
-    }
-    const fromLines = pickLargestDiamondLikeValue(splitCellLines(text), username);
-    if (fromLines !== void 0) return fromLines;
-    const commaMatches = [...text.matchAll(/\b(\d{1,3}(?:,\d{3})+)\b/g)].map((m) => parseCompactNumber(m[1])).filter((n) => n !== void 0 && n >= 100);
-    if (commaMatches.length > 0) return Math.max(...commaMatches);
-    return void 0;
-  }
-  function displayNameFromRow(row, username) {
-    const imgs = Array.from(row.querySelectorAll("img[alt]"));
-    for (const img of imgs) {
-      const alt = img.getAttribute("alt")?.trim();
-      if (alt && alt.length > 1 && alt.toLowerCase() !== username?.toLowerCase()) return alt;
-    }
-    const cells = cellTexts(row);
-    for (const cell of cells) {
-      if (isNonDiamondStatCell(cell) || /%|bonus/i.test(cell) && /^\$?\d/.test(cell)) continue;
-      if (/^\d[\d,.]*$/.test(cell.replace(/\s/g, ""))) continue;
-      const u = extractUsernameFromText(cell);
-      const withoutUser = u ? cell.replace(`@${u}`, "").replace(u, "").trim() : cell;
-      if (withoutUser.length > 1 && withoutUser.length < 80 && !/\blevel\s*\d/i.test(withoutUser)) {
-        return withoutUser;
-      }
-    }
-    return void 0;
-  }
-  function parseActiveness(text) {
-    const t = text.toLowerCase();
-    if (/\belite\b/.test(t)) return "elite";
-    if (/\bhigh\b|\bactive\b/.test(t)) return "high";
-    if (/\bmedium\b|\bmed\b/.test(t)) return "medium";
-    if (/\blow\b/.test(t)) return "low";
-    if (/\bnone\b|\bunknown\b/.test(t)) return "none";
-    return void 0;
-  }
-  function parseRelationshipRow(row, tabStatus) {
-    const cells = cellTexts(row);
-    const cellEls = tableCells(row);
-    if (cells.length === 0) return null;
-    const joined = cells.join("\n");
-    const creatorColumn = cellEls[0] ? (cellEls[0].textContent ?? "").trim() : cells[0] ?? joined;
-    const usernameRaw = creatorColumn.trim().slice(0, 200) || void 0;
-    const usernameCandidate = extractUsernameWithConfidence(creatorColumn, {
-      fromUsernameColumn: true,
-      displayName: displayNameFromRow(row)
-    });
-    const username = usernameCandidate.username;
-    if (!username) return null;
-    const dateCell = cells.find((c) => /\d{1,2}\/\d{1,2}\/\d{4}/.test(c));
-    const reasonCell = cells.length >= 3 ? cells[cells.length - 1] : void 0;
-    return {
-      tiktokUsername: username,
-      tiktokUsernameRaw: usernameRaw,
-      usernameConfidence: usernameCandidate.confidence,
-      usernameSource: usernameCandidate.source,
-      displayName: displayNameFromRow(row, username),
-      avatarUrl: avatarFromRow(row),
-      creatorNetworkStatus: tabStatus,
-      inviteStatus: tabStatus,
-      relationshipRequestDate: dateCell,
-      relationshipReason: reasonCell && reasonCell !== dateCell ? reasonCell : void 0,
-      rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
-    };
-  }
-  function inferColumnMap(headers) {
-    const map = {};
-    headers.forEach((h, idx) => {
-      if (/(creator|username|handle)/i.test(h)) map.creator = idx;
-      if (/\bdiamonds?\b|\bgifts?\b/i.test(h)) map.coins = idx;
-      else if (/\bcoins?\b/i.test(h) && !/incentive|contribution|bonus/i.test(h)) map.coins = idx;
-      if (/(engagements?|interactions?)/i.test(h) && !/incentive/i.test(h)) map.engagements = idx;
-      if (!/eligible\s*incentive/i.test(h) && /(valid\s*go\s*live|valid.*live.*days?|days?\s*streamed|live\s*days?)/i.test(h)) {
-        map.days = idx;
-      }
-      if (/(stream duration|live duration)/i.test(h) || /\bhours?\b/.test(h)) map.hours = idx;
-      if (/(activeness|activity level|active level)/i.test(h)) map.activeness = idx;
-    });
-    return map;
-  }
-  function parseStatsRow(row, _doc = document) {
-    const cells = cellTexts(row);
-    const cellEls = tableCells(row);
-    if (cells.length === 0) return null;
-    const headers = headerTextsForRow(row);
-    const columnMap = inferColumnMap(headers);
-    const creatorText = columnMap.creator !== void 0 ? cellEls[columnMap.creator]?.textContent ?? cells[columnMap.creator] ?? "" : cellEls[0]?.textContent ?? cells[0] ?? "";
-    const usernameRaw = creatorText.trim().slice(0, 200) || void 0;
-    const usernameCandidate = extractUsernameWithConfidence(creatorText, {
-      fromUsernameColumn: columnMap.creator !== void 0,
-      displayName: displayNameFromRow(row)
-    });
-    const username = usernameCandidate.username;
-    if (!username) return null;
-    const joined = cells.join("\n");
-    let coins;
-    let diamonds;
-    let days;
-    let hours;
-    let engagements;
-    let activeness;
-    let liveDurationText;
-    let liveDurationSeconds;
-    let riskFlag;
-    diamonds = diamondsFromRowGrid(row);
-    if (diamonds !== void 0) coins = diamonds;
-    if (columnMap.engagements !== void 0) {
-      const text = statTextFromRowColumn(row, columnMap.engagements, cellEls);
-      if (text) engagements = parseStatNumber(text);
-    }
-    if (columnMap.days !== void 0) {
-      const text = statTextFromRowColumn(row, columnMap.days, cellEls);
-      if (text) {
-        days = parseLiveDaysFromCell(text);
-      }
-    }
-    if (columnMap.hours !== void 0) {
-      const text = statTextFromRowColumn(row, columnMap.hours, cellEls);
-      if (text) {
-        hours = parseStreamHoursFromCell(text);
-        if (hours !== void 0) {
-          liveDurationText = text;
-          liveDurationSeconds = Math.round(hours * 3600);
-        }
-      }
-    }
-    if (columnMap.activeness !== void 0) {
-      const text = statTextFromRowColumn(row, columnMap.activeness, cellEls);
-      if (text) activeness = parseActiveness(text);
-    }
-    for (const cellEl of cellEls) {
-      const cell = readStatCellText(cellEl);
-      const lower = cell.toLowerCase();
-      if (!diamonds && /\bdiamonds?\b/i.test(cell)) {
-        const n = parseStatNumber(cell);
-        if (n !== void 0) {
-          diamonds = n;
-          coins = n;
-        }
-      }
-      if (!days && (lower.includes("live day") || lower.includes("go live") || /\d+\s*d\s*[\/／]/.test(cell) || /^\d+\s*d(?:ays?)?\b/i.test(cell.trim()))) {
-        const parsed = parseLiveDaysFromCell(cell);
-        if (parsed !== void 0) days = parsed;
-      }
-      if (!hours && (/\d+\s*h\s*[\/／]/.test(cell) || /\d+\s*h(?:\s*\d+\s*m)?\b/i.test(cell) || lower.includes("duration") && /\d/.test(cell))) {
-        const parsed = parseStreamHoursFromCell(cell);
-        if (parsed !== void 0) {
-          hours = parsed;
-          liveDurationText = cell;
-          liveDurationSeconds = Math.round(parsed * 3600);
-        }
-      }
-      if (engagements === void 0 && (lower.includes("engagement") || lower.includes("interaction") || lower.includes("activity") || lower.includes("comment") || lower.includes("like"))) {
-        engagements = firstCompactNumber(cell);
-      }
-      if (!activeness) activeness = parseActiveness(cell);
-      if (!riskFlag && (lower.includes("risk") || lower.includes("violation") || lower.includes("warning"))) {
-        riskFlag = cell.slice(0, 120);
-      }
-    }
-    if (diamonds === void 0) {
-      diamonds = pickLargestDiamondLikeValue(cells, username);
-      if (diamonds !== void 0) coins = diamonds;
-    }
-    if (diamonds === void 0) {
-      const inner = row.innerText?.trim() ?? joined;
-      diamonds = extractDiamondsFromRowText(inner, username);
-      if (diamonds !== void 0) coins = diamonds;
-    }
-    if (coins === void 0 && diamonds !== void 0) coins = diamonds;
-    if (!username || username.length < 2) return null;
-    return {
-      tiktokUsername: username,
-      tiktokUsernameRaw: usernameRaw,
-      usernameConfidence: usernameCandidate.confidence,
-      usernameSource: usernameCandidate.source,
-      displayName: displayNameFromRow(row, username),
-      avatarUrl: avatarFromRow(row),
-      coinsEarned: coins,
-      diamondsEarned: diamonds,
-      engagements,
-      daysStreamed: days ?? 0,
-      hoursStreamed: hours,
-      liveDurationText,
-      liveDurationSeconds,
-      activenessLevel: activeness,
-      riskFlag,
-      rawTextPreview: joined.replace(/\s+/g, " ").slice(0, 180)
-    };
-  }
-  function dedupeRows(rows) {
-    const seen = /* @__PURE__ */ new Set();
-    const out = [];
-    for (const r of rows) {
-      const key = normalizeTikTokUsername(r.tiktokUsername) ?? r.rawTextPreview ?? "";
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      out.push(r);
-    }
-    return out;
-  }
-  function extractCreatorRowsFromPage(doc, pageType, relationshipTab) {
-    const rowEls = rowLikeElements(doc);
-    const rows = [];
-    for (const el of rowEls) {
-      if (pageType === "manage_relationship") {
-        const parsed = parseRelationshipRow(el, relationshipTab);
-        if (parsed) rows.push(parsed);
-      } else if (pageType === "creator_stats" || pageType === "unknown") {
-        const parsed = parseStatsRow(el, doc);
-        if (parsed) rows.push(parsed);
-      }
-    }
-    return dedupeRows(rows);
-  }
-
   // src/parser/live-parse-debug.ts
   var AT_TRUNCATED = /(?:^|[\s\n\r(])(@[_]?[a-z0-9][a-z0-9._]{2,26})(?:…|\.{2,3}|\u2026)/gi;
   function collectLiveParseDebug(doc = document) {
@@ -2285,68 +2572,619 @@
     };
   }
 
+  // src/parser/parsers/liveNow.ts
+  function parseLiveNowPage(ctx) {
+    const liveRows = extractLiveNowRowsFromPage(ctx.doc);
+    return {
+      rows: [],
+      liveRows,
+      headersFound: ctx.headersFound,
+      metricsAvailable: liveRows.length > 0 ? ["live_presence", "viewer_count", "live_started"] : [],
+      liveParseDebug: liveRows.length === 0 ? collectLiveParseDebug(ctx.doc) : void 0
+    };
+  }
+
+  // src/parser/parsers/workspace.ts
+  function parseWorkspacePage(_ctx) {
+    return {
+      rows: [],
+      liveRows: [],
+      headersFound: _ctx.headersFound,
+      metricsAvailable: []
+    };
+  }
+
+  // src/parser/pageSpecs/registry.ts
+  var PAGE_SPECS = [
+    {
+      id: "live_now",
+      displayName: "LIVE Now",
+      pathPatterns: [/\/anchor\/live/, /\/live-now/, /livenow/, /\/live(?!.*relation)/],
+      titlePatterns: [/live\s*now/i],
+      bodyPatterns: [/creators who are live now/i, /promote their live/i],
+      requiredHeadings: [],
+      optionalHeadings: [],
+      uniqueBodyText: [/creators who are live now/i, /live\s*now/i],
+      syncEnabled: true,
+      previewOnly: false,
+      syncMode: "live",
+      minConfidence: 0.55,
+      expectedMinColumns: 0,
+      creatorCountBehavior: "expect_live_subset",
+      supportedMetrics: ["live_presence", "viewer_count", "live_started"],
+      parserVersion: PARSER_VERSION,
+      parse: parseLiveNowPage
+    },
+    {
+      id: "activity_incentive",
+      displayName: "Activeness Incentive",
+      pathPatterns: [
+        /activeness/,
+        /activity.*incentive/,
+        /\/incentive/,
+        /\/performance/,
+        /\/contribution/,
+        /\/revenue/,
+        /\/analytics/,
+        /\/data\//
+      ],
+      titlePatterns: [/activeness\s*incentive/i, /activity\s*incentive/i, /incentives?/i, /creator\s*performance/i],
+      bodyPatterns: [/activeness\s*incentive/i, /valid\s*go\s*live/i, /estimated\s*bonus/i, /contribution\s*details/i],
+      requiredHeadings: [/valid\s*go\s*live|live\s*days?/i, /live\s*duration|stream\s*duration|\bhours?\b/i],
+      optionalHeadings: [/diamonds?/i, /activeness|activity\s*level/i, /engagements?/i],
+      uniqueBodyText: [/activeness\s*incentive/i, /valid\s*go\s*live/i],
+      syncEnabled: true,
+      previewOnly: false,
+      syncMode: "stats",
+      minConfidence: 0.55,
+      expectedMinColumns: 3,
+      creatorCountBehavior: "expect_network_size",
+      supportedMetrics: ["diamonds", "valid_live_days", "live_duration", "activeness_level"],
+      parserVersion: PARSER_VERSION,
+      parse: parseActivityIncentivePage
+    },
+    {
+      id: "rank_up_incentive",
+      displayName: "Rank-up Incentive",
+      pathPatterns: [/rank[\s_-]?up/, /rankup/, /tier.*incentive/],
+      titlePatterns: [/rank[\s-]?up\s*incentive/i, /rank\s*incentive/i],
+      bodyPatterns: [/rank[\s-]?up/i, /tier\s*last\s*month/i, /maintain\s*tier/i],
+      requiredHeadings: [/tier/i],
+      optionalHeadings: [/rank[\s-]?up/i, /maintain/i, /diamonds?/i, /valid\s*go\s*live/i, /live\s*duration/i],
+      uniqueBodyText: [/rank[\s-]?up\s*incentive/i, /tier\s*last\s*month/i],
+      syncEnabled: true,
+      previewOnly: false,
+      syncMode: "stats",
+      minConfidence: 0.65,
+      expectedMinColumns: 2,
+      creatorCountBehavior: "expect_network_size",
+      supportedMetrics: [
+        "tier",
+        "rank_up_status",
+        "maintain_tier_status",
+        "diamonds",
+        "valid_live_days",
+        "live_duration",
+        "estimated_contribution"
+      ],
+      parserVersion: PARSER_VERSION,
+      parse: parseRankUpIncentivePage
+    },
+    {
+      id: "incremental_incentive",
+      displayName: "Incremental Revenue Incentive",
+      pathPatterns: [/incremental/, /revenue.*incentive/],
+      titlePatterns: [/incremental/i, /revenue\s*incentive/i],
+      bodyPatterns: [/incremental\s*(revenue|incentive)/i],
+      requiredHeadings: [/creator|username/i],
+      optionalHeadings: [/diamonds?/i, /revenue/i, /contribution/i],
+      uniqueBodyText: [/incremental\s*(revenue|incentive)/i],
+      syncEnabled: true,
+      previewOnly: false,
+      syncMode: "stats",
+      minConfidence: 0.65,
+      expectedMinColumns: 2,
+      creatorCountBehavior: "expect_network_size",
+      supportedMetrics: ["diamonds", "estimated_contribution"],
+      parserVersion: PARSER_VERSION,
+      parse: parseIncrementalIncentivePage
+    },
+    {
+      id: "creator_roster",
+      displayName: "Manage Creators / Roster",
+      pathPatterns: [
+        /\/relation/,
+        /\/relationship/,
+        /manage.*creator/,
+        /\/creator\/manage/,
+        /\/anchor\/creator/,
+        /\/creators?$/
+      ],
+      titlePatterns: [/manage\s*relationship/i, /manage\s*creators?/i],
+      bodyPatterns: [
+        /manage\s*relationship/i,
+        /manage\s*creators?/i,
+        /relationship\s*status/i,
+        /diamonds\s*in\s*l30d/i
+      ],
+      requiredHeadings: [],
+      optionalHeadings: [
+        /creator|username/i,
+        /relationship\s*status/i,
+        /joined/i,
+        /followers?/i,
+        /likes?/i,
+        /diamonds?/i,
+        /date/i,
+        /reason/i
+      ],
+      uniqueBodyText: [
+        /manage\s*creators?/i,
+        /manage\s*relationship/i,
+        /relationship\s*status/i,
+        /transfer\s*creators?/i
+      ],
+      syncEnabled: true,
+      previewOnly: false,
+      syncMode: "roster",
+      minConfidence: 0.5,
+      expectedMinColumns: 1,
+      creatorCountBehavior: "expect_network_size",
+      supportedMetrics: ["roster_presence", "network_status"],
+      parserVersion: PARSER_VERSION,
+      parse: parseCreatorRosterPage
+    },
+    {
+      id: "workspace_metrics",
+      displayName: "Workspace overview",
+      pathPatterns: [/\/workspace/, /\/portal\/?$/],
+      titlePatterns: [/workspace/i],
+      bodyPatterns: [/workspace\s*overview/i, /creator\s*network\s*workspace/i],
+      requiredHeadings: [],
+      optionalHeadings: [],
+      uniqueBodyText: [/workspace/i],
+      syncEnabled: false,
+      previewOnly: true,
+      syncMode: "preview_only",
+      minConfidence: 0.5,
+      expectedMinColumns: 0,
+      creatorCountBehavior: "none",
+      supportedMetrics: [],
+      parserVersion: PARSER_VERSION,
+      parse: parseWorkspacePage
+    }
+  ];
+  function getPageSpec(id) {
+    return PAGE_SPECS.find((s) => s.id === id);
+  }
+  var SAFE_CONFIDENCE_THRESHOLD = 0.55;
+
+  // src/parser/detectPage.ts
+  var BACKSTAGE_HOSTS = ["live-backstage.tiktok.com", "seller-us.tiktok.com", "seller.tiktok.com"];
+  function isTikTokCreatorNetworkHost(url) {
+    try {
+      const u = new URL(url);
+      return BACKSTAGE_HOSTS.some((h) => u.hostname === h || u.hostname.endsWith(`.${h}`));
+    } catch {
+      return false;
+    }
+  }
+  function readActiveRelationshipTab(doc) {
+    if (typeof doc.querySelector !== "function") return void 0;
+    const tabSelectors = [
+      '[role="tab"][aria-selected="true"]',
+      ".semi-tabs-tab-active",
+      '[class*="tab"][class*="active"]',
+      '[class*="Tab"][class*="active"]'
+    ];
+    for (const sel of tabSelectors) {
+      const el = doc.querySelector(sel);
+      const text = el?.textContent?.trim();
+      if (text && text.length < 40) return text.replace(/\d+/g, "").trim();
+    }
+    return void 0;
+  }
+  function readPeriodLabel(doc) {
+    if (typeof doc.querySelectorAll !== "function") return void 0;
+    const headings = Array.from(doc.querySelectorAll("h1, h2, h3, [class*='title'], [class*='Title']"));
+    for (const h of headings) {
+      const t = h.textContent?.trim() ?? "";
+      if (/contribution|performance|creator|week|month|period|incentive|rank/i.test(t) && t.length < 120) {
+        return t;
+      }
+    }
+    return void 0;
+  }
+  function scoreSpec(spec, path, title, bodyText, headers) {
+    const matched = [];
+    const missing = [];
+    let score = 0;
+    for (const re of spec.pathPatterns) {
+      if (re.test(path)) {
+        score += 0.35;
+        matched.push(`path:${re.source}`);
+        break;
+      }
+    }
+    for (const re of spec.titlePatterns) {
+      if (re.test(title)) {
+        score += 0.2;
+        matched.push(`title:${re.source}`);
+        break;
+      }
+    }
+    for (const re of spec.uniqueBodyText) {
+      if (re.test(bodyText)) {
+        score += 0.25;
+        matched.push(`body:${re.source}`);
+        break;
+      }
+    }
+    if (matched.filter((m) => m.startsWith("body:")).length === 0) {
+      for (const re of spec.bodyPatterns) {
+        if (re.test(bodyText)) {
+          score += 0.1;
+          matched.push(`body-soft:${re.source}`);
+          break;
+        }
+      }
+    }
+    const headerBlob = headers.join(" | ");
+    let requiredHits = 0;
+    for (const re of spec.requiredHeadings) {
+      if (headers.some((h) => re.test(h)) || re.test(headerBlob)) {
+        requiredHits += 1;
+        matched.push(`header:${re.source}`);
+      } else {
+        missing.push(`required_header:${re.source}`);
+      }
+    }
+    if (spec.requiredHeadings.length > 0) {
+      score += 0.25 * (requiredHits / spec.requiredHeadings.length);
+    }
+    for (const re of spec.optionalHeadings) {
+      if (headers.some((h) => re.test(h))) {
+        score += 0.05;
+        matched.push(`opt_header:${re.source}`);
+      }
+    }
+    if (spec.id === "activity_incentive") {
+      if (/rank[\s-]?up/i.test(title) || /tier\s*last\s*month/i.test(headerBlob)) {
+        score -= 0.4;
+        missing.push("looks_like_rank_up");
+      }
+    }
+    if (spec.id === "rank_up_incentive") {
+      if (/activeness\s*incentive/i.test(bodyText) && !/rank[\s-]?up/i.test(title + bodyText)) {
+        score -= 0.3;
+        missing.push("looks_like_activeness");
+      }
+    }
+    return { score: Math.max(0, Math.min(1, score)), matched, missing };
+  }
+  function detectTikTokCreatorNetworkPage(url, doc = document) {
+    if (!isTikTokCreatorNetworkHost(url)) {
+      return {
+        datasetType: "unknown",
+        detectedPageType: "unknown",
+        displayName: "Unsupported host",
+        confidence: 0,
+        matchedSignals: [],
+        missingSignals: ["backstage_host"],
+        parserVersion: PARSER_VERSION,
+        syncEnabled: false,
+        previewOnly: true,
+        headersFound: []
+      };
+    }
+    let path = "";
+    try {
+      path = new URL(url).pathname.toLowerCase();
+    } catch {
+      path = "";
+    }
+    const title = (doc.title ?? "").toLowerCase();
+    const bodyText = (doc.body?.innerText ?? doc.body?.textContent ?? "").slice(0, 6e3);
+    const headers = collectPageHeaders(doc);
+    let best = null;
+    for (const spec2 of PAGE_SPECS) {
+      const { score: score2, matched: matched2, missing: missing2 } = scoreSpec(spec2, path, title, bodyText, headers);
+      if (!best || score2 > best.score) {
+        best = { spec: spec2, score: score2, matched: matched2, missing: missing2 };
+      }
+    }
+    if (!best || best.score < 0.25) {
+      if (path.includes("/creator") || /coins earned|diamonds/i.test(bodyText)) {
+        const activity = PAGE_SPECS.find((s) => s.id === "activity_incentive");
+        const period2 = resolveStatPeriodForSync(doc, readPeriodLabel(doc));
+        return {
+          datasetType: "activity_incentive",
+          detectedPageType: "activity_incentive",
+          displayName: activity.displayName,
+          confidence: 0.35,
+          matchedSignals: ["fallback:creator_or_diamonds"],
+          missingSignals: ["weak_page_identity"],
+          parserVersion: PARSER_VERSION,
+          syncEnabled: false,
+          previewOnly: false,
+          relationshipTab: readActiveRelationshipTab(doc),
+          statPeriodLabel: period2.statPeriodLabel ?? readPeriodLabel(doc),
+          statPeriodKind: period2.statPeriodKind,
+          statPeriodStart: period2.statPeriodStart,
+          statPeriodEnd: period2.statPeriodEnd,
+          headersFound: headers
+        };
+      }
+      return {
+        datasetType: "unknown",
+        detectedPageType: "unknown",
+        displayName: "Unknown Backstage page",
+        confidence: best?.score ?? 0,
+        matchedSignals: best?.matched ?? [],
+        missingSignals: best?.missing ?? ["no_page_match"],
+        parserVersion: PARSER_VERSION,
+        syncEnabled: false,
+        previewOnly: true,
+        headersFound: headers
+      };
+    }
+    const { spec, score, matched, missing } = best;
+    const relationshipTab = readActiveRelationshipTab(doc);
+    const needsPeriod = spec.id === "activity_incentive" || spec.id === "rank_up_incentive" || spec.id === "incremental_incentive" || spec.id === "creator_roster";
+    const period = needsPeriod ? resolveStatPeriodForSync(doc, readPeriodLabel(doc)) : { statPeriodLabel: void 0, statPeriodKind: void 0, statPeriodStart: void 0, statPeriodEnd: void 0 };
+    const confidence = score;
+    const syncEnabled = spec.syncEnabled && !spec.previewOnly && confidence >= Math.max(spec.minConfidence, SAFE_CONFIDENCE_THRESHOLD);
+    return {
+      datasetType: spec.id,
+      detectedPageType: spec.id,
+      displayName: spec.displayName,
+      confidence,
+      matchedSignals: matched,
+      missingSignals: missing,
+      parserVersion: PARSER_VERSION,
+      syncEnabled,
+      previewOnly: spec.previewOnly,
+      relationshipTab,
+      statPeriodLabel: period.statPeriodLabel ?? readPeriodLabel(doc),
+      statPeriodKind: period.statPeriodKind,
+      statPeriodStart: period.statPeriodStart,
+      statPeriodEnd: period.statPeriodEnd,
+      headersFound: headers
+    };
+  }
+
+  // src/parser/validateCapture.ts
+  function validateCapture(detection, snapshot, opts) {
+    const issues = [];
+    const spec = getPageSpec(detection.datasetType);
+    const rowCount2 = detection.datasetType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
+    if (detection.datasetType === "unknown") {
+      issues.push({
+        severity: "blocking",
+        code: "unknown_page",
+        message: "Page identity unknown. Open a supported Backstage page."
+      });
+    }
+    if (detection.previewOnly || spec && !spec.syncEnabled) {
+      issues.push({
+        severity: "blocking",
+        code: "preview_only",
+        message: `${detection.displayName} is preview-only and cannot sync.`
+      });
+    }
+    if (detection.confidence < SAFE_CONFIDENCE_THRESHOLD) {
+      issues.push({
+        severity: "blocking",
+        code: "low_confidence",
+        message: `Page identity confidence ${(detection.confidence * 100).toFixed(0)}% is below the safe threshold. Sync blocked.`
+      });
+    }
+    if (detection.missingSignals.some((s) => s.startsWith("required_header:"))) {
+      issues.push({
+        severity: "blocking",
+        code: "required_headers_missing",
+        message: `Required columns missing: ${detection.missingSignals.filter((s) => s.startsWith("required_header:")).join(", ")}`
+      });
+    }
+    if (detection.missingSignals.includes("looks_like_rank_up")) {
+      issues.push({
+        severity: "blocking",
+        code: "ambiguous_activity_vs_rank",
+        message: "Page looks like Rank-up Incentive, not Activeness. Sync blocked to protect rankings."
+      });
+    }
+    if (spec && (spec.creatorCountBehavior === "expect_network_size" || spec.creatorCountBehavior === "expect_live_subset") && rowCount2 === 0) {
+      issues.push({
+        severity: "blocking",
+        code: "zero_rows",
+        message: "Zero creator rows on a page expected to contain creators. Sync blocked."
+      });
+    }
+    const usernames = (detection.datasetType === "live_now" ? snapshot.liveRows : snapshot.rows).map((r) => normalizeTikTokUsername(r.tiktokUsername));
+    const seen = /* @__PURE__ */ new Set();
+    const dupes = /* @__PURE__ */ new Set();
+    for (const u of usernames) {
+      if (!u) continue;
+      if (seen.has(u)) dupes.add(u);
+      seen.add(u);
+    }
+    if (dupes.size > 0) {
+      issues.push({
+        severity: "blocking",
+        code: "duplicate_usernames",
+        message: `Duplicate usernames: ${[...dupes].slice(0, 5).join(", ")}`
+      });
+    }
+    const malformed = usernames.filter((u) => !u || u.length < 2).length;
+    if (malformed > 0 && malformed === usernames.length && rowCount2 > 0) {
+      issues.push({
+        severity: "blocking",
+        code: "malformed_usernames",
+        message: "All usernames failed to parse."
+      });
+    } else if (malformed > 0) {
+      issues.push({
+        severity: "warning",
+        code: "some_malformed_usernames",
+        message: `${malformed} row(s) have malformed usernames and will be skipped.`
+      });
+    }
+    if (detection.datasetType === "activity_incentive" && rowCount2 > 0) {
+      const withHours = snapshot.rows.filter((r) => r.hoursStreamed !== void 0).length;
+      const missingRate = 1 - withHours / rowCount2;
+      if (missingRate > 0.25) {
+        issues.push({
+          severity: "blocking",
+          code: "required_metrics_missing",
+          message: `More than 25% of rows are missing LIVE duration (${(missingRate * 100).toFixed(0)}%). Sync blocked.`
+        });
+      }
+      const impossible = snapshot.rows.filter(
+        (r) => r.daysStreamed !== void 0 && (r.daysStreamed < 0 || r.daysStreamed > 31) || r.hoursStreamed !== void 0 && (r.hoursStreamed < 0 || r.hoursStreamed > 744)
+      );
+      if (impossible.length > 0) {
+        issues.push({
+          severity: "blocking",
+          code: "impossible_values",
+          message: `${impossible.length} row(s) have impossible day/hour values.`
+        });
+      }
+    }
+    if (opts?.previousCreatorCount && opts.previousCreatorCount > 0 && rowCount2 > 0 && spec?.creatorCountBehavior === "expect_network_size") {
+      const delta = Math.abs(rowCount2 - opts.previousCreatorCount) / opts.previousCreatorCount;
+      if (delta > 0.1) {
+        issues.push({
+          severity: "warning",
+          code: "creator_count_delta",
+          message: `Creator count changed by more than 10% (${opts.previousCreatorCount} \u2192 ${rowCount2}).`
+        });
+      }
+    }
+    if (spec) {
+      for (const heading of spec.optionalHeadings) {
+        const found = detection.headersFound.some((h) => heading.test(h));
+        if (!found) {
+          issues.push({
+            severity: "warning",
+            code: "optional_column_missing",
+            message: `Optional column not found: ${heading.source}`
+          });
+        }
+      }
+    }
+    const blocking = issues.filter((i) => i.severity === "blocking").map((i) => i.message);
+    const warnings = issues.filter((i) => i.severity === "warning").map((i) => i.message);
+    return {
+      ok: blocking.length === 0,
+      syncSafe: blocking.length === 0 && detection.syncEnabled,
+      issues,
+      blocking,
+      warnings
+    };
+  }
+
   // src/parser/index.ts
   function buildPageSnapshot(url = location.href, doc = document) {
     const detection = detectTikTokCreatorNetworkPage(url, doc);
-    if (detection.detectedPageType === "live_now") {
-      const liveRows = extractLiveNowRowsFromPage(doc);
-      return {
-        sourcePageUrl: url,
-        detectedPageType: "live_now",
-        relationshipTab: detection.relationshipTab,
-        statPeriodLabel: detection.statPeriodLabel,
-        statPeriodStart: detection.statPeriodStart,
-        statPeriodEnd: detection.statPeriodEnd,
-        rows: [],
-        liveRows,
-        liveParseDebug: liveRows.length === 0 ? collectLiveParseDebug(doc) : void 0
-      };
+    const headersFound = detection.headersFound.length ? detection.headersFound : collectPageHeaders(doc);
+    const spec = getPageSpec(detection.datasetType);
+    const ctx = {
+      url,
+      doc,
+      relationshipTab: detection.relationshipTab,
+      headersFound
+    };
+    let rows = [];
+    let liveRows = [];
+    let metricsAvailable = [];
+    let liveParseDebug;
+    if (spec) {
+      const parsed = spec.parse(ctx);
+      rows = parsed.rows;
+      liveRows = parsed.liveRows;
+      metricsAvailable = parsed.metricsAvailable;
+      if ("liveParseDebug" in parsed) {
+        liveParseDebug = parsed.liveParseDebug;
+      }
     }
-    const liveFromTable = detection.detectedPageType === "creator_stats" || detection.detectedPageType === "manage_relationship" ? extractLiveRowsFromCreatorTable(doc) : [];
-    return {
+    if (detection.datasetType === "activity_incentive" || detection.datasetType === "creator_roster") {
+      try {
+        const fromTable = extractLiveRowsFromCreatorTable(doc);
+        if (fromTable.length > 0) liveRows = fromTable;
+      } catch {
+      }
+    }
+    const snapshot = {
       sourcePageUrl: url,
-      detectedPageType: detection.detectedPageType,
+      detectedPageType: detection.datasetType,
+      datasetType: detection.datasetType,
+      displayName: detection.displayName,
+      confidence: detection.confidence,
+      matchedSignals: detection.matchedSignals,
+      missingSignals: detection.missingSignals,
+      parserVersion: detection.parserVersion || PARSER_VERSION,
+      syncEnabled: detection.syncEnabled,
+      previewOnly: detection.previewOnly,
       relationshipTab: detection.relationshipTab,
       statPeriodLabel: detection.statPeriodLabel,
       statPeriodStart: detection.statPeriodStart,
       statPeriodEnd: detection.statPeriodEnd,
-      rows: extractCreatorRowsFromPage(doc, detection.detectedPageType, detection.relationshipTab),
-      liveRows: liveFromTable
+      headersFound,
+      metricsAvailable,
+      rows,
+      liveRows,
+      liveParseDebug
+    };
+    snapshot.validation = validateCapture(detection, snapshot);
+    return snapshot;
+  }
+  var LEGACY_DETECTED_PAGE_TYPE = {
+    activity_incentive: "creator_stats",
+    creator_roster: "manage_relationship"
+  };
+  function snapshotToPayload(snapshot) {
+    const validation = snapshot.validation;
+    const syncBlocked = !validation?.syncSafe;
+    const datasetType = snapshot.datasetType;
+    const detectedPageType = LEGACY_DETECTED_PAGE_TYPE[datasetType] ?? datasetType;
+    return {
+      sourcePageUrl: snapshot.sourcePageUrl,
+      datasetType,
+      detectedPageType,
+      relationshipTab: snapshot.relationshipTab,
+      statPeriodLabel: snapshot.statPeriodLabel,
+      statPeriodStart: snapshot.statPeriodStart,
+      statPeriodEnd: snapshot.statPeriodEnd,
+      rows: snapshot.rows.map(({ rawTextPreview: _r, ...rest }) => rest),
+      liveRows: snapshot.liveRows.map(({ rawTextPreview: _r, ...rest }) => rest),
+      parserVersion: snapshot.parserVersion || PARSER_VERSION,
+      extensionVersion: EXTENSION_VERSION,
+      confidence: snapshot.confidence,
+      matchedSignals: snapshot.matchedSignals,
+      missingSignals: snapshot.missingSignals,
+      validationWarnings: validation?.warnings ?? [],
+      validationFailures: validation?.blocking ?? [],
+      capturedAt: (/* @__PURE__ */ new Date()).toISOString(),
+      syncBlocked: syncBlocked || void 0
     };
   }
 
   // src/autoSyncContent.ts
   var DEBOUNCE_MS = 5e3;
   var MAX_WAIT_FOR_ROWS_MS = 45e3;
-  function stripPreview(row) {
-    const { rawTextPreview, ...rest } = row;
-    return rest;
-  }
-  function snapshotToPayload(snapshot) {
-    return {
-      sourcePageUrl: snapshot.sourcePageUrl,
-      detectedPageType: snapshot.detectedPageType,
-      relationshipTab: snapshot.relationshipTab,
-      statPeriodLabel: snapshot.statPeriodLabel,
-      statPeriodStart: snapshot.statPeriodStart,
-      statPeriodEnd: snapshot.statPeriodEnd,
-      rows: snapshot.rows.map(stripPreview),
-      liveRows: snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : void 0
-    };
-  }
   function rowCount(snapshot) {
-    return snapshot.detectedPageType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
+    return snapshot.datasetType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
   }
   function statsLookReady(snapshot) {
-    if (snapshot.detectedPageType === "live_now") return snapshot.liveRows.length > 0;
-    if (snapshot.detectedPageType !== "creator_stats" && snapshot.detectedPageType !== "manage_relationship") {
+    if (snapshot.datasetType === "live_now") return snapshot.liveRows.length > 0;
+    if (snapshot.datasetType !== "activity_incentive") {
       return rowCount(snapshot) > 0;
     }
-    return snapshot.rows.some((r) => (r.diamondsEarned ?? 0) > 0 || (r.coinsEarned ?? 0) > 0);
+    return snapshot.rows.some((r) => r.diamondsEarned !== void 0);
   }
   function fingerprint(snapshot) {
     const top = snapshot.rows[0]?.tiktokUsername ?? snapshot.liveRows[0]?.tiktokUsername ?? "";
-    return `${snapshot.detectedPageType}|${snapshot.sourcePageUrl}|${rowCount(snapshot)}|${top}`;
+    return `${snapshot.datasetType}|${snapshot.sourcePageUrl}|${rowCount(snapshot)}|${top}`;
   }
   function startBackstageAutoSync() {
     let debounce;
@@ -2360,9 +3198,8 @@
     const attempt = async (reason) => {
       try {
         const snapshot = buildPageSnapshot(location.href, document);
-        if (snapshot.detectedPageType !== "creator_stats") {
-          return;
-        }
+        if (snapshot.datasetType !== "activity_incentive") return;
+        if (!snapshot.validation?.syncSafe) return;
         if (!statsLookReady(snapshot)) {
           if (Date.now() - startedAt < MAX_WAIT_FOR_ROWS_MS) {
             queue("wait-rows");
@@ -2381,50 +3218,60 @@
       } catch {
       }
     };
-    queue("load");
+    const observer = new MutationObserver(() => queue("dom"));
+    if (document.documentElement) {
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
     setInterval(() => {
       if (location.href !== lastUrl) {
         lastUrl = location.href;
-        lastSentFingerprint = "";
-        queue("navigation");
+        queue("url");
       }
-    }, 1500);
-    const observer = new MutationObserver(() => queue("dom"));
-    if (document.body) {
-      observer.observe(document.body, { childList: true, subtree: true });
-    } else {
-      document.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { childList: true, subtree: true });
-      });
-    }
+    }, 2e3);
+    queue("init");
   }
 
   // src/contentScript.ts
+  function buildCapture() {
+    const snapshot = buildPageSnapshot(location.href, document);
+    return {
+      ok: true,
+      snapshot,
+      payload: snapshotToPayload(snapshot),
+      extensionVersion: EXTENSION_VERSION,
+      parserVersion: PARSER_VERSION
+    };
+  }
+  globalThis.__SF_NETWORK_SYNC__ = {
+    extensionVersion: EXTENSION_VERSION,
+    parserVersion: PARSER_VERSION,
+    build: buildCapture
+  };
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message?.type === "PING") {
-      sendResponse({ ok: true });
+      sendResponse({
+        ok: true,
+        extensionVersion: EXTENSION_VERSION,
+        parserVersion: PARSER_VERSION
+      });
       return true;
     }
-    if (message?.type === "GET_PAGE_SNAPSHOT") {
+    if (message?.type === "GET_PAGE_SNAPSHOT" || message?.type === "BUILD_SYNC_PAYLOAD") {
       try {
-        const snapshot = buildPageSnapshot(location.href, document);
-        sendResponse({ ok: true, snapshot });
-      } catch (e) {
+        const capture = buildCapture();
         sendResponse({
-          ok: false,
-          error: e instanceof Error ? e.message : "Failed to parse page."
+          ok: true,
+          snapshot: capture.snapshot,
+          payload: capture.payload,
+          extensionVersion: capture.extensionVersion,
+          parserVersion: capture.parserVersion
         });
-      }
-      return true;
-    }
-    if (message?.type === "BUILD_SYNC_PAYLOAD") {
-      try {
-        const snapshot = buildPageSnapshot(location.href, document);
-        sendResponse({ ok: true, payload: snapshotToPayload(snapshot), snapshot });
       } catch (e) {
         sendResponse({
           ok: false,
-          error: e instanceof Error ? e.message : "Failed to build payload."
+          error: e instanceof Error ? e.message : "Failed to parse page.",
+          extensionVersion: EXTENSION_VERSION,
+          parserVersion: PARSER_VERSION
         });
       }
       return true;

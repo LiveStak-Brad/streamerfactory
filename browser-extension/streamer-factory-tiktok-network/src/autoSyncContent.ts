@@ -1,49 +1,32 @@
-import { buildPageSnapshot } from "./parser/index";
-import type { PageSnapshot, SyncPayload } from "./parser/types";
+import { buildPageSnapshot, snapshotToPayload } from "./parser/index";
+import type { PageSnapshot } from "./parser/types";
+
+export { snapshotToPayload };
 
 const DEBOUNCE_MS = 5000;
 const MAX_WAIT_FOR_ROWS_MS = 45_000;
 
-function stripPreview<T extends { rawTextPreview?: string }>(row: T): Omit<T, "rawTextPreview"> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { rawTextPreview, ...rest } = row;
-  return rest;
-}
-
-export function snapshotToPayload(snapshot: PageSnapshot): SyncPayload {
-  return {
-    sourcePageUrl: snapshot.sourcePageUrl,
-    detectedPageType: snapshot.detectedPageType,
-    relationshipTab: snapshot.relationshipTab,
-    statPeriodLabel: snapshot.statPeriodLabel,
-    statPeriodStart: snapshot.statPeriodStart,
-    statPeriodEnd: snapshot.statPeriodEnd,
-    rows: snapshot.rows.map(stripPreview),
-    liveRows:
-      snapshot.liveRows.length > 0 ? snapshot.liveRows.map(stripPreview) : undefined,
-  };
-}
-
 function rowCount(snapshot: PageSnapshot): number {
-  return snapshot.detectedPageType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
+  return snapshot.datasetType === "live_now" ? snapshot.liveRows.length : snapshot.rows.length;
 }
 
 /** Stats pages need at least one diamond so we do not sync before the table finishes loading. */
 function statsLookReady(snapshot: PageSnapshot): boolean {
-  if (snapshot.detectedPageType === "live_now") return snapshot.liveRows.length > 0;
-  if (snapshot.detectedPageType !== "creator_stats" && snapshot.detectedPageType !== "manage_relationship") {
+  if (snapshot.datasetType === "live_now") return snapshot.liveRows.length > 0;
+  if (snapshot.datasetType !== "activity_incentive") {
     return rowCount(snapshot) > 0;
   }
-  return snapshot.rows.some((r) => (r.diamondsEarned ?? 0) > 0 || (r.coinsEarned ?? 0) > 0);
+  return snapshot.rows.some((r) => r.diamondsEarned !== undefined);
 }
 
 function fingerprint(snapshot: PageSnapshot): string {
   const top = snapshot.rows[0]?.tiktokUsername ?? snapshot.liveRows[0]?.tiktokUsername ?? "";
-  return `${snapshot.detectedPageType}|${snapshot.sourcePageUrl}|${rowCount(snapshot)}|${top}`;
+  return `${snapshot.datasetType}|${snapshot.sourcePageUrl}|${rowCount(snapshot)}|${top}`;
 }
 
 /**
  * When enabled in Options, asks the background worker to sync after Backstage finishes loading.
+ * Phase 1A: still activity_incentive only; validation must pass; not recommended.
  */
 export function startBackstageAutoSync(): void {
   let debounce: ReturnType<typeof setTimeout> | undefined;
@@ -59,9 +42,8 @@ export function startBackstageAutoSync(): void {
   const attempt = async (reason: string) => {
     try {
       const snapshot = buildPageSnapshot(location.href, document);
-      if (snapshot.detectedPageType !== "creator_stats") {
-        return;
-      }
+      if (snapshot.datasetType !== "activity_incentive") return;
+      if (!snapshot.validation?.syncSafe) return;
       if (!statsLookReady(snapshot)) {
         if (Date.now() - startedAt < MAX_WAIT_FOR_ROWS_MS) {
           queue("wait-rows");
@@ -79,26 +61,21 @@ export function startBackstageAutoSync(): void {
         reason,
       });
     } catch {
-      /* page not parseable yet */
+      /* ignore */
     }
   };
 
-  queue("load");
+  const observer = new MutationObserver(() => queue("dom"));
+  if (document.documentElement) {
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
 
   setInterval(() => {
     if (location.href !== lastUrl) {
       lastUrl = location.href;
-      lastSentFingerprint = "";
-      queue("navigation");
+      queue("url");
     }
-  }, 1500);
+  }, 2000);
 
-  const observer = new MutationObserver(() => queue("dom"));
-  if (document.body) {
-    observer.observe(document.body, { childList: true, subtree: true });
-  } else {
-    document.addEventListener("DOMContentLoaded", () => {
-      observer.observe(document.body, { childList: true, subtree: true });
-    });
-  }
+  queue("init");
 }

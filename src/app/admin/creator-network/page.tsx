@@ -50,11 +50,13 @@ export default async function AdminCreatorNetworkPage({ searchParams }: PageProp
           title="Creator Network imports"
           description={
             <>
-              Data is read from visible TikTok Backstage pages by authorized staff using the Chrome
-              extension. Nothing is scraped from TikTok cookies or hidden tokens. Public{" "}
-              <code className="rounded bg-muted-bg px-1 py-0.5 text-xs">/rankings</code> uses the
-              latest completed stats import when available; otherwise it falls back to the seed
-              snapshot.
+              Phase 1A diagnostics: page type, parser version, confidence, validation
+              failures/warnings, fields updated vs preserved, and roster-diff preview. Missing hours
+              show as “—” (not zero). Static{" "}
+              <code className="rounded bg-muted-bg px-1 py-0.5 text-xs">NETWORK_MEMBERS</code>{" "}
+              entries are not authoritative active roster — migration to roster-sync is Phase 1B.
+              Public <code className="rounded bg-muted-bg px-1 py-0.5 text-xs">/rankings</code> uses
+              Activeness imports only.
             </>
           }
           breadcrumbs={[

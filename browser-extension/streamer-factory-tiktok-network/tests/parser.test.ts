@@ -91,7 +91,8 @@ test("detectTikTokCreatorNetworkPage manage relationship URL", () => {
     "https://live-backstage.tiktok.com/portal/anchor/relation",
     { title: "Manage relationship", body: { innerText: "" } } as unknown as Document,
   );
-  assert.equal(d.detectedPageType, "manage_relationship");
+  assert.equal(d.detectedPageType, "creator_roster");
+  assert.equal(d.datasetType, "creator_roster");
 });
 
 test("detectTikTokCreatorNetworkPage live now", () => {
@@ -102,7 +103,7 @@ test("detectTikTokCreatorNetworkPage live now", () => {
   assert.equal(d.detectedPageType, "live_now");
 });
 
-test("live now page is not misclassified as creator stats from sidebar text", () => {
+test("live now page is not misclassified as activity from sidebar text", () => {
   const d = detectTikTokCreatorNetworkPage("https://live-backstage.tiktok.com/portal/anchor/live", {
     title: "LIVE now",
     body: {
@@ -113,12 +114,12 @@ test("live now page is not misclassified as creator stats from sidebar text", ()
   assert.equal(d.detectedPageType, "live_now");
 });
 
-test("detectTikTokCreatorNetworkPage creator stats", () => {
+test("detectTikTokCreatorNetworkPage activity incentive", () => {
   const d = detectTikTokCreatorNetworkPage("https://live-backstage.tiktok.com/portal/data/performance", {
     title: "Creator performance",
-    body: { innerText: "Valid go LIVE days diamonds activeness" },
+    body: { innerText: "Valid go LIVE days diamonds activeness incentive" },
   } as unknown as Document);
-  assert.equal(d.detectedPageType, "creator_stats");
+  assert.equal(d.detectedPageType, "activity_incentive");
 });
 
 test("firstCompactNumber in mixed text", () => {
@@ -167,7 +168,7 @@ test("incentives table reads full diamond counts", () => {
   const html = readFileSync(join(import.meta.dirname, "../fixtures/incentives-by-creator.html"), "utf8");
   const { document } = parseHTML(html);
   const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/revenue/task", document);
-  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.detectedPageType, "activity_incentive");
   assert.equal(snap.rows.length, 3);
   assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
   assert.equal(snap.rows[0]?.diamondsEarned, 8729);
@@ -318,7 +319,7 @@ test("creator stats table LIVE ring exports liveRows alongside stats", () => {
     "https://live-backstage.tiktok.com/portal/data/performance",
     document,
   );
-  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.detectedPageType, "activity_incentive");
   assert.equal(snap.rows.length, 2);
   assert.equal(snap.liveRows.length, 1);
   assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
@@ -335,7 +336,7 @@ test("incentives role=grid pink ring detects LIVE on creator row", () => {
     "https://live-backstage.tiktok.com/portal/revenue/task",
     document,
   );
-  assert.equal(snap.detectedPageType, "creator_stats");
+  assert.equal(snap.detectedPageType, "activity_incentive");
   assert.equal(snap.liveRows.length, 1);
   assert.equal(snap.liveRows[0]?.tiktokUsername, "cj_alleycat93");
 });
@@ -468,6 +469,208 @@ test("does not treat Level as username", () => {
     snap.rows.some((r) => r.tiktokUsername === "level"),
     false,
   );
+});
+
+test("column headers are never parsed as creator usernames", () => {
+  assert.equal(cleanTikTokUsername("Valid go LIVE days"), undefined);
+  assert.equal(cleanTikTokUsername("LIVE duration"), undefined);
+  assert.equal(cleanTikTokUsername("Estimated bonus contribution"), undefined);
+  assert.equal(cleanTikTokUsername("Incentive days"), undefined);
+  assert.equal(cleanTikTokUsername("validgolivedays"), undefined);
+  assert.equal(cleanTikTokUsername("liveduration"), undefined);
+  assert.equal(cleanTikTokUsername("estimatedbonuscontribution"), undefined);
+});
+
+test("phase1a header trap does not invent fake creators", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-activeness-headers-only-trap.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/revenue/incentive",
+    document,
+  );
+  assert.equal(snap.datasetType, "activity_incentive");
+  assert.equal(snap.rows.length, 1);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(
+    snap.rows.some((r) =>
+      /validgolive|liveduration|estimatedbonus|incentivedays/i.test(r.tiktokUsername ?? ""),
+    ),
+    false,
+  );
+});
+
+test("phase1a activeness semi-table class rows parse", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-activeness-semi-table.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/revenue/incentive",
+    document,
+  );
+  assert.equal(snap.datasetType, "activity_incentive");
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[0]?.hoursStreamed, 2.5);
+  assert.equal(snap.validation?.syncSafe, true);
+});
+
+test("phase1a activeness baseline detects activity_incentive and preserves metrics", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-activeness-baseline.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/activeness",
+    document,
+  );
+  assert.equal(snap.datasetType, "activity_incentive");
+  assert.ok(snap.confidence >= 0.55);
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.diamondsEarned, 8729);
+  assert.equal(snap.rows[0]?.daysStreamed, 1);
+  assert.equal(snap.rows[0]?.hoursStreamed, 2.5);
+  assert.equal(snap.rows[1]?.hoursStreamed, 0);
+  assert.equal(snap.rows[1]?.hoursStreamedField?.status, "present");
+  assert.equal(snap.validation?.syncSafe, true);
+});
+
+test("phase1a rank-up uses dedicated parser and does not look like activity sync fields only", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-rank-up-incentive.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/rank-up",
+    document,
+  );
+  assert.equal(snap.datasetType, "rank_up_incentive");
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.tierPrevious, "Tier 2");
+  assert.equal(snap.rows[0]?.tierCurrent, "Tier 3");
+  assert.equal(snap.rows[0]?.rankUpStatus, "Eligible");
+  assert.equal(snap.rows[0]?.maintainTierStatus, "On track");
+  assert.equal(snap.rows[0]?.diamondsEarned, 12400);
+  assert.ok(snap.metricsAvailable.includes("tier"));
+});
+
+test("phase1a incremental incentive detection and parse", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-incremental-incentive.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/incremental",
+    document,
+  );
+  assert.equal(snap.datasetType, "incremental_incentive");
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.diamondsEarned, 1200);
+  assert.ok(snap.rows[0]?.estimatedContribution);
+});
+
+test("phase1a manage creators roster parse", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-manage-creators.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/anchor/relation",
+    document,
+  );
+  assert.equal(snap.datasetType, "creator_roster");
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[0]?.hoursStreamed, undefined);
+  assert.equal(snap.rows[0]?.diamondsEarned, undefined);
+});
+
+test("phase1a modern Manage creators page detects roster and status", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-manage-creators-modern.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/anchor/creator/manage",
+    document,
+  );
+  assert.equal(snap.datasetType, "creator_roster");
+  assert.ok(snap.displayName);
+  assert.ok(Number.isFinite(snap.confidence));
+  assert.equal(snap.rows.length, 2);
+  assert.equal(snap.rows[0]?.tiktokUsername, "jasmine_wren");
+  assert.equal(snap.rows[0]?.creatorNetworkStatus, "Joined");
+  assert.equal(snap.rows[0]?.hoursStreamed, undefined);
+});
+
+test("phase1a workspace is preview-only", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/phase1a-workspace.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/workspace", document);
+  assert.equal(snap.datasetType, "workspace_metrics");
+  assert.equal(snap.previewOnly, true);
+  assert.equal(snap.validation?.syncSafe, false);
+  assert.equal(snap.rows.length, 0);
+});
+
+test("phase1a wrong page blocks sync", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/phase1a-wrong-page.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot("https://live-backstage.tiktok.com/portal/help", document);
+  assert.equal(snap.datasetType, "unknown");
+  assert.equal(snap.validation?.syncSafe, false);
+});
+
+test("phase1a empty activeness page blocks sync", () => {
+  const html = readFileSync(join(import.meta.dirname, "../fixtures/phase1a-empty.html"), "utf8");
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/activeness",
+    document,
+  );
+  assert.equal(snap.datasetType, "activity_incentive");
+  assert.equal(snap.rows.length, 0);
+  assert.equal(snap.validation?.syncSafe, false);
+  assert.ok(snap.validation?.blocking.some((m) => /zero/i.test(m)));
+});
+
+test("phase1a partial load keeps hours missing and can block", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-partial-loaded.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/activeness",
+    document,
+  );
+  assert.equal(snap.datasetType, "activity_incentive");
+  assert.equal(snap.rows[0]?.hoursStreamed, undefined);
+  assert.equal(snap.rows[0]?.hoursStreamedField?.status, "missing");
+  assert.equal(snap.validation?.syncSafe, false);
+});
+
+test("phase1a no cross-page mapping: rank-up rows are not activity-only", () => {
+  const html = readFileSync(
+    join(import.meta.dirname, "../fixtures/phase1a-rank-up-incentive.html"),
+    "utf8",
+  );
+  const { document } = parseHTML(html);
+  const snap = buildPageSnapshot(
+    "https://live-backstage.tiktok.com/portal/incentive/rank-up",
+    document,
+  );
+  assert.notEqual(snap.datasetType, "activity_incentive");
+  assert.ok(snap.rows[0]?.tierCurrent);
 });
 
 console.log("\nAll parser tests passed.");

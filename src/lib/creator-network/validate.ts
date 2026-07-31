@@ -1,4 +1,11 @@
-import { DETECTED_PAGE_TYPES, type ImportPayload, type ImportRowPayload, type LiveRowPayload } from "./types";
+import { DATASET_TYPES, normalizeDatasetType, PARSER_VERSION } from "@/lib/creator-network/dataset-types";
+import { coerceMetricField } from "@/lib/creator-network/metric-field";
+import {
+  DETECTED_PAGE_TYPES,
+  type ImportPayload,
+  type ImportRowPayload,
+  type LiveRowPayload,
+} from "./types";
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
@@ -33,6 +40,11 @@ function optionalUsernameSource(
   return undefined;
 }
 
+function optionalStringArray(v: unknown): string[] | undefined {
+  if (!Array.isArray(v)) return undefined;
+  return v.filter((x): x is string => typeof x === "string");
+}
+
 function parseRow(raw: unknown): ImportRowPayload | null {
   if (!isRecord(raw)) return null;
   return {
@@ -42,11 +54,21 @@ function parseRow(raw: unknown): ImportRowPayload | null {
     usernameSource: optionalUsernameSource(raw.usernameSource),
     displayName: optionalString(raw.displayName),
     avatarUrl: optionalString(raw.avatarUrl),
+    tiktokCreatorId: optionalString(raw.tiktokCreatorId),
     coinsEarned: optionalNumber(raw.coinsEarned),
     diamondsEarned: optionalNumber(raw.diamondsEarned),
     engagements: optionalNumber(raw.engagements),
     daysStreamed: optionalNumber(raw.daysStreamed),
     hoursStreamed: optionalNumber(raw.hoursStreamed),
+    coinsEarnedField: raw.coinsEarnedField !== undefined ? coerceMetricField(raw.coinsEarnedField) : undefined,
+    diamondsEarnedField:
+      raw.diamondsEarnedField !== undefined ? coerceMetricField(raw.diamondsEarnedField) : undefined,
+    engagementsField:
+      raw.engagementsField !== undefined ? coerceMetricField(raw.engagementsField) : undefined,
+    daysStreamedField:
+      raw.daysStreamedField !== undefined ? coerceMetricField(raw.daysStreamedField) : undefined,
+    hoursStreamedField:
+      raw.hoursStreamedField !== undefined ? coerceMetricField(raw.hoursStreamedField) : undefined,
     liveDurationText: optionalString(raw.liveDurationText),
     liveDurationSeconds: optionalNumber(raw.liveDurationSeconds),
     activenessLevel: optionalString(raw.activenessLevel),
@@ -56,6 +78,11 @@ function parseRow(raw: unknown): ImportRowPayload | null {
     riskFlag: optionalString(raw.riskFlag),
     relationshipReason: optionalString(raw.relationshipReason),
     relationshipRequestDate: optionalString(raw.relationshipRequestDate),
+    tierCurrent: optionalString(raw.tierCurrent),
+    tierPrevious: optionalString(raw.tierPrevious),
+    rankUpStatus: optionalString(raw.rankUpStatus),
+    maintainTierStatus: optionalString(raw.maintainTierStatus),
+    estimatedContribution: optionalString(raw.estimatedContribution),
   };
 }
 
@@ -82,41 +109,41 @@ export type ValidationResult =
   | { ok: true; data: ImportPayload }
   | { ok: false; error: string };
 
-/** Lightweight payload validation (zod-free to match repo deps). */
+/**
+ * Validate extension import payload shape + dataset coherence.
+ * Semantic pre-upload gates run in the extension; server rejects mismatched types.
+ */
 export function validateImportPayload(body: unknown): ValidationResult {
-  if (!isRecord(body)) {
-    return { ok: false, error: "Body must be a JSON object." };
-  }
+  if (!isRecord(body)) return { ok: false, error: "Body must be an object." };
 
   const sourcePageUrl = optionalString(body.sourcePageUrl);
-  if (!sourcePageUrl) {
-    return { ok: false, error: "sourcePageUrl is required." };
+  if (!sourcePageUrl) return { ok: false, error: "sourcePageUrl is required." };
+
+  const rawPageType =
+    optionalString(body.datasetType) ?? optionalString(body.detectedPageType) ?? "unknown";
+  const datasetType = normalizeDatasetType(rawPageType);
+
+  const allowedLegacy = new Set<string>([...DETECTED_PAGE_TYPES, ...DATASET_TYPES]);
+  if (!allowedLegacy.has(rawPageType) && datasetType === "unknown" && rawPageType !== "unknown") {
+    return { ok: false, error: `Unsupported dataset type: ${rawPageType}` };
   }
 
-  const detectedPageType = optionalString(body.detectedPageType) ?? "unknown";
-  if (!DETECTED_PAGE_TYPES.includes(detectedPageType as (typeof DETECTED_PAGE_TYPES)[number])) {
-    return { ok: false, error: `detectedPageType must be one of: ${DETECTED_PAGE_TYPES.join(", ")}.` };
-  }
-
-  if (!Array.isArray(body.rows)) {
-    return { ok: false, error: "rows must be an array." };
-  }
+  const rowsRaw = body.rows;
+  if (!Array.isArray(rowsRaw)) return { ok: false, error: "rows must be an array." };
 
   const rows: ImportRowPayload[] = [];
-  for (const raw of body.rows) {
-    const row = parseRow(raw);
-    if (row) rows.push(row);
+  for (const r of rowsRaw) {
+    const parsed = parseRow(r);
+    if (parsed) rows.push(parsed);
   }
 
   let liveRows: LiveRowPayload[] | undefined;
   if (body.liveRows !== undefined) {
-    if (!Array.isArray(body.liveRows)) {
-      return { ok: false, error: "liveRows must be an array when provided." };
-    }
+    if (!Array.isArray(body.liveRows)) return { ok: false, error: "liveRows must be an array." };
     liveRows = [];
-    for (const raw of body.liveRows) {
-      const row = parseLiveRow(raw);
-      if (row) liveRows.push(row);
+    for (const r of body.liveRows) {
+      const parsed = parseLiveRow(r);
+      if (parsed) liveRows.push(parsed);
     }
   }
 
@@ -129,29 +156,87 @@ export function validateImportPayload(body: unknown): ValidationResult {
     return { ok: false, error: "statPeriodEnd must be YYYY-MM-DD." };
   }
 
-  if (detectedPageType === "live_now" && rows.length === 0 && (!liveRows || liveRows.length === 0)) {
-    return { ok: false, error: "live_now imports require liveRows or rows." };
+  const kindRaw = optionalString(body.statPeriodKind);
+  const statPeriodKind =
+    kindRaw === "weekly" || kindRaw === "monthly" ? ("monthly" as const) : undefined;
+
+  const syncBlocked = body.syncBlocked === true;
+
+  if (!syncBlocked) {
+    if (datasetType === "live_now") {
+      const liveCount = (liveRows?.length ?? 0) + rows.length;
+      if (liveCount === 0) {
+        return { ok: false, error: "live_now dataset requires liveRows or rows." };
+      }
+    } else if (
+      datasetType === "activity_incentive" ||
+      datasetType === "rank_up_incentive" ||
+      datasetType === "incremental_incentive" ||
+      datasetType === "creator_roster"
+    ) {
+      if (rows.length === 0) {
+        return { ok: false, error: `${datasetType} requires at least one creator row.` };
+      }
+    } else if (datasetType === "workspace_metrics" || datasetType === "unknown") {
+      return {
+        ok: false,
+        error: `Dataset type "${datasetType}" is preview-only and cannot be imported.`,
+      };
+    }
+
+    // Reject wrong field shapes for dataset types
+    if (datasetType === "creator_roster") {
+      const looksLikeStats = rows.some(
+        (r) =>
+          r.hoursStreamed !== undefined ||
+          r.diamondsEarned !== undefined ||
+          r.daysStreamed !== undefined,
+      );
+      // Soft: roster may include incidental numbers; do not hard-fail — stats are ignored on write.
+      void looksLikeStats;
+    }
+
+    if (datasetType === "activity_incentive") {
+      const rankOnly = rows.every(
+        (r) =>
+          (r.tierCurrent || r.rankUpStatus || r.maintainTierStatus) &&
+          r.hoursStreamed === undefined &&
+          r.diamondsEarned === undefined,
+      );
+      if (rankOnly && rows.length > 0) {
+        return {
+          ok: false,
+          error:
+            "Payload looks like rank_up_incentive but datasetType is activity_incentive. Refusing to overwrite Activeness fields.",
+        };
+      }
+    }
   }
 
-  if (detectedPageType !== "live_now" && rows.length === 0) {
-    return { ok: false, error: "At least one row is required." };
-  }
+  const confidence = optionalNumber(body.confidence);
 
   return {
     ok: true,
     data: {
       sourcePageUrl,
-      detectedPageType,
+      datasetType,
+      detectedPageType: datasetType,
       relationshipTab: optionalString(body.relationshipTab),
       statPeriodLabel: optionalString(body.statPeriodLabel),
       statPeriodStart,
       statPeriodEnd,
-      statPeriodKind:
-        body.statPeriodKind === "weekly" || body.statPeriodKind === "monthly"
-          ? "monthly"
-          : undefined,
+      statPeriodKind,
       rows,
       liveRows,
+      parserVersion: optionalString(body.parserVersion) ?? PARSER_VERSION,
+      extensionVersion: optionalString(body.extensionVersion),
+      confidence,
+      matchedSignals: optionalStringArray(body.matchedSignals),
+      missingSignals: optionalStringArray(body.missingSignals),
+      validationWarnings: optionalStringArray(body.validationWarnings),
+      validationFailures: optionalStringArray(body.validationFailures),
+      capturedAt: optionalString(body.capturedAt),
+      syncBlocked,
     },
   };
 }

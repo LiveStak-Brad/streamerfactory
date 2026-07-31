@@ -55,8 +55,19 @@ export function isPlausibleDaysStreamed(days: number): boolean {
 
 /** Cap impossible monthly day counts (e.g. target 30 mis-read as achievement). */
 export function sanitizeLiveDaysForPeriod(days: number | undefined | null): number {
-  const n = Math.max(0, Math.round(days ?? 0));
-  if (n > 31) return 0;
+  return sanitizeLiveDaysForPeriodNullable(days) ?? 0;
+}
+
+/**
+ * Nullable variant — missing input stays missing (null).
+ * Only returns 0 when the source value is a present zero (or sanitized target misread).
+ */
+export function sanitizeLiveDaysForPeriodNullable(
+  days: number | undefined | null,
+): number | null {
+  if (days === undefined || days === null || !Number.isFinite(days)) return null;
+  const n = Math.max(0, Math.round(days));
+  if (n > 31) return null;
   // Monthly Backstage target is 30d (0d / 30d) — often stored as 30 when actual is 0.
   if (n === 30) return 0;
   return n;

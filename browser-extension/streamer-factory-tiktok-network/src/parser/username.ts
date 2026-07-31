@@ -2,7 +2,58 @@ export type UsernameConfidence = "high" | "medium" | "low";
 export type UsernameSource = "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
 
 const RESERVED_HANDLE_WORDS =
-  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive|nogroup|no_?group|effective|total|summary|aggregate|ungrouped|all)$/i;
+  /^(level|elite|high|medium|low|none|no|nolevel|view|live|creator|member|network|invited|removed|quit|following|ratio|diamonds?|bonus|gifts?|coins?|day|days|hour|hours|eligible|notable|inactive|nogroup|no_?group|effective|total|summary|aggregate|ungrouped|all|estimated|contribution|duration|incentive|valid|maintain|tier|rank|status|joined|followers?|likes?|username|items?|page|transfer|activeness|activity)$/i;
+
+const BACKSTAGE_HEADER_PHRASE_RE =
+  /estimated\s*bonus|bonus\s*contribution|valid\s*go\s*live|live\s*duration|stream\s*duration|incentive\s*days?|activeness\s*incentive|relationship\s*status|items?\s*per\s*page|transfer\s*creators?/i;
+
+/** Compacted column-header labels seen as fake @handles in Phase 1A captures. */
+const BACKSTAGE_UI_HANDLES = new Set([
+  "estimatedbonuscontribution",
+  "estimatedbonus",
+  "bonuscontribution",
+  "validgolivedays",
+  "validgolive",
+  "golivedays",
+  "livedays",
+  "liveduration",
+  "streamduration",
+  "incentivedays",
+  "eligibleincentivedays",
+  "activenessincentive",
+  "activityincentive",
+  "relationshipstatus",
+  "creatorusername",
+  "itemsperpage",
+  "transfercreators",
+  "diamonds",
+  "engagements",
+  "interactions",
+]);
+
+/** True when a cleaned handle is clearly a Backstage column header, not a creator. */
+export function isBackstageUiHandle(raw: string | undefined | null): boolean {
+  if (!raw) return true;
+  const compact = raw.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (!compact) return true;
+  if (BACKSTAGE_UI_HANDLES.has(compact)) return true;
+  // Multi-token header glues (avoid matching normal handles like "handle")
+  if (compact.includes("bonus") && compact.includes("contribution")) return true;
+  if (compact.includes("valid") && compact.includes("live") && compact.includes("day")) return true;
+  if (compact.includes("live") && compact.includes("duration")) return true;
+  if (compact.includes("incentive") && compact.includes("day")) return true;
+  if (compact.includes("estimated") && compact.includes("bonus")) return true;
+  if (compact.includes("activeness") && compact.includes("incentive")) return true;
+  if (compact.includes("relationship") && compact.includes("status")) return true;
+  return false;
+}
+
+export function isBackstageHeaderText(text: string | undefined | null): boolean {
+  if (!text) return false;
+  if (BACKSTAGE_HEADER_PHRASE_RE.test(text)) return true;
+  const compact = text.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return BACKSTAGE_UI_HANDLES.has(compact) || isBackstageUiHandle(compact);
+}
 
 /** Remove badge/status labels while whitespace still separates tokens. */
 export function stripBadgeText(text: string): string {
@@ -41,6 +92,7 @@ function finalizeHandle(compact: string): string | undefined {
   let t = stripGluedBadgeSuffix(compact.toLowerCase());
   if (!/^[a-z0-9._]{2,40}$/.test(t)) return undefined;
   if (RESERVED_HANDLE_WORDS.test(t)) return undefined;
+  if (isBackstageUiHandle(t)) return undefined;
   if (/^\d+$/.test(t)) return undefined;
   if (/^[\d.]+v[s.]?$/i.test(t) || /^0\.?\d*v?s?\.?$/i.test(t)) return undefined;
   if (!/[a-z]/.test(t)) return undefined;

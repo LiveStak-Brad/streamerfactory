@@ -1,4 +1,9 @@
-export type DetectedPageType = "manage_relationship" | "creator_stats" | "live_now" | "unknown";
+import type { MetricField } from "./metricField";
+import type { DatasetType } from "./pageSpecs/types";
+import type { CaptureValidation } from "./pageSpecs/types";
+
+/** Canonical page / dataset types (Phase 1A). */
+export type DetectedPageType = DatasetType;
 
 export type ParsedCreatorRow = {
   tiktokUsername?: string;
@@ -8,11 +13,17 @@ export type ParsedCreatorRow = {
   usernameSource?: "username_column" | "at_handle" | "handle_pattern" | "display_name_inferred";
   displayName?: string;
   avatarUrl?: string;
+  tiktokCreatorId?: string;
   coinsEarned?: number;
   diamondsEarned?: number;
   engagements?: number;
   daysStreamed?: number;
   hoursStreamed?: number;
+  coinsEarnedField?: MetricField<number>;
+  diamondsEarnedField?: MetricField<number>;
+  engagementsField?: MetricField<number>;
+  daysStreamedField?: MetricField<number>;
+  hoursStreamedField?: MetricField<number>;
   liveDurationText?: string;
   liveDurationSeconds?: number;
   activenessLevel?: string;
@@ -22,6 +33,11 @@ export type ParsedCreatorRow = {
   riskFlag?: string;
   relationshipReason?: string;
   relationshipRequestDate?: string;
+  tierCurrent?: string;
+  tierPrevious?: string;
+  rankUpStatus?: string;
+  maintainTierStatus?: string;
+  estimatedContribution?: string;
   rawTextPreview?: string;
 };
 
@@ -50,16 +66,30 @@ export type LiveParseDebug = {
 export type PageSnapshot = {
   sourcePageUrl: string;
   detectedPageType: DetectedPageType;
+  datasetType: DetectedPageType;
+  displayName: string;
+  confidence: number;
+  matchedSignals: string[];
+  missingSignals: string[];
+  parserVersion: string;
+  syncEnabled: boolean;
+  previewOnly: boolean;
   relationshipTab?: string;
   statPeriodLabel?: string;
+  statPeriodStart?: string;
+  statPeriodEnd?: string;
+  headersFound: string[];
+  metricsAvailable: string[];
   rows: ParsedCreatorRow[];
   liveRows: ParsedLiveRow[];
   /** Present when live_now returns 0 rows — helps diagnose DOM vs parser. */
   liveParseDebug?: LiveParseDebug;
+  validation?: CaptureValidation;
 };
 
 export type SyncPayload = {
   sourcePageUrl: string;
+  datasetType: string;
   detectedPageType: string;
   relationshipTab?: string;
   statPeriodLabel?: string;
@@ -67,4 +97,13 @@ export type SyncPayload = {
   statPeriodEnd?: string;
   rows: Omit<ParsedCreatorRow, "rawTextPreview">[];
   liveRows?: Omit<ParsedLiveRow, "rawTextPreview">[];
+  parserVersion: string;
+  extensionVersion: string;
+  confidence: number;
+  matchedSignals: string[];
+  missingSignals: string[];
+  validationWarnings: string[];
+  validationFailures: string[];
+  capturedAt: string;
+  syncBlocked?: boolean;
 };
