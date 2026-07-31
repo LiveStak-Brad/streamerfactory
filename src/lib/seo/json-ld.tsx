@@ -1,3 +1,4 @@
+import { brandAssets } from "@/lib/brand/assets";
 import { site, socialLinks } from "@/lib/site";
 
 type JsonLdValue = Record<string, unknown> | Record<string, unknown>[];
@@ -13,6 +14,8 @@ export function JsonLd({ data, id }: { data: JsonLdValue; id?: string }) {
 }
 
 export function organizationSchema() {
+  const logoUrl = `${site.url}${brandAssets.favicon.android512}`;
+
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -20,6 +23,13 @@ export function organizationSchema() {
     url: site.url,
     email: site.contactEmail,
     description: site.tagline,
+    logo: {
+      "@type": "ImageObject",
+      url: logoUrl,
+      width: 512,
+      height: 512,
+    },
+    image: logoUrl,
     sameAs: [socialLinks.tiktok.href, socialLinks.instagram.href],
     areaServed: "Worldwide",
     knowsAbout: [
@@ -127,7 +137,28 @@ export function articleSchema(input: {
   path: string;
   datePublished?: string;
   dateModified?: string;
+  /** Optional Person author for E-E-A-T (e.g. founder). Falls back to Organization. */
+  author?: { name: string; path: string; jobTitle?: string };
+  keywords?: string[];
 }) {
+  const author = input.author
+    ? {
+        "@type": "Person",
+        name: input.author.name,
+        url: `${site.url}${input.author.path}`,
+        ...(input.author.jobTitle ? { jobTitle: input.author.jobTitle } : {}),
+        worksFor: {
+          "@type": "Organization",
+          name: site.name,
+          url: site.url,
+        },
+      }
+    : {
+        "@type": "Organization",
+        name: site.name,
+        url: site.url,
+      };
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -135,11 +166,7 @@ export function articleSchema(input: {
     description: input.description,
     url: `${site.url}${input.path}`,
     mainEntityOfPage: `${site.url}${input.path}`,
-    author: {
-      "@type": "Organization",
-      name: site.name,
-      url: site.url,
-    },
+    author,
     publisher: {
       "@type": "Organization",
       name: site.name,
@@ -147,6 +174,7 @@ export function articleSchema(input: {
     },
     datePublished: input.datePublished ?? "2026-01-01",
     dateModified: input.dateModified ?? input.datePublished ?? "2026-07-29",
+    ...(input.keywords && input.keywords.length > 0 ? { keywords: input.keywords.join(", ") } : {}),
   };
 }
 

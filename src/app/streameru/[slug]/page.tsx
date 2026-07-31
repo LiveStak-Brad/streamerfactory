@@ -9,49 +9,58 @@ import { ResourceBreadcrumb } from "@/components/resources/ResourceBreadcrumb";
 import { ResourceMeta } from "@/components/resources/ResourceMeta";
 import { ResourceSupportCallout } from "@/components/resources/ResourceSupportCallout";
 import { LessonQuickLinks } from "@/components/resources/LessonQuickLinks";
+import { LessonFaq } from "@/components/resources/LessonFaq";
+import { LessonAuthorityLinks } from "@/components/resources/LessonAuthorityLinks";
 import { StartHereArticleHint } from "@/components/resources/StartHereArticleHint";
 import { LessonMission } from "@/components/resources/LessonMission";
 import { CurriculumLessonHeader } from "@/components/resources/CurriculumLessonHeader";
 import { LessonNavigation } from "@/components/resources/LessonNavigation";
 import { RecordLessonVisit } from "@/components/guidance/RecordLessonVisit";
+import { RelatedGuidesForLesson } from "@/components/guides/RelatedGuidesForLesson";
+import { FOUNDER } from "@/lib/founder/content";
 import { splitIntroAndBody } from "@/lib/resources/content";
+import { CURRICULUM, getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
+import { getLessonSeo, getLessonSeoKeywords } from "@/lib/resources/lesson-seo";
 import { parseTrainingSectionsJson } from "@/lib/resources/training-sections";
 import { getCurriculumRelatedPosts, getPublishedPostBySlug } from "@/lib/resources/queries";
 import { isStartHereArticleSlug } from "@/lib/resources/start-here";
 import { getMissionForLessonSlug } from "@/lib/resources/training-missions";
-import { RelatedGuidesForLesson } from "@/components/guides/RelatedGuidesForLesson";
-import { getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
-import { JsonLd, articleSchema, breadcrumbSchema } from "@/lib/seo/json-ld";
-import { site } from "@/lib/site";
+import { createPageMetadata } from "@/lib/seo/page-metadata";
+import {
+  JsonLd,
+  articleSchema,
+  breadcrumbSchema,
+  faqSchema,
+  howToSchema,
+} from "@/lib/seo/json-ld";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
+export function generateStaticParams() {
+  return CURRICULUM.map((lesson) => ({ slug: lesson.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
   if (!post) return { title: "Lesson" };
+
   const curriculum = getCurriculumLesson(slug);
-  const title = curriculum?.title ?? post.title;
-  return {
+  const seo = getLessonSeo(slug);
+  const title = seo?.metaTitle ?? curriculum?.title ?? post.title;
+  const description = seo?.metaDescription ?? post.excerpt ?? title;
+  const keywords = seo ? getLessonSeoKeywords(seo) : undefined;
+
+  return createPageMetadata({
     title,
-    description: post.excerpt ?? title,
-    alternates: {
-      canonical: `/streameru/${post.slug}`,
-    },
-    openGraph: {
-      type: "article",
-      title: `${title} | ${site.name}`,
-      description: post.excerpt ?? undefined,
-      url: `${site.url}/streameru/${post.slug}`,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${title} | ${site.name}`,
-      description: post.excerpt ?? title,
-    },
-  };
+    description,
+    path: `/streameru/${post.slug}`,
+    keywords,
+    ogType: "article",
+    ogImage: post.cover_image_url ?? undefined,
+  });
 }
 
 export default async function ResourcePostPage({ params }: Props) {
@@ -63,7 +72,9 @@ export default async function ResourcePostPage({ params }: Props) {
   const mission = getMissionForLessonSlug(slug);
   const curriculum = getCurriculumLesson(slug);
   const neighbors = getCurriculumNeighbors(slug);
+  const seo = getLessonSeo(slug);
   const displayTitle = curriculum?.title ?? post.title;
+  const description = seo?.metaDescription ?? post.excerpt ?? displayTitle;
   const metaTrack = curriculum?.trackId ?? post.training_track ?? "beginner";
   const nextLessonForMission =
     curriculum && neighbors.next
@@ -76,6 +87,14 @@ export default async function ResourcePostPage({ params }: Props) {
   const cat = post.resource_categories;
   const { intro, rest } = splitIntroAndBody(post.content);
   const hasSplit = rest !== null;
+  const keywords = seo ? getLessonSeoKeywords(seo) : undefined;
+  const showFaqs = Boolean(seo && seo.faqs.length > 0);
+  const howToSteps =
+    mission?.mission_steps.map((step, index) => ({
+      name: `Step ${index + 1}`,
+      text: step,
+    })) ?? [];
+  const showHowTo = Boolean(mission && howToSteps.length > 0);
 
   return (
     <article className="relative pb-20 pt-4 sm:pb-28 sm:pt-2">
@@ -83,9 +102,15 @@ export default async function ResourcePostPage({ params }: Props) {
         id="lesson-article"
         data={articleSchema({
           title: displayTitle,
-          description: post.excerpt ?? displayTitle,
+          description,
           path: `/streameru/${post.slug}`,
           datePublished: post.published_at ?? undefined,
+          author: {
+            name: FOUNDER.name,
+            path: "/founder",
+            jobTitle: FOUNDER.title,
+          },
+          keywords,
         })}
       />
       <JsonLd
@@ -96,6 +121,17 @@ export default async function ResourcePostPage({ params }: Props) {
           { name: displayTitle, path: `/streameru/${post.slug}` },
         ])}
       />
+      {showFaqs ? <JsonLd id="lesson-faq" data={faqSchema(seo!.faqs)} /> : null}
+      {showHowTo ? (
+        <JsonLd
+          id="lesson-howto"
+          data={howToSchema({
+            name: mission!.mission_title,
+            description: mission!.mission_description,
+            steps: howToSteps,
+          })}
+        />
+      ) : null}
       <RecordLessonVisit slug={slug} />
       <div className="max-w-3xl">
         <ResourceBreadcrumb
@@ -197,6 +233,8 @@ export default async function ResourcePostPage({ params }: Props) {
           </div>
         ) : null}
 
+        {showFaqs ? <LessonFaq faqs={seo!.faqs} /> : null}
+
         {curriculum ? (
           <div className="mt-14">
             <LessonNavigation prev={neighbors.prev} next={neighbors.next} />
@@ -205,6 +243,7 @@ export default async function ResourcePostPage({ params }: Props) {
 
         <div className="mt-14 space-y-12 border-t border-zinc-200/80 pt-12 dark:border-zinc-800/80">
           <RelatedGuidesForLesson lessonSlug={slug} />
+          {seo ? <LessonAuthorityLinks links={seo.internalLinks} /> : null}
           <LessonQuickLinks />
           <RelatedResources posts={related} />
           <ResourceArticleCta />
