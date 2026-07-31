@@ -2,44 +2,31 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { curriculumByProgram, CURRICULUM_TOTAL_LESSONS, type CurriculumLesson } from "@/lib/resources/curriculum";
-import { missionDoneStorageKey } from "@/lib/resources/recommended-lesson";
-import { STREAMERU_PROGRESS_EVENT } from "@/lib/resources/streameru-progress-events";
+import { useMemo, useState, useSyncExternalStore } from "react";
+import { SuProgressBar } from "@/components/streameru/SuProgressBar";
+import {
+  curriculumByProgram,
+  CURRICULUM_TOTAL_LESSONS,
+} from "@/lib/resources/curriculum";
+import {
+  getCompletedLessonSlugsServerSnapshot,
+  getCompletedLessonSlugsSnapshot,
+  subscribeStreamerUProgress,
+} from "@/lib/resources/streameru-progress";
 import { trainingTrackLabel } from "@/lib/resources/tracks";
-import { getMissionForLessonSlug } from "@/lib/resources/training-missions";
 
-function isLessonMarkedComplete(slug: string): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    const raw = localStorage.getItem(missionDoneStorageKey(slug));
-    if (!raw) return false;
-    const mission = getMissionForLessonSlug(slug);
-    if (!mission) return false;
-    const parsed = JSON.parse(raw) as { missionId?: string };
-    return parsed.missionId === mission.id;
-  } catch {
-    return false;
-  }
-}
-
-function countCompleted(lessons: CurriculumLesson[]): number {
-  return lessons.filter((l) => isLessonMarkedComplete(l.slug)).length;
-}
-
+/** Parent remounts via `key` when navigation changes which semester should open. */
 function ModuleGroup({
-  defaultOpen,
+  initiallyOpen,
   children,
 }: {
-  defaultOpen: boolean;
+  initiallyOpen: boolean;
   children: ReactNode;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
-  useEffect(() => setOpen(defaultOpen), [defaultOpen]);
-
+  const [open, setOpen] = useState(initiallyOpen);
   return (
     <details
-      className="group rounded-xl border border-zinc-200/80 bg-surface/60 dark:border-zinc-800 dark:bg-zinc-950/30"
+      className="group rounded-xl border border-zinc-200/80 bg-surface/70 dark:border-zinc-800 dark:bg-zinc-950/40"
       open={open}
       onToggle={(e) => setOpen(e.currentTarget.open)}
     >
@@ -70,36 +57,21 @@ type Props = {
 
 export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Props) {
   const groups = useMemo(() => curriculumByProgram(), []);
-  const [tick, setTick] = useState(0);
-
-  const refresh = useCallback(() => setTick((t) => t + 1), []);
-
-  useEffect(() => {
-    refresh();
-  }, [currentSlug, refresh]);
-
-  useEffect(() => {
-    const onStorage = () => refresh();
-    window.addEventListener("storage", onStorage);
-    window.addEventListener(STREAMERU_PROGRESS_EVENT, onStorage);
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener(STREAMERU_PROGRESS_EVENT, onStorage);
-    };
-  }, [refresh]);
+  const completedSlugs = useSyncExternalStore(
+    subscribeStreamerUProgress,
+    getCompletedLessonSlugsSnapshot,
+    getCompletedLessonSlugsServerSnapshot,
+  );
+  const completedCount = completedSlugs.size;
+  const coursePct =
+    CURRICULUM_TOTAL_LESSONS > 0 ? (completedCount / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
 
   const allLessons = useMemo(() => groups.flatMap((g) => g.lessons), [groups]);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick forces re-read from localStorage
-  const completedCount = useMemo(() => countCompleted(allLessons), [allLessons, tick]);
-
   const currentLesson = currentSlug ? allLessons.find((l) => l.slug === currentSlug) : null;
 
   return (
     <aside
-      className="mb-10 w-full shrink-0 border-b border-zinc-200/80 pb-8 dark:border-zinc-800 lg:mb-0 lg:w-[min(100%,280px)] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6 xl:w-[300px]"
+      className="mb-10 w-full shrink-0 border-b border-zinc-200/80 pb-8 dark:border-zinc-800 lg:mb-0 lg:w-[min(100%,280px)] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5 xl:w-[300px] xl:pr-6"
       aria-label="Course outline"
     >
       <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto lg:pr-1">
@@ -110,39 +82,66 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
           StreamerU
         </Link>
         <p className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Course outline</p>
-
-        <div className="mt-4 rounded-xl border border-zinc-200/90 bg-muted-bg/50 px-3 py-3 dark:border-zinc-800 dark:bg-zinc-950/50">
-          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Your progress</p>
-          <p className="mt-1 text-lg font-bold tabular-nums text-zinc-950 dark:text-zinc-50">
-            {mounted ? completedCount : "—"}{" "}
-            <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">/ {CURRICULUM_TOTAL_LESSONS}</span>
+        <div className="mt-4 rounded-xl border border-zinc-200/90 bg-muted-bg/50 px-3 py-3.5 dark:border-zinc-800 dark:bg-zinc-950/50">
+          <p className="text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Your progress
           </p>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">Sessions marked complete on this device.</p>
+          <p className="mt-1 text-lg font-bold tabular-nums text-zinc-950 dark:text-zinc-50">
+            {completedCount}{" "}
+            <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">
+              / {CURRICULUM_TOTAL_LESSONS}
+            </span>
+          </p>
+          <SuProgressBar
+            className="mt-2.5"
+            value={coursePct}
+            label="Overall StreamerU progress"
+          />
+          <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-500">
+            Live Exams marked complete on this device.
+          </p>
           {currentLesson ? (
             <p className="mt-3 border-t border-zinc-200/80 pt-3 text-xs leading-snug text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
-              <span className="font-semibold text-zinc-800 dark:text-zinc-200">Now:</span> Lesson {currentLesson.globalOrder}{" "}
-              · {trainingTrackLabel(currentLesson.trackId)}
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">Now:</span> Lesson{" "}
+              {currentLesson.globalOrder} · {trainingTrackLabel(currentLesson.trackId)}
             </p>
           ) : null}
         </div>
 
-        <nav className="mt-6 space-y-4" aria-label="Lessons by module">
-          {groups.map(({ programName, lessons }) => {
+        <nav className="mt-5 space-y-3" aria-label="Lessons by semester">
+          {groups.map(({ programName, lessons }, semesterIndex) => {
             const openDefault = lessons.some((l) => l.slug === currentSlug);
+            const doneInSemester = lessons.filter((l) => completedSlugs.has(l.slug)).length;
+            const semesterPct =
+              lessons.length > 0 ? (doneInSemester / lessons.length) * 100 : 0;
             return (
-              <ModuleGroup key={programName} defaultOpen={openDefault}>
-                <summary className="cursor-pointer list-none px-3 py-2.5 text-sm font-semibold text-zinc-800 marker:content-none dark:text-zinc-200 [&::-webkit-details-marker]:hidden">
-                  <span className="flex items-center justify-between gap-2">
-                    {programName}
-                    <span className="text-xs font-normal text-zinc-400 dark:text-zinc-500">
-                      {lessons.filter((l) => isLessonMarkedComplete(l.slug)).length}/{lessons.length}
+              <ModuleGroup
+                key={`${programName}-${currentSlug ?? "none"}-${openDefault ? "open" : "closed"}`}
+                initiallyOpen={openDefault}
+              >
+                <summary className="cursor-pointer list-none px-3 py-2.5 marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-center justify-between gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                    <span className="min-w-0">
+                      <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-accent dark:text-accent-muted">
+                        Semester {semesterIndex + 1}
+                      </span>
+                      <span className="mt-0.5 block truncate">{programName}</span>
+                    </span>
+                    <span className="shrink-0 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
+                      {doneInSemester}/{lessons.length}
                     </span>
                   </span>
+                  <SuProgressBar
+                    className="mt-2"
+                    value={semesterPct}
+                    trackClassName="h-1"
+                    label={`${programName} progress`}
+                  />
                 </summary>
                 <ul className="space-y-0.5 border-t border-zinc-200/70 px-2 py-2 dark:border-zinc-800/80">
                   {lessons.map((lesson) => {
                     const published = publishedSlugs.has(lesson.slug);
-                    const done = isLessonMarkedComplete(lesson.slug);
+                    const done = completedSlugs.has(lesson.slug);
                     const active = lesson.slug === currentSlug;
                     return (
                       <li key={lesson.slug}>
@@ -150,7 +149,7 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
                           href={`/streameru/${lesson.slug}`}
                           className={`flex items-start gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors ${
                             active
-                              ? "bg-accent/15 font-semibold text-zinc-950 ring-1 ring-accent/30 dark:bg-accent/10 dark:text-zinc-50 dark:ring-accent/25"
+                              ? "bg-accent/15 font-semibold text-zinc-950 shadow-sm ring-1 ring-accent/35 dark:bg-accent/12 dark:text-zinc-50 dark:ring-accent/30"
                               : "text-zinc-700 hover:bg-zinc-100/90 dark:text-zinc-300 dark:hover:bg-zinc-800/60"
                           } ${!published ? "opacity-60" : ""}`}
                         >
@@ -180,8 +179,8 @@ export function StreamerUCurriculumSidebar({ publishedSlugs, currentSlug }: Prop
           })}
         </nav>
 
-        <div className="mt-6 rounded-lg border border-dashed border-zinc-300/90 px-3 py-3 text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-500">
-          Tracks are labels along the path — follow lessons in order for the full program.
+        <div className="mt-5 rounded-lg border border-dashed border-zinc-300/90 px-3 py-3 text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-500">
+          Follow lessons in order for the full program. Semesters stay open — no hard locks.
         </div>
       </div>
     </aside>

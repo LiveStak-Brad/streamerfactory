@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { TrainingMission } from "@/lib/resources/training-missions";
 import { LessonMissionComplete } from "@/components/resources/LessonMissionComplete";
+import { extractLiveMinutesFromMission, formatMinutesLabel } from "@/lib/resources/mission-minutes";
 
 type Props = {
   lessonSlug: string;
@@ -10,57 +11,83 @@ type Props = {
 };
 
 /**
- * Action block: real-world tasks for a lesson — not passive reading.
+ * Live Exam block — real-world LIVE execution is the grade for each lesson.
  */
 export function LessonMission({ lessonSlug, mission, nextLesson }: Props) {
+  const liveMinutes = extractLiveMinutesFromMission(mission);
+
   return (
     <section
-      className="rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/[0.08] via-surface to-surface p-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] dark:from-accent/[0.06] dark:via-zinc-950 dark:to-zinc-950 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] sm:p-8"
+      className="relative overflow-hidden rounded-2xl border border-accent/35 bg-gradient-to-br from-accent/[0.1] via-surface to-surface p-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.55)] dark:from-accent/[0.08] dark:via-zinc-950 dark:to-zinc-950 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] sm:p-8"
       aria-labelledby="lesson-mission-heading"
     >
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
-        Execution
+      <div
+        className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-accent/15 blur-3xl dark:bg-accent/10"
+        aria-hidden
+      />
+
+      <div className="relative flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent dark:text-accent-muted">
+            Assessment
+          </p>
+          <h2
+            id="lesson-mission-heading"
+            className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-[1.75rem]"
+          >
+            Live Exam
+          </h2>
+        </div>
+        {liveMinutes != null ? (
+          <span className="inline-flex items-center rounded-full border border-accent/35 bg-accent/12 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent dark:border-accent/40 dark:bg-accent/15 dark:text-accent-muted">
+            {formatMinutesLabel(liveMinutes)} LIVE required
+          </span>
+        ) : (
+          <span className="inline-flex items-center rounded-full border border-accent/35 bg-accent/12 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent dark:border-accent/40 dark:bg-accent/15 dark:text-accent-muted">
+            LIVE required
+          </span>
+        )}
+      </div>
+
+      <p className="relative mt-3 text-sm font-medium leading-relaxed text-zinc-600 dark:text-zinc-400">
+        This class isn&apos;t finished until you execute on TikTok LIVE. Study + Live Exam are one unit —
+        complete both before moving on.
       </p>
-      <h2
-        id="lesson-mission-heading"
-        className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50"
-      >
-        Your mission
-      </h2>
-      <p className="mt-3 text-sm font-medium leading-relaxed text-zinc-600 dark:text-zinc-400">
-        This class session isn’t finished until you execute. Learning + execution are one unit — complete both before the
-        next lesson.
-      </p>
-      <p className="mt-3 text-base font-medium leading-relaxed text-zinc-800 dark:text-zinc-200">
+      <p className="relative mt-4 text-base font-semibold leading-relaxed text-zinc-900 dark:text-zinc-100">
         {mission.mission_title}
       </p>
-      <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+      <p className="relative mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
         {mission.mission_description}
       </p>
 
-      <ul className="mt-6 list-none space-y-3 border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80">
+      <ol className="relative mt-7 list-none space-y-3 border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80">
         {mission.mission_steps.map((step, i) => (
-          <li key={i} className="flex gap-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <li
+            key={i}
+            className="flex gap-3 rounded-xl border border-zinc-200/60 bg-surface/70 px-3 py-3 text-sm leading-relaxed text-zinc-700 dark:border-zinc-800/80 dark:bg-zinc-950/50 dark:text-zinc-300"
+          >
             <span
-              className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-300 bg-surface text-xs font-bold text-zinc-600 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-300"
+              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-950 text-xs font-bold text-white dark:bg-white dark:text-zinc-950"
               aria-hidden
             >
               {i + 1}
             </span>
-            <span>{step}</span>
+            <span className="min-w-0 pt-0.5">{step}</span>
           </li>
         ))}
-      </ul>
+      </ol>
 
-      <div className="mt-8 rounded-xl border border-zinc-200/90 bg-muted-bg/50 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/50">
-        <p className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Goal</p>
+      <div className="relative mt-8 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.07] px-4 py-4 dark:border-emerald-500/20 dark:bg-emerald-500/[0.08]">
+        <p className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+          Pass criteria
+        </p>
         <p className="mt-2 text-sm font-medium leading-relaxed text-zinc-800 dark:text-zinc-200">
           {mission.mission_goal}
         </p>
       </div>
 
       {mission.links && mission.links.length > 0 ? (
-        <nav className="mt-6 flex flex-wrap gap-3" aria-label="Mission links">
+        <nav className="relative mt-6 flex flex-wrap gap-3" aria-label="Exam resources">
           {mission.links.map((link) => (
             <Link
               key={link.href}
@@ -73,8 +100,12 @@ export function LessonMission({ lessonSlug, mission, nextLesson }: Props) {
         </nav>
       ) : null}
 
-      <div className="mt-8 border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80">
-        <LessonMissionComplete lessonSlug={lessonSlug} missionId={mission.id} nextLesson={nextLesson} />
+      <div className="relative mt-8 border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80">
+        <LessonMissionComplete
+          lessonSlug={lessonSlug}
+          missionId={mission.id}
+          nextLesson={nextLesson}
+        />
       </div>
     </section>
   );

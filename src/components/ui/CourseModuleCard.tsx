@@ -1,5 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SuProgressBar } from "@/components/streameru/SuProgressBar";
+import {
+  difficultyBadgeClass,
+  difficultyShortLabel,
+  difficultyTrackAccentClass,
+  type DifficultyLevel,
+} from "@/lib/resources/difficulty-styles";
+import { formatMinutesLabel } from "@/lib/resources/mission-minutes";
 
 export type ModuleLessonStatus = "completed" | "current" | "available" | "unpublished";
 
@@ -11,16 +19,12 @@ type CourseModuleCardProps = {
   status: ModuleLessonStatus;
   description?: string;
   index: number;
+  /** Typical difficulty band for this semester */
+  difficulty?: DifficultyLevel | string | null;
+  /** Sum of study minutes across lessons in the semester */
+  estimatedStudyMinutes?: number;
   children?: ReactNode;
 };
-
-const accents = [
-  "from-indigo-500/20 to-transparent",
-  "from-violet-500/20 to-transparent",
-  "from-fuchsia-500/20 to-transparent",
-  "from-sky-500/20 to-transparent",
-  "from-emerald-500/15 to-transparent",
-] as const;
 
 const statusLabel: Record<ModuleLessonStatus, string> = {
   completed: "Completed",
@@ -30,7 +34,7 @@ const statusLabel: Record<ModuleLessonStatus, string> = {
 };
 
 /**
- * StreamerU module / program card. Status must reflect real completion or publish state — not fake locks.
+ * StreamerU semester / program card. Status must reflect real completion or publish state — not fake locks.
  */
 export function CourseModuleCard({
   programName,
@@ -40,10 +44,14 @@ export function CourseModuleCard({
   status,
   description,
   index,
+  difficulty,
+  estimatedStudyMinutes,
   children,
 }: CourseModuleCardProps) {
-  const accent = accents[index % accents.length];
+  const accent = difficultyTrackAccentClass(difficulty ?? null);
   const disabled = status === "unpublished";
+  const pct = lessonCount > 0 ? Math.min(100, (completedCount / lessonCount) * 100) : 0;
+  const diffLabel = difficultyShortLabel(difficulty ?? null);
 
   const inner = (
     <>
@@ -54,7 +62,7 @@ export function CourseModuleCard({
       <div className="relative">
         <div className="flex items-start justify-between gap-3">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
-            Module {index + 1}
+            Semester {index + 1}
           </p>
           <span
             className={`rounded-lg px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider ${
@@ -74,21 +82,32 @@ export function CourseModuleCard({
         {description ? (
           <p className="mt-2 text-sm leading-relaxed text-muted">{description}</p>
         ) : null}
-        <p className="mt-4 text-sm font-semibold text-foreground/80">
-          {completedCount}/{lessonCount} missions done
-        </p>
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted-bg dark:bg-zinc-800">
-          <div
-            className="h-full rounded-full bg-gradient-brand transition-[width] duration-500 motion-reduce:transition-none"
-            style={{
-              width: `${lessonCount > 0 ? Math.min(100, (completedCount / lessonCount) * 100) : 0}%`,
-            }}
-          />
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {diffLabel ? (
+            <span
+              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider ${difficultyBadgeClass(difficulty)}`}
+            >
+              {diffLabel}
+            </span>
+          ) : null}
+          {estimatedStudyMinutes != null && estimatedStudyMinutes > 0 ? (
+            <span className="text-xs font-semibold tabular-nums text-muted">
+              ~{formatMinutesLabel(estimatedStudyMinutes)} study
+            </span>
+          ) : null}
         </div>
+        <p className="mt-4 text-sm font-semibold text-foreground/80">
+          {completedCount}/{lessonCount} Live Exams done
+        </p>
+        <SuProgressBar
+          className="mt-2"
+          value={pct}
+          label={`${programName} semester progress`}
+        />
         {children}
         {!disabled ? (
           <p className="mt-4 text-sm font-semibold text-accent dark:text-accent-muted">
-            Open module →
+            Open semester →
           </p>
         ) : null}
       </div>

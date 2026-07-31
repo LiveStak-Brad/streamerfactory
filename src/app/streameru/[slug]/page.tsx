@@ -15,11 +15,21 @@ import { StartHereArticleHint } from "@/components/resources/StartHereArticleHin
 import { LessonMission } from "@/components/resources/LessonMission";
 import { CurriculumLessonHeader } from "@/components/resources/CurriculumLessonHeader";
 import { LessonNavigation } from "@/components/resources/LessonNavigation";
+import { LessonDownloadCards } from "@/components/resources/LessonDownloadCards";
+import { LessonEstimateChips } from "@/components/resources/LessonEstimateChips";
+import { StreamerUCertificatePanel } from "@/components/streameru/StreamerUCertificatePanel";
 import { RecordLessonVisit } from "@/components/guidance/RecordLessonVisit";
 import { RelatedGuidesForLesson } from "@/components/guides/RelatedGuidesForLesson";
 import { FOUNDER } from "@/lib/founder/content";
 import { splitIntroAndBody } from "@/lib/resources/content";
-import { CURRICULUM, getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
+import {
+  CURRICULUM,
+  curriculumByProgram,
+  getCurriculumLesson,
+  getCurriculumNeighbors,
+} from "@/lib/resources/curriculum";
+import { getLessonEstimate } from "@/lib/resources/lesson-estimate";
+import { buildLessonDownloads } from "@/lib/resources/lesson-downloads";
 import { getLessonSeo, getLessonSeoKeywords } from "@/lib/resources/lesson-seo";
 import { parseTrainingSectionsJson } from "@/lib/resources/training-sections";
 import { getCurriculumRelatedPosts, getPublishedPostBySlug } from "@/lib/resources/queries";
@@ -37,6 +47,12 @@ import {
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+function semesterIndexForProgram(programName: string): number {
+  const programs = curriculumByProgram();
+  const idx = programs.findIndex((p) => p.programName === programName);
+  return idx >= 0 ? idx + 1 : 1;
+}
 
 export function generateStaticParams() {
   return CURRICULUM.map((lesson) => ({ slug: lesson.slug }));
@@ -76,6 +92,14 @@ export default async function ResourcePostPage({ params }: Props) {
   const displayTitle = curriculum?.title ?? post.title;
   const description = seo?.metaDescription ?? post.excerpt ?? displayTitle;
   const metaTrack = curriculum?.trackId ?? post.training_track ?? "beginner";
+  const estimate = getLessonEstimate(slug, { content: post.content, mission });
+  const trainingSections = parseTrainingSectionsJson(post.training_sections);
+  const downloads = buildLessonDownloads({
+    lessonTitle: displayTitle,
+    content: post.content,
+    sections: trainingSections,
+    mission,
+  });
   const nextLessonForMission =
     curriculum && neighbors.next
       ? (() => {
@@ -148,17 +172,22 @@ export default async function ResourcePostPage({ params }: Props) {
           </div>
         ) : null}
 
-        <header className="mt-8 border-b border-zinc-200/80 pb-8 dark:border-zinc-800/80">
+        <header className="mt-8 border-b border-zinc-200/80 pb-10 dark:border-zinc-800/80">
           {curriculum ? (
-            <div className="mb-6">
-              <CurriculumLessonHeader lesson={curriculum} />
+            <div className="mb-8">
+              <CurriculumLessonHeader
+                lesson={curriculum}
+                semesterIndex={semesterIndexForProgram(curriculum.programName)}
+                estimate={estimate}
+                difficulty={post.difficulty ?? null}
+              />
             </div>
           ) : null}
           <ResourceMeta
             publishedAt={post.published_at}
             category={cat ?? null}
             trainingTrack={metaTrack}
-            difficulty={post.difficulty ?? null}
+            difficulty={curriculum ? null : post.difficulty ?? null}
             omitLessonContext={Boolean(curriculum)}
           />
           <h1 className="mt-6 text-3xl font-bold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50 sm:text-4xl sm:leading-[1.08]">
@@ -169,14 +198,9 @@ export default async function ResourcePostPage({ params }: Props) {
               {post.excerpt}
             </p>
           )}
-          {curriculum && neighbors.next ? (
-            <div className="mt-8 max-w-xl">
-              <Link
-                href={`/streameru/${neighbors.next.slug}`}
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white shadow-md transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-zinc-950 sm:w-auto"
-              >
-                Next lesson: {neighbors.next.title} →
-              </Link>
+          {!curriculum ? (
+            <div className="mt-5">
+              <LessonEstimateChips estimate={estimate} />
             </div>
           ) : null}
         </header>
@@ -193,17 +217,26 @@ export default async function ResourcePostPage({ params }: Props) {
         )}
 
         <section className="mt-12" aria-labelledby="learning-heading">
-          <h2
-            id="learning-heading"
-            className="text-xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50"
-          >
-            What you&apos;ll learn
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Read this section before your mission — every lesson pairs study with a real TikTok LIVE.
-          </p>
-          <div className="mt-8 space-y-12 lg:space-y-14">
-            <ResourceArticleTraining sections={parseTrainingSectionsJson(post.training_sections) ?? undefined} />
+          <div className="mb-8">
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
+              Study
+            </p>
+            <h2
+              id="learning-heading"
+              className="mt-1 text-xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50"
+            >
+              What you&apos;ll learn
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Read this section before your Live Exam — every lesson pairs study with a real TikTok
+              LIVE.
+            </p>
+          </div>
+          <div className="space-y-12 lg:space-y-14">
+            <ResourceArticleTraining
+              sections={trainingSections ?? undefined}
+              omitActionChecklist
+            />
             {hasSplit ? (
               <>
                 {intro.trim().length > 0 && <ArticleBody content={intro} />}
@@ -227,6 +260,12 @@ export default async function ResourcePostPage({ params }: Props) {
           </div>
         </section>
 
+        {downloads.length > 0 ? (
+          <div className="mt-14">
+            <LessonDownloadCards items={downloads} />
+          </div>
+        ) : null}
+
         {mission ? (
           <div className="mt-14">
             <LessonMission lessonSlug={slug} mission={mission} nextLesson={nextLessonForMission} />
@@ -245,7 +284,8 @@ export default async function ResourcePostPage({ params }: Props) {
           <RelatedGuidesForLesson lessonSlug={slug} />
           {seo ? <LessonAuthorityLinks links={seo.internalLinks} /> : null}
           <LessonQuickLinks />
-          <RelatedResources posts={related} />
+          <RelatedResources posts={related} currentSlug={slug} />
+          <StreamerUCertificatePanel variant="compact" />
           <ResourceArticleCta />
           <div className="flex flex-col gap-4 border-t border-zinc-200/70 pt-8 text-sm font-semibold dark:border-zinc-800/70 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
             <Link

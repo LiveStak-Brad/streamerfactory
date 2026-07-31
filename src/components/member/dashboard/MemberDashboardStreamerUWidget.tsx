@@ -6,15 +6,18 @@ import { DashboardWidget } from "@/components/ui/DashboardWidget";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Button } from "@/components/ui/Button";
+import { SuProgressBar } from "@/components/streameru/SuProgressBar";
 import { CURRICULUM_TOTAL_LESSONS, getCurriculumLesson } from "@/lib/resources/curriculum";
 import {
-  STREAMERU_MISSION_DONE_KEY_PREFIX,
   computeRecommendedFromStorage,
   getDefaultRecommendedLesson,
   readLastVisitedSlugFromStorage,
   type RecommendedLessonRef,
 } from "@/lib/resources/recommended-lesson";
-import { STREAMERU_PROGRESS_EVENT } from "@/lib/resources/streameru-progress-events";
+import {
+  countCompletedLessons,
+  subscribeStreamerUProgress,
+} from "@/lib/resources/streameru-progress";
 
 type TrainingSnapshot = {
   completed: number;
@@ -30,33 +33,12 @@ const emptySnapshot: TrainingSnapshot = {
   continueTitle: null,
 };
 
-function countCompletedMissions(): number {
-  let count = 0;
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key?.startsWith(STREAMERU_MISSION_DONE_KEY_PREFIX)) continue;
-      const raw = localStorage.getItem(key);
-      if (!raw) continue;
-      try {
-        const parsed = JSON.parse(raw) as { missionId?: string };
-        if (parsed?.missionId) count += 1;
-      } catch {
-        // skip
-      }
-    }
-  } catch {
-    return 0;
-  }
-  return count;
-}
-
 /** Cached so useSyncExternalStore getSnapshot stays referentially stable. */
 let cachedSnapshot: TrainingSnapshot = emptySnapshot;
 let cachedSnapshotKey = "";
 
 function readTrainingSnapshot(): TrainingSnapshot {
-  const done = countCompletedMissions();
+  const done = countCompletedLessons();
   const next = computeRecommendedFromStorage();
   const last = readLastVisitedSlugFromStorage();
   const lastLesson = last ? getCurriculumLesson(last) : null;
@@ -85,25 +67,19 @@ function getServerSnapshot(): TrainingSnapshot {
   return emptySnapshot;
 }
 
-function subscribe(onStoreChange: () => void): () => void {
-  if (typeof window === "undefined") return () => {};
-  const handler = () => onStoreChange();
-  window.addEventListener(STREAMERU_PROGRESS_EVENT, handler);
-  window.addEventListener("storage", handler);
-  return () => {
-    window.removeEventListener(STREAMERU_PROGRESS_EVENT, handler);
-    window.removeEventListener("storage", handler);
-  };
-}
-
 /**
  * Client island: StreamerU progress is device-local today (not DB-synced).
  * Shows real localStorage mission completions only — never invented XP.
  */
 export function MemberDashboardStreamerUWidget() {
-  const snapshot = useSyncExternalStore(subscribe, readTrainingSnapshot, getServerSnapshot);
+  const snapshot = useSyncExternalStore(
+    subscribeStreamerUProgress,
+    readTrainingSnapshot,
+    getServerSnapshot,
+  );
   const percent =
     CURRICULUM_TOTAL_LESSONS > 0 ? (snapshot.completed / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
+  const graduated = snapshot.completed >= CURRICULUM_TOTAL_LESSONS;
 
   return (
     <DashboardWidget
@@ -115,8 +91,8 @@ export function MemberDashboardStreamerUWidget() {
     >
       {snapshot.completed === 0 && !snapshot.continueHref ? (
         <EmptyState
-          title="No lessons completed on this device yet"
-          description="Progress is saved in this browser for now. Start the program and your next lesson will show here."
+          title="No Live Exams completed on this device yet"
+          description="Progress is saved in this browser for now. Start Semester 1 and your next lesson will show here."
           illustration="lessons"
           action={
             <Button href={snapshot.recommended.href} variant="primary" className="min-h-[44px] px-5">
@@ -129,19 +105,22 @@ export function MemberDashboardStreamerUWidget() {
           <ProgressRing
             value={percent}
             size={104}
-            label="Missions"
+            label="Exams"
             sublabel={`${snapshot.completed}/${CURRICULUM_TOTAL_LESSONS}`}
           />
           <div className="min-w-0 flex-1 space-y-3">
+            <SuProgressBar value={percent} label="StreamerU certificate progress" />
             <div>
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-muted">
-                Recommended next
+                {graduated ? "Graduate" : "Recommended next"}
               </p>
               <Link
                 href={snapshot.recommended.href}
                 className="mt-1 block text-base font-semibold text-foreground hover:text-accent dark:hover:text-accent-muted"
               >
-                {snapshot.recommended.title}
+                {graduated
+                  ? "You finished the academy — review any lesson"
+                  : snapshot.recommended.title}
               </Link>
             </div>
             {snapshot.continueHref && snapshot.continueTitle ? (
@@ -156,7 +135,7 @@ export function MemberDashboardStreamerUWidget() {
               </p>
             ) : null}
             <Button href={snapshot.recommended.href} variant="secondary" className="min-h-[44px] px-5">
-              Open lesson
+              {graduated ? "Open academy" : "Open lesson"}
             </Button>
           </div>
         </div>

@@ -1,10 +1,11 @@
+import { applyExpandedLessonContent } from "@/content/streameru/apply-expanded";
 import { createClient } from "@/lib/supabase/server";
 import { CURRICULUM, getCurriculumLesson, getCurriculumNeighbors } from "@/lib/resources/curriculum";
 import type { ResourceCategoryRow, ResourcePostRow, ResourcePostWithCategory } from "./types";
 
 function mapPost(row: ResourcePostWithCategory | null): ResourcePostWithCategory | null {
   if (!row) return null;
-  return row;
+  return applyExpandedLessonContent(row);
 }
 
 export async function getPublishedPosts(): Promise<ResourcePostWithCategory[]> {

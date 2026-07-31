@@ -5,20 +5,25 @@ import { useSyncExternalStore } from "react";
 import { CourseModuleCard, type ModuleLessonStatus } from "@/components/ui/CourseModuleCard";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Button } from "@/components/ui/Button";
+import { SuProgressBar } from "@/components/streameru/SuProgressBar";
+import { StreamerUCertificatePanel } from "@/components/streameru/StreamerUCertificatePanel";
 import {
-  CURRICULUM,
   CURRICULUM_TOTAL_LESSONS,
   FIRST_PROGRAM_LESSON_SLUG,
   curriculumByProgram,
   getCurriculumLesson,
 } from "@/lib/resources/curriculum";
+import { trackDefaultDifficulty } from "@/lib/resources/difficulty-styles";
+import { sumStudyMinutesForSlugs } from "@/lib/resources/lesson-estimate";
 import {
-  STREAMERU_MISSION_DONE_KEY_PREFIX,
   computeRecommendedFromStorage,
   getDefaultRecommendedLesson,
   readLastVisitedSlugFromStorage,
 } from "@/lib/resources/recommended-lesson";
-import { STREAMERU_PROGRESS_EVENT } from "@/lib/resources/streameru-progress-events";
+import {
+  readCompletedLessonSlugs,
+  subscribeStreamerUProgress,
+} from "@/lib/resources/streameru-progress";
 
 type Props = {
   publishedSlugs: string[];
@@ -32,28 +37,6 @@ type Snapshot = {
   continueHref: string | null;
   continueTitle: string | null;
 };
-
-function readCompletedSlugs(): Set<string> {
-  const set = new Set<string>();
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key?.startsWith(STREAMERU_MISSION_DONE_KEY_PREFIX)) continue;
-      const slug = key.slice(STREAMERU_MISSION_DONE_KEY_PREFIX.length);
-      const raw = localStorage.getItem(key);
-      if (!raw) continue;
-      try {
-        const parsed = JSON.parse(raw) as { missionId?: string };
-        if (parsed?.missionId && getCurriculumLesson(slug)) set.add(slug);
-      } catch {
-        // skip
-      }
-    }
-  } catch {
-    return set;
-  }
-  return set;
-}
 
 const emptySnapshot: Snapshot = {
   completedSlugs: new Set(),
@@ -69,7 +52,7 @@ let cachedSnapshot: Snapshot = emptySnapshot;
 let cachedSnapshotKey = "";
 
 function readSnapshot(): Snapshot {
-  const completedSlugs = readCompletedSlugs();
+  const completedSlugs = readCompletedLessonSlugs();
   const recommended = computeRecommendedFromStorage();
   const last = readLastVisitedSlugFromStorage();
   const lastLesson = last ? getCurriculumLesson(last) : null;
@@ -100,17 +83,6 @@ function getServerSnapshot(): Snapshot {
   return emptySnapshot;
 }
 
-function subscribe(onStoreChange: () => void): () => void {
-  if (typeof window === "undefined") return () => {};
-  const handler = () => onStoreChange();
-  window.addEventListener(STREAMERU_PROGRESS_EVENT, handler);
-  window.addEventListener("storage", handler);
-  return () => {
-    window.removeEventListener(STREAMERU_PROGRESS_EVENT, handler);
-    window.removeEventListener("storage", handler);
-  };
-}
-
 function moduleStatus(
   lessons: { slug: string }[],
   completed: Set<string>,
@@ -128,10 +100,14 @@ function moduleStatus(
 
 /**
  * Academy hub: progress from device-local missions + curriculum roadmap.
- * Does not invent XP or locked gates.
+ * StreamerU XP is academy-only (separate from Factory Reputation).
  */
 export function StreamerUAcademyHome({ publishedSlugs }: Props) {
-  const snapshot = useSyncExternalStore(subscribe, readSnapshot, getServerSnapshot);
+  const snapshot = useSyncExternalStore(
+    subscribeStreamerUProgress,
+    readSnapshot,
+    getServerSnapshot,
+  );
   const published = new Set(publishedSlugs);
   const completedCount = snapshot.completedSlugs.size;
   const percent = CURRICULUM_TOTAL_LESSONS > 0 ? (completedCount / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
@@ -149,10 +125,10 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0a12] px-5 py-8 text-zinc-50 sm:px-8 sm:py-10">
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_10%_0%,rgba(91, 59, 255,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(160, 32, 240,0.22),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_10%_0%,rgba(91,59,255,0.35),transparent_55%),radial-gradient(ellipse_50%_50%_at_100%_30%,rgba(160,32,240,0.22),transparent_50%)]"
           aria-hidden
         />
         <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -164,10 +140,10 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               StreamerU
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-zinc-400">
-              A 24-lesson academy path — study each lesson, run the LIVE mission, then move to the next
-              step. Progress on this device is saved as you complete missions.
+              A 24-lesson academy across five semesters — study each lesson, pass the Live Exam on
+              TikTok LIVE, then advance. Progress saves on this device.
             </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button href={snapshot.recommendedHref} variant="primary" className="min-h-[48px] px-6">
                 Continue: Lesson {snapshot.recommendedOrder}
               </Button>
@@ -188,22 +164,55 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               </p>
             ) : null}
           </div>
-          <div className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-md">
-            <ProgressRing
-              value={percent}
-              size={120}
-              label="Complete"
-              sublabel={`${completedCount}/${CURRICULUM_TOTAL_LESSONS}`}
-              toneClassName="text-violet-400"
-            />
+          <div className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-md sm:min-w-[280px]">
+            <div className="flex items-center gap-5">
+              <ProgressRing
+                value={percent}
+                size={120}
+                label="Complete"
+                sublabel={`${completedCount}/${CURRICULUM_TOTAL_LESSONS}`}
+                toneClassName="text-violet-400"
+              />
+              <div>
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
+                  Recommended next
+                </p>
+                <p className="mt-1 text-base font-semibold text-white">{snapshot.recommendedTitle}</p>
+                <p className="mt-2 text-sm text-zinc-400">
+                  {remaining} lesson{remaining === 1 ? "" : "s"} remaining
+                </p>
+              </div>
+            </div>
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-                Recommended next
+              <p className="mb-2 text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
+                Semester breakdown
               </p>
-              <p className="mt-1 text-base font-semibold text-white">{snapshot.recommendedTitle}</p>
-              <p className="mt-2 text-sm text-zinc-400">
-                {remaining} lesson{remaining === 1 ? "" : "s"} remaining in the program
-              </p>
+              <ul className="space-y-2.5">
+                {programs.map((program, index) => {
+                  const done = program.lessons.filter((l) =>
+                    snapshot.completedSlugs.has(l.slug),
+                  ).length;
+                  const pct =
+                    program.lessons.length > 0 ? (done / program.lessons.length) * 100 : 0;
+                  return (
+                    <li key={program.programName}>
+                      <div className="mb-1 flex justify-between text-[11px] font-semibold text-zinc-400">
+                        <span>
+                          S{index + 1} · {program.programName}
+                        </span>
+                        <span className="tabular-nums text-zinc-300">
+                          {done}/{program.lessons.length}
+                        </span>
+                      </div>
+                      <SuProgressBar
+                        value={pct}
+                        trackClassName="h-1 bg-white/10"
+                        label={`${program.programName} progress`}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
         </div>
@@ -214,10 +223,10 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent dark:text-accent-muted">
             Course roadmap
           </p>
-          <h2 className="mt-1 text-2xl font-bold tracking-tight text-foreground">Modules</h2>
+          <h2 className="mt-1 text-2xl font-bold tracking-tight text-foreground">Semesters</h2>
           <p className="mt-1 text-sm text-muted">
-            Follow the numbered path. Modules stay available — we recommend order, we don&apos;t hard-lock
-            lessons.
+            Follow the numbered path. Semesters stay available — we recommend order, we don&apos;t
+            hard-lock lessons.
           </p>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
@@ -233,6 +242,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               published,
               recommendedSlug,
             );
+            const trackId = program.lessons[0]?.trackId;
             return (
               <li key={program.programName}>
                 <CourseModuleCard
@@ -243,6 +253,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   status={status}
                   description={moduleDescriptions[program.programName]}
                   index={index}
+                  difficulty={trackDefaultDifficulty(trackId)}
+                  estimatedStudyMinutes={sumStudyMinutesForSlugs(program.lessons.map((l) => l.slug))}
                 />
               </li>
             );
@@ -250,20 +262,23 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
         </ul>
       </section>
 
+      <StreamerUCertificatePanel />
+
       <section className="rounded-2xl border border-border/80 bg-surface/80 p-6 dark:border-zinc-800 dark:bg-zinc-950/50 sm:p-8">
         <h2 className="text-lg font-bold text-foreground">How this academy works</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
           <li>
-            <strong className="font-semibold text-foreground/90">Learn</strong> — concepts on each lesson
-            page.
+            <strong className="font-semibold text-foreground/90">Study</strong> — concepts on each
+            lesson page, with worksheets you can copy or print.
           </li>
           <li>
-            <strong className="font-semibold text-foreground/90">Execute</strong> — complete the LIVE mission,
-            then mark it done on this device.
+            <strong className="font-semibold text-foreground/90">Live Exam</strong> — complete the
+            LIVE requirements, then submit on this device.
           </li>
           <li>
-            <strong className="font-semibold text-foreground/90">Progress</strong> — {CURRICULUM.length}{" "}
-            lessons across {programs.length} modules; use the sidebar anytime.
+            <strong className="font-semibold text-foreground/90">Progress</strong> —{" "}
+            {CURRICULUM_TOTAL_LESSONS} lessons across {programs.length} semesters; earn the Graduate
+            certificate at 24/24.
           </li>
         </ul>
       </section>

@@ -1,0 +1,29 @@
+import { describe, expect, it } from "vitest";
+import { curriculumByProgram, CURRICULUM_TOTAL_LESSONS } from "@/lib/resources/curriculum";
+import { sumStudyMinutesForSlugs } from "@/lib/resources/lesson-estimate";
+
+/**
+ * Documents the StreamerU progress / estimate contract used by hub, sidebar,
+ * certificate, and member widget (device-local Live Exam completions + shared estimates).
+ */
+describe("StreamerU progress and estimate sources of truth", () => {
+  it("curriculum has a stable 24-lesson total used by all progress UI", () => {
+    expect(CURRICULUM_TOTAL_LESSONS).toBe(24);
+    const programs = curriculumByProgram();
+    const lessonCount = programs.reduce((n, p) => n + p.lessons.length, 0);
+    expect(lessonCount).toBe(CURRICULUM_TOTAL_LESSONS);
+  });
+
+  it("semester study totals use the shared lesson-estimate helper", () => {
+    const programs = curriculumByProgram();
+    const grand = sumStudyMinutesForSlugs(
+      programs.flatMap((p) => p.lessons.map((l) => l.slug)),
+    );
+    const bySemester = programs.reduce(
+      (n, p) => n + sumStudyMinutesForSlugs(p.lessons.map((l) => l.slug)),
+      0,
+    );
+    expect(grand).toBe(bySemester);
+    expect(grand).toBeGreaterThan(0);
+  });
+});

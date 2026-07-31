@@ -1,5 +1,10 @@
+import type { ReactNode } from "react";
+
 /**
- * Plain-text / line-break friendly body. Swap for rich text later without changing routes.
+ * Line-break friendly body with lightweight markdown:
+ * - `##` / `###` headings
+ * - `[Screenshot: …]` placeholders
+ * - blank lines = new blocks; single newlines kept inside paragraphs
  */
 export function ArticleBody({
   content,
@@ -8,19 +13,55 @@ export function ArticleBody({
   content: string;
   className?: string;
 }) {
-  const paragraphs = content.split(/\n{2,}/).filter((p) => p.trim().length > 0);
-  if (paragraphs.length === 0) {
+  const blocks = content.split(/\n{2,}/).filter((p) => p.trim().length > 0);
+  if (blocks.length === 0) {
     return null;
   }
+
   return (
-    <div
-      className={`space-y-7 text-[1.0625rem] leading-[1.75] text-zinc-700 dark:text-zinc-300 ${className}`}
-    >
-      {paragraphs.map((block, i) => (
-        <p key={i} className="whitespace-pre-wrap">
-          {block.trim()}
-        </p>
+    <div className={`su-prose ${className}`}>
+      {blocks.map((block, i) => (
+        <Block key={i} text={block.trim()} />
       ))}
     </div>
   );
+}
+
+function Block({ text }: { text: string }) {
+  const h2 = text.match(/^##\s+([\s\S]+)$/);
+  if (h2) {
+    return <h2>{h2[1].trim()}</h2>;
+  }
+
+  const h3 = text.match(/^###\s+([\s\S]+)$/);
+  if (h3) {
+    return <h3>{h3[1].trim()}</h3>;
+  }
+
+  const screenshot = text.match(/^\[Screenshot:\s*([\s\S]+?)\]$/);
+  if (screenshot) {
+    return (
+      <figure className="overflow-hidden rounded-xl border border-dashed border-zinc-300 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900/60">
+        <div className="flex aspect-video items-center justify-center px-6 text-center">
+          <figcaption className="text-sm font-medium leading-relaxed text-zinc-500 dark:text-zinc-400">
+            Screenshot placeholder — {screenshot[1].trim()}
+          </figcaption>
+        </div>
+      </figure>
+    );
+  }
+
+  return <p className="whitespace-pre-wrap">{formatInline(text)}</p>;
+}
+
+function formatInline(text: string): ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    const m = part.match(/^\*\*([^*]+)\*\*$/);
+    if (m) {
+      return <strong key={i}>{m[1]}</strong>;
+    }
+    return part;
+  });
 }

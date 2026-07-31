@@ -377,3 +377,77 @@ body {
     line-height: 1.7;
   }
 }
+
+/* —— StreamerU academy —— */
+.su-progress-track {
+  overflow: hidden;
+  border-radius: 9999px;
+}
+
+.su-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background-image: var(--gradient-brand);
+  transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .su-progress-fill {
+    transition: none;
+  }
+}
+
+.su-prose {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: color-mix(in oklab, var(--foreground) 78%, var(--muted));
+}
+
+.su-prose > * + * {
+  margin-top: 1.35rem;
+}
+
+.su-prose h2 {
+  margin-top: 2.25rem;
+  padding-top: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: var(--foreground);
+}
+
+.su-prose h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.su-prose h3 {
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.su-prose strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.su-unit {
+  border-left: 2px solid color-mix(in oklab, var(--accent) 45%, transparent);
+  padding-left: 1.15rem;
+}
+
+@media print {
+  .su-no-print {
+    display: none !important;
+  }
+
+  .su-print-block {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    padding: 1.25rem;
+  }
+}

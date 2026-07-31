@@ -31,16 +31,19 @@ export default async function StartHerePage() {
         />
 
         <p className="mt-8 text-xs font-bold uppercase tracking-[0.24em] text-accent dark:text-accent-muted">
-          StreamerU program · lessons 1–4
+          StreamerU · Semester 1 · lessons 1–4
         </p>
         <h1 className="mt-4 text-4xl font-bold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50 sm:text-5xl lg:text-[3.1rem] lg:leading-[1.06]">
           Start your training
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
-          This is the opening sprint of the <strong className="font-semibold text-zinc-800 dark:text-zinc-200">same</strong>{" "}
-          StreamerU curriculum you see on the hub — lessons <strong className="font-semibold text-zinc-800 dark:text-zinc-200">1 through 4</strong>{" "}
-          in order. Use <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Next lesson</strong> at the bottom
-          of each lesson, or follow the list below.
+          This is the opening sprint of{" "}
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Semester 1</strong> in the
+          same StreamerU academy — lessons{" "}
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">1 through 4</strong> in
+          order. Study each lesson, pass the Live Exam, then use{" "}
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Next lesson</strong> at the
+          bottom — or follow the path below.
         </p>
 
         <ol className="mt-8 list-decimal space-y-2 pl-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
