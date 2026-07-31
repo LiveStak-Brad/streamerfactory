@@ -13,7 +13,7 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
     ],
     metaTitle: "TikTok LIVE Setup for Beginners",
     metaDescription:
-      "Learn how to set up TikTok LIVE the right way—profile, niche, talking points, and your first structured session so you start strong instead of guessing.",
+      "Free StreamerU TikTok LIVE setup: profile readiness, audio-light-framing order, first-minute promise, checklist, quiz, and a 25-minute LIVE mission.",
     faqs: [
       {
         question: "What do I need before I go live on TikTok for the first time?",
@@ -33,7 +33,12 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
       {
         question: "What should I say if nobody is watching yet?",
         answer:
-          "Talk to the plan, not the empty room. Introduce your topic, walk through your talking points, and treat early minutes like rehearsal with the door open. Later StreamerU lessons go deeper on empty-room confidence; this one focuses on setup and a clean first structure.",
+          "Talk to the plan, not the empty room. Introduce your topic, walk through your talking points, and treat early minutes like rehearsal with the door open. Later StreamerU lessons go deeper on empty-room confidence; this one focuses on setup, a first-minute promise, and finishing a prepared session.",
+      },
+      {
+        question: "How does StreamerU measure success on Lesson 1?",
+        answer:
+          "By behavior: a ready profile, a spoken first-minute promise, five visible talking points, and a completed 25+ minute LIVE. Viewer count is not the grade. Empty or quiet rooms are normal at the beginning.",
       },
     ],
     relatedGuideSlugs: [
@@ -83,30 +88,51 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
       "TikTok live segments",
       "live stream outline for beginners",
       "TikTok LIVE format",
+      "what to say on TikTok live",
     ],
-    metaTitle: "How to Structure Your First TikTok LIVE",
+    metaTitle: "Your First TikTok LIVE Structure (Open → Segments → Close)",
     metaDescription:
-      "Build a simple intro → segments → close format for TikTok LIVE so your stream feels intentional—not improvised chaos.",
+      "Stop improvising mid-stream. Build a reusable TikTok LIVE framework with opens, three middle segments, transitions, dead-chat recovery, and a deliberate close.",
     faqs: [
       {
         question: "What is a simple structure for a first TikTok LIVE?",
         answer:
-          "Use three timed segments: an intro that states who you are and what today’s LIVE is about, two or three content blocks of 8–10 minutes each with a mini-hook at the start, and a close that recaps and tells people when you’ll be back. Structure reduces panic because you always know what comes next.",
+          "Use a reusable framework: a 3–5 minute open with a clear promise, three middle segments of about 8–10 minutes each with hooks at each start, and a 3–5 minute close that recaps, thanks the room, and teases the next session. Structure reduces panic because you always know what comes next.",
       },
       {
-        question: "How many segments should a beginner run?",
+        question: "What if I finish my planned topic early?",
         answer:
-          "Three is enough. More segments sound impressive and usually collapse into rushing. Master a clean three-part LIVE before you add games, battles, or long Q&A blocks.",
+          "Do not end randomly. Use an emergency conversation list, deepen the current segment with an example, or open a bounded Q&A still tied to today’s theme — then run a deliberate close. Early finishes are normal; missing the close wastes goodwill.",
+      },
+      {
+        question: "What if nobody joins my LIVE?",
+        answer:
+          "Start on time and narrate your outline out loud. Treat the run sheet as your co-host. StreamerU grades preparation and duration, not viewer count. Empty rooms are practice rooms.",
+      },
+      {
+        question: "What if I forget my outline while live?",
+        answer:
+          "Glance at a sticky note or large-font notes app kept near camera line of sight. A brief natural pause to check your map reads better than inventing a new topic under stress.",
+      },
+      {
+        question: "Should I repeat myself on TikTok LIVE?",
+        answer:
+          "Yes — intentionally. People join at random times. Restate the topic, current segment, and what is coming next at each transition so late joiners can catch up without a full restart.",
+      },
+      {
+        question: "How long should each section be?",
+        answer:
+          "As a beginner guide: open about 3–5 minutes, each middle segment about 8–10 minutes, close about 3–5 minutes. Timers are soft guides. The goal is rhythm and “what’s next,” not perfect second-by-second timing.",
+      },
+      {
+        question: "What if viewers ask unrelated questions?",
+        answer:
+          "Answer briefly if it is quick and kind, then bridge back to the current segment (“Back to segment two…”). If the question fits a later segment, park it (“Saving that for segment three”). Protect the map so the room keeps a spine.",
       },
       {
         question: "Should I script my entire TikTok LIVE?",
         answer:
-          "No. Scripting every line makes you sound stiff and breaks when chat appears. Outline segment titles, one hook line per segment, and two prompts you can ask viewers. Leave room to react—structure is a skeleton, not a teleprompter.",
-      },
-      {
-        question: "What if I finish a segment early?",
-        answer:
-          "Have a backup prompt ready: a story, a demo, or a question for chat. Ending a segment early is normal; dead air while you invent the next idea is what hurts retention. This lesson trains you to keep the timeline honest.",
+          "No. Word-for-word scripts sound stiff and break when chat appears. Outline segment titles, one hook line per segment, and prompts you can ask. Structure is a skeleton, not a teleprompter.",
       },
     ],
     relatedGuideSlugs: [
@@ -117,8 +143,12 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
     ],
     internalLinks: [
       { label: "Previous: TikTok LIVE setup", href: "/streameru/start-strong-on-tiktok-live" },
-      { label: "Next: First 30-minute session", href: "/streameru/first-10-tiktok-live-sessions" },
+      { label: "Next: TikTok rules explained", href: "/streameru/platform-rules-new-live-creators" },
       { label: "StreamerU hub", href: "/streameru" },
+      { label: "Start here path", href: "/streameru/start-here" },
+      { label: "LIVE Run Sheet", href: "/streameru/library/first-live-structure-sheet" },
+      { label: "30-Minute Stream Outline", href: "/streameru/library/thirty-minute-stream-outline" },
+      { label: "Knowledge: TikTok LIVE tips", href: "/guides/tiktok-live-tips" },
       { label: "Meet the founder", href: "/founder" },
       { label: "Editorial standards", href: "/guides/editorial-standards" },
     ],
@@ -126,17 +156,30 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
       { title: "LIVE segment", intent: "Timed content block inside a stream." },
       { title: "Stream hook", intent: "Opening line that sets topic and energy." },
       { title: "Hard close", intent: "Intentional ending vs fading out." },
+      { title: "Transition bridge", intent: "Acknowledge → name → question between segments." },
     ],
     suggestedDownloads: [
       {
-        title: "Three-segment LIVE outline template",
-        intent: "One-page planner with time boxes for intro, segments, close.",
+        title: "LIVE Run Sheet",
+        intent: "Open + three segments + close with hooks and transitions.",
+      },
+      {
+        title: "Transition Cheat Sheet",
+        intent: "Reusable bridge lines for segment changes and late joiners.",
+      },
+      {
+        title: "Emergency Conversation List",
+        intent: "Dead-chat and early-finish prompts.",
+      },
+      {
+        title: "Closing Checklist",
+        intent: "Recap, thanks, tease, end on purpose.",
       },
     ],
     suggestedBlogSupport: [
       {
         title: "Examples of beginner-friendly LIVE formats",
-        intent: "Show three sample outlines for chat, tutorial, and storytelling niches.",
+        intent: "Sample outlines across niches that reuse one framework.",
       },
       {
         title: "Why unstructured LIVEs feel exhausting",
@@ -185,7 +228,7 @@ export const BEGINNER_LESSON_SEO: LessonSeoPack[] = [
       "creator-coaching",
     ],
     internalLinks: [
-      { label: "Previous: First live structure", href: "/streameru/your-first-live-structure" },
+      { label: "Previous: Long-term account safety", href: "/streameru/long-term-account-safety" },
       { label: "Next: First week consistency", href: "/streameru/first-week-of-lives-consistency" },
       { label: "StreamerU hub", href: "/streameru" },
       { label: "Meet the founder", href: "/founder" },

@@ -98,8 +98,8 @@ export const LIBRARY_CATEGORIES: LibraryCategoryMeta[] = [
   },
   {
     id: "safety",
-    label: "Rules & Safety",
-    description: "Compliance checklists and account protection tools.",
+    label: "Safety",
+    description: "Compliance checklists and account protection tools for Beginner Foundations.",
   },
 ];
 

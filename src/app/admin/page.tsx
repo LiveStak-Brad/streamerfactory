@@ -16,6 +16,7 @@ import { getAllBattleEventsForAdmin } from "@/lib/battle-hub/queries";
 import { getImportMatchReviewSummary } from "@/lib/creator-network/queries";
 import { getApplicantProfiles, getNetworkMemberProfiles } from "@/lib/profiles/queries";
 import { getAllResourcePosts } from "@/lib/resources/queries";
+import { getSetupHubStats } from "@/lib/streameru-media/queries";
 
 function formatShort(iso: string) {
   try {
@@ -53,6 +54,7 @@ export default async function AdminHomePage() {
     analytics7,
     recentEvents,
     matchReview,
+    streameruSetup,
   ] = await Promise.all([
     getApplications().catch(() => [] as Awaited<ReturnType<typeof getApplications>>),
     getApplicantProfiles().catch(() => [] as Awaited<ReturnType<typeof getApplicantProfiles>>),
@@ -67,6 +69,17 @@ export default async function AdminHomePage() {
       matchedProfiles: 0,
       unmatchedProfiles: 0,
       lowConfidenceMatches: 0,
+    })),
+    getSetupHubStats().catch(() => ({
+      publishedLessons: 0,
+      lessonsMissingRequired: 0,
+      screenshotRequests: 0,
+      diagramRequests: 0,
+      printableGaps: 0,
+      founderRequests: 0,
+      readyForReview: 0,
+      needsBrad: 0,
+      overallPercent: 0,
     })),
   ]);
 
@@ -133,6 +146,15 @@ export default async function AdminHomePage() {
       tone: "info",
     });
   }
+  if (streameruSetup.needsBrad > 0) {
+    attentionItems.push({
+      id: "streameru-materials",
+      title: `StreamerU needs ${streameruSetup.needsBrad} material${streameruSetup.needsBrad === 1 ? "" : "s"} from you`,
+      meta: "Screenshots, photos, diagrams, and founder approvals — students never see these gaps",
+      href: "/admin/streameru/setup?filter=needs_brad",
+      tone: "warning",
+    });
+  }
 
   const role = session.profile?.role ?? "—";
   const email = session.user.email ?? session.user.id;
@@ -160,7 +182,7 @@ export default async function AdminHomePage() {
         <div className="mt-8">
           <AdminSectionTitle
             title="Needs attention"
-            description="Live queues from applications, members, imports, and StreamerU drafts."
+            description="Live queues from applications, members, imports, StreamerU drafts, and materials Brad still needs to supply."
           />
           {attentionItems.length === 0 ? (
             <div className="mt-4">

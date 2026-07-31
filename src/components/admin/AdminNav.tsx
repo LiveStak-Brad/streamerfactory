@@ -20,6 +20,7 @@ const contentLinks = [
   { href: "/admin/hall-of-fame", label: "Hall of Fame" },
   { href: "/admin/creator-network", label: "CN imports" },
   { href: "/admin/streameru", label: "StreamerU" },
+  { href: "/admin/streameru/setup", label: "SU Setup" },
 ] as const;
 
 const growthLinks = [

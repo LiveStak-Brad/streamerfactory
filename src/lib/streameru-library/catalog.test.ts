@@ -24,6 +24,10 @@ describe("StreamerU Resource Library catalog", () => {
     expect(getLibraryResource("first-stream-checklist")?.status).toBe("ready");
     expect(getLibraryResource("profile-optimization-worksheet")?.status).toBe("ready");
     expect(getLibraryResource("thirty-minute-stream-outline")?.status).toBe("ready");
+    expect(getLibraryResource("first-live-structure-sheet")?.status).toBe("ready");
+    expect(getLibraryResource("transition-cheat-sheet")?.status).toBe("ready");
+    expect(getLibraryResource("emergency-conversation-list")?.status).toBe("ready");
+    expect(getLibraryResource("closing-checklist")?.status).toBe("ready");
     expect(getLibraryResource("first-week-planner")?.status).toBe("ready");
     expect(getLibraryResource("mistake-prevention-checklist")?.status).toBe("ready");
   });

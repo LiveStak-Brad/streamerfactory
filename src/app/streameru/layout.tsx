@@ -10,14 +10,7 @@ export const metadata: Metadata = createPageMetadata({
   title: ACADEMY_SEO.title,
   description: ACADEMY_SEO.description,
   path: "/streameru",
-  keywords: [
-    "StreamerU",
-    "free live streaming academy",
-    "TikTok LIVE training",
-    "creator academy",
-    "TikTok LIVE tips",
-    "streamer training",
-  ],
+  keywords: [...ACADEMY_SEO.keywords],
 });
 
 export default async function StreamerULayout({

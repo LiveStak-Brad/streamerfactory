@@ -635,7 +635,7 @@ export const COMPARISON_DOCUMENTS: GuideDocument[] = [
       },
       {
         heading: "The honest trade-off",
-        body: "Self-teaching costs time and trial-and-error; structured coaching costs some independence and, depending on the program, potentially a fee or membership requirement. Neither replaces the need for consistent practice.",
+        body: "Self-teaching costs time and trial-and-error; structured coaching at Streamer Factory is free with membership — you trade some independence for curriculum, missions, and accountability. Neither replaces the need for consistent practice.",
       },
     ],
     comparison: {
@@ -644,7 +644,7 @@ export const COMPARISON_DOCUMENTS: GuideDocument[] = [
       rows: [
         {
           dimension: "Cost",
-          optionA: "May involve fees or membership terms; check current details",
+          optionA: "Streamer Factory: free membership · StreamerU included",
           optionB: "Free, aside from your own time",
         },
         {
@@ -692,17 +692,17 @@ export const COMPARISON_DOCUMENTS: GuideDocument[] = [
       {
         question: "Is StreamerU free?",
         answer:
-          "StreamerU's public lessons are accessible for learning without cost. Some member tools require Creator Network join and verification.",
+          "Yes. StreamerU is the free education platform included with free Streamer Factory membership. Creators never pay us. Battle Hub and some member tools unlock after Creator Network join and website verification.",
       },
       {
         question: "Can I mix both approaches?",
         answer:
-          "Yes — many creators use free content to explore topics broadly, then use a structured curriculum to fill in specific gaps.",
+          "Yes — many creators use free content to explore topics broadly, then use StreamerU's structured curriculum to fill in specific gaps.",
       },
     ],
     relatedSlugs: ["creator-coaching", "creator-academy", "tiktok-live-tips-for-beginners"],
-    streameruLinks: [{ label: "Start StreamerU training", href: "/streameru/start-here" }],
-    ctaPrimary: { label: "Start StreamerU training", href: "/streameru/start-here" },
+    streameruLinks: [{ label: "Start StreamerU Today", href: "/streameru/start-here" }],
+    ctaPrimary: { label: "Join FREE & Start Learning", href: "/apply" },
     ctaSecondary: REQUEST_ACCESS,
     datePublished: "2026-01-15",
     dateModified: "2026-07-29",

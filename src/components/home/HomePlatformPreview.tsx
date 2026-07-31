@@ -8,9 +8,9 @@ const pillars = [
     href: "/streameru",
     eyebrow: "Academy",
     title: "StreamerU",
-    body: "The internet’s free live streaming academy — lessons, quizzes, LIVE exams, printables, certificates, and graduation. No course fees.",
+    body: "The internet’s free live streaming academy — lessons, quizzes, LIVE exams, printables, certificates, and graduation. Included with free Streamer Factory membership.",
     accent: "from-indigo-500/20 via-transparent to-transparent",
-    chip: "Free · quizzes · certificates",
+    chip: "Free · included · certificates",
   },
   {
     href: "/battle-hub",
@@ -36,7 +36,7 @@ export function HomePlatformPreview() {
       <SectionHeader
         eyebrow="The operating system"
         title="See the platform, not just the pitch"
-        description="Streamer Factory is built around the tools creators actually use every week — training, battles, and rankings in one network."
+        description="Streamer Factory is a free TikTok LIVE creator network — training, battles, and rankings in one account. Creators never pay us."
       />
 
       <div className="mt-14 grid gap-5 lg:grid-cols-3 lg:gap-6">

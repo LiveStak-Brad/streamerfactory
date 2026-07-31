@@ -31,17 +31,17 @@ export function ResourceArticleCta() {
       />
       <div className="relative mx-auto max-w-2xl text-center">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent-muted">
-          Ready for real support?
+          Free academy · Free creator network
         </p>
         <h2
           id="resource-cta-heading"
           className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl"
         >
-          Take the next step with Streamer Factory
+          Join Streamer Factory FREE
         </h2>
         <p className="mt-4 text-base leading-relaxed text-zinc-400">
-          If you want structure, coaching, and a team behind your TikTok LIVE growth, join the Creator
-          Network and request website access — we will take it from there.
+          Membership is free. StreamerU is included. Get structure, coaching, community, rankings, and
+          Battle Hub without paying membership fees — creators never pay us.
         </p>
         <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <TrackedCta
@@ -50,7 +50,7 @@ export function ResourceArticleCta() {
             className="min-h-[48px] px-6"
             eventMetadata={{ location: "resource_article_cta", cta: "apply" }}
           >
-            Apply now
+            Apply to join the free creator network
           </TrackedCta>
           <Link
             href="/guides/tiktok-live-agency"

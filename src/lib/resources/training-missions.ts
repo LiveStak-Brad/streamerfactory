@@ -47,37 +47,54 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-01-understanding-live",
     mission_title: "Session: Setup + first structured LIVE",
     mission_description:
-      "Your mission is one combined class session: study the concepts, then execute. Complete this session before moving on.",
+      "Study first, pass the quiz, then execute. This mission proves you can start prepared — success is behavior (plan, promise, duration), not viewer count.",
     mission_steps: steps(
       [
-        "Confirm TikTok username, profile photo, and one-sentence niche for this practice.",
-        "Write 5 talking-point bullets you can see while live.",
+        "Confirm TikTok username, profile photo, and one-sentence niche (“I go LIVE to ___”).",
+        "Write your first-minute promise and 5 talking-point bullets you can see while live.",
+        "Complete the First Stream Checklist before you press Go LIVE.",
       ],
       25,
-      [],
+      [
+        "End intentionally (locate the end control before you start) and write one debrief line: hardest moment + what you will reuse.",
+      ],
       habitDailyByStage("early"),
     ),
     mission_goal:
-      "Finish a real 25+ minute LIVE with a clear topic, visible plan, and no ‘silent staring’ stretches longer than a few seconds.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+      "Finish a real 25+ minute LIVE with a clear topic, spoken first-minute promise, visible plan, and no silent-staring stretches longer than a few seconds — regardless of viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "First Stream Checklist", href: "/streameru/library/first-stream-checklist" },
+    ],
   },
 
   "your-first-live-structure": {
     id: "mission-02-first-structure",
-    mission_title: "Session: Run a timed segment structure",
+    mission_title: "Session: Run your LIVE framework",
     mission_description:
-      "Do this now: one LIVE that follows a simple structure (intro → segments → close). Your mission is not optional.",
+      "Do this now: fill a LIVE Run Sheet, prepare transitions and emergency prompts, then host one real LIVE that follows open → three segments → close. Views do not matter.",
     mission_steps: steps(
       [
-        "Outline three segments (each 8–10 minutes) with a hook at the start of each.",
+        "Fill your LIVE Run Sheet: open promise, three distinct middle segments with hooks, transition bridges, and a close (recap + thanks + next tease).",
+        "Write 5–10 emergency conversation prompts for dead chat or finishing a segment early.",
+        "Place the run sheet where you can glance without hiding from the camera.",
       ],
-      30,
-      [],
+      25,
+      [
+        "After the LIVE: write one reflection line — what broke, what you will reuse next time.",
+      ],
       habitDailyByStage("early"),
     ),
     mission_goal:
-      "Prove you can hold a 30+ minute LIVE that feels intentional, not improvised chaos.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+      "Finish a real 25+ minute LIVE that follows your written framework — open, three segments with transitions, and a deliberate close — regardless of viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "First Live Structure Sheet", href: "/streameru/library/first-live-structure-sheet" },
+      { label: "30-Minute Stream Outline", href: "/streameru/library/thirty-minute-stream-outline" },
+      { label: "Transition Cheat Sheet", href: "/streameru/library/transition-cheat-sheet" },
+      { label: "Emergency Conversation List", href: "/streameru/library/emergency-conversation-list" },
+      { label: "Closing Checklist", href: "/streameru/library/closing-checklist" },
+    ],
   },
 
   "first-10-tiktok-live-sessions": {
@@ -169,14 +186,24 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_description:
       "Progression step: one extended LIVE block. Hydrate and plan breaks as talking breaks, not dead air.",
     mission_steps: steps(
-      ["Write a run-of-show with 4 blocks + 3 stretch goals if energy stays high."],
+      [
+        "Write a four-block run-of-show (opener, deep, recovery, closer) with rough time ranges.",
+        "Prepare three stretch goals for the whole session, ready if your energy holds up.",
+      ],
       90,
-      [],
+      [
+        "Place any hydration or physical break inside the recovery block, narrated out loud the entire time.",
+        "If a block ends early, deploy a prepared stretch goal instead of improvised filler.",
+      ],
       habitDailyByStage("late"),
     ),
     mission_goal:
-      "Complete a 90+ minute LIVE with visible structure start-to-finish.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+      "Complete a 90+ minute LIVE with visible four-block structure and an honest energy arc from start to finish.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Four-Block Run-of-Show", href: "/streameru/library/ninety-minute-run-of-show" },
+      { label: "Stretch Goal & Energy Arc Tracker", href: "/streameru/library/stretch-goal-energy-arc-tracker" },
+    ],
   },
 
   "growth-weekly-system": {
@@ -184,10 +211,24 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_title: "Session: Repeat-viewer invitation LIVE",
     mission_description:
       "Explicitly train repeat attendance: reference last stream, tease next, reward returners.",
-    mission_steps: steps([], 60, [], habitDailyByStage("late")),
+    mission_steps: steps(
+      [
+        "Write your specific opening callback to your last session before you go live.",
+        "Write your specific closing tease for next session, including a rough day/time.",
+      ],
+      60,
+      [
+        "During the session, actively recognize any returning viewer with direct, warm acknowledgment.",
+      ],
+      habitDailyByStage("late"),
+    ),
     mission_goal:
       "Run 60+ minutes designed so a return viewer would recognize continuity from your last session.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Repeat Viewer System Sheet", href: "/streameru/library/repeat-viewer-system-sheet" },
+      { label: "Returning Viewer Recognition Log", href: "/streameru/library/returning-viewer-recognition-log" },
+    ],
   },
 
   // —— Battles ——
@@ -195,18 +236,21 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-11-understanding-battles",
     mission_title: "Session: Observe + debrief",
     mission_description:
-      "Watch a battle (live or replay) and run your own 45-minute LIVE applying one lesson from observation.",
+      "Watch a battle (live or replay) and run your own 45-minute LIVE applying one lesson from observation. This is a study mission — you are not booking or running a real battle yet.",
     mission_steps: [
-      "Watch at least 20 minutes of a battle or recap (any creator) and note one tactic.",
+      "Watch at least 20 minutes of a battle or recap (any creator) and note one specific tactic.",
       ...PRE_LIVE_STANDARD,
       liveSessionStep(45),
+      "Apply the tactic you observed out loud during the session, referencing what you saw.",
       ...BEHAVIOR_STANDARD,
     ],
     mission_goal:
-      "Connect theory to practice: 45+ minute LIVE referencing what you saw in battles.",
+      "Connect theory to practice: 45+ minute LIVE referencing what you saw in a real battle or recap.",
     links: [
       { label: "Battle Hub", href: "/battle-hub" },
       { label: "StreamerU hub", href: "/streameru" },
+      { label: "Battle Observation Debrief", href: "/streameru/library/battle-observation-debrief" },
+      { label: "Battle Vocabulary & Sportsmanship Guide", href: "/streameru/library/battle-vocabulary-sportsmanship-guide" },
     ],
   },
 
@@ -214,13 +258,20 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     id: "mission-12-prep-battle",
     mission_title: "Session: Promotion dry-run LIVE",
     mission_description:
-      "Rehearse promotion discipline: your mission includes a full pre-live funnel before a non-battle practice LIVE.",
-    mission_steps: steps([], 45, [], habitDailyByStage("mid")),
+      "Rehearse promotion discipline: your mission includes a full pre-live funnel before a non-battle practice LIVE. No partner or real battle is booked yet — that's next lesson.",
+    mission_steps: steps(
+      ["Complete your Battle Day Prep Checklist (account, tech, format, backup connection) as if tonight were a real battle."],
+      45,
+      [],
+      habitDailyByStage("mid"),
+    ),
     mission_goal:
-      "45+ minute LIVE where promotion steps (video, hashtags, story) are executed cleanly.",
+      "45+ minute LIVE where promotion steps (video, hashtags, story) are executed cleanly, without repeating the same message within an hour.",
     links: [
       { label: "Battle Hub", href: "/battle-hub" },
       { label: "Promotion lesson", href: "/streameru/promote-your-battles-without-spamming" },
+      { label: "Battle Day Prep Checklist", href: "/streameru/library/battle-day-checklist" },
+      { label: "Partner Agreement & Promotion Funnel Template", href: "/streameru/library/partner-agreement-promotion-funnel" },
     ],
   },
 
@@ -345,10 +396,24 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_title: "Session: Compliant practice LIVE",
     mission_description:
       "Run a 45-minute LIVE that explicitly follows house rules: moderation, music, minors policy, clarity.",
-    mission_steps: steps([], 45, [], habitDailyByStage("mid")),
+    mission_steps: steps(
+      [
+        "Confirm your sound source is a platform library or a licensed track before you start.",
+        "Decide in advance how you will handle an unfamiliar or ambiguous account in your room.",
+      ],
+      45,
+      [
+        "Apply at least one risk-category principle out loud during the session (name it plainly if a moment calls for it).",
+      ],
+      habitDailyByStage("mid"),
+    ),
     mission_goal:
       "45+ minute LIVE you could defend if reviewed — calm, rule-aware, professional.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Risk Category Field Guide", href: "/streameru/library/risk-category-field-guide" },
+      { label: "Professional Baseline Card", href: "/streameru/library/professional-baseline-card" },
+    ],
   },
 
   "what-gets-you-banned": {
@@ -357,14 +422,21 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_description:
       "Same pre-live ritual; 45-minute LIVE avoiding every red-line behavior from the lesson.",
     mission_steps: steps(
-      ["Verbalize one self-check you run before risky topics (sponsor, incentives, music)."],
+      [
+        "Name one topic, dare, or request you will decline on sight if it comes up.",
+        "Verbalize one self-check you run before risky topics (dares, sponsor claims, music requests).",
+      ],
       45,
       [],
       habitDailyByStage("mid"),
     ),
     mission_goal:
-      "Prove you can entertain and educate without stepping into strike patterns.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+      "Prove you can entertain and educate without stepping into red-line patterns.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Red-Line Reference Card", href: "/streameru/library/red-line-reference-card" },
+      { label: "Self-Check Habit Tracker", href: "/streameru/library/self-check-habit-tracker" },
+    ],
   },
 
   "how-to-avoid-violations": {
@@ -372,10 +444,24 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_title: "Session: Moderation-forward LIVE",
     mission_description:
       "45–60 minutes with active chat management — timeouts/warnings as needed.",
-    mission_steps: steps([], 45, [], habitDailyByStage("mid")),
+    mission_steps: steps(
+      [
+        "Confirm your moderator plan (real moderator or solo-watch pattern).",
+        "Write down at least three topic fences before you go live.",
+      ],
+      45,
+      [
+        "Apply at least one chat norm reminder out loud and hold your topic fences the entire session.",
+      ],
+      habitDailyByStage("mid"),
+    ),
     mission_goal:
       "45+ minute LIVE with visible moderation habits protecting your account.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Moderator Brief Builder", href: "/streameru/library/moderator-brief-builder" },
+      { label: "Topic Fence Planner", href: "/streameru/library/topic-fence-planner" },
+    ],
   },
 
   "long-term-account-safety": {
@@ -383,10 +469,23 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     mission_title: "Session: Long-haul professionalism LIVE",
     mission_description:
       "Capstone rules track: one 60-minute LIVE demonstrating sustainable, policy-safe operation.",
-    mission_steps: steps([], 60, [], habitDailyByStage("late")),
+    mission_steps: steps(
+      [
+        "Confirm your recovery phone number, email, and two-factor authentication are current.",
+      ],
+      60,
+      [
+        "Pick a date this month for your first recurring self-audit and write it down.",
+      ],
+      habitDailyByStage("late"),
+    ),
     mission_goal:
       "60+ minute LIVE that looks like someone planning to stream for years — not days.",
-    links: [{ label: "StreamerU hub", href: "/streameru" }],
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Account Stewardship Audit", href: "/streameru/library/account-stewardship-audit" },
+      { label: "Monthly Safety Self-Audit", href: "/streameru/library/monthly-safety-self-audit" },
+    ],
   },
 };
 

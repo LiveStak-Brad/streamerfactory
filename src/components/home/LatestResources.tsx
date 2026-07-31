@@ -25,11 +25,11 @@ export async function LatestResources() {
           StreamerU
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">
-          Train free in StreamerU
+          StreamerU — free education included
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
           Lessons available now from the free live streaming academy (curriculum order — not
-          &quot;newest&quot;). Learn before you apply.
+          &quot;newest&quot;). Join Streamer Factory for free and use StreamerU to accelerate your growth.
         </p>
       </div>
 
@@ -43,19 +43,19 @@ export async function LatestResources() {
 
       <div className="mt-12 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
         <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[48px] px-7">
-          Join Creator Network on TikTok
+          Join Streamer Factory FREE
         </Button>
         <Link
           href="/streameru"
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200/90 bg-surface px-7 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-accent/35"
         >
-          Open StreamerU
+          Start StreamerU Today
         </Link>
         <Link
           href="/apply"
           className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-zinc-200/90 bg-surface px-7 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-accent/35"
         >
-          Request website access
+          Apply to join the free creator network
         </Link>
         <Link
           href="/about"

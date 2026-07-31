@@ -15,48 +15,11 @@ const PLACEHOLDER_BY_SLUG: Record<
   string,
   { id: string; title: string; description: string; kind?: LibraryResource["kind"] }
 > = {
-  "talking-with-empty-room": {
-    id: "empty-room-talk-tracks",
-    title: "Empty Room Talk Tracks",
-    description: "Prompt bank for narrating, teaching, and staying present when chat is quiet.",
-    kind: "script",
-  },
-  "hooks-and-first-impressions": {
-    id: "hook-rotation-worksheet",
-    title: "Hook Rotation Worksheet",
-    description: "Plan three openers and mid-stream resets for one session.",
-    kind: "worksheet",
-  },
-  "content-loops-repeatable-segments": {
-    id: "retention-segment-planner",
-    title: "Retention Segment Planner",
-    description: "Map repeatable loops so viewers always know what’s next.",
-    kind: "planner",
-  },
-  "structuring-longer-lives": {
-    id: "ninety-minute-run-of-show",
-    title: "90-Minute Run of Show",
-    description: "Four-block endurance outline with stretch goals.",
-    kind: "planner",
-  },
-  "growth-weekly-system": {
-    id: "repeat-viewer-system-sheet",
-    title: "Repeat Viewer System Sheet",
-    description: "Continuity prompts: last stream, this stream, next stream.",
-    kind: "worksheet",
-  },
-  "understanding-battles": {
-    id: "battle-observation-debrief",
-    title: "Battle Observation Debrief",
-    description: "Watch a battle, capture one tactic, apply it on your LIVE.",
-    kind: "worksheet",
-  },
-  "preparing-for-your-first-battle": {
-    id: "battle-day-checklist",
-    title: "Battle Day Checklist",
-    description: "Promotion funnel and prep gate before battle week.",
-    kind: "checklist",
-  },
+  // talking-with-empty-room, hooks-and-first-impressions, content-loops-repeatable-segments,
+  // structuring-longer-lives, growth-weekly-system, understanding-battles, and
+  // preparing-for-your-first-battle ship gold-standard `ready` packs in
+  // live-streaming-mastery.ts / battles.ts instead of a stub placeholder —
+  // see LIVE_STREAMING_MASTERY_RESOURCES and BATTLES_RESOURCES.
   "structure-your-first-battle-week": {
     id: "battle-script-sheet",
     title: "Battle Script Sheet",
@@ -105,30 +68,6 @@ const PLACEHOLDER_BY_SLUG: Record<
     description: "Sustainable pacing and income habit tracking for LIVE weeks.",
     kind: "tracker",
   },
-  "platform-rules-new-live-creators": {
-    id: "compliance-preflight",
-    title: "Compliance Preflight",
-    description: "Moderation, music, and minors policy checks before you go live.",
-    kind: "checklist",
-  },
-  "what-gets-you-banned": {
-    id: "risk-audit-card",
-    title: "Risk Audit Card",
-    description: "Self-check before risky topics, incentives, or music choices.",
-    kind: "checklist",
-  },
-  "how-to-avoid-violations": {
-    id: "moderator-template",
-    title: "Moderator Template",
-    description: "Chat management prompts, warnings, and timeout habits.",
-    kind: "template",
-  },
-  "long-term-account-safety": {
-    id: "account-safety-scorecard",
-    title: "Account Safety Scorecard",
-    description: "Long-haul professionalism habits for years of streaming — not days.",
-    kind: "worksheet",
-  },
 };
 
 /** Custom checklist titles for stub lessons (clearer than default). */
@@ -148,21 +87,26 @@ const CHECKLIST_TITLE_BY_SLUG: Record<string, string> = {
   "setting-goals-during-lives": "Goals Mission Checklist",
   "scaling-consistency": "Volume Day Mission Checklist",
   "building-income-habits": "Income Habits Mission Checklist",
-  "platform-rules-new-live-creators": "Rules Practice Mission Checklist",
-  "what-gets-you-banned": "Ban-Risk Mission Checklist",
-  "how-to-avoid-violations": "Moderation Mission Checklist",
-  "long-term-account-safety": "Safety Capstone Mission Checklist",
 };
 
-const BEGINNER_SLUGS = new Set(
-  CURRICULUM.filter((l) => l.globalOrder <= 5).map((l) => l.slug),
-);
+/** Lessons covered by gold-standard packs in beginner-foundations.ts / essential-safety.ts (not stubbed). */
+const BEGINNER_PACK_SLUGS = new Set([
+  "start-strong-on-tiktok-live",
+  "your-first-live-structure",
+  "first-10-tiktok-live-sessions",
+  "first-week-of-lives-consistency",
+  "common-live-mistakes-new-creators",
+  "platform-rules-new-live-creators",
+  "what-gets-you-banned",
+  "how-to-avoid-violations",
+  "long-term-account-safety",
+]);
 
 export function buildStubLessonResources(): LibraryResource[] {
   const out: LibraryResource[] = [];
 
   for (const lesson of CURRICULUM) {
-    if (BEGINNER_SLUGS.has(lesson.slug)) continue;
+    if (BEGINNER_PACK_SLUGS.has(lesson.slug)) continue;
 
     const checklist = buildMissionChecklistResource(lesson.slug, {
       title: CHECKLIST_TITLE_BY_SLUG[lesson.slug],

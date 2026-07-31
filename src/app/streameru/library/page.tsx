@@ -6,7 +6,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/seo/json-ld";
 export const metadata: Metadata = createPageMetadata({
   title: "Free Worksheets & Checklists | StreamerU",
   description:
-    "Browse free StreamerU worksheets and checklists — printable tools for every published lesson. No course fees.",
+    "Browse free StreamerU worksheets and checklists — printable tools for every published lesson. Included with free Streamer Factory membership.",
   path: "/streameru/library",
   keywords: [
     "StreamerU library",

@@ -182,7 +182,7 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
     ],
     internalLinks: [
       { label: "Previous: Creating reasons to gift", href: "/streameru/creating-reasons-to-gift" },
-      { label: "Next: Scaling consistency", href: "/streameru/scaling-consistency" },
+      { label: "Next: Building income habits", href: "/streameru/building-income-habits" },
       { label: "StreamerU hub", href: "/streameru" },
       { label: "Meet the founder", href: "/founder" },
       { label: "Editorial standards", href: "/guides/editorial-standards" },
@@ -206,75 +206,6 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
       {
         title: "Multi-day goals without guilt trips",
         intent: "How to run arcs ethically.",
-      },
-    ],
-  },
-  {
-    slug: "scaling-consistency",
-    primaryKeyword: "scale TikTok LIVE consistency",
-    secondaryKeywords: [
-      "grow livestream schedule",
-      "consistent monetization TikTok",
-      "increase LIVE frequency sustainably",
-      "TikTok creator stamina",
-    ],
-    metaTitle: "Scale Your TikTok LIVE Consistency",
-    metaDescription:
-      "Scale TikTok LIVE consistency without burnout—how to increase frequency, protect quality, and keep monetization sustainable as you grow.",
-    faqs: [
-      {
-        question: "How do I go live more often without burning out?",
-        answer:
-          "Scale one variable at a time: either duration or frequency, not both overnight. Keep a non-negotiable recovery block, reuse segment maps, and drop formats that drain you. Consistency that lasts beats a heroic month followed by silence.",
-      },
-      {
-        question: "When is it time to add more LIVE days?",
-        answer:
-          "When your current schedule feels steady for several weeks and quality still holds. If energy or content quality is slipping, fix the existing slots before adding new ones. Growth on a broken cadence creates churn.",
-      },
-      {
-        question: "How does consistency affect monetization?",
-        answer:
-          "Regulars need to know when you’ll be there. Income follows trust. Spiky schedules create spiky support. A predictable cadence makes goals, series, and community habits possible.",
-      },
-      {
-        question: "What should I cut when my calendar gets too full?",
-        answer:
-          "Cut low-return experiments first—random battle spam, unclear LIVEs with no outline, or late-night sessions that wreck sleep. Protect the slots that serve your core audience and your health.",
-      },
-    ],
-    relatedGuideSlugs: [
-      "tiktok-growth",
-      "tiktok-monetization-guide",
-      "creator-coaching",
-      "creator-support",
-    ],
-    internalLinks: [
-      { label: "Previous: Setting goals during lives", href: "/streameru/setting-goals-during-lives" },
-      { label: "Next: Building income habits", href: "/streameru/building-income-habits" },
-      { label: "StreamerU hub", href: "/streameru" },
-      { label: "Meet the founder", href: "/founder" },
-      { label: "Editorial standards", href: "/guides/editorial-standards" },
-    ],
-    suggestedGlossaryTerms: [
-      { title: "Sustainable cadence", intent: "LIVE frequency you can keep for months." },
-      { title: "Quality floor", intent: "Minimum show standard when scaling up." },
-      { title: "Recovery block", intent: "Scheduled rest to prevent burnout." },
-    ],
-    suggestedDownloads: [
-      {
-        title: "Scale-up readiness checklist",
-        intent: "Decide whether to add days or extend length.",
-      },
-    ],
-    suggestedBlogSupport: [
-      {
-        title: "Signs your LIVE schedule is too aggressive",
-        intent: "Early warning checklist for creators.",
-      },
-      {
-        title: "Batching prep for more LIVE days",
-        intent: "Ops tips for outlines and prompts.",
       },
     ],
   },
@@ -319,9 +250,9 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
       "tiktok-creator-management",
     ],
     internalLinks: [
-      { label: "Previous: Scaling consistency", href: "/streameru/scaling-consistency" },
-      { label: "Next: TikTok rules explained", href: "/streameru/platform-rules-new-live-creators" },
-      { label: "Apply to Streamer Factory", href: "/apply" },
+      { label: "Previous: Setting goals during lives", href: "/streameru/setting-goals-during-lives" },
+      { label: "Next: Scaling consistency", href: "/streameru/scaling-consistency" },
+      { label: "StreamerU hub", href: "/streameru" },
       { label: "Meet the founder", href: "/founder" },
       { label: "Editorial standards", href: "/guides/editorial-standards" },
     ],
@@ -344,6 +275,81 @@ export const MONETIZATION_LESSON_SEO: LessonSeoPack[] = [
       {
         title: "Building a quiet week after a big gift night",
         intent: "Prevent crash-and-burn cycles.",
+      },
+    ],
+  },
+  {
+    slug: "scaling-consistency",
+    primaryKeyword: "scale TikTok LIVE consistency",
+    secondaryKeywords: [
+      "grow livestream schedule",
+      "consistent monetization TikTok",
+      "increase LIVE frequency sustainably",
+      "TikTok creator stamina",
+    ],
+    metaTitle: "Scale Your TikTok LIVE Consistency",
+    metaDescription:
+      "Scale TikTok LIVE consistency without burnout—how to increase frequency, protect quality, and keep monetization sustainable as you grow.",
+    faqs: [
+      {
+        question: "How do I go live more often without burning out?",
+        answer:
+          "Scale one variable at a time: either duration or frequency, not both overnight. Keep a non-negotiable recovery block, reuse segment maps, and drop formats that drain you. Consistency that lasts beats a heroic month followed by silence.",
+      },
+      {
+        question: "When is it time to add more LIVE days?",
+        answer:
+          "When your current schedule feels steady for several weeks and quality still holds. If energy or content quality is slipping, fix the existing slots before adding new ones. Growth on a broken cadence creates churn.",
+      },
+      {
+        question: "How does consistency affect monetization?",
+        answer:
+          "Regulars need to know when you’ll be there. Income follows trust. Spiky schedules create spiky support. A predictable cadence makes goals, series, and community habits possible.",
+      },
+      {
+        question: "What should I cut when my calendar gets too full?",
+        answer:
+          "Cut low-return experiments first—random battle spam, unclear LIVEs with no outline, or late-night sessions that wreck sleep. Protect the slots that serve your core audience and your health.",
+      },
+      {
+        question: "What comes after Scaling consistency, the final StreamerU lesson?",
+        answer:
+          "The Growth & Monetization Program Final, then the Graduation Exam for your StreamerU Diploma. Advanced Creator topics—branding, analytics, and creator business foundations—are on the roadmap next and will build on the habits from this published path, not replace them.",
+      },
+    ],
+    relatedGuideSlugs: [
+      "tiktok-growth",
+      "tiktok-monetization-guide",
+      "creator-coaching",
+      "creator-support",
+    ],
+    internalLinks: [
+      { label: "Previous: Building income habits", href: "/streameru/building-income-habits" },
+      { label: "Growth & Monetization Program Final", href: "/streameru/programs/monetization/final" },
+      { label: "Graduation Exam", href: "/streameru/graduation" },
+      { label: "Apply to Streamer Factory", href: "/apply" },
+      { label: "Meet the founder", href: "/founder" },
+      { label: "Editorial standards", href: "/guides/editorial-standards" },
+    ],
+    suggestedGlossaryTerms: [
+      { title: "Sustainable cadence", intent: "LIVE frequency you can keep for months." },
+      { title: "Quality floor", intent: "Minimum show standard when scaling up." },
+      { title: "Recovery block", intent: "Scheduled rest to prevent burnout." },
+    ],
+    suggestedDownloads: [
+      {
+        title: "Scale-up readiness checklist",
+        intent: "Decide whether to add days or extend length.",
+      },
+    ],
+    suggestedBlogSupport: [
+      {
+        title: "Signs your LIVE schedule is too aggressive",
+        intent: "Early warning checklist for creators.",
+      },
+      {
+        title: "Batching prep for more LIVE days",
+        intent: "Ops tips for outlines and prompts.",
       },
     ],
   },

@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { LessonValueChips } from "@/components/resources/LessonValueChips";
 import { getCurriculumLesson } from "@/lib/resources/curriculum";
-import { difficultyBadgeClass, difficultyShortLabel } from "@/lib/resources/difficulty-styles";
-import { getLessonEstimate } from "@/lib/resources/lesson-estimate";
+import { lessonDifficulty, trackDefaultDifficulty } from "@/lib/resources/difficulty-styles";
 import { trainingTrackLabel } from "@/lib/resources/tracks";
 import type { ResourcePostWithCategory } from "@/lib/resources/types";
 
@@ -14,9 +14,12 @@ type Props = {
 export function ResourceCard({ post, emphasize = false }: Props) {
   const curriculum = getCurriculumLesson(post.slug);
   const displayTitle = curriculum?.title ?? post.title;
-  const estimate = getLessonEstimate(post.slug, { content: post.content });
-  const difficulty = post.difficulty ?? null;
-  const diffLabel = difficultyShortLabel(difficulty);
+  const difficulty =
+    (curriculum
+      ? lessonDifficulty(curriculum.trackId, curriculum.slug)
+      : null) ??
+    post.difficulty ??
+    trackDefaultDifficulty(curriculum?.trackId ?? post.training_track);
 
   return (
     <Link
@@ -45,13 +48,6 @@ export function ResourceCard({ post, emphasize = false }: Props) {
         {curriculum ? (
           <span className="text-zinc-400 dark:text-zinc-500">· {curriculum.programName}</span>
         ) : null}
-        {diffLabel ? (
-          <span
-            className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider ${difficultyBadgeClass(difficulty)}`}
-          >
-            {diffLabel}
-          </span>
-        ) : null}
       </div>
       <h3 className="mt-3 text-lg font-bold tracking-tight text-zinc-950 transition-colors group-hover:text-accent dark:text-zinc-50 dark:group-hover:text-accent-muted">
         {displayTitle}
@@ -61,11 +57,11 @@ export function ResourceCard({ post, emphasize = false }: Props) {
           {post.excerpt}
         </p>
       )}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200/70 pt-3 text-xs font-semibold text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-        <span className="tabular-nums">{estimate.totalLabel} total</span>
-        <span className="text-accent opacity-0 transition-opacity group-hover:opacity-100 dark:text-accent-muted">
+      <div className="mt-4 space-y-2 border-t border-zinc-200/70 pt-3 dark:border-zinc-800">
+        <LessonValueChips slug={post.slug} difficulty={difficulty} density="card" />
+        <p className="text-right text-xs font-semibold text-accent opacity-0 transition-opacity group-hover:opacity-100 dark:text-accent-muted">
           Open lesson →
-        </span>
+        </p>
       </div>
     </Link>
   );

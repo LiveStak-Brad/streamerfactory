@@ -75,7 +75,7 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       },
       {
         heading: "Who should think twice before joining",
-        body: "If you're looking for a guaranteed income boost, a one-time favor with no ongoing participation, or you stream rarely and don't plan to change that, an agency relationship probably won't deliver much value yet. It's fine to build consistency on your own first and revisit membership later.",
+        body: "If you're looking for a guaranteed income boost, a one-time favor with no ongoing participation, or you stream rarely and don't plan to change that, an agency relationship probably won't deliver much value yet. Membership is free — but the tools only help if you actually go live and use them.",
       },
     ],
     commonMistakes: [
@@ -252,12 +252,13 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       "The TikTok step always comes before the website step — there's no way to skip it.",
       "Website access requires your TikTok username so we can match your Creator Network membership.",
       "Verification isn't instant; you can track progress on your application status page.",
-      "Training starts immediately with public StreamerU lessons, even before verification finishes.",
+      "Membership is free. StreamerU education is included with Streamer Factory.",
+      "StreamerU lessons are available so you can start accelerating growth as soon as you join.",
     ],
     sections: [
       {
         heading: "Before you apply",
-        body: "Have your TikTok LIVE username ready and be honest about your current streaming frequency. Fit matters more than polish — applications that clearly describe where a creator is starting from tend to move through review more smoothly than vague ones.",
+        body: "Have your TikTok LIVE username ready and be honest about your current streaming frequency. Anyone with a TikTok account who wants to stream can apply — fit matters more than polish.",
       },
       {
         heading: "What happens after you submit",
@@ -296,7 +297,7 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       {
         question: "Is there a cost to join?",
         answer:
-          "Check the apply page for current terms. Public StreamerU training is designed to be accessible regardless of membership status.",
+          "No. Streamer Factory membership is completely free, and StreamerU is included. Creators never pay us. TikTok compensates Streamer Factory through its LIVE Creator Network program — we do not charge membership fees and do not take a percentage of your TikTok LIVE earnings.",
       },
     ],
     relatedSlugs: [
@@ -340,9 +341,9 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       "\"Best\" gets thrown around a lot in this space with no evidence attached. Instead of a ranking, here's a checklist you can use on any TikTok LIVE agency — including us — so the decision is based on what you can actually verify.",
     keyTakeaways: [
       "A clear, verifiable join process beats a vague DM invite every time.",
-      "Published training you can review before joining is a strong trust signal.",
+      "Published free training (like StreamerU) is a strong trust signal.",
       "Active battle and community operations show the network is actually running, not just recruiting.",
-      "Be skeptical of any agency that implies guaranteed income or hides its terms.",
+      "Be skeptical of any agency that implies guaranteed income or hides fees — Streamer Factory membership is free.",
     ],
     sections: [
       {
@@ -609,7 +610,7 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
     keyTakeaways: [
       "Agencies vary widely; ask what specifically happens after you join, not just what the pitch promises.",
       "Streamer Factory focuses on LIVE streaming operations, not brand deals or short-form content management.",
-      "Fee and revenue-share models vary by agency — check current terms before joining any of them.",
+      "Streamer Factory does not charge creators for membership and does not take a percentage of TikTok LIVE earnings.",
       "Training and coordination tools are only useful if you actually use them.",
     ],
     sections: [
@@ -623,19 +624,19 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       },
       {
         heading: "How fees and terms work",
-        body: "Specific terms and any revenue-share or fee structures can change; check the apply page for what currently applies before committing, and ask questions if anything is unclear.",
+        body: "Streamer Factory membership is free. StreamerU is included. TikTok compensates approved creator networks through its LIVE Creator Network program — we do not charge creators and do not take a percentage of their TikTok LIVE earnings. Creators keep earning directly through TikTok's monetization systems according to TikTok's platform rules.",
       },
     ],
     commonMistakes: [
       "Assuming every 'creator agency' offers the same services — read what each one actually does.",
-      "Not asking about fees or revenue-share terms before joining.",
+      "Assuming Streamer Factory charges membership fees or takes a cut of TikTok LIVE earnings — it doesn't.",
       "Expecting brand-deal support from an agency focused on LIVE operations.",
     ],
     faqs: [
       {
         question: "Do creator agencies take a cut of earnings?",
         answer:
-          "Models vary by agency and platform. Check the apply page for Streamer Factory's current terms and expectations before joining.",
+          "Models vary by agency and platform. Streamer Factory does not take a percentage of your TikTok LIVE earnings and does not charge creators for membership. TikTok compensates approved creator networks through its LIVE Creator Network program.",
       },
       {
         question: "Does Streamer Factory handle brand deals?",
@@ -708,12 +709,12 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       {
         question: "Do I need coaching before joining Battle Hub?",
         answer:
-          "No, but working through relevant StreamerU lessons first tends to make battle scheduling and matchups more productive.",
+          "No. Join for free, unlock Battle Hub after verification, and use StreamerU lessons alongside battles — recommended study order helps, but membership isn't gated behind finishing the academy.",
       },
       {
         question: "How is this different from just watching free tutorials?",
         answer:
-          "The curriculum sequence and mission structure are designed to build on each other, and network accountability adds follow-through that isolated tutorials don't provide.",
+          "StreamerU is free and structured, and it's included with free Streamer Factory membership — curriculum, missions, community, rankings, and Battle Hub follow-through that isolated tutorials don't provide.",
       },
     ],
     relatedSlugs: ["creator-academy", "creator-support", "tiktok-live-tips", "creator-coaching-vs-self-teaching"],
@@ -740,11 +741,11 @@ export const GUIDE_DOCUMENTS: GuideDocument[] = [
       intent: "Commercial",
     },
     directAnswer:
-      "StreamerU is Streamer Factory's creator academy — a structured, publicly viewable TikTok LIVE curriculum with practical missions; lessons are open for learning, while battle tools connect to it after Creator Network membership and website verification.",
+      "StreamerU is Streamer Factory's free creator academy — a structured TikTok LIVE curriculum with practical missions, included with free network membership; battle tools connect after Creator Network membership and website verification.",
     intro:
-      "StreamerU is our creator academy: one curriculum, sequenced lessons, and missions that push you into practicing on real streams rather than just reading. Public lessons build the skill; verified member tools connect that skill to actual network operations.",
+      "StreamerU is our free creator academy: one curriculum, sequenced lessons, and missions that push you into practicing on real streams rather than just reading. Membership is free. StreamerU is included. Verified member tools connect that skill to actual network operations.",
     keyTakeaways: [
-      "StreamerU lessons are publicly viewable so anyone can start learning before joining.",
+      "StreamerU is the free education platform included with Streamer Factory membership.",
       "The Start Here path is designed specifically for creators who are new to structured LIVE streaming.",
       "Each lesson pairs study with a mission you complete on an actual stream.",
       "Member tools (Battle Hub, rankings) connect training to day-to-day network activity after verification.",

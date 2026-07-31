@@ -9,6 +9,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: ACADEMY_SEO.title,
   description: ACADEMY_SEO.description,
+  keywords: [...ACADEMY_SEO.keywords],
   openGraph: {
     title: `${ACADEMY_SEO.title} | ${site.name}`,
     description: ACADEMY_SEO.shortDescription,
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: ACADEMY_SEO.title,
+    description: ACADEMY_SEO.shortDescription,
     images: ["/branding/og/streameru.png"],
   },
 };

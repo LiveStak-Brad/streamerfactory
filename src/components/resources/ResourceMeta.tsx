@@ -7,6 +7,7 @@ import {
   trainingTrackLabel,
 } from "@/lib/resources/tracks";
 import type { ResourceCategoryRow } from "@/lib/resources/types";
+import { ACADEMY_RELEASE } from "@/lib/streameru/academy-meta";
 
 function formatDate(iso: string | null) {
   if (!iso) return "";
@@ -21,12 +22,25 @@ function formatDate(iso: string | null) {
   }
 }
 
+function formatMonthYear(iso: string | null) {
+  if (!iso) return ACADEMY_RELEASE.lastUpdatedLabel;
+  try {
+    return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long" }).format(
+      new Date(iso),
+    );
+  } catch {
+    return ACADEMY_RELEASE.lastUpdatedLabel;
+  }
+}
+
 export function ResourceMeta({
   publishedAt,
   category,
   trainingTrack,
   difficulty,
   omitLessonContext = false,
+  showReviewMeta = false,
+  updatedAt,
 }: {
   publishedAt: string | null;
   category: Pick<ResourceCategoryRow, "name"> | null | undefined;
@@ -35,6 +49,9 @@ export function ResourceMeta({
   difficulty?: string | null;
   /** Hide “Lesson in / Part of” when curriculum header already shows placement. */
   omitLessonContext?: boolean;
+  /** Show Updated / Reviewed-by trust line (curriculum lessons). */
+  showReviewMeta?: boolean;
+  updatedAt?: string | null;
 }) {
   const diff = difficultyShortLabel(difficulty ?? null);
   const trackSection = getTrainingTrackSection(trainingTrack ?? null);
@@ -77,6 +94,12 @@ export function ResourceMeta({
           </time>
         )}
       </div>
+      {showReviewMeta ? (
+        <p className="text-xs text-zinc-500 dark:text-zinc-500">
+          Updated {formatMonthYear(updatedAt ?? publishedAt)} · Reviewed by{" "}
+          {ACADEMY_RELEASE.reviewedBy}
+        </p>
+      ) : null}
     </div>
   );
 }

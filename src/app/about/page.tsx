@@ -8,9 +8,14 @@ import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
-    "Learn how Streamer Factory helps TikTok LIVE creators grow with professional onboarding, StreamerU training, Battle Hub, and creator management.",
+    "Streamer Factory is a free TikTok LIVE creator network. Membership is free, StreamerU is included — education, coaching, community, rankings, Hall of Fame, and Battle Hub without charging creators.",
   path: "/about",
-  keywords: ["Streamer Factory", "TikTok LIVE agency", "creator agency about"],
+  keywords: [
+    "Streamer Factory",
+    "TikTok LIVE agency",
+    "creator agency about",
+    "free TikTok LIVE creator network",
+  ],
 });
 
 const pillars = [
@@ -43,20 +48,22 @@ export default function AboutPage() {
               About Streamer Factory
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-zinc-400">
-              A TikTok LIVE creator agency for operators — creators who want audience, trust, and sustainable
-              income. Recruitment, onboarding, StreamerU training, and Battle Hub coordination in one network.
+              A free TikTok LIVE creator network for operators — creators who want audience, trust, and
+              sustainable income. Membership is free. StreamerU education is included. Creators never pay us.
             </p>
           </div>
         </section>
 
         <section className="mx-auto mt-12 max-w-3xl space-y-6 text-lg leading-relaxed text-muted">
           <p>
-            This isn&apos;t a gaming brand and it isn&apos;t a viewer product. It&apos;s a partner network: clear
-            expectations, real coaching, and a conversion-focused approach to helping creators win on LIVE.
+            This isn&apos;t a gaming brand, a paid course, or a viewer product. It&apos;s a free partner
+            network: clear expectations, real coaching, and systems that help creators win on LIVE — without
+            membership fees or a cut of your TikTok LIVE earnings.
           </p>
           <p>
-            Approved members use the same platform to learn (StreamerU), connect (Battle Finder), schedule
-            (Battle Hub and the calendar), and grow — with support aligned to how you actually go live.
+            Members use one account to learn (StreamerU), connect (Battle Finder), schedule (Battle Hub and
+            the calendar), climb rankings, and grow — with support aligned to how you actually go live.
+            TikTok compensates Streamer Factory through its LIVE Creator Network program.
           </p>
           <p>
             <strong className="text-foreground">Independent of TikTok.</strong> Streamer Factory operates a
@@ -92,10 +99,10 @@ export default function AboutPage() {
           </ul>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[48px] px-8">
-              Join Creator Network on TikTok
+              Join Streamer Factory FREE
             </Button>
             <Button href="/apply" variant="secondary" className="min-h-[48px] px-8">
-              Request website access
+              Apply to join the free creator network
             </Button>
           </div>
           <p className="mt-8 text-center text-sm leading-relaxed text-muted">

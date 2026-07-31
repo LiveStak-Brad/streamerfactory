@@ -3,6 +3,7 @@ import { FactoryLegends } from "@/components/hall-of-fame/FactoryLegends";
 import { MonthlyArchive } from "@/components/hall-of-fame/MonthlyArchive";
 import { MonthlyChampions } from "@/components/hall-of-fame/MonthlyChampions";
 import { NetworkLeadership } from "@/components/hall-of-fame/NetworkLeadership";
+import { StreamerUGraduates } from "@/components/hall-of-fame/StreamerUGraduates";
 import { Button } from "@/components/ui/Button";
 import { getHallOfFamePageData } from "@/lib/hall-of-fame/queries";
 
@@ -27,13 +28,19 @@ export async function HallOfFamePageView() {
             Factory Hall of Fame
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-400">
-            Celebrate creators, preserve network history, and compete for a permanent place in
-            Streamer Factory lore.
+            Celebrate creators, honor StreamerU Graduates, preserve network history, and compete for
+            a permanent place in Streamer Factory lore.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button href="/rankings" variant="primary">
               View live rankings
             </Button>
+            <Link
+              href="#streameru-graduates-heading"
+              className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              StreamerU Graduates
+            </Link>
             <Link
               href="#monthly-champions-heading"
               className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
@@ -46,6 +53,7 @@ export async function HallOfFamePageView() {
 
       <div className="relative mx-auto max-w-7xl space-y-20 px-4 py-14 sm:px-6 sm:py-16 lg:space-y-24 lg:px-8">
         <NetworkLeadership managers={data.managers} />
+        <StreamerUGraduates graduates={data.streamerUGraduates} />
         <MonthlyChampions months={data.archivedMonths} liveMonth={data.liveMonth} />
         <MonthlyArchive
           months={data.archivedMonths}

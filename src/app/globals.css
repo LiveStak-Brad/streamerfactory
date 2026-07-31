@@ -391,9 +391,106 @@ body {
   transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@keyframes su-celebrate-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.su-celebrate-pass {
+  animation: su-celebrate-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.su-celebrate-cert {
+  animation: su-celebrate-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* —— StreamerU credential badges —— */
+.credential-badge {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.28s ease;
+}
+
+.credential-badge__svg {
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(11, 15, 26, 0.45));
+  transition: filter 0.28s ease;
+}
+
+.credential-badge--preview:hover,
+.credential-badge--earned:hover,
+.group:hover .credential-badge--preview,
+.group:hover .credential-badge--earned {
+  transform: translateY(-3px);
+}
+
+.credential-badge--preview:hover .credential-badge__svg,
+.credential-badge--earned:hover .credential-badge__svg,
+.group:hover .credential-badge--preview .credential-badge__svg,
+.group:hover .credential-badge--earned .credential-badge__svg {
+  filter:
+    drop-shadow(0 10px 22px rgba(91, 59, 255, 0.45))
+    drop-shadow(0 0 18px rgba(160, 32, 240, 0.35));
+}
+
+.credential-badge--earned .credential-badge__svg {
+  filter:
+    drop-shadow(0 8px 18px rgba(91, 59, 255, 0.4))
+    drop-shadow(0 0 12px rgba(245, 215, 110, 0.25));
+}
+
+.credential-badge--locked {
+  filter: grayscale(0.92) brightness(0.72);
+}
+
+.credential-badge--locked .credential-badge__svg {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+}
+
+.credential-badge__lock {
+  position: absolute;
+  inset: auto 0 18% 0;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 9999px;
+  background: rgba(11, 15, 26, 0.78);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .su-progress-fill {
     transition: none;
+  }
+
+  .su-celebrate-pass,
+  .su-celebrate-cert {
+    animation: none;
+  }
+
+  .credential-badge,
+  .credential-badge__svg {
+    transition: none;
+  }
+
+  .credential-badge--preview:hover,
+  .credential-badge--earned:hover,
+  .group:hover .credential-badge--preview,
+  .group:hover .credential-badge--earned {
+    transform: none;
   }
 }
 

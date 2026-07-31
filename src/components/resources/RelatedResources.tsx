@@ -31,12 +31,26 @@ export function RelatedResources({
             Continue in program order — next first, then previous, then same-track lessons.
           </p>
         </div>
-        <Link
-          href="/streameru"
-          className="text-sm font-semibold text-accent transition-colors hover:underline dark:text-accent-muted"
-        >
-          StreamerU hub →
-        </Link>
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
+          <Link
+            href="/streameru"
+            className="text-accent transition-colors hover:underline dark:text-accent-muted"
+          >
+            StreamerU hub →
+          </Link>
+          <Link
+            href="/streameru/library"
+            className="text-muted transition-colors hover:text-accent hover:underline dark:hover:text-accent-muted"
+          >
+            Worksheets →
+          </Link>
+          <Link
+            href="/founder"
+            className="text-muted transition-colors hover:text-accent hover:underline dark:hover:text-accent-muted"
+          >
+            Founder →
+          </Link>
+        </div>
       </div>
       <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (

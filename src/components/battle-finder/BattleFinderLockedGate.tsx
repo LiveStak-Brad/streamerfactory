@@ -49,7 +49,7 @@ export function BattleFinderLockedGate({ variant, sessionEmail, hasActiveApplica
                 href={hasActiveApplication ? "/application-status" : "/apply"}
                 className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-amber-300/90 bg-surface px-5 py-2.5 text-sm font-semibold text-amber-950 dark:border-amber-800 dark:bg-zinc-950 dark:text-amber-100"
               >
-                {hasActiveApplication ? "View application status" : "Apply to join"}
+                {hasActiveApplication ? "View application status" : "Join FREE"}
               </Link>
               <Link
                 href="/auth/signout"

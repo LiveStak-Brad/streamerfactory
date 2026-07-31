@@ -38,8 +38,11 @@ function lessonToRef(lesson: CurriculumLesson): RecommendedLessonRef {
   };
 }
 
+/** Stable default — required for useSyncExternalStore getServerSnapshot. */
+const DEFAULT_RECOMMENDED: RecommendedLessonRef = lessonToRef(CURRICULUM[0]);
+
 export function getDefaultRecommendedLesson(): RecommendedLessonRef {
-  return lessonToRef(CURRICULUM[0]);
+  return DEFAULT_RECOMMENDED;
 }
 
 /**
@@ -47,6 +50,7 @@ export function getDefaultRecommendedLesson(): RecommendedLessonRef {
  * Call from RSC or anywhere you cannot read localStorage.
  */
 export function getNextRecommendedLesson(_user?: unknown): RecommendedLessonRef {
+  void _user;
   return getDefaultRecommendedLesson();
 }
 
@@ -115,6 +119,27 @@ export function computeRecommendedFromStorage(): RecommendedLessonRef {
   }
 
   return getDefaultRecommendedLesson();
+}
+
+let cachedRecommendedKey = "";
+let cachedRecommended: RecommendedLessonRef = DEFAULT_RECOMMENDED;
+
+/**
+ * Referentially stable recommended lesson for useSyncExternalStore getSnapshot.
+ * Returning a new object each call causes infinite re-renders.
+ */
+export function getRecommendedLessonSnapshot(): RecommendedLessonRef {
+  const next = computeRecommendedFromStorage();
+  const key = `${next.slug}|${next.globalOrder}|${next.href}`;
+  if (key === cachedRecommendedKey) return cachedRecommended;
+  cachedRecommendedKey = key;
+  cachedRecommended = next;
+  return cachedRecommended;
+}
+
+/** Stable getServerSnapshot companion for getRecommendedLessonSnapshot. */
+export function getRecommendedLessonServerSnapshot(): RecommendedLessonRef {
+  return DEFAULT_RECOMMENDED;
 }
 
 export function readLastVisitedSlugFromStorage(): string | null {

@@ -225,22 +225,22 @@ export const MASTERY_LESSON_SEO: LessonSeoPack[] = [
       {
         question: "How do I go live longer without running out of things to say?",
         answer:
-          "Don’t invent more words—stack more segments. Map the LIVE into timed blocks with different jobs: teach, story, chat, mini-game, Q&A. Longer streams fail when they’re one endless vibe; they work when they’re a sequence of short shows.",
+          "Don’t invent more words—stack more blocks. Divide a 90-minute session into four purposeful blocks: an opener, a deeper teach-mode block, a lower-intensity recovery block, and a closer with a re-hook. Longer streams fail when they’re one endless vibe; they work when they’re a sequence of short, purposeful stretches.",
       },
       {
         question: "How long should a TikTok LIVE be for growth?",
         answer:
-          "Long enough to complete your loops and serve your schedule—not as long as possible. Many creators grow with consistent 45–90 minute sessions. Multi-hour streams help only if energy and structure hold. Stretch duration after quality is stable.",
+          "Long enough to complete your blocks and serve your schedule—not as long as possible. Many creators grow with consistent 45–90 minute sessions. Ninety-minute streams help only if your energy arc and structure hold. If you can’t picture what fills a deeper block honestly, run a shorter three-block session instead of forcing a weak fourth block.",
       },
       {
-        question: "How do I manage energy in a longer LIVE?",
+        question: "How do I take a break during a long LIVE without losing viewers?",
         answer:
-          "Plan lower-intensity blocks (stories, calm Q&A) between high-energy segments. Hydrate, stand when you can, and avoid stacking only hype modes. Burnout mid-stream shows on camera and trains you to dread going live.",
+          "Place hydration or physical breaks inside your lowest-intensity block and narrate them out loud the entire time — “grabbing water, my voice needs it around this point” is content about the honest experience of a long stream. A silent pause with the camera running is dead air wearing a different excuse.",
       },
       {
         question: "When should I add battles into a longer LIVE?",
         answer:
-          "After you can hold structure without battles. Use battles as a scheduled segment, not a panic button when silence hits. StreamerU’s battles program covers prep and partners once this mastery block is solid.",
+          "After you can hold solo structure for a full ninety minutes without it collapsing. Battles are covered in their own program once this endurance and continuity groundwork is solid — a shaky solo baseline just gets amplified in front of a second audience.",
       },
     ],
     relatedGuideSlugs: [
@@ -294,22 +294,22 @@ export const MASTERY_LESSON_SEO: LessonSeoPack[] = [
       {
         question: "What makes someone become a repeat TikTok LIVE viewer?",
         answer:
-          "They know when you’ll be back, they recognize your format, and they feel a reason to return (unfinished series, community, or a signature segment). Random excellence is forgettable; reliable, familiar LIVEs create habits.",
+          "An explicit reason to remember you exist between sessions. Reference your last stream out loud early in the next one, tease a specific and concrete plan before you close, and recognize returning usernames warmly. Random excellence is forgettable; a visible continuity chain — last stream, this stream, next stream — creates a habit.",
       },
       {
         question: "How do I grow TikTok LIVE without being spammy?",
         answer:
-          "Promote the schedule and the next topic, not constant “go live” noise. Use short videos to preview what happens in LIVE, then deliver that promise on stream. Growth compounds when the LIVE experience matches the promo.",
+          "Promote the schedule and the next topic, not constant “go live” noise. Use short videos to preview what happens in LIVE, then deliver that promise on stream — and confirm your rough next-session timing out loud so “next time” has a predictable shape.",
       },
       {
-        question: "What should a weekly LIVE growth system include?",
+        question: "How specific should my “see you next time” be?",
         answer:
-          "Fixed slots, one improvement focus for the week, a simple community ritual (welcome phrase, recurring segment), and a short review on the same day each week. Systems beat inspiration because they survive busy weeks.",
+          "As specific as you can honestly commit to. A vague sign-off gives a viewer no reason to remember you in three days. A concrete tease — a plan plus a rough day or time window — gives them something to actually anticipate.",
       },
       {
-        question: "When should I start thinking about monetization?",
+        question: "When should I start thinking about battles or monetization?",
         answer:
-          "After you can hold structure, retention loops, and a weekly cadence. Monetization lessons come next in StreamerU—gifts work better when people already understand why your room is worth supporting.",
+          "After you can hold structure, retention loops, and a weekly continuity habit solo. Battles come next in StreamerU — collaborative sessions amplify whatever hosting and audience habits you’ve already built, for better or worse.",
       },
     ],
     relatedGuideSlugs: [

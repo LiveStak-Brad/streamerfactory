@@ -44,7 +44,7 @@ export function StartHerePathCard({ item }: { item: StartHereResolvedItem }) {
           href={item.href}
           className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition-[transform,box-shadow] hover:-translate-y-0.5 dark:bg-white dark:text-zinc-950"
         >
-          Open lesson
+          Unlock Your First LIVE Mission
         </Link>
       </div>
     );

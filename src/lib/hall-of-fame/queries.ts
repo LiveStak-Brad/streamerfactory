@@ -16,6 +16,7 @@ import type {
   HallOfFamePageData,
   HallOfFamePlacement,
   NetworkManager,
+  StreamerUGraduate,
   YearMonth,
 } from "@/lib/hall-of-fame/types";
 import { getBackstageAvatarMapByHandle } from "@/lib/creator-network/leaderboard-from-import";
@@ -305,11 +306,43 @@ export async function getLiveHallOfFameMonth(
   }
 }
 
+async function loadStreamerUGraduatesFromDb(): Promise<StreamerUGraduate[] | null> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("hall_of_fame_streameru_graduates")
+      .select(
+        "member_id, display_name, tiktok_username, diploma_label, certified_label, career_path, graduated_at, avatar_url",
+      )
+      .order("graduated_at", { ascending: false })
+      .limit(100);
+
+    if (error) {
+      if (isMissingRelation(error)) return null;
+      return null;
+    }
+
+    return (data ?? []).map((row) => ({
+      memberId: row.member_id as string,
+      displayName: row.display_name as string,
+      tiktokUsername: normalizeHandle(row.tiktok_username as string),
+      diplomaLabel: (row.diploma_label as string) || "StreamerU Diploma",
+      certifiedLabel: (row.certified_label as string) || "Certified LIVE Creator",
+      careerPath: (row.career_path as string | null) ?? "StreamerU Graduate",
+      graduatedAt: row.graduated_at as string,
+      avatarUrl: (row.avatar_url as string | null) ?? null,
+    }));
+  } catch {
+    return null;
+  }
+}
+
 export async function getHallOfFamePageData(): Promise<HallOfFamePageData> {
-  const [dbMonths, dbManagers, dbLegends, avatarMap] = await Promise.all([
+  const [dbMonths, dbManagers, dbLegends, dbGraduates, avatarMap] = await Promise.all([
     loadArchivedMonthsFromDb(),
     loadManagersFromDb(),
     loadLegendsFromDb(),
+    loadStreamerUGraduatesFromDb(),
     getBackstageAvatarMapByHandle().catch(() => new Map<string, string | null>()),
   ]);
 
@@ -332,11 +365,18 @@ export async function getHallOfFamePageData(): Promise<HallOfFamePageData> {
     avatarMap,
   );
 
+  const streamerUGraduates = (dbGraduates ?? []).map((g) => {
+    if (g.avatarUrl) return g;
+    const url = avatarMap.get(normalizeHandle(g.tiktokUsername)) ?? null;
+    return url ? { ...g, avatarUrl: url } : g;
+  });
+
   return {
     managers,
     archivedMonths,
     liveMonth,
     legends,
+    streamerUGraduates,
     runnerUpStartMonth: RUNNER_UP_START_MONTH,
   };
 }

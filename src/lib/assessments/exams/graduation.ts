@@ -97,7 +97,7 @@ export const exam = graduationExam({
     ["All five program certificates and a passed Graduation Exam", true, "Correct - full academy mastery proof."],
     ["One battle win", false, "Wrong - insufficient."],
     ["Factory Reputation only", false, "Wrong - different system."],
-    ["Skipping Rules & Safety", false, "Wrong - required program."],
+    ["Skipping essential safety in Beginner Foundations", false, "Wrong - required before regular LIVE."],
   ]),
   question("g17", "After graduating, Manager College is...", [
     ["A future advanced pathway, not an instant unlock tonight", true, "Correct - diploma first; manager track later."],

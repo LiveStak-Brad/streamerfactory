@@ -26,8 +26,11 @@ export function SiteFooter() {
               <p className="text-lg font-bold tracking-tight text-white">{site.name}</p>
             </div>
             <p className="text-base leading-relaxed text-zinc-400">
-              Independent TikTok LIVE creator agency — recruitment, onboarding, training, and day-to-day
-              management for serious streamers. Not affiliated with TikTok as a corporate entity.
+              Free TikTok LIVE creator network — free StreamerU education, coaching, community, rankings,
+              and Battle Hub. Creators never pay us. Not affiliated with TikTok as a corporate entity.
+            </p>
+            <p className="text-sm leading-relaxed text-zinc-500">
+              Free academy · Free creator network · One account · Everything included
             </p>
             <p className="text-sm font-medium text-accent-muted">{site.domain}</p>
             <p className="text-sm">

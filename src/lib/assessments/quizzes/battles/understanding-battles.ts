@@ -5,41 +5,85 @@ export const quiz = lessonQuiz({
   programKey: "battles",
   title: "Quiz: Understanding battles",
   questions: [
-  question("q1", "A TikTok LIVE battle is best understood as…", [
-    ["A timed collaboration format with competitive energy", true, "Correct — battles mix performance, social proof, and partnership."],
-    ["A guaranteed income machine", false, "Wrong — outcomes vary; skill and relationships matter."],
-    ["A replacement for ever hosting solo", false, "Wrong — solo hosting skills still matter."],
-    ["Only for creators with 1M followers", false, "Wrong — beginners can learn battles with preparation."],
-  ]),
-  question("q2", "Before battling, you should understand…", [
-    ["Format, timing, and how chat energy works", true, "Correct — mechanics literacy prevents panic."],
-    ["How to insult opponents for clout", false, "Wrong — toxicity burns partners and community."],
-    ["How to fake gift screenshots", false, "Wrong — dishonest and against healthy culture."],
-    ["How to avoid ever promoting the battle", false, "Wrong — promo helps your side show up."],
-  ]),
-  question("q3", "Battles amplify…", [
-    ["Your existing hosting habits — good or bad", true, "Correct — chaos solo becomes chaos in battles."],
-    ["Only your follower count magically", false, "Wrong — battles are not instant follower printers."],
-    ["Factory Reputation automatically by 1000", false, "Wrong — reputation is separate community progress."],
-    ["StreamerU XP without any quiz", false, "Wrong — XP here comes from assessments/missions systems as designed."],
-  ]),
-  question("q4", "A healthy battle mindset is…", [
-    ["Compete hard, protect relationships", true, "Correct — long-term partners beat one-off ego wins."],
-    ["Win at any cost including harassment", false, "Wrong — costs you the network."],
-    ["Never speak to your opponent", false, "Wrong — interaction is part of the format."],
-    ["Quit LIVE if you are losing at minute one", false, "Wrong — composure is a battle skill."],
-  ]),
-  question("q5", "Why learn battles after foundations?", [
-    ["Solo structure and talk skills transfer into battles", true, "Correct — empty-room and hooks still apply."],
-    ["Battles forbid any prior LIVE experience", false, "Wrong — opposite."],
-    ["Foundations are optional forever", false, "Wrong — foundations reduce battle chaos."],
-    ["Rules & Safety does not apply in battles", false, "Wrong — rules always apply."],
-  ]),
-  question("q6", "Chat’s role in battles is…", [
-    ["Energy, support, and readable calls-to-action", true, "Correct — clear asks beat confused yelling."],
-    ["Irrelevant; only gifts matter", false, "Wrong — culture and energy move gifts."],
-    ["To attack the other side personally", false, "Wrong — toxic chat culture backfires."],
-    ["To replace you as the host", false, "Wrong — you still lead."],
-  ]),
+    question(
+      "q1",
+      "A friend tells you battles are decided by who has the better content, like a talent judge. Based on this lesson, is that accurate?",
+      [
+        ["No — a battle is a timed, gift-driven scoreboard race, not a talent contest", true, "Correct — points come from gifts converting to score, not from any judged quality check."],
+        ["Yes — TikTok has judges who score each round for quality", false, "Wrong — there's no judge or quality scoring mechanic in a battle."],
+        ["Yes — the algorithm automatically ranks the better creator as the winner", false, "Wrong — the winner is whoever has more gift-based points when the timer ends, nothing else."],
+        ["No — battles are decided purely by which creator has more total followers", false, "Wrong — follower count doesn't determine the round outcome; gifts sent during the round do."],
+      ],
+    ),
+    question(
+      "q2",
+      "You're down badly in the first thirty seconds of a battle. What does this lesson say to do?",
+      [
+        ["Keep your energy identical to if you were ahead and highlight anything positive in your own chat", true, "Correct — comebacks happen because the losing host stayed engaging, not because viewers felt sorry for them."],
+        ["Visibly show disappointment so viewers know you're taking it seriously", false, "Wrong — chat mirrors your face; visible deflation reads as giving up."],
+        ["End the battle early since the outcome looks decided", false, "Wrong — ending early damages your reputation and abandons a round that could still swing."],
+        ["Stop talking and wait for gifts to arrive on their own", false, "Wrong — silence doesn't create the engagement that produces gifts or comebacks."],
+      ],
+    ),
+    question(
+      "q3",
+      "Why do viewers gift more urgently during a battle than during a normal solo LIVE, according to this lesson?",
+      [
+        ["A visible countdown timer creates a decision deadline that a normal LIVE doesn't have", true, "Correct — urgency from the timer, not necessarily better content, drives faster action."],
+        ["Because battles are the only format where gifts are allowed", false, "Wrong — gifts work in both formats; battles simply add time pressure."],
+        ["Because TikTok doubles gift value during battles", false, "Wrong — no such doubling mechanic is described in this lesson."],
+        ["Because viewers are required to gift once a battle starts", false, "Wrong — gifting is voluntary in both formats."],
+      ],
+    ),
+    question(
+      "q4",
+      "What does this lesson say makes a scoreboard 'a story, not a verdict'?",
+      [
+        ["Comebacks and momentum swings drive retention more than the final number does", true, "Correct — a round that swings late outperforms one decided early, even with similar final scores."],
+        ["The final score always determines who gets more new followers", false, "Wrong — this lesson doesn't make that follower claim."],
+        ["Scoreboards are hidden from viewers so the number never matters", false, "Wrong — the scoreboard is visible; the lesson teaches how to read it, not hide it."],
+        ["A blowout round is always more entertaining than a close one", false, "Wrong — the lesson says a lopsided round can still work if the losing host keeps energy up, not that blowouts are inherently more entertaining."],
+      ],
+    ),
+    question(
+      "q5",
+      "Your opponent starts trash-talking during a round. What's the recommended response?",
+      [
+        ["Match their energy with light humor, not real hostility", true, "Correct — a light 'oh, it's like that now?' keeps things fun without damaging the relationship."],
+        ["Escalate with genuine insults to defend your side", false, "Wrong — real hostility damages both rooms and your reputation with future partners."],
+        ["Immediately end the stream to avoid any conflict", false, "Wrong — ending abruptly over banter is an overreaction that hurts your reputation more than a light response would."],
+        ["Report your opponent to TikTok mid-battle", false, "Wrong — light trash-talk within the format isn't a violation requiring escalation."],
+      ],
+    ),
+    question(
+      "q6",
+      "What is this lesson's mission asking you to do — and what is it NOT asking you to do?",
+      [
+        ["Watch a real battle or recap and apply one observed tactic in your own solo LIVE — not book or run a real battle yet", true, "Correct — this lesson is theory and observation only; booking comes in the next lesson."],
+        ["Schedule and run your first real battle tonight", false, "Wrong — this lesson explicitly says you will not book a battle today."],
+        ["Skip watching any battles and go straight to hosting one", false, "Wrong — observation is a required part of this mission."],
+        ["Recruit a battle partner and confirm a date before going live", false, "Wrong — partner agreements are covered in the next lesson, not this one."],
+      ],
+    ),
+    question(
+      "q7",
+      "Why does this lesson say beginners should be cautious about jumping into battles before solidifying solo hosting skills?",
+      [
+        ["Battles amplify whatever hosting habits you already have, good or shaky, in front of twice the audience", true, "Correct — a battle exposes a shaky baseline to two audiences instead of hiding it."],
+        ["Because TikTok restricts battles to creators with a minimum follower count", false, "Wrong — this lesson doesn't make that eligibility claim."],
+        ["Because battles are only available after finishing the entire StreamerU curriculum", false, "Wrong — Battles & Collaboration is a specific program you're currently in, not something gated behind the whole curriculum."],
+        ["Because solo LIVE skills don't transfer to battles at all", false, "Wrong — the lesson explicitly says your existing hosting habits carry directly into a battle."],
+      ],
+    ),
+    question(
+      "q8",
+      "What does 'borrowed trust' mean in the context of a battle, according to this lesson?",
+      [
+        ["Your opponent's viewers are watching you for the first time, filtered through trust they already have in someone they like", true, "Correct — being gracious and enjoyable can convert some of that borrowed trust into new followers for you."],
+        ["Your opponent lends you their account access during the match", false, "Wrong — this isn't about account access at all."],
+        ["TikTok temporarily boosts your account's trust score during a battle", false, "Wrong — no such platform trust-score mechanic is described."],
+        ["You're required to trust your opponent's judgment on round outcomes", false, "Wrong — outcomes are determined by the gift-based scoreboard, not by trust between hosts."],
+      ],
+    ),
   ],
 });

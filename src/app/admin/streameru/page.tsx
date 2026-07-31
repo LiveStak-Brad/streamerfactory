@@ -32,9 +32,14 @@ export default async function AdminStreamerUPage() {
             { label: "StreamerU" },
           ]}
           actions={
-            <Button href="/admin/streameru/new" variant="primary" className="min-h-[40px] px-4 text-sm">
-              New resource
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button href="/admin/streameru/setup" variant="secondary" className="min-h-[40px] px-4 text-sm">
+                Complete StreamerU Setup
+              </Button>
+              <Button href="/admin/streameru/new" variant="primary" className="min-h-[40px] px-4 text-sm">
+                New resource
+              </Button>
+            </div>
           }
         />
 

@@ -51,11 +51,11 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
   },
   {
     id: "rules",
-    title: "Platform rules",
-    lessonInLabel: "Platform rules & safety",
-    partOfLabel: "StreamerU · Rules track",
+    title: "Essential safety",
+    lessonInLabel: "Essential safety",
+    partOfLabel: "StreamerU · Beginner Foundations · Safety",
     description:
-      "Guidelines, moderation habits, and staying compliant while you scale on LIVE.",
+      "Platform rules, account protection, and safe streaming practices — taught in Beginner Foundations before regular LIVE.",
   },
   {
     id: "content",
@@ -80,7 +80,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   beginner: "Beginner",
   battles: "Battles",
   monetization: "Monetization",
-  rules: "Rules",
+  rules: "Safety",
   content: "Content",
 };
 

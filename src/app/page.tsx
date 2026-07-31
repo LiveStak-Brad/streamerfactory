@@ -19,9 +19,9 @@ import { site } from "@/lib/site";
 import { TIKTOK_ROOT_SITE_VERIFICATION_LINE } from "@/lib/tiktok/site-verification";
 
 export const metadata: Metadata = createPageMetadata({
-  title: `${site.name} — TikTok LIVE Creator Agency`,
+  title: `${site.name} — Free TikTok LIVE Creator Network`,
   description:
-    "Streamer Factory is a TikTok LIVE creator agency. Join the Creator Network, train in StreamerU, schedule battles, and grow with real creator ops — not empty promises.",
+    "Streamer Factory is a free TikTok LIVE creator network. Membership is free. StreamerU education is included. Join for free, start streaming, and grow with real creator ops — creators never pay us.",
   path: "/",
   keywords: [
     "TikTok LIVE agency",
@@ -29,6 +29,8 @@ export const metadata: Metadata = createPageMetadata({
     "TikTok creator agency",
     "Streamer Factory",
     "join TikTok LIVE agency",
+    "free TikTok LIVE creator network",
+    "free StreamerU",
   ],
   ogImage: "/branding/og/homepage.png",
 });

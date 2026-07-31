@@ -13,14 +13,15 @@ import { createPageMetadata } from "@/lib/seo/page-metadata";
 import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Join the TikTok LIVE Creator Network",
+  title: "Join the Free TikTok LIVE Creator Network",
   description:
-    "Learn free in StreamerU anytime. Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and member tools.",
+    "Membership is free. StreamerU is included. Join the Streamer Factory Creator Network on TikTok, then request website access for Battle Hub, scheduling, and member tools. Creators never pay us.",
   path: "/apply",
   keywords: [
     "join TikTok LIVE agency",
     "TikTok Creator Network apply",
     "Streamer Factory application",
+    "free TikTok LIVE creator network",
   ],
   ogImage: "/branding/og/join.png",
 });
@@ -97,22 +98,22 @@ export default async function ApplyPage() {
           Join Streamer Factory
         </p>
         <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-foreground sm:text-5xl">
-          Creator Network on TikTok, then this site
+          Join the free creator network
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">
-          Membership in the{" "}
-          <strong className="font-semibold text-foreground">TikTok Creator Network</strong> runs through
-          TikTok&apos;s official flow. After you&apos;re in, use the form below so we can match your account and
-          manually grant access to{" "}
-          <Link href="/battle-hub" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
-            Battle Hub
-          </Link>
-          , scheduling, and{" "}
+          Streamer Factory membership is completely free.{" "}
           <Link href="/streameru" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
             StreamerU
           </Link>{" "}
-          on this website. You can start StreamerU lessons free before you apply — no subscription or
-          course fees.
+          education is included. Membership in the{" "}
+          <strong className="font-semibold text-foreground">TikTok Creator Network</strong> runs through
+          TikTok&apos;s official flow. After you&apos;re in, use the form below so we can match your account and
+          unlock{" "}
+          <Link href="/battle-hub" className="font-semibold text-accent underline-offset-2 hover:underline dark:text-accent-muted">
+            Battle Hub
+          </Link>
+          , scheduling, rankings, and the rest of the free network tools. Creators never pay us —
+          TikTok compensates approved creator networks through its LIVE Creator Network program.
         </p>
         </div>
 

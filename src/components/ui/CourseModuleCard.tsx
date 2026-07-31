@@ -28,7 +28,7 @@ type CourseModuleCardProps = {
   difficulty?: DifficultyLevel | string | null;
   /** Sum of study minutes across lessons in the program */
   estimatedStudyMinutes?: number;
-  /** Optional badge override (e.g. Required for Rules & Safety) */
+  /** Optional badge override (e.g. Includes essential safety) */
   badgeLabel?: string | null;
   /** Callout under description — e.g. safety guidance */
   guidanceNote?: string | null;
@@ -93,6 +93,9 @@ export function CourseModuleCard({
           </span>
         </div>
         <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">{programName}</h3>
+        <p className="mt-1 text-sm font-semibold tabular-nums text-muted">
+          {lessonCount > 0 ? `${lessonCount} Lessons` : "Lessons shipping next"}
+        </p>
         {description ? (
           <p className="mt-2 text-sm leading-relaxed text-muted">{description}</p>
         ) : null}
@@ -120,13 +123,17 @@ export function CourseModuleCard({
           ) : null}
         </div>
         <p className="mt-4 text-sm font-semibold text-foreground/80">
-          {completedCount}/{lessonCount} Live Exams done
+          {lessonCount > 0
+            ? `${completedCount}/${lessonCount} Live Exams done`
+            : "Lessons shipping next"}
         </p>
-        <SuProgressBar
-          className="mt-2"
-          value={pct}
-          label={`${programName} program progress`}
-        />
+        {lessonCount > 0 ? (
+          <SuProgressBar
+            className="mt-2"
+            value={pct}
+            label={`${programName} program progress`}
+          />
+        ) : null}
         {unlocks && unlocks.length > 0 ? (
           <ul className="mt-4 space-y-1.5" aria-label={`What completing ${programName} unlocks`}>
             {unlocks.map((item) => (

@@ -49,7 +49,7 @@ export default async function MembersPage() {
                 View factory rankings
               </Button>
               <Button href="/apply" variant="secondary">
-                Join the network
+                Join FREE
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted">

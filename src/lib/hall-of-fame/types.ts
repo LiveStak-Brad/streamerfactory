@@ -54,6 +54,18 @@ export type FactoryLegend = FactoryLegendCategory & {
   holder: FactoryLegendHolder | null;
 };
 
+/** Celebrated StreamerU graduates shown on the Hall of Fame. */
+export type StreamerUGraduate = {
+  memberId: string;
+  displayName: string;
+  tiktokUsername: string;
+  diplomaLabel: string;
+  certifiedLabel: string;
+  careerPath?: string | null;
+  graduatedAt: string;
+  avatarUrl?: string | null;
+};
+
 export type HallOfFamePageData = {
   managers: NetworkManager[];
   /** Locked historical months, newest first. */
@@ -61,6 +73,8 @@ export type HallOfFamePageData = {
   /** Current calendar month provisional board (not yet locked). */
   liveMonth: HallOfFameMonth | null;
   legends: FactoryLegend[];
+  /** StreamerU academy graduates (celebrated). */
+  streamerUGraduates: StreamerUGraduate[];
   /** First month that archives places 2–5 (July 2026). */
   runnerUpStartMonth: YearMonth;
 };

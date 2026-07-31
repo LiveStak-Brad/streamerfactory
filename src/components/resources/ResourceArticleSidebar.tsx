@@ -16,7 +16,7 @@ export function ResourceArticleSidebar() {
               href="/apply"
               className="flex items-center justify-between rounded-xl border border-accent/30 bg-accent/10 px-3 py-2.5 text-sm font-semibold text-accent transition-colors hover:border-accent/50 hover:bg-accent/15 dark:text-accent-muted"
             >
-              Apply to join
+              Join FREE
               <span aria-hidden className="text-accent/80">
                 →
               </span>

@@ -1,81 +1,86 @@
 import { programFinal, question } from "@/lib/assessments/build";
 
+/**
+ * Program Final for Advanced Creator.
+ * programKey remains `rules` so local/server assessment IDs stay stable after
+ * the Rules & Safety → Advanced Creator reorganization.
+ */
 export const exam = programFinal({
   programKey: "rules",
-  programName: "Rules & Safety",
-  title: "Program Final: Rules & Safety",
+  programName: "Advanced Creator",
+  title: "Program Final: Advanced Creator",
   questions: [
-  question("rs1", "Platform rules matter because...", [
-    ["Violations can restrict reach and monetization", true, "Correct - safety protects the career."],
-    ["Small creators are exempt", false, "Wrong - rules apply widely."],
-    ["Only Managers need them", false, "Wrong - every creator is accountable."],
-    ["Chat votes override policy", false, "Wrong - false."],
-  ]),
-  question("rs2", "When unsure about a gray area...", [
-    ["Choose the safer path and verify official guidance", true, "Correct - caution beats gambling the account."],
-    ["Do it for content and apologize later", false, "Wrong - late apologies may not restore access."],
-    ["Ask chat to decide legality", false, "Wrong - not a compliance process."],
-    ["Assume bans never happen", false, "Wrong - denial is risky."],
-  ]),
-  question("rs3", "Ban-level risk often involves...", [
-    ["Severe or repeated policy violations", true, "Correct - seriousness and repetition escalate."],
-    ["Saying hello", false, "Wrong - normal."],
-    ["Having a niche", false, "Wrong - fine."],
-    ["Using an outline", false, "Wrong - fine."],
-  ]),
-  question("rs4", "Ignorance of rules is...", [
-    ["A weak defense because policies are published", true, "Correct - creators are expected to follow them."],
-    ["A full legal shield", false, "Wrong - false."],
-    ["Only for large creators", false, "Wrong - false."],
-    ["Solved by laughing it off", false, "Wrong - false."],
-  ]),
-  question("rs5", "Avoid violations by...", [
-    ["Pre-checking risky music, claims, and conduct", true, "Correct - prevention before go-live."],
-    ["Copying banned creators' bits", false, "Wrong - inherits risk."],
-    ["Hoping mods erase accountability", false, "Wrong - you own the broadcast."],
-    ["Shock gimmicks that depend on rule-breaking", false, "Wrong - fragile strategy."],
-  ]),
-  question("rs6", "If chat pushes a violation...", [
-    ["Decline and redirect to safe energy", true, "Correct - you steer the room."],
-    ["Comply for diamonds", false, "Wrong - short-term cash, long-term risk."],
-    ["Hand the phone to a stranger", false, "Wrong - loses control."],
-    ["Argue legality for an hour", false, "Wrong - better to reset."],
-  ]),
-  question("rs7", "Mods help most when...", [
-    ["Briefed on boundaries and reinforcing calmly", true, "Correct - clear standards scale safety."],
-    ["Harassing viewers for fun", false, "Wrong - new problems."],
-    ["Inventing anti-policy rules", false, "Wrong - policy wins."],
-    ["Never aligned with you", false, "Wrong - alignment needed."],
-  ]),
-  question("rs8", "Long-term account safety is...", [
-    ["A career asset that protects compounding growth", true, "Correct - clean history enables opportunity."],
-    ["Only a beginner concern", false, "Wrong - stakes rise over time."],
-    ["A reason never to create", false, "Wrong - innovate inside bounds."],
-    ["A substitute for hosting skill", false, "Wrong - both required."],
-  ]),
-  question("rs9", "Account security includes...", [
-    ["Strong auth and careful collaborator access", true, "Correct - takeovers are real risks."],
-    ["Sharing passwords in Discord", false, "Wrong - major risk."],
-    ["Lending the account for battles", false, "Wrong - dangerous."],
-    ["Disabling 2FA for convenience", false, "Wrong - weakens security."],
-  ]),
-  question("rs10", "Seeing others 'get away' with violations means...", [
-    ["Do not copy them; lag is not permission", true, "Correct - others' risk is not your strategy."],
-    ["Copy immediately", false, "Wrong - dangerous."],
-    ["Rules are repealed forever", false, "Wrong - false."],
-    ["Safety no longer matters", false, "Wrong - false."],
-  ]),
-  question("rs11", "Policy refreshers matter because...", [
-    ["Guidance and enforcement evolve", true, "Correct - keep learning from primary sources."],
-    ["Rules never change", false, "Wrong - they do."],
-    ["Graduation ends compliance", false, "Wrong - never."],
-    ["Quizzes replace official updates forever", false, "Wrong - keep checking sources."],
-  ]),
-  question("rs12", "This program certificate requires...", [
-    ["Program path complete plus this final passed", true, "Correct - exam-gated."],
-    ["One intentional violation for 'experience'", false, "Wrong - never required."],
-    ["Skipping safety notes", false, "Wrong - keep them."],
-    ["Manager payment", false, "Wrong - false."],
-  ]),
+    question("ac1", "Advanced Creator training focuses on…", [
+      ["Long-term brand, analytics, business, and growth strategy", true, "Correct — professional durability beyond first LIVE habits."],
+      ["Skipping platform rules forever", false, "Wrong — safety was covered in Beginner Foundations."],
+      ["Only buying followers", false, "Wrong — unhealthy and risky."],
+      ["Ending the academy early", false, "Wrong — this is the capstone program path."],
+    ]),
+    question("ac2", "Brand systems help because…", [
+      ["Consistent identity compounds recognition across sessions", true, "Correct — branding is a retention asset."],
+      ["You never need a niche", false, "Wrong — clarity still matters."],
+      ["Rules no longer apply", false, "Wrong — compliance always applies."],
+      ["Analytics become optional", false, "Wrong — measurement still matters."],
+    ]),
+    question("ac3", "LIVE analytics are most useful when…", [
+      ["They inform one clear change for the next session", true, "Correct — data should drive iteration."],
+      ["They replace talking to chat", false, "Wrong — craft still comes first."],
+      ["You ignore retention entirely", false, "Wrong — retention is core."],
+      ["You only check once a year", false, "Wrong — too slow to improve."],
+    ]),
+    question("ac4", "Creator business foundations include…", [
+      ["Treating income, expenses, and offers as a real operation", true, "Correct — professionalism protects longevity."],
+      ["Never tracking anything", false, "Wrong — blindness creates risk."],
+      ["Only chasing viral one-offs", false, "Wrong — systems beat spikes."],
+      ["Avoiding goals on stream", false, "Wrong — goals can still be healthy."],
+    ]),
+    question("ac5", "Advanced growth strategy should…", [
+      ["Stack proven loops without abandoning safety or consistency", true, "Correct — scale on a stable base."],
+      ["Trade compliance for reach", false, "Wrong — short-term reach, long-term loss."],
+      ["Reset your schedule every day randomly", false, "Wrong — rhythm trains audiences."],
+      ["Ignore battles and collabs forever", false, "Wrong — they remain tools when used well."],
+    ]),
+    question("ac6", "Scaling works best when…", [
+      ["Volume increases only as quality and recovery stay sustainable", true, "Correct — burnout kills compounding."],
+      ["You double hours with no review", false, "Wrong — fatigue shows on stream."],
+      ["You skip debriefs", false, "Wrong — review fuels improvement."],
+      ["You abandon beginner structure", false, "Wrong — foundations still apply."],
+    ]),
+    question("ac7", "Professional creators protect the account by…", [
+      ["Keeping Beginner Foundations safety habits as they scale", true, "Correct — safety is not a temporary module."],
+      ["Assuming size grants immunity", false, "Wrong — enforcement still applies."],
+      ["Copying banned creators for growth", false, "Wrong — inherits risk."],
+      ["Disabling moderation to look 'raw'", false, "Wrong — raises risk."],
+    ]),
+    question("ac8", "A strong creator brand is…", [
+      ["A repeatable promise viewers can recognize", true, "Correct — clarity builds loyalty."],
+      ["A new persona every stream", false, "Wrong — confusion hurts retention."],
+      ["Only a logo file", false, "Wrong — incomplete."],
+      ["Optional after graduation", false, "Wrong — it compounds forever."],
+    ]),
+    question("ac9", "When metrics dip you should…", [
+      ["Diagnose one bottleneck and run a controlled fix", true, "Correct — calm iteration beats panic."],
+      ["Break policy for a spike", false, "Wrong — never."],
+      ["Quit the schedule permanently", false, "Wrong — review first."],
+      ["Delete the account", false, "Wrong — extreme and unnecessary."],
+    ]),
+    question("ac10", "Creator business tracking exists to…", [
+      ["Make income decisions with evidence, not vibes alone", true, "Correct — operations need numbers."],
+      ["Replace LIVE skill", false, "Wrong — both required."],
+      ["Hide losses forever", false, "Wrong — honesty matters."],
+      ["Skip taxes and records", false, "Wrong — professionalism includes records."],
+    ]),
+    question("ac11", "This program certificate requires…", [
+      ["Published Advanced Creator lessons complete plus this final passed", true, "Correct — exam-gated when lessons ship."],
+      ["Ignoring brand and analytics", false, "Wrong — they are the focus."],
+      ["Failing Beginner Foundations on purpose", false, "Wrong — foundations stay required."],
+      ["Manager payment", false, "Wrong — false."],
+    ]),
+    question("ac12", "After Advanced Creator you are preparing to…", [
+      ["Operate like a durable professional and pursue graduation", true, "Correct — diploma path continues."],
+      ["Treat rules as optional", false, "Wrong — never."],
+      ["Stop learning", false, "Wrong — StreamerU keeps growing."],
+      ["Skip the Graduation Exam", false, "Wrong — diploma still needs it."],
+    ]),
   ],
 });

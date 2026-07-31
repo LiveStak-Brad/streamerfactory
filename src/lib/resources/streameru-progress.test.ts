@@ -10,6 +10,11 @@ describe("StreamerU progress and estimate sources of truth", () => {
   it("curriculum has a stable 24-lesson total used by all progress UI", () => {
     expect(CURRICULUM_TOTAL_LESSONS).toBe(24);
     const programs = curriculumByProgram();
+    expect(programs).toHaveLength(5);
+    expect(programs[0]?.programName).toBe("Beginner Foundations");
+    expect(programs[0]?.lessons).toHaveLength(9);
+    expect(programs[4]?.programName).toBe("Advanced Creator");
+    expect(programs[4]?.lessons).toHaveLength(0);
     const lessonCount = programs.reduce((n, p) => n + p.lessons.length, 0);
     expect(lessonCount).toBe(CURRICULUM_TOTAL_LESSONS);
   });

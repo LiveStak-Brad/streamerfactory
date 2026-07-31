@@ -29,8 +29,9 @@ export function HowStreamerUWorks() {
         How StreamerU works
       </h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-        One clear progression from first lesson to diploma. Programs stay open — we recommend order,
-        we don&apos;t hard-lock lessons.
+        One clear progression from first lesson to diploma — included with free Streamer Factory
+        membership. Programs stay open — we recommend order, we don&apos;t hard-lock lessons. You
+        don&apos;t need to graduate to join the network.
       </p>
 
       <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

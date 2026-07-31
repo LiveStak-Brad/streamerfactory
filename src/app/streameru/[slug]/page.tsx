@@ -18,6 +18,8 @@ import { LessonNavigation } from "@/components/resources/LessonNavigation";
 import { LessonDownloadCards } from "@/components/resources/LessonDownloadCards";
 import { LessonEstimateChips } from "@/components/resources/LessonEstimateChips";
 import { StreamerUCertificatePanel } from "@/components/streameru/StreamerUCertificatePanel";
+import { LessonQuiz } from "@/components/streameru/assessments/LessonQuiz";
+import { LessonDownloads } from "@/components/streameru/library/LessonDownloads";
 import { RecordLessonVisit } from "@/components/guidance/RecordLessonVisit";
 import { RelatedGuidesForLesson } from "@/components/guides/RelatedGuidesForLesson";
 import { FOUNDER } from "@/lib/founder/content";
@@ -36,6 +38,9 @@ import { parseTrainingSectionsJson } from "@/lib/resources/training-sections";
 import { getCurriculumRelatedPosts, getPublishedPostBySlug } from "@/lib/resources/queries";
 import { isStartHereArticleSlug } from "@/lib/resources/start-here";
 import { getMissionForLessonSlug } from "@/lib/resources/training-missions";
+import { getResourcesForLesson } from "@/lib/streameru-library/by-lesson";
+import { listPublishedLessonMedia } from "@/lib/streameru-media/queries";
+import { resolvePublicLessonContent } from "@/lib/streameru-media/resolve-public-content";
 import { createPageMetadata } from "@/lib/seo/page-metadata";
 import {
   JsonLd,
@@ -101,6 +106,7 @@ export default async function ResourcePostPage({ params }: Props) {
     sections: trainingSections,
     mission,
   });
+  const libraryResources = getResourcesForLesson(slug);
   const nextLessonForMission =
     curriculum && neighbors.next
       ? (() => {
@@ -110,7 +116,9 @@ export default async function ResourcePostPage({ params }: Props) {
       : null;
 
   const cat = post.resource_categories;
-  const { intro, rest } = splitIntroAndBody(post.content);
+  const publishedMedia = await listPublishedLessonMedia(slug).catch(() => []);
+  const publicContent = resolvePublicLessonContent(post.content, publishedMedia);
+  const { intro, rest } = splitIntroAndBody(publicContent);
   const hasSplit = rest !== null;
   const keywords = seo ? getLessonSeoKeywords(seo) : undefined;
   const showFaqs = Boolean(seo && seo.faqs.length > 0);
@@ -180,6 +188,7 @@ export default async function ResourcePostPage({ params }: Props) {
                 lesson={curriculum}
                 semesterIndex={semesterIndexForProgram(curriculum.programName)}
                 estimate={estimate}
+                updatedAt={post.updated_at ?? post.published_at}
                 difficulty={
                   lessonDifficulty(curriculum.trackId, curriculum.slug) ??
                   post.difficulty ??
@@ -194,6 +203,8 @@ export default async function ResourcePostPage({ params }: Props) {
             trainingTrack={metaTrack}
             difficulty={curriculum ? null : post.difficulty ?? null}
             omitLessonContext={Boolean(curriculum)}
+            showReviewMeta={!curriculum}
+            updatedAt={post.updated_at ?? post.published_at}
           />
           <h1 className="mt-6 text-3xl font-bold tracking-[-0.03em] text-zinc-950 dark:text-zinc-50 sm:text-4xl sm:leading-[1.08]">
             {displayTitle}
@@ -244,19 +255,23 @@ export default async function ResourcePostPage({ params }: Props) {
             />
             {hasSplit ? (
               <>
-                {intro.trim().length > 0 && <ArticleBody content={intro} />}
+                {intro.trim().length > 0 && (
+                  <ArticleBody content={intro} hideIncompleteMedia />
+                )}
                 <div className="mt-8 lg:mt-10">
                   <ResourceSupportCallout />
                 </div>
                 {rest && rest.trim().length > 0 && (
                   <div className="mt-8 lg:mt-10">
-                    <ArticleBody content={rest} />
+                    <ArticleBody content={rest} hideIncompleteMedia />
                   </div>
                 )}
               </>
             ) : (
               <>
-                {post.content.trim().length > 0 && <ArticleBody content={post.content} />}
+                {publicContent.trim().length > 0 && (
+                  <ArticleBody content={publicContent} hideIncompleteMedia />
+                )}
                 <div className="mt-8 lg:mt-10">
                   <ResourceSupportCallout />
                 </div>
@@ -265,11 +280,21 @@ export default async function ResourcePostPage({ params }: Props) {
           </div>
         </section>
 
+        {libraryResources.length > 0 ? (
+          <div className="mt-14">
+            <LessonDownloads resources={libraryResources} />
+          </div>
+        ) : null}
+
         {downloads.length > 0 ? (
           <div className="mt-14">
             <LessonDownloadCards items={downloads} />
           </div>
         ) : null}
+
+        <div className="mt-14">
+          <LessonQuiz lessonSlug={slug} />
+        </div>
 
         {mission ? (
           <div className="mt-14">

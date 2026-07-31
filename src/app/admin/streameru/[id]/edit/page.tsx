@@ -2,11 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPanel } from "@/components/admin/ui/AdminPanel";
+import { LessonMaterialsPanel } from "@/components/admin/streameru-media/LessonMaterialsPanel";
 import { ResourceDeleteForm } from "@/components/admin/ResourceDeleteForm";
 import { ResourceForm } from "@/components/admin/ResourceForm";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/auth/server";
 import { getResourceCategories, getResourcePostById } from "@/lib/resources/queries";
+import { listLessonMediaAssets } from "@/lib/streameru-media/queries";
 
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -26,6 +29,8 @@ export default async function EditResourcePage({ params }: Props) {
   ]);
   if (!post) notFound();
 
+  const lessonAssets = await listLessonMediaAssets(post.slug).catch(() => []);
+
   return (
     <section className="py-10 sm:py-14">
       <Container className="max-w-3xl">
@@ -41,11 +46,22 @@ export default async function EditResourcePage({ params }: Props) {
             { label: "StreamerU", href: "/admin/streameru" },
             { label: "Edit" },
           ]}
+          actions={
+            <Button
+              href={`/admin/streameru/setup?lesson=${encodeURIComponent(post.slug)}&filter=all`}
+              variant="secondary"
+              className="min-h-[40px] px-4 text-sm"
+            >
+              Lesson materials setup
+            </Button>
+          }
         />
 
         <AdminPanel className="mt-8" raised>
           <ResourceForm categories={categories} mode="edit" initial={post} />
         </AdminPanel>
+
+        <LessonMaterialsPanel lessonSlug={post.slug} assets={lessonAssets} />
 
         <div className="mt-8 rounded-2xl border border-rose-200/80 bg-rose-50/80 p-6 dark:border-rose-900/50 dark:bg-rose-950/30">
           <h2 className="text-sm font-semibold text-rose-900 dark:text-rose-200">Danger zone</h2>

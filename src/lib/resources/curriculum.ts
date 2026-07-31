@@ -5,13 +5,21 @@
  * 1. Append to `CURRICULUM` with the next `globalOrder`, correct `programName`, and a unique `slug`
  *    (must match `resource_posts.slug` when published).
  * 2. Add a matching mission in `training-missions.ts` keyed by the same `slug`.
- * 3. Publish the post in admin with that slug (or seed it).
+ * 3. Register at least one StreamerU library resource in `src/lib/streameru-library/` (checklist minimum).
+ * 4. Publish the post in admin with that slug (or seed it).
+ *
+ * Program layout (safety-first):
+ * 1. Beginner Foundations — setup + essential platform safety before regular LIVE
+ * 2. Live Streaming Mastery
+ * 3. Battles & Collaboration
+ * 4. Growth & Monetization
+ * 5. Advanced Creator — long-term scaling, branding, and creator business (lessons shipping next)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
 
 export type CurriculumLesson = {
-  /** 1–24 across the full program */
+  /** 1–N across the full academy path */
   globalOrder: number;
   /** Must match `resource_posts.slug` */
   slug: string;
@@ -25,9 +33,31 @@ export type CurriculumLesson = {
   lessonsInProgram: number;
 };
 
+/**
+ * Canonical program display names — order defines hub / sidebar / finals sequence.
+ * Advanced Creator keeps internal programKey `rules` so finals/certificate storage IDs stay stable.
+ */
+export const STREAMERU_PROGRAM_NAMES = [
+  "Beginner Foundations",
+  "Live Streaming Mastery",
+  "Battles & Collaboration",
+  "Growth & Monetization",
+  "Advanced Creator",
+] as const;
+
+export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
+
+/** Planned Advanced Creator topics until lesson bodies ship (not curriculum slugs). */
+export const ADVANCED_CREATOR_ROADMAP_TOPICS = [
+  "Creator brand systems",
+  "Analytics for LIVE growth",
+  "Creator business foundations",
+  "Advanced growth strategy",
+] as const;
+
 /** Strict global order — the only sequence users should follow for the full course. */
 export const CURRICULUM: CurriculumLesson[] = [
-  // BEGINNER FOUNDATIONS (5)
+  // BEGINNER FOUNDATIONS (9) — setup, then essential safety, then first regular LIVE habits
   {
     globalOrder: 1,
     slug: "start-strong-on-tiktok-live",
@@ -35,7 +65,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     trackId: "beginner",
     programName: "Beginner Foundations",
     lessonInProgram: 1,
-    lessonsInProgram: 5,
+    lessonsInProgram: 9,
   },
   {
     globalOrder: 2,
@@ -44,38 +74,74 @@ export const CURRICULUM: CurriculumLesson[] = [
     trackId: "beginner",
     programName: "Beginner Foundations",
     lessonInProgram: 2,
-    lessonsInProgram: 5,
+    lessonsInProgram: 9,
   },
   {
     globalOrder: 3,
+    slug: "platform-rules-new-live-creators",
+    title: "TikTok rules explained",
+    trackId: "rules",
+    programName: "Beginner Foundations",
+    lessonInProgram: 3,
+    lessonsInProgram: 9,
+  },
+  {
+    globalOrder: 4,
+    slug: "what-gets-you-banned",
+    title: "What gets you banned",
+    trackId: "rules",
+    programName: "Beginner Foundations",
+    lessonInProgram: 4,
+    lessonsInProgram: 9,
+  },
+  {
+    globalOrder: 5,
+    slug: "how-to-avoid-violations",
+    title: "How to avoid violations",
+    trackId: "rules",
+    programName: "Beginner Foundations",
+    lessonInProgram: 5,
+    lessonsInProgram: 9,
+  },
+  {
+    globalOrder: 6,
+    slug: "long-term-account-safety",
+    title: "Long-term account safety",
+    trackId: "rules",
+    programName: "Beginner Foundations",
+    lessonInProgram: 6,
+    lessonsInProgram: 9,
+  },
+  {
+    globalOrder: 7,
     slug: "first-10-tiktok-live-sessions",
     title: "First 30-minute live session",
     trackId: "beginner",
     programName: "Beginner Foundations",
-    lessonInProgram: 3,
-    lessonsInProgram: 5,
+    lessonInProgram: 7,
+    lessonsInProgram: 9,
   },
   {
-    globalOrder: 4,
+    globalOrder: 8,
     slug: "first-week-of-lives-consistency",
     title: "First week of lives (consistency focus)",
     trackId: "beginner",
     programName: "Beginner Foundations",
-    lessonInProgram: 4,
-    lessonsInProgram: 5,
+    lessonInProgram: 8,
+    lessonsInProgram: 9,
   },
   {
-    globalOrder: 5,
+    globalOrder: 9,
     slug: "common-live-mistakes-new-creators",
     title: "Avoiding beginner mistakes",
     trackId: "beginner",
     programName: "Beginner Foundations",
-    lessonInProgram: 5,
-    lessonsInProgram: 5,
+    lessonInProgram: 9,
+    lessonsInProgram: 9,
   },
   // LIVE STREAMING MASTERY (5) — uses `content` track id
   {
-    globalOrder: 6,
+    globalOrder: 10,
     slug: "talking-with-empty-room",
     title: "Talking when no one is watching",
     trackId: "content",
@@ -84,7 +150,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 7,
+    globalOrder: 11,
     slug: "hooks-and-first-impressions",
     title: "Hooks and first impressions",
     trackId: "content",
@@ -93,7 +159,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 8,
+    globalOrder: 12,
     slug: "content-loops-repeatable-segments",
     title: "Viewer retention techniques",
     trackId: "content",
@@ -102,7 +168,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 9,
+    globalOrder: 13,
     slug: "structuring-longer-lives",
     title: "Structuring longer lives",
     trackId: "content",
@@ -111,7 +177,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 10,
+    globalOrder: 14,
     slug: "growth-weekly-system",
     title: "Building repeat viewers",
     trackId: "content",
@@ -121,7 +187,7 @@ export const CURRICULUM: CurriculumLesson[] = [
   },
   // BATTLES & COLLABORATION (5)
   {
-    globalOrder: 11,
+    globalOrder: 15,
     slug: "understanding-battles",
     title: "Understanding battles",
     trackId: "battles",
@@ -130,7 +196,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 12,
+    globalOrder: 16,
     slug: "preparing-for-your-first-battle",
     title: "Preparing for your first battle",
     trackId: "battles",
@@ -139,7 +205,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 13,
+    globalOrder: 17,
     slug: "structure-your-first-battle-week",
     title: "Running your first battle",
     trackId: "battles",
@@ -148,7 +214,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 14,
+    globalOrder: 18,
     slug: "improving-battle-performance",
     title: "Improving battle performance",
     trackId: "battles",
@@ -157,7 +223,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 15,
+    globalOrder: 19,
     slug: "building-battle-partners",
     title: "Building battle partners",
     trackId: "battles",
@@ -167,7 +233,7 @@ export const CURRICULUM: CurriculumLesson[] = [
   },
   // GROWTH & MONETIZATION (5)
   {
-    globalOrder: 16,
+    globalOrder: 20,
     slug: "gifts-goals-momentum",
     title: "How gifting works",
     trackId: "monetization",
@@ -176,7 +242,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 17,
+    globalOrder: 21,
     slug: "creating-reasons-to-gift",
     title: "Creating reasons to gift",
     trackId: "monetization",
@@ -185,7 +251,7 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 18,
+    globalOrder: 22,
     slug: "setting-goals-during-lives",
     title: "Setting goals during lives",
     trackId: "monetization",
@@ -194,59 +260,22 @@ export const CURRICULUM: CurriculumLesson[] = [
     lessonsInProgram: 5,
   },
   {
-    globalOrder: 19,
-    slug: "scaling-consistency",
-    title: "Scaling consistency",
-    trackId: "monetization",
-    programName: "Growth & Monetization",
-    lessonInProgram: 4,
-    lessonsInProgram: 5,
-  },
-  {
-    globalOrder: 20,
+    globalOrder: 23,
     slug: "building-income-habits",
     title: "Building income habits",
     trackId: "monetization",
     programName: "Growth & Monetization",
-    lessonInProgram: 5,
+    lessonInProgram: 4,
     lessonsInProgram: 5,
-  },
-  // RULES & SAFETY (4)
-  {
-    globalOrder: 21,
-    slug: "platform-rules-new-live-creators",
-    title: "TikTok rules explained",
-    trackId: "rules",
-    programName: "Rules & Safety",
-    lessonInProgram: 1,
-    lessonsInProgram: 4,
-  },
-  {
-    globalOrder: 22,
-    slug: "what-gets-you-banned",
-    title: "What gets you banned",
-    trackId: "rules",
-    programName: "Rules & Safety",
-    lessonInProgram: 2,
-    lessonsInProgram: 4,
-  },
-  {
-    globalOrder: 23,
-    slug: "how-to-avoid-violations",
-    title: "How to avoid violations",
-    trackId: "rules",
-    programName: "Rules & Safety",
-    lessonInProgram: 3,
-    lessonsInProgram: 4,
   },
   {
     globalOrder: 24,
-    slug: "long-term-account-safety",
-    title: "Long-term account safety",
-    trackId: "rules",
-    programName: "Rules & Safety",
-    lessonInProgram: 4,
-    lessonsInProgram: 4,
+    slug: "scaling-consistency",
+    title: "Scaling consistency",
+    trackId: "monetization",
+    programName: "Growth & Monetization",
+    lessonInProgram: 5,
+    lessonsInProgram: 5,
   },
 ];
 
@@ -257,7 +286,7 @@ export const CURRICULUM_TOTAL_LESSONS = CURRICULUM.length;
 /** First lesson in the program — primary entry for the hub hero. */
 export const FIRST_PROGRAM_LESSON_SLUG = CURRICULUM[0].slug;
 
-/** Lessons 1–4 — same as the “Start here” guided intro (no separate path). */
+/** Opening sprint — setup + first safety lessons before regular LIVE. */
 export function getStartHereCurriculumLessons(): CurriculumLesson[] {
   return CURRICULUM.slice(0, 4);
 }
@@ -296,7 +325,7 @@ export function getCurriculumNeighbors(slug: string): {
   };
 }
 
-/** Group ordered lessons for hub / docs */
+/** Group ordered lessons for hub / docs — preserves STREAMERU_PROGRAM_NAMES order. */
 export function curriculumByProgram(): { programName: string; lessons: CurriculumLesson[] }[] {
   const map = new Map<string, CurriculumLesson[]>();
   for (const l of CURRICULUM) {
@@ -304,5 +333,14 @@ export function curriculumByProgram(): { programName: string; lessons: Curriculu
     list.push(l);
     map.set(l.programName, list);
   }
-  return Array.from(map.entries()).map(([programName, lessons]) => ({ programName, lessons }));
+  return STREAMERU_PROGRAM_NAMES.map((programName) => ({
+    programName,
+    lessons: map.get(programName) ?? [],
+  }));
+}
+
+/** Safety lessons living inside Beginner Foundations (track topic, not a separate program). */
+export function isEssentialSafetyLesson(slug: string): boolean {
+  const lesson = CURRICULUM_BY_SLUG.get(slug);
+  return lesson?.trackId === "rules" && lesson.programName === "Beginner Foundations";
 }

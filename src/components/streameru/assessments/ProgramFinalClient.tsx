@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { AssessmentPlayer } from "@/components/streameru/assessments/AssessmentPlayer";
 import {
   addLocalStreamerUXp,
@@ -16,23 +16,29 @@ type Props = {
   questions: { id: string; prompt: string; choices: { id: string; text: string }[] }[];
 };
 
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
+
 export function ProgramFinalClient({
   assessmentKey,
   title,
   programKey,
   questions,
 }: Props) {
-  const [passed, setPassed] = useState(false);
-
-  useEffect(() => {
-    setPassed(readFinalPassed(programKey));
-  }, [programKey]);
+  const isClient = useIsClient();
+  const [justPassed, setJustPassed] = useState(false);
+  const passed = justPassed || (isClient && readFinalPassed(programKey));
 
   const onPassed = useCallback(
     (graded: { percent: number }, xpAwarded: number) => {
       writeFinalPassed(programKey, graded.percent);
       if (xpAwarded > 0) addLocalStreamerUXp(xpAwarded);
-      setPassed(true);
+      setJustPassed(true);
       dispatchStreamerUProgressUpdate();
     },
     [programKey],
@@ -41,8 +47,8 @@ export function ProgramFinalClient({
   return (
     <div className="space-y-4">
       {passed ? (
-        <p className="rounded-xl border border-emerald-200/80 bg-emerald-50/50 px-4 py-3 text-sm font-medium text-emerald-950 dark:border-emerald-900/40 dark:bg-emerald-950/25 dark:text-emerald-100">
-          Program Final passed. When every LIVE mission in this program is complete, your Program
+        <p className="su-celebrate-pass rounded-xl border border-emerald-200/80 bg-emerald-50/50 px-4 py-3 text-sm font-medium text-emerald-950 dark:border-emerald-900/40 dark:bg-emerald-950/25 dark:text-emerald-100">
+          Program Final passed — certificate path unlocked. When every LIVE mission in this program is complete, your Program
           Certificate can issue.
         </p>
       ) : null}

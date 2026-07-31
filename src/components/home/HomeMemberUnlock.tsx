@@ -8,7 +8,7 @@ import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 const unlocks = [
   {
     title: "Learn",
-    body: "Free StreamerU academy training — lessons, quizzes, and LIVE exams so expectations are clear before you go live with the network.",
+    body: "StreamerU is included — free lessons, quizzes, LIVE exams, worksheets, and certificates to accelerate your growth.",
     hue: "bg-indigo-500",
   },
   {
@@ -23,7 +23,7 @@ const unlocks = [
   },
   {
     title: "Grow",
-    body: "Coaching and agency support focused on retention and monetization — the same partner mindset we describe on day one.",
+    body: "Free coaching, community, rankings, and Hall of Fame recognition — focused on retention and sustainable monetization.",
     hue: "bg-pink-500",
   },
 ] as const;
@@ -34,7 +34,7 @@ export function HomeMemberUnlock() {
       <SectionHeader
         eyebrow="Inside the network"
         title="What approved members unlock"
-        description="Membership isn't a badge — it's access to the systems we use to run battles and support creators every week."
+        description="Membership is free. StreamerU is included — systems we use to run battles and support creators every week."
       />
 
       <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
@@ -53,20 +53,20 @@ export function HomeMemberUnlock() {
       </ul>
 
       <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-accent/20 bg-gradient-brand-soft px-6 py-7 text-center dark:border-accent/25 sm:px-10">
-        <p className="text-sm font-semibold text-foreground">After TikTok &amp; website access</p>
+        <p className="text-sm font-semibold text-foreground">Join FREE — two steps</p>
         <p className="mt-2 text-sm leading-relaxed text-muted">
           Join the Creator Network on TikTok first. Then submit your contact details so we can verify you and unlock
-          scheduling and training here — same pipeline for everyone.
+          Battle Hub and member tools — StreamerU included. Creators never pay us.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           <Button href={tiktokCreatorNetworkApplyUrl} external variant="primary" className="min-h-[44px] px-5">
-            Join on TikTok
+            Join Streamer Factory FREE
           </Button>
           <Link
             href="/apply"
             className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-foreground dark:border-zinc-600"
           >
-            Website access
+            Request website access
           </Link>
           <Link
             href="/about"

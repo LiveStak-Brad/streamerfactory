@@ -9,10 +9,11 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Start your training",
   description:
-    "Start free StreamerU training — the first four lessons of Beginner Foundations. No subscription or course fees.",
+    "Start StreamerU today — the first four lessons of Beginner Foundations. Membership is free. StreamerU is included.",
   openGraph: {
     title: `Start your training | ${site.name}`,
-    description: "First four lessons of StreamerU Program 1 — free live streaming academy.",
+    description:
+      "First four lessons of StreamerU Program 1 — free live streaming academy inside a free creator network.",
     url: `${site.url}/streameru/start-here`,
   },
 };
@@ -39,21 +40,16 @@ export default async function StartHerePage() {
         <p className="mt-6 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
           This is the opening sprint of{" "}
           <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Program 1 · Beginner Foundations</strong>{" "}
-          in the free StreamerU academy — lessons{" "}
-          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">1 through 4</strong> in
-          order. Study each lesson, pass the quiz and Live Exam, then use{" "}
+          — setup, then essential safety, before you become a regular LIVE streamer. Lessons{" "}
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">1 through 4</strong> cover
+          LIVE setup, structure, platform rules, and what gets accounts banned. Study each lesson,
+          pass the quiz and Live Exam, then use{" "}
           <strong className="font-semibold text-zinc-800 dark:text-zinc-200">Next lesson</strong> at the
           bottom — or follow the path below.
         </p>
         <p className="mt-4 rounded-xl border border-teal-500/25 bg-teal-500/10 px-4 py-3 text-sm leading-relaxed text-teal-950 dark:border-teal-400/25 dark:bg-teal-500/10 dark:text-teal-100">
-          Protect first: before you stream regularly, also take{" "}
-          <Link
-            href="/streameru/platform-rules-new-live-creators"
-            className="font-semibold underline-offset-2 hover:underline"
-          >
-            Lesson 21 · TikTok rules explained
-          </Link>{" "}
-          in Rules &amp; Safety — essential safety is required from the beginning.
+          Protect first: Lesson 3 begins essential safety inside Program 1 — not a separate later
+          program. Continue through Lessons 3–6 before treating LIVE as a regular habit.
         </p>
 
         <ol className="mt-8 list-decimal space-y-2 pl-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
@@ -149,17 +145,21 @@ export default async function StartHerePage() {
           aria-labelledby="start-here-next"
         >
           <h2 id="start-here-next" className="text-xl font-bold text-zinc-950 dark:text-zinc-50">
-            Network &amp; agency tools
+            Free academy · Free creator network
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            When you want battles and scheduling with the network, use Battle Hub. The main program for learning stays on{" "}
+            Membership is free. StreamerU is included. Use Battle Hub for battles and scheduling with the
+            network — education stays on{" "}
             <Link href="/streameru" className="font-semibold text-accent hover:underline dark:text-accent-muted">
               StreamerU
             </Link>
             .
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Button href="/battle-hub" variant="primary">
+            <Button href="/apply" variant="primary">
+              Join Streamer Factory FREE
+            </Button>
+            <Button href="/battle-hub" variant="secondary">
               Battle Hub
             </Button>
             <Button href="/battle-hub/calendar" variant="secondary">

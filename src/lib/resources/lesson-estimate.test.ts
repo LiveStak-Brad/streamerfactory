@@ -10,7 +10,9 @@ describe("lesson estimate source of truth", () => {
       const summed = sumStudyMinutesForSlugs(slugs);
       const manual = slugs.reduce((n, slug) => n + getLessonEstimate(slug).studyMinutes, 0);
       expect(summed).toBe(manual);
-      expect(summed).toBeGreaterThan(0);
+      // Advanced Creator ships as a roadmap shell with 0 lessons until content lands.
+      if (slugs.length > 0) expect(summed).toBeGreaterThan(0);
+      else expect(summed).toBe(0);
     }
   });
 

@@ -73,8 +73,8 @@ export function HomeHero({
               <span className="text-gradient-brand">thriving creator network</span>.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-              Train free in StreamerU, climb factory rankings, schedule battles in Battle Hub, and grow with creators who
-              treat LIVE like a business — not a dead Discord invite.
+              Join the free TikTok LIVE creator network. StreamerU training, worksheets, coaching,
+              community, rankings, Hall of Fame, and Battle Hub are included — creators never pay us.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -108,7 +108,7 @@ export function HomeHero({
                 <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
                   Why join
                 </span>
-                <span className="mt-1 block font-semibold text-white">Systems that compound weekly</span>
+                <span className="mt-1 block font-semibold text-white">Free network · free academy</span>
               </li>
               <li className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
                 <span className="block text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
@@ -138,7 +138,8 @@ export function HomeHero({
               </TrackedCta>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-500">
-              Two steps. TikTok handles network membership — we unlock StreamerU and Battle Hub after verification.{" "}
+              Membership is free. StreamerU is included. Two steps: join on TikTok, then request website
+              access for Battle Hub and member tools.{" "}
               <Link
                 href="/guides/how-to-join-tiktok-live-agency"
                 className="font-semibold text-zinc-300 underline-offset-2 hover:text-white hover:underline"

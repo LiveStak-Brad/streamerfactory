@@ -76,9 +76,10 @@ export default function EditorialStandardsPage() {
           <div>
             <h2 className="text-2xl font-bold text-foreground">Guides vs member training</h2>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              Public guides explain the ecosystem. StreamerU lessons teach execution. Member tools (Battle
-              Hub scheduling and related features) unlock after Creator Network membership and website
-              verification — we will not blur that boundary to inflate SEO pages.
+              Public guides explain the ecosystem. StreamerU is free education included with free Streamer
+              Factory membership. Member tools (Battle Hub scheduling and related features) unlock after
+              Creator Network membership and website verification — we will not blur that boundary to
+              inflate SEO pages.
             </p>
           </div>
 

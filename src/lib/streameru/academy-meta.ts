@@ -6,6 +6,7 @@
 
 import { CURRICULUM, CURRICULUM_TOTAL_LESSONS, curriculumByProgram } from "@/lib/resources/curriculum";
 import { STREAMERU_XP } from "@/lib/assessments/xp";
+import { sumStudyMinutesForSlugs } from "@/lib/resources/lesson-estimate";
 import { getAllLibraryResources } from "@/lib/streameru-library/catalog";
 import { getReadyResourceCount } from "@/lib/streameru-library/by-lesson";
 import { LIBRARY_CATEGORIES } from "@/lib/streameru-library/types";
@@ -13,9 +14,43 @@ import { LIBRARY_CATEGORIES } from "@/lib/streameru-library/types";
 /** Lessons currently in the shipped academy catalog. */
 export const PUBLISHED_LESSON_COUNT = CURRICULUM_TOTAL_LESSONS;
 
-/** Programs currently published in the academy (Beginner → Rules). */
+/**
+ * Software-style release metadata — keeps the academy feeling maintained.
+ * Bump version / dates when a meaningful lesson batch ships.
+ */
+export const ACADEMY_RELEASE = {
+  version: "1.0",
+  versionLabel: "StreamerU v1.0",
+  currentReleaseLabel: "Current Release",
+  lastUpdatedLabel: "July 2026",
+  lastLessonAddedLabel: "July 2026",
+  reviewedBy: "Brad Morris",
+  cadence: "Updated weekly · New lessons every month",
+} as const;
+
+/** Study-only estimate for the published catalog (excludes LIVE exam minutes). */
+export function getPublishedAcademyStudyMinutes(): number {
+  return sumStudyMinutesForSlugs(CURRICULUM.map((l) => l.slug));
+}
+
+/** Human label like "5–6 hours" from published study minutes. */
+export function getPublishedAcademyStudyHoursLabel(): string {
+  const minutes = getPublishedAcademyStudyMinutes();
+  const hours = minutes / 60;
+  const low = Math.max(1, Math.floor(hours));
+  const high = Math.max(low, Math.ceil(hours));
+  if (low === high) return `~${low} hour${low === 1 ? "" : "s"}`;
+  return `${low}–${high} hours`;
+}
+
+/** Programs in the academy roadmap (includes Advanced Creator even before its lessons ship). */
 export function getPublishedProgramCount(): number {
   return curriculumByProgram().length;
+}
+
+/** Programs that currently have published lesson rows. */
+export function getActiveProgramCount(): number {
+  return curriculumByProgram().filter((p) => p.lessons.length > 0).length;
 }
 
 /**
@@ -27,7 +62,7 @@ export const PLANNED_CURRICULUM_LESSON_COUNT = 171;
 /** Planned track count from the university architecture roadmap. */
 export const PLANNED_TRACK_COUNT = 18;
 
-/** First Rules & Safety lesson — essential before regular LIVE. */
+/** First essential safety lesson inside Beginner Foundations — before regular LIVE. */
 export const FIRST_SAFETY_LESSON_SLUG = "platform-rules-new-live-creators";
 
 export const ACADEMY_POSITIONING = {
@@ -35,17 +70,31 @@ export const ACADEMY_POSITIONING = {
   eyebrow: "Free Live Streaming Academy",
   title: "StreamerU",
   valueProposition:
-    "100% free live-streaming education — no subscription, no course fees. Lessons, quizzes, LIVE exams, printables, certificates, and graduation. Built to grow from beginner through professional creator training.",
-  freeAccess: "100% free · No subscription · No course fees · Learn before applying",
+    "Free live-streaming education inside the free Streamer Factory creator network — lessons, quizzes, LIVE exams, printables, certificates, and graduation. Membership is free. StreamerU is included.",
+  freeAccess: "Free academy · Free creator network · Creators never pay us",
   growNote: "Built to grow continually from beginner through professional creator education",
 } as const;
 
 export const ACADEMY_SEO = {
-  title: "StreamerU — The Internet's Free Live Streaming Academy",
+  title: "StreamerU — Free TikTok LIVE Course & Live Streaming Academy",
   description:
-    "Free live-streaming academy from Streamer Factory. Lessons, quizzes, LIVE exams, printables, certificates, and graduation — no subscription or course fees. Learn before you apply.",
+    "Free TikTok LIVE course and live streaming academy from Streamer Factory. Join the free creator network and learn how to grow on TikTok LIVE with lessons, quizzes, LIVE exams, certificates, and graduation — no membership fees, no followers required.",
   shortDescription:
-    "The internet's free live streaming academy — lessons, quizzes, LIVE exams, certificates, and graduation. No course fees.",
+    "Free TikTok LIVE training inside a free creator network — lessons, quizzes, LIVE exams, certificates, and graduation. Creators never pay us.",
+  keywords: [
+    "StreamerU",
+    "free TikTok LIVE course",
+    "TikTok LIVE course",
+    "live streaming course",
+    "creator academy",
+    "TikTok LIVE training",
+    "become a TikTok LIVE creator",
+    "live streaming education",
+    "how to grow on TikTok LIVE",
+    "learn TikTok LIVE",
+    "free streaming academy",
+    "free TikTok LIVE creator network",
+  ],
 } as const;
 
 export type LibraryHubStats = {
@@ -90,7 +139,7 @@ export function getFirstLessonMeta() {
 }
 
 export function getFirstSafetyLessonMeta() {
-  const lesson = CURRICULUM.find((l) => l.slug === FIRST_SAFETY_LESSON_SLUG) ?? CURRICULUM[20];
+  const lesson = CURRICULUM.find((l) => l.slug === FIRST_SAFETY_LESSON_SLUG) ?? CURRICULUM[2];
   return {
     slug: lesson.slug,
     title: lesson.title,
@@ -100,6 +149,6 @@ export function getFirstSafetyLessonMeta() {
 }
 
 export function catalogAvailabilityLine(): string {
-  const programs = getPublishedProgramCount();
-  return `${PUBLISHED_LESSON_COUNT} lessons available now · ${programs} programs · ${PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum planned`;
+  const programs = getActiveProgramCount();
+  return `${PUBLISHED_LESSON_COUNT} lessons available now · ${programs} active programs · Advanced Creator expanding · ${PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum planned`;
 }

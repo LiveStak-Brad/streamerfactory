@@ -101,12 +101,19 @@ export const brandAssets = {
     topRecruiter: "/branding/badges/top-recruiter.svg",
     trainer: "/branding/badges/trainer.svg",
     battleMaster: "/branding/badges/battle-master.svg",
-    streameruGraduate: "/branding/badges/streameru-graduate.svg",
+    /** Prefer CredentialBadge React component for UI; SVG path for emails/OG. */
+    streameruGraduate: "/branding/badges/credentials/streameru-diploma.svg",
     foundingMember: "/branding/badges/founding-member.svg",
     premium: "/branding/badges/premium.svg",
     elite: "/branding/badges/elite.svg",
     gold: "/branding/badges/gold.svg",
     diamond: "/branding/badges/diamond.svg",
+    credentials: {
+      programCertificate: "/branding/badges/credentials/program-certificate.svg",
+      diploma: "/branding/badges/credentials/streameru-diploma.svg",
+      managerCollege: "/branding/badges/credentials/manager-college.svg",
+      hallOfFameGraduate: "/branding/badges/credentials/hall-of-fame-graduate.svg",
+    },
   },
   medals: {
     first: "/branding/medals/1st.svg",

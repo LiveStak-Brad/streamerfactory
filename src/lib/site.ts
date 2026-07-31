@@ -24,7 +24,7 @@ export const site = {
   /** Primary public inbox for creators and partners */
   contactEmail: "team@thestreamerfactory.com",
   tagline:
-    "A TikTok LIVE creator agency helping streamers grow audiences and build sustainable income.",
+    "A free TikTok LIVE creator network with free StreamerU education — creators never pay us.",
   url: "https://thestreamerfactory.com",
 } as const;
 

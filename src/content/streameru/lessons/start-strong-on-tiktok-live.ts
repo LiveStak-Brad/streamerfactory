@@ -3,154 +3,312 @@ import type { ExpandedLesson } from "@/content/streameru/types";
 export const lesson: ExpandedLesson = {
   slug: "start-strong-on-tiktok-live",
   excerpt:
-    "Understand what TikTok LIVE actually is, get your account and setup truly live-ready, and walk into your first broadcast with a plan instead of a guess.",
-  estimatedMinutes: 20,
+    "Learn what TikTok LIVE really is, get your profile and space ready, and walk into your first structured LIVE with a clear promise — not a guess.",
+  estimatedMinutes: 22,
   content: `## Introduction
 
-Every streamer you admire started with the exact same blank screen you're staring at right now: a "Go LIVE" button, an empty chat, and a small voice asking "what if nobody shows up?" This lesson exists to answer the questions that stop most new creators before they ever press that button — not with hype, but with a clear picture of what TikTok LIVE actually is, how to get your account and space ready, and how to walk in with a plan instead of a guess.
+Every creator you look up to once stared at the same blank screen you are staring at now.
 
-This is lesson one of Beginner Foundations for a reason. Everything else in the Streamer Factory curriculum — structure, pacing, consistency, avoiding mistakes — assumes you already understand the surface you're working on. So before we talk about run-of-show or 30-minute endurance (that's coming in the next two lessons), we're going to slow down and build the foundation: what LIVE is as a product, whether your account is ready, how to set up your audio and light in ten minutes, and how to think about the first sixty seconds of a broadcast. Get this right, and every lesson after this one gets easier.
+A Go LIVE button. An empty chat. A quiet voice asking, "What if nobody shows up?"
 
-## Objectives
+This lesson is where StreamerU begins — not with hype, not with gear shopping lists, and not with promises that you will go viral. It begins with something better: a clear system for your first real LIVE.
+
+By the end of this lesson, you will understand what TikTok LIVE actually is, confirm that your account and space are ready, write a simple first-minute promise, and complete a practice LIVE with a visible plan. You do not need expensive equipment. You need ten focused minutes of preparation and the courage to press start.
+
+I will teach this the way I would teach a friend sitting next to me: confidence first, technical basics second, and honest expectations throughout.
+
+## Why This Lesson Matters
+
+StreamerU is a path, not a pile of random tips.
+
+Lesson 1 comes first because every later skill — structure, safety, pacing, battles, monetization — assumes you can open a LIVE without panic and without guessing what the room is for.
+
+Skip this foundation and later lessons feel harder than they need to. You will try to learn retention while still fighting a blurry photo, bad audio, and a blank opening line.
+
+Sequence you are entering:
+
+- **This lesson:** understand LIVE, get ready, open with a promise, finish a real practice session
+- **Next:** simple open / middle / close structure
+- **Then:** essential safety before you become a daily streamer
+
+You are not behind. You are in the right place.
+
+## Learning Objectives
 
 By the end of this lesson, you will be able to:
 
-- Explain what TikTok LIVE is as a feature and how it behaves differently from posting a normal video.
-- Confirm your account is genuinely ready to go LIVE, including username, profile photo, and a one-sentence niche.
-- Set up basic audio, lighting, and camera framing using only what you already own.
-- Write and rehearse a first-minute "promise" that tells viewers why they should stay.
-- Build a mental map of the going-LIVE screen so you're not fumbling with buttons while people are watching.
-- Complete a real, structured 25-minute LIVE with a visible plan and no long silent stretches.
+- Explain how TikTok LIVE differs from posting a normal video
+- Confirm your account is LIVE-ready: readable username, clear profile photo, and a one-sentence niche
+- Set up basic audio, lighting, and framing using what you already own
+- Write and say a first-minute promise that tells viewers why they should stay
+- Locate the key controls on the Go LIVE screen before you start
+- Complete a real 25+ minute LIVE with five visible talking points and no long silent staring
 
-## Estimated time
+## Estimated Study Time
 
-Plan for about 20 minutes of study and setup time to work through this lesson and prepare your space, plus a 25-minute LIVE mission at the end. Total time investment: roughly 45 minutes for your first pass.
+- **Study and setup:** about 20–25 minutes
+- **LIVE Mission:** 25+ minutes on TikTok LIVE
+- **First full pass:** roughly 50–60 minutes total
+
+If you only have a short window today, finish the study and checklist now, then schedule the LIVE Mission for the next available block. Do not skip the mission — StreamerU grades real practice, not reading alone.
 
 ## Prerequisites
 
-None. This is the entry point to the Streamer Factory curriculum. You'll need an existing TikTok account in reasonably good standing, a phone or device capable of going LIVE, and a space where you can talk out loud for at least half an hour without major interruptions.
+None. This is the entry point to StreamerU.
 
-## Lesson
+You will need:
 
-### What TikTok LIVE Actually Is
+- A TikTok account that can go LIVE in your region (eligibility can vary by age, followers, and account status — if Go LIVE is not available yet, finish the study and checklist now, then complete the mission as soon as your account unlocks LIVE)
+- A phone or device that can run TikTok LIVE
+- A space where you can talk out loud for at least 25 minutes without major interruptions
 
-A normal TikTok post is a finished product: you record, edit, post, and the algorithm decides who sees it over hours or days. LIVE is nothing like that. It's real-time, unedited, and the "content" is happening while people watch it happen. That single difference changes everything about how you should think about the format.
+That is enough to begin.
 
-Three things make LIVE distinct from posted video. First, it's a feed placement of its own — TikTok shows LIVE broadcasts to people actively browsing the LIVE tab or scrolling past your live indicator, which means your existing follower count matters less than what's happening on screen right now. Second, it's interactive by default. Chat, hearts, and gifts aren't optional extras; they're the primary way TikTok measures whether your room is "working." A LIVE with strong back-and-forth engagement tends to get shown to more new viewers than one where the host talks into silence. Third, LIVE rewards duration and consistency differently than short-form video. A single viral clip can carry a channel for a week. A single great LIVE mostly just proves you can do it once — the platform favors creators who show up on a repeatable rhythm, which is exactly what the next few lessons in this program are built around.
+## Main Lesson
 
-Practically, your job during a LIVE isn't "perform a script." It's "run a room." Keep that framing in your head as we move through setup.
+### What TikTok LIVE actually is
 
-### Getting Your Account LIVE-Ready
+A normal TikTok post is a finished product. You record, edit, post, and the feed decides who sees it over time.
 
-Before you touch a ring light or a microphone, confirm three things about your account, because they're the first things a new visitor evaluates in the two seconds before they decide to stay or scroll past.
+LIVE is different. It is real-time. It is unedited. The content is happening while people watch it happen.
 
-Your username. Does it match what you actually do or want to be known for? It doesn't need to be clever, but it should be readable and not confusing. If it's a random leftover string of numbers and letters, consider changing it — a name a stranger can read and remember out loud beats one that just feels "cool."
+That single difference changes your job.
 
-Your profile photo. This is the single highest-leverage fix most new creators skip. A blurry photo, a group shot where it's unclear which person is you, or a placeholder icon quietly tells a scrolling viewer "this account isn't active." Replace it with a clear, well-lit photo of your face (or your brand mark if you stream faceless) before your first session.
+On a posted video, you are delivering a clip. On LIVE, you are **hosting a room**. Your goal is not a perfect take. Your goal is presence: talking with direction, welcoming people who join mid-stream, and giving the room a reason to exist right now.
 
-Your niche, in one sentence. You don't need a full brand strategy for lesson one, but you do need to be able to finish this sentence: "I go LIVE to ___." Gaming commentary, chatting and advice, music, cooking, just-chatting variety — pick something you can say confidently. This sentence becomes your topic tag, your bio line, and the thing you tell viewers in your first minute.
+Three differences matter for beginners:
 
-### Audio, Light, and Framing (The Ten-Minute Setup)
+- **Discovery is live.** People can find you while you stream, even with a small following.
+- **Interaction is the product.** Chat and conversation are how the room feels alive.
+- **Consistency beats one lucky night.** One strong LIVE proves you can do it once. Later lessons build rhythm.
 
-You do not need real equipment for your first LIVE. You need three things solved: people can hear you clearly, people can see you clearly, and the frame looks intentional.
+[Callout: Your job on LIVE]
+You are not performing a finished script for an audience that already cares. You are running a room — even if it starts empty.
 
-Audio is the priority — viewers will forgive mediocre video far longer than they'll forgive audio they have to strain to hear. If you have wired or wireless earbuds with a built-in mic, use them; they usually outperform a phone's built-in mic once you're more than a foot away from the device. Turn off background noise sources you can control: fans, TVs, running dishwashers, open windows facing traffic. Silence isn't required, but predictable, low background noise is far better than unpredictable spikes.
+### Confirm your account is LIVE-ready
 
-Light comes next. You don't need a ring light to start, though it helps later. What you need is to face a light source, not have it behind you. A window during the day or a lamp facing your face at roughly eye level will outperform an expensive light aimed the wrong direction. If your only light is overhead, angle your device slightly upward rather than straight down to avoid harsh shadows under your eyes.
+Before you touch lighting or microphones, fix the three things a new visitor judges in about two seconds.
 
-Framing is the final ten percent. Prop your device so the camera sits roughly at eye level, not looking up your chin or down from above. Leave a small amount of headroom above your head, and make sure your hands and any props you'll use fit inside the frame. Glance at what's visible behind you — you don't need a studio, but a chaotic background pulls attention away from you and gives a scrolling viewer a reason to judge before they've even heard you speak.
+**1. Username.** Can a stranger read it and say it out loud? Random leftover numbers feel unfinished. Clear and memorable beats "cool but confusing."
 
-### The First-Minute Promise
+**2. Profile photo.** Use a clear, well-lit photo of your face — or a clean brand mark if you stream faceless. Blurry photos, group shots, and blank icons quietly tell people the account is inactive.
 
-Viewers who land on your LIVE mid-scroll make a stay-or-go decision within the first several seconds. They're not judging your production value; they're judging whether this room has a reason to exist right now. That reason is your first-minute promise: a short, clear statement of what this LIVE is and what someone gets if they stick around.
+**3. One-sentence niche.** Finish this sentence: "I go LIVE to ___."
 
-A first-minute promise sounds like this: "Hey, welcome in — I'm doing [your niche] tonight, and we're going to [specific thing happening], so stick around for [specific payoff]." That's it. Say it early, say it again a couple minutes later for anyone who just joined, and say a shorter version of it any time your viewer count ticks up. New joiners have no context; giving them one in ten seconds is far more effective than assuming they'll figure it out.
+Examples:
 
-### The Going-LIVE Screen: A Mental Map
+- "I go LIVE to talk through beginner creator questions."
+- "I go LIVE to cook simple dinners and chat."
+- "I go LIVE to play [game] and react with chat."
 
-TikTok's exact button layout changes over time with app updates, so rather than memorizing precise pixel locations, build a mental map of the categories of controls you'll interact with, and locate each one on your own device before you go live for real.
+You do not need a full brand strategy today. You need one sentence you can say confidently. That sentence becomes your bio line, your LIVE title direction, and your first-minute promise.
 
-You'll have a way to set a title or topic tag for the session — use it, and make it match your one-sentence niche. You'll have a live comment feed that scrolls in real time — plan where your eyes will rest so you can read it without constantly looking away from camera. You'll have some kind of gift or interaction tray — know roughly where it is so a gift notification doesn't visibly startle you. You'll have a viewer count indicator — decide in advance that you will not obsess over this number during the broadcast; it will move, and reacting to every fluctuation on camera reads as anxious rather than confident. And you'll have an end button — know exactly where it is, because fumbling to find it at the end of a session undercuts a strong close.
+### The ten-minute setup: audio, light, framing
 
-Open the app right now, before your mission LIVE, and simply locate each of these without going live. Familiarity here removes one entire category of first-timer nerves.
+You do not need a studio for Lesson 1. You need three problems solved: people can hear you, people can see you, and the frame looks intentional.
+
+**Audio first.** Viewers forgive average video longer than unclear audio. Use earbuds with a mic if you have them. Turn down controllable noise: TV, fan, dishwasher, street-facing windows. Predictable background sound is good enough.
+
+**Light second.** Face a light source — not a bright window behind you. Daytime window light or a lamp at eye level usually beats expensive light aimed the wrong way.
+
+**Framing third.** Raise the camera to eye level (books, stand, or shelf). Leave a little headroom. Check what is behind you. A tighter, cleaner frame beats a wide shot of chaos.
+
+[Callout: Gear myth]
+Expensive gear will not save an unprepared first LIVE. Clear audio, face-forward light, eye-level framing, and a written plan will.
+
+### The first-minute promise
+
+When someone joins your LIVE, they have almost no context. In the first few seconds they decide: stay or scroll.
+
+Your first-minute promise answers that decision:
+
+"Hey, welcome in — I'm doing [topic] tonight, and we're going to [specific thing], so stick around for [payoff]."
+
+Say it early. Say a shorter version when new people join. Write it on a sticky note for your first sessions. Clarity beats cleverness.
+
+### Build a mental map of the Go LIVE screen
+
+TikTok's button layout changes with updates, so do not memorize pixels. Learn the control categories on your device before you go live: title/topic, chat, gifts/interactions, viewer count, and the end button.
+
+Open the app now and find each one without going live. Familiarity removes a whole category of first-timer nerves.
+
+Viewer count rule: notice it if you must, but do not perform for it. React to chat and your plan — not every number change.
+
+### Your visible plan for the mission
+
+Before you press Go LIVE, write five talking-point bullets you can see without unlocking your phone — sticky note, notes app, or paper.
+
+Those bullets are your safety net against silent staring. If chat is quiet, you still have a next thing to say.
 
 ## Examples
 
-**Example 1 — The readiness pass.** Before going live, a new creator runs through the checklist out loud: "Username is readable, check. Profile photo is a clear shot of my face, check. My one-sentence niche is 'I go live to talk through my day and take viewer questions,' check." That thirty-second pass replaces vague anxiety with a specific, completed checklist.
+**Example 1 — Readiness pass (30 seconds).** Say it out loud: "Username is readable. Photo is clear. My niche sentence is: I go LIVE to answer beginner streaming questions." That tiny pass turns vague anxiety into a completed checklist.
 
-**Example 2 — The first-minute script.** "Hey, thanks for stopping by — I'm doing a casual Q&A tonight about getting started as a streamer, so if you've got questions drop them in chat and I'll get to as many as I can over the next half hour." Notice it names the format, invites participation, and sets a time expectation, all in one breath.
+**Example 2 — First-minute promise.** "Hey, thanks for stopping by — I'm doing a beginner LIVE setup walkthrough tonight. Stick around and I'll show the exact checklist I'm using so you can copy it for your own first stream." Notice: topic, invite, payoff.
 
-**Example 3 — Before/after framing.** Before: phone propped flat on a desk, camera aiming up at the ceiling and the underside of a chin, cluttered laundry visible behind. After: phone raised to eye level using a stack of books, lamp moved to face the creator instead of sitting behind them, and the frame recomposed so only a plain wall is visible in the background. Same room, same phone — completely different first impression.
+**Example 3 — Before / after framing.** Before: phone flat on a desk, camera under the chin, laundry behind you. After: phone raised to eye level on books, lamp facing your face, tighter crop on a plain wall. Same room. Same phone. Completely different first impression.
 
-## Real-world scenarios
+## Real Creator Scenarios
 
-**Scenario: Your only room is messy and can't be cleaned before you go live.** Don't cancel the session over it. Reframe the camera tighter on your upper body and face so less background is visible, or angle the shot toward the cleanest wall in the room. A tight, intentional frame beats a wide shot of clutter every time.
+**Scenario: You are about to go LIVE and you have zero viewers. What should you do?**
 
-**Scenario: You only have overhead lighting and no lamp.** Sit slightly further from directly under the light and angle your face very slightly upward toward it rather than letting it fall straight down. It won't be perfect, but it avoids the harshest shadow pattern, and it's good enough for a first session.
+Start anyway. Read your first-minute promise. Walk your five talking points. Treat the empty room as practice with the door open. Success today is finishing 25+ minutes with a plan — not filling a room. Empty-room craft gets its own deep lesson later; today you are building the habit of starting.
 
-**Scenario: You freeze the moment the LIVE actually starts.** This is common and expected. Have your first-minute promise written on a sticky note or a notes app just off camera, and read it near-verbatim for your first LIVE. Nobody in chat knows it's scripted, and saying something clear beats saying nothing while you find your footing.
+**Scenario: Your room is messy and you cannot clean it.**
+
+Do not cancel. Tighten the frame on your face and upper body, or angle toward the cleanest wall. A deliberate tight shot beats a wide shot of clutter.
+
+**Scenario: You freeze the moment you go live.**
+
+Expected. Keep your promise and talking points where you can see them. Read the first line near-verbatim if you need to. Nobody knows it is written down. Clear words beat silence while you "find your vibe."
+
+**Scenario: Go LIVE is not available on your account yet.**
+
+Finish the study, checklist, and worksheets now. Check eligibility in your TikTok app for your region. Complete the LIVE Mission when LIVE unlocks — do not invent risky workarounds.
 
 ## Screenshots
 
-[Screenshot: Profile screen showing username, profile photo, and bio before edits]
+[Screenshot: TikTok profile showing a clear photo, readable username, and one-sentence bio]
 
-[Screenshot: Phone propped at eye level using a simple book stack, lamp facing the camera]
+[Screenshot: Phone propped at eye level with a lamp or window light facing the creator]
 
-[Screenshot: The Go LIVE setup screen showing where to set a topic/title before starting]
+[Screenshot: Go LIVE setup screen with title/topic field highlighted]
 
-[Screenshot: Live view highlighting the comment feed, viewer count, and end button locations]
+[Screenshot: Live view with chat, viewer count, and end control areas identified]
+
+## Diagrams
+
+[Diagram: LIVE vs posted video — finished clip on the left, real-time hosted room on the right]
+
+[Diagram: Setup priority pyramid — 1) Audio  2) Light  3) Framing  4) Title + first-minute promise]
+
+## From Brad's Experience
+
+[BradExperience]
+I've spent years figuring out what actually works on LIVE across multiple platforms. Some lessons made things easier. Some mistakes cost time I wish I could give you back. The pattern I saw over and over: creators who waited for perfect gear or a guaranteed audience delayed the only practice that matters — hosting a real room. StreamerU exists so you do not have to learn every lesson the hard way. Start simple. Protect your voice with clear audio. Walk in with a promise. Finish the session.
 
 ## Pro Tips
 
-- Do your readiness checklist (username, photo, niche sentence) the night before, not five minutes before you go live — decision fatigue makes rushed choices worse.
-- Keep your first-minute promise written down somewhere visible for at least your first five sessions. Memorization comes naturally after repetition; don't force it early.
-- Test your audio setup by recording ten seconds of a normal post and listening back with earbuds — most audio problems are audible in a short clip.
-- Face a window during the day whenever possible; natural light is free and usually flattering.
-- Locate the end button before you start, every single time, until it becomes automatic.
-- Write your 5 talking-point bullets on paper or a sticky note taped near your camera, not buried in an app you'd have to unlock to see.
-- Treat the viewer count as background information, not a performance report card — react to what people say in chat, not to the number going up or down.
-- If your device gets warm or laggy during long sessions, close other apps before you start rather than mid-broadcast.
+- Do your readiness checklist the night before when you can. Rushed decisions five minutes before Go LIVE are usually worse decisions.
+- Keep your first-minute promise written and visible for at least your first five sessions.
+- Test audio by recording a ten-second normal video and listening back with earbuds.
+- Face a window during the day whenever you can — free light is often excellent.
+- Locate the end button before every early session until it is automatic.
+- Put talking points on paper near the camera, not buried in an app you have to unlock.
+- Treat viewer count as background information, not a grade.
+- Close extra apps before you start so your device stays cooler and more stable.
 
-## Common Mistakes
+## Common Beginner Mistakes
 
-- **Going live with an unreadable username or blurry photo.** Fix: spend two minutes updating both before your first session — this is the cheapest improvement available to you.
-- **Not knowing your one-sentence niche.** Fix: write it down and say it out loud until it comes naturally; vague sessions produce vague viewer decisions.
-- **Aiming the camera up from below.** Fix: prop your device at eye level using books, a stand, or a shelf.
-- **Sitting with a light source behind you.** Fix: face the light, don't have your back to it.
-- **Skipping the first-minute promise entirely.** Fix: write and rehearse one line that states what's happening and what viewers get if they stay.
-- **Fumbling to find the end button at the close.** Fix: locate it before you start so ending the session feels intentional, not chaotic.
-- **Letting long silent stretches happen while you figure out what to say.** Fix: keep your 5 talking-point bullets visible at all times as a backup script.
+- **Going live with a blurry photo or unreadable username.** Fix: spend two minutes updating both before session one.
+- **No niche sentence.** Fix: write "I go LIVE to ___." and say it until it feels natural.
+- **Camera looking up your nose.** Fix: raise the device to eye level.
+- **Bright light behind you.** Fix: face the light.
+- **Skipping the first-minute promise.** Fix: write one clear stay-reason and say it early.
+- **Silent staring when chat is empty.** Fix: look at your five bullets and keep talking.
+- **Ending in a panic because you cannot find the end button.** Fix: locate it before you start.
+
+## Reality Check
+
+Your first LIVE may only have a few viewers — or none.
+
+That is normal.
+
+It does not mean you failed. It does not mean you "are not built for this." It means you are at the beginning of a skill that improves with reps.
+
+This week's objective is not popularity. It is **consistency and systems**: a ready profile, a clear promise, a visible plan, and a finished session.
+
+StreamerU will teach growth later. Right now, we teach you how to show up prepared.
 
 ## Summary
 
-TikTok LIVE is a real-time, interactive product surface — treat it like hosting a room, not performing a script. Before you go live, confirm your username, profile photo, and one-sentence niche are all ready to represent you. Solve audio first, then light, then framing, using only what you already own. Open with a clear first-minute promise, and build a mental map of the going-LIVE controls so nothing surprises you mid-session. None of this requires expensive gear — it requires ten focused minutes of preparation and a plan for what you'll say.
+TikTok LIVE is a real-time room you host, not a finished video you post. Before you go live, confirm username, photo, and one-sentence niche. Solve audio, then light, then framing with what you already own. Open with a first-minute promise. Keep five talking points visible. Know your Go LIVE controls before you start. None of this requires expensive gear. It requires preparation and a decision to practice for real.
 
-## Mission
+## LIVE Mission
 
-Your mission is one combined session: study, then execute. Confirm your TikTok username, profile photo, and one-sentence niche before you start. Write 5 talking-point bullets you can see while live — these are your safety net against dead air. Then run a real 25-plus minute LIVE with a clear topic and a visible plan, with no silent staring stretches longer than a few seconds. This isn't optional practice — it's the first entry in your consistency record for this program.
+This mission exists to turn study into behavior. Reading about LIVE does not build confidence. Hosting a LIVE does.
+
+**What you will do**
+
+1. Confirm username, profile photo, and one-sentence niche.
+2. Write five talking-point bullets you can see while live.
+3. Complete the First Stream Checklist (and Profile Optimization Worksheet if you have not yet).
+4. Go LIVE on TikTok for **25+ minutes** with a clear topic and visible plan.
+5. Keep talking with direction — no silent staring stretches longer than a few seconds.
+6. End intentionally using the end control you located before you started.
+
+**What success looks like**
+
+Success is behavior, not viewer count:
+
+- You started on time with a written plan
+- You said a clear first-minute promise
+- You stayed live for 25+ minutes
+- You used your talking points when the room was quiet
+- You finished cleanly
+
+If three people watched or three hundred watched, the pass criteria are the same: prepared start, continuous presence, full duration.
 
 ## Downloads
 
-Copy this checklist before your mission:
+Use these before your mission (also available in the StreamerU Library):
 
-- Username readable and on-brand — confirmed
-- Profile photo clear and current — confirmed
-- One-sentence niche written down: "I go LIVE to ___."
-- 5 talking-point bullets written on a sticky note or notes app
-- Audio source selected (earbud mic or device mic) and tested
-- Light source positioned facing your face, not behind you
-- Camera propped at eye level with headroom and a clean-enough background
-- First-minute promise script written and rehearsed once out loud
-- End button located on your device before starting
+- **First Stream Checklist** — profile, tech, content, and light promo boxes
+- **Profile Optimization Worksheet** — niche, bio drafts, and visual checks
+- Quick copy list for your desk:
+  - Username readable — confirmed
+  - Profile photo clear — confirmed
+  - Niche sentence: "I go LIVE to ___."
+  - Five talking points visible
+  - Audio tested
+  - Light facing you
+  - Camera at eye level
+  - First-minute promise rehearsed once out loud
+  - End button located
 
-## Related Lessons
+## Quiz
 
-- your-first-live-structure — Your first live structure
-- first-10-tiktok-live-sessions — First 30-minute live session
-- talking-with-empty-room — Talking when no one is watching
+Complete the interactive Lesson Quiz below (or in the assessment block on this page).
 
-## Next Lesson
+- **Pass mark:** 70%
+- **Format:** scenario-based questions
+- **Why it matters:** the quiz confirms you understand the system before you mark the LIVE Mission complete
 
-Your first live structure (your-first-live-structure) — now that your account and setup are ready, you'll learn how to build a simple open/middle/close structure so your LIVE feels intentional instead of improvised.
+Read every explanation — wrong answers teach as much as right ones.
+
+## Key Takeaways
+
+- LIVE is hosting a room, not posting a finished clip
+- Ready profile: username, photo, one-sentence niche
+- Setup order: audio → light → framing
+- Open with a first-minute promise
+- Keep five talking points visible
+- Empty rooms are normal at the beginning
+- Measure success by preparation and duration, not viewer count
+- Finish the session — that is how confidence compounds
+
+## Before You Move On
+
+☐ Finished reading this lesson
+
+☐ Completed Profile Optimization Worksheet
+
+☐ Completed First Stream Checklist
+
+☐ Passed the Lesson Quiz (70%+)
+
+☐ Completed the 25+ minute LIVE Mission
+
+☐ Wrote one line: what felt hardest, what you will reuse next time
+
+☐ Ready for Lesson 2
+
+## Next Lesson Preview
+
+You now know how to get into a LIVE without guessing. Next, we give that LIVE a spine.
+
+In **Your first live structure**, you will learn a simple open → three middle segments → close model so your session does not fall apart around minute ten — plus a sticky-note run-of-show you can reuse for weeks.
+
+Open Lesson 2 when you are ready. Long-term creators rarely wait for perfect conditions — they build the next system after the first one.
 `,
 };

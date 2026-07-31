@@ -214,19 +214,20 @@ export function AssessmentPlayer({
         <div
           className={`mt-8 rounded-xl border px-4 py-4 ${
             graded.passed
-              ? "border-emerald-200/80 bg-emerald-50/60 dark:border-emerald-900/40 dark:bg-emerald-950/30"
+              ? "su-celebrate-pass border-emerald-200/80 bg-emerald-50/60 dark:border-emerald-900/40 dark:bg-emerald-950/30"
               : "border-rose-200/80 bg-rose-50/60 dark:border-rose-900/40 dark:bg-rose-950/30"
           }`}
         >
           <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
             Score {graded.percent}% ({graded.correctCount}/{graded.total}) —{" "}
-            {graded.passed ? "Passed" : `Need ${threshold}% to pass`}
+            {graded.passed ? "Passed — well done" : `Need ${threshold}% to pass`}
           </p>
           {graded.passed ? (
             <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
               StreamerU XP earned this attempt: +{xpAwarded}
               {xpTotal != null ? ` · Total StreamerU XP: ${xpTotal}` : null}
               {masteryAcademy != null ? ` · Academy mastery: ${masteryAcademy}%` : null}
+              {" · Keep learning."}
             </p>
           ) : (
             <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">

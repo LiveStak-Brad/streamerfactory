@@ -7,12 +7,12 @@ const points = [
     body: "We work with people who treat LIVE as a craft—consistency, professionalism, and long-term growth over viral luck.",
   },
   {
-    title: "Agency operations, not noise",
-    body: "Clear communication, defined processes, and management support that respects your time and your brand.",
+    title: "Free network, not a paid upgrade",
+    body: "Membership is free. StreamerU is included. TikTok compensates approved creator networks — we don't charge creators or take a percentage of TikTok LIVE earnings.",
   },
   {
     title: "Growth with guardrails",
-    body: "Training and feedback designed to help you scale safely—aligned with platform rules and sustainable audience trust.",
+    body: "Free training and feedback designed to help you scale safely — aligned with platform rules and sustainable audience trust.",
   },
 ] as const;
 
@@ -24,7 +24,7 @@ export function WhyStreamerFactory() {
           align="left"
           eyebrow="Why us"
           title="Why Streamer Factory"
-          description="We’re not a gimmick network. We’re a partner for creators who want a professional path to earning on TikTok LIVE."
+          description="We’re not a gimmick network or a paid course. We’re a free partner network for creators who want a professional path to earning on TikTok LIVE."
           className="lg:sticky lg:top-28"
         />
         <ul className="space-y-4">

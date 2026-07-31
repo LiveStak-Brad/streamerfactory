@@ -2,20 +2,20 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
+import { CredentialBadge } from "@/components/credentials";
 import { SuProgressBar } from "@/components/streameru/SuProgressBar";
 import { listAcademyPrograms } from "@/lib/assessments/programs";
 import {
   readFinalPassed,
   readGraduationPassed,
 } from "@/lib/assessments/progress-local";
-import { brandAssets } from "@/lib/brand/assets";
 import { CURRICULUM_TOTAL_LESSONS } from "@/lib/resources/curriculum";
 import {
   getCompletedLessonSlugsServerSnapshot,
   getCompletedLessonSlugsSnapshot,
   subscribeStreamerUProgress,
 } from "@/lib/resources/streameru-progress";
-import { PUBLISHED_LESSON_COUNT, getPublishedProgramCount } from "@/lib/streameru/academy-meta";
+import { PUBLISHED_LESSON_COUNT, getActiveProgramCount } from "@/lib/streameru/academy-meta";
 
 type Props = {
   /** Compact variant for lesson footers */
@@ -33,7 +33,7 @@ type DiplomaSnap = {
 
 function readDiplomaSnap(): DiplomaSnap {
   const completed = getCompletedLessonSlugsSnapshot();
-  const programs = listAcademyPrograms();
+  const programs = listAcademyPrograms().filter((p) => p.lessons.length > 0);
   const programsMissionComplete = programs.filter((p) =>
     p.lessons.every((l) => completed.has(l.slug)),
   ).length;
@@ -52,7 +52,7 @@ const emptySnap: DiplomaSnap = {
   programsMissionComplete: 0,
   finalsPassed: 0,
   graduationPassed: false,
-  programCount: getPublishedProgramCount(),
+  programCount: getActiveProgramCount(),
 };
 
 let cache = emptySnap;
@@ -99,7 +99,7 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
 
   return (
     <section
-      className={`relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-[#0b0a12] via-[#12101c] to-[#0b0f1a] p-6 text-zinc-50 shadow-sm sm:p-8 ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-[#0b0a12] via-[#12101c] to-[#0b0f1a] p-6 text-zinc-50 shadow-sm sm:p-8 ${graduated ? "su-celebrate-cert" : ""} ${className}`}
       aria-labelledby="su-certificate-heading"
     >
       <div
@@ -107,24 +107,22 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
         aria-hidden
       />
       <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div className="relative mx-auto h-24 w-24 shrink-0 sm:mx-0 sm:h-28 sm:w-28">
-          {/* eslint-disable-next-line @next/next/no-img-element -- local SVG badge; next/image SVG requires special config */}
-          <img
-            src={brandAssets.badges.streameruGraduate}
-            alt="StreamerU Graduate badge"
-            width={112}
-            height={112}
-            className={`h-full w-full object-contain transition-opacity ${graduated ? "" : "opacity-40 grayscale"}`}
+        <div className="relative mx-auto flex h-28 w-28 shrink-0 flex-col items-center justify-center sm:mx-0">
+          <CredentialBadge
+            type="diploma"
+            size="lg"
+            locked={!graduated}
+            earned={graduated}
           />
-          {!graduated ? (
-            <span className="absolute inset-x-0 bottom-0 rounded-md bg-black/55 px-1 py-0.5 text-center text-[10px] font-bold uppercase tracking-wider text-zinc-300">
-              Locked
-            </span>
-          ) : (
-            <span className="absolute inset-x-0 bottom-0 rounded-md bg-emerald-500/90 px-1 py-0.5 text-center text-[10px] font-bold uppercase tracking-wider text-white">
-              Unlocked
-            </span>
-          )}
+          <span
+            className={`mt-1 rounded-md px-1.5 py-0.5 text-center text-[10px] font-bold uppercase tracking-wider ${
+              graduated
+                ? "bg-emerald-500/90 text-white"
+                : "bg-black/55 text-zinc-300"
+            }`}
+          >
+            {graduated ? "Unlocked" : "Locked"}
+          </span>
         </div>
         <div className="min-w-0 flex-1 text-center sm:text-left">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-accent-muted">
@@ -150,9 +148,9 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
           ) : (
             <>
               <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                Complete all {PUBLISHED_LESSON_COUNT} LIVE exams across {snap.programCount} programs,
-                pass each Program Final, then pass the Graduation Exam to earn the StreamerU Diploma.
-                Graduation is not awarded from LIVE exams alone.
+                Complete all {PUBLISHED_LESSON_COUNT} LIVE exams (Beginner Foundations includes
+                essential safety), pass each active Program Final, then pass the Graduation Exam to
+                earn the StreamerU Diploma. Advanced Creator expands as new lessons ship.
               </p>
               <div className="mt-4 space-y-3">
                 <div>

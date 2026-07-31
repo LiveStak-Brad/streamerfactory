@@ -449,15 +449,16 @@ export function FounderPageView() {
               Ready to Build Something Bigger?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-zinc-400">
-              Join the network. Train in StreamerU. Climb the rankings. Build the career you keep
-              saying you want — or{" "}
+              Join Streamer Factory for free and use StreamerU to accelerate your growth. Climb the
+              rankings. Build the career you keep saying you want — membership is free, StreamerU is
+              included.{" "}
               <Link
                 href="/apply"
                 className="font-semibold text-cyan-200/90 underline-offset-2 hover:text-white hover:underline"
               >
-                request website access
-              </Link>{" "}
-              after you join on TikTok.
+                Apply to join the free creator network
+              </Link>
+              .
             </p>
           </Reveal>
           <Reveal delayMs={120}>

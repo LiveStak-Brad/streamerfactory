@@ -376,9 +376,14 @@ export const FOUNDER_FAQS = [
       "Yes. Beginners are welcome. Streamer Factory is a TikTok LIVE agency and education hub designed for creators at different stages — including people who are just learning how to grow on TikTok LIVE and want structure instead of guessing.",
   },
   {
+    question: "Is Streamer Factory free?",
+    answer:
+      "Yes. Streamer Factory membership is completely free, and StreamerU education is included. Creators never pay us. TikTok compensates Streamer Factory through its LIVE Creator Network program — we do not charge membership fees and do not take a percentage of your TikTok LIVE earnings. Creators keep earning directly through TikTok's monetization systems according to TikTok's platform rules.",
+  },
+  {
     question: "How does Streamer Factory help creators grow?",
     answer:
-      "We combine creator education in StreamerU, livestream battles through Battle Hub, public Rankings for accountability, Members community, Hall of Fame recognition, and practical Guides. It's a full creator network — not a one-off tip thread.",
+      "We combine free creator education in StreamerU, livestream battles through Battle Hub, public Rankings for accountability, Members community, Hall of Fame recognition, coaching, and practical Guides. It's a full free creator network — not a paid course or a one-off tip thread.",
   },
   {
     question: "What makes your coaching different?",

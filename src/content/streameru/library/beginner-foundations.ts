@@ -19,7 +19,7 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
     blocks: [
       {
         type: "intro",
-        text: "Use this checklist before every early LIVE. Check each box, then go live with confidence. Bring the filled sheet back when you complete Lesson 1’s mission.",
+        text: "Gold-standard Lesson 1 tool. Use this checklist before every early LIVE. Check each box, pass the Lesson Quiz, then go live. Bring the filled sheet back when you complete Lesson 1’s LIVE Mission — success is preparation and duration, not viewer count.",
       },
       {
         type: "checkbox_list",
@@ -75,7 +75,7 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
       },
       {
         type: "callout",
-        text: "After your LIVE: return to StreamerU → mark Lesson 1’s mission complete → open Lesson 2.",
+        text: "After your LIVE: return to StreamerU → confirm quiz passed → mark Lesson 1’s mission complete → open Lesson 2 (Your first live structure).",
       },
     ],
   },
@@ -143,7 +143,7 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
     id: "thirty-minute-stream-outline",
     title: "30-Minute Stream Outline",
     description:
-      "A timed run-of-show for a focused 30-minute LIVE — intro, segments, and a strong close.",
+      "A timed run-of-show for a focused LIVE — open, three middle segments, and a strong close.",
     category: "beginner",
     kind: "planner",
     status: "ready",
@@ -151,7 +151,7 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
     blocks: [
       {
         type: "intro",
-        text: "Print this and keep it next to your camera. Hit each segment on time — structure beats winging it.",
+        text: "Gold-standard Lesson 2 tool. Print this and keep it next to your camera. Soft timers guide rhythm — structure beats winging it. Measure execution, not views.",
       },
       {
         type: "fill_lines",
@@ -211,9 +211,9 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
   },
   {
     id: "first-live-structure-sheet",
-    title: "First Live Structure Sheet",
+    title: "LIVE Run Sheet (First Live Structure)",
     description:
-      "Design three 8–10 minute segments with hooks so your LIVE feels intentional, not improvised.",
+      "Design open, three 8–10 minute segments with hooks and transitions, plus a deliberate close — your Lesson 2 mission planner.",
     category: "beginner",
     kind: "worksheet",
     status: "ready",
@@ -221,41 +221,62 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
     blocks: [
       {
         type: "intro",
-        text: "Lesson 2 mission: one LIVE that follows intro → segments → close. Plan it here first.",
+        text: "Lesson 2 mission planner. Fill this before you go live. Framework: Open → Seg 1 → Seg 2 → Seg 3 → Close. Bridge each change: acknowledge → name → question.",
       },
       {
         type: "fill_lines",
         title: "Big picture",
         lines: [
           { label: "Session theme (one line)" },
+          { label: "First-minute promise (topic + what is happening + why stay)", rows: 2 },
           { label: "Viewer takeaway (what they leave with)", rows: 2 },
         ],
       },
       {
         type: "fill_lines",
-        title: "Segment A (8–10 min)",
+        title: "Open (3–5 min)",
         lines: [
-          { label: "Hook / opener for this segment", rows: 2 },
-          { label: "Core content", rows: 3 },
-          { label: "Transition line into Segment B" },
+          { label: "Welcome + who you are" },
+          { label: "Opening question for chat", rows: 2 },
         ],
       },
       {
         type: "fill_lines",
-        title: "Segment B (8–10 min)",
+        title: "Segment 1 (8–10 min)",
         lines: [
-          { label: "Hook / opener for this segment", rows: 2 },
-          { label: "Core content", rows: 3 },
-          { label: "Transition line into Segment C" },
+          { label: "Segment title" },
+          { label: "Hook for late joiners", rows: 2 },
+          { label: "Talking points (2–3)", rows: 3 },
+          { label: "Transition bridge into Segment 2", rows: 2 },
         ],
       },
       {
         type: "fill_lines",
-        title: "Segment C (8–10 min)",
+        title: "Segment 2 (8–10 min)",
         lines: [
-          { label: "Hook / opener for this segment", rows: 2 },
-          { label: "Core content", rows: 3 },
-          { label: "Close + CTA", rows: 2 },
+          { label: "Segment title" },
+          { label: "Hook for late joiners", rows: 2 },
+          { label: "Talking points (2–3)", rows: 3 },
+          { label: "Transition bridge into Segment 3", rows: 2 },
+        ],
+      },
+      {
+        type: "fill_lines",
+        title: "Segment 3 (8–10 min)",
+        lines: [
+          { label: "Segment title" },
+          { label: "Hook for late joiners", rows: 2 },
+          { label: "Talking points (2–3)", rows: 3 },
+          { label: "Transition into close", rows: 2 },
+        ],
+      },
+      {
+        type: "fill_lines",
+        title: "Close (3–5 min)",
+        lines: [
+          { label: "One-sentence recap" },
+          { label: "Thanks line" },
+          { label: "Next-session tease + CTA", rows: 2 },
         ],
       },
       {
@@ -264,8 +285,149 @@ export const BEGINNER_FOUNDATIONS_RESOURCES: LibraryResource[] = [
         items: [
           "Each segment has a different purpose (not the same rant three times)",
           "You know what to say if chat is silent",
-          "You can name the next segment without looking at the phone for more than a glance",
-          "Close has a clear ask (follow, return, or specific next topic)",
+          "You can name the next segment with a glance at this sheet",
+          "Close has recap + thanks + next tease",
+          "Emergency prompts prepared (see Emergency Conversation List)",
+        ],
+      },
+      {
+        type: "notes",
+        title: "After-LIVE reflection (one line)",
+        lines: 3,
+      },
+    ],
+  },
+  {
+    id: "transition-cheat-sheet",
+    title: "Transition Cheat Sheet",
+    description:
+      "Reusable bridge lines so segment changes and late-joiner re-orientations feel intentional.",
+    category: "beginner",
+    kind: "checklist",
+    status: "ready",
+    lessonSlugs: ["your-first-live-structure"],
+    blocks: [
+      {
+        type: "intro",
+        text: "Keep this beside your run sheet. Pattern: acknowledge → name new segment → ask a question (or state the next payoff).",
+      },
+      {
+        type: "checkbox_list",
+        title: "Before each bridge",
+        items: [
+          "I can name the segment I am leaving in one short phrase",
+          "I can name the segment I am entering in one short phrase",
+          "I have one question or payoff for the new segment",
+          "I will restate topic for anyone who just joined",
+        ],
+      },
+      {
+        type: "fill_lines",
+        title: "Fill-in bridges (write yours)",
+        lines: [
+          {
+            label: "Open → Seg 1",
+            rows: 2,
+          },
+          {
+            label: "Seg 1 → Seg 2",
+            rows: 2,
+          },
+          {
+            label: "Seg 2 → Seg 3",
+            rows: 2,
+          },
+          {
+            label: "Seg 3 → Close",
+            rows: 2,
+          },
+          {
+            label: "Late-joiner one-liner (topic + current segment)",
+            rows: 2,
+          },
+        ],
+      },
+      {
+        type: "callout",
+        text: "Example: “Okay — that covers setup. Next are your first three talking points. If you just hopped in, welcome — we’re building a map so you never freeze. What’s one topic you could explain without notes?”",
+      },
+    ],
+  },
+  {
+    id: "emergency-conversation-list",
+    title: "Emergency Conversation List",
+    description:
+      "Ten cold prompts for dead chat, early finishes, and lost trains of thought — still tied to today’s theme.",
+    category: "beginner",
+    kind: "checklist",
+    status: "ready",
+    lessonSlugs: ["your-first-live-structure"],
+    blocks: [
+      {
+        type: "intro",
+        text: "Fill these before you go live. Use them when chat dies or a segment ends early. Prefer prompts tied to today’s theme over random topic hops.",
+      },
+      {
+        type: "fill_lines",
+        title: "Today’s theme (anchor)",
+        lines: [{ label: "Theme one-liner" }],
+      },
+      {
+        type: "fill_lines",
+        title: "Prompts 1–10",
+        lines: [
+          { label: "1) A/B choice for chat", rows: 2 },
+          { label: "2) Story / example (30–60 sec)", rows: 2 },
+          { label: "3) “Teach me your version” question", rows: 2 },
+          { label: "4) Beginner mistake to unpack", rows: 2 },
+          { label: "5) Demo or show-and-tell beat", rows: 2 },
+          { label: "6) Myth vs reality", rows: 2 },
+          { label: "7) “What would you do if…” scenario", rows: 2 },
+          { label: "8) Recap quiz question for chat", rows: 2 },
+          { label: "9) Personal process tip", rows: 2 },
+          { label: "10) Soft CTA practice (follow / return reason)", rows: 2 },
+        ],
+      },
+      {
+        type: "callout",
+        text: "Recovery order: rephrase segment question → A/B → short example → next bullet → emergency prompt. Never stare at viewer count.",
+      },
+    ],
+  },
+  {
+    id: "closing-checklist",
+    title: "Closing Checklist",
+    description:
+      "End on purpose — recap, thanks, next tease, CTA — so you never fade out or cut mid-thought.",
+    category: "beginner",
+    kind: "checklist",
+    status: "ready",
+    lessonSlugs: ["your-first-live-structure"],
+    blocks: [
+      {
+        type: "intro",
+        text: "Run this in the last 3–5 minutes of every structured LIVE. A clean close converts attention into a reason to return.",
+      },
+      {
+        type: "checkbox_list",
+        title: "Close sequence",
+        items: [
+          "Signal the close (“Last few minutes…”)",
+          "One-sentence recap of today’s three segments",
+          "Thank the room (chatters and lurkers)",
+          "Tease the next session with a specific topic or time vibe",
+          "Soft CTA (follow / return / library resource) — one ask, not five",
+          "Smile, end deliberately — know where End is before you need it",
+        ],
+      },
+      {
+        type: "fill_lines",
+        title: "Write your close once",
+        lines: [
+          { label: "Recap line", rows: 2 },
+          { label: "Thanks line" },
+          { label: "Next-session tease", rows: 2 },
+          { label: "CTA exact words", rows: 2 },
         ],
       },
     ],

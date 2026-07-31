@@ -7,6 +7,9 @@
  */
 
 import { BEGINNER_FOUNDATIONS_RESOURCES } from "@/content/streameru/library/beginner-foundations";
+import { ESSENTIAL_SAFETY_RESOURCES } from "@/content/streameru/library/essential-safety";
+import { LIVE_STREAMING_MASTERY_RESOURCES } from "@/content/streameru/library/live-streaming-mastery";
+import { BATTLES_RESOURCES } from "@/content/streameru/library/battles";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -28,6 +31,9 @@ function assertUniqueIds(resources: LibraryResource[]): void {
 
 const MERGED: LibraryResource[] = [
   ...BEGINNER_FOUNDATIONS_RESOURCES,
+  ...ESSENTIAL_SAFETY_RESOURCES,
+  ...LIVE_STREAMING_MASTERY_RESOURCES,
+  ...BATTLES_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];

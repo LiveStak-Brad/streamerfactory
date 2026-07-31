@@ -12,25 +12,37 @@ export type ExpandedLesson = {
   /**
    * Full lesson body. Use blank-line paragraphs and:
    * - `## Heading` / `### Heading`
-   * - `[Screenshot: description]` placeholders
+   * - `[Screenshot: description]` / `[Diagram: description]` placeholders
+   * - `[Callout: Title]` + body in the same block
+   * - `[BradExperience]` + body in the same block
    */
   content: string;
 };
 
+/**
+ * Gold-standard H2 order for StreamerU rebuilds (Lesson 1 template).
+ * Future rewrites should match this sequence.
+ */
 export const LESSON_SECTION_HEADINGS = [
   "Introduction",
-  "Objectives",
-  "Estimated time",
+  "Why This Lesson Matters",
+  "Learning Objectives",
+  "Estimated Study Time",
   "Prerequisites",
-  "Lesson",
+  "Main Lesson",
   "Examples",
-  "Real-world scenarios",
+  "Real Creator Scenarios",
   "Screenshots",
+  "Diagrams",
+  "From Brad's Experience",
   "Pro Tips",
-  "Common Mistakes",
+  "Common Beginner Mistakes",
+  "Reality Check",
   "Summary",
-  "Mission",
+  "LIVE Mission",
   "Downloads",
-  "Related Lessons",
-  "Next Lesson",
+  "Quiz",
+  "Key Takeaways",
+  "Before You Move On",
+  "Next Lesson Preview",
 ] as const;

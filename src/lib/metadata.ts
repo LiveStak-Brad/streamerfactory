@@ -31,14 +31,21 @@ export const defaultMetadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   icons: {
+    // Prefer ≥48px PNGs first — Google Search reads homepage <link rel="icon"> for SERP favicons.
     icon: [
-      { url: brandAssets.favicon.png16, sizes: "16x16", type: "image/png" },
-      { url: brandAssets.favicon.png32, sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "96x96", type: "image/png" },
       { url: "/branding/favicon/favicon-48.png", sizes: "48x48", type: "image/png" },
       { url: "/branding/favicon/favicon-96.png", sizes: "96x96", type: "image/png" },
-      { url: brandAssets.favicon.ico, sizes: "any" },
+      { url: brandAssets.favicon.android192, sizes: "192x192", type: "image/png" },
+      { url: brandAssets.favicon.png32, sizes: "32x32", type: "image/png" },
+      { url: brandAssets.favicon.png16, sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
     ],
-    apple: [{ url: brandAssets.favicon.apple, sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: brandAssets.favicon.apple, sizes: "180x180", type: "image/png" },
+    ],
     other: [
       {
         rel: "mask-icon",

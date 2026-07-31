@@ -3,9 +3,22 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { AcademyAssessmentStrip } from "@/components/streameru/assessments/AcademyAssessmentStrip";
+import { AcademyConversionStrip } from "@/components/streameru/AcademyConversionStrip";
+import { AcademyExploreLinks } from "@/components/streameru/AcademyExploreLinks";
+import { AcademyFaqSeo } from "@/components/streameru/AcademyFaqSeo";
+import { AcademyHallOfFameTeaser } from "@/components/streameru/AcademyHallOfFameTeaser";
+import { AcademyLearningPath } from "@/components/streameru/AcademyLearningPath";
+import { AcademyReleasePulse } from "@/components/streameru/AcademyReleasePulse";
+import { AcademyStatCards } from "@/components/streameru/AcademyStatCards";
+import { AcademyVersionBadge } from "@/components/streameru/AcademyVersionBadge";
+import { CertificateShowcase } from "@/components/streameru/CertificateShowcase";
+import { HeroAuthorityStrip } from "@/components/streameru/HeroAuthorityStrip";
 import { HowStreamerUWorks } from "@/components/streameru/HowStreamerUWorks";
+import { MotivationCheckpoint } from "@/components/streameru/MotivationCheckpoint";
 import { StreamerUCertificatePanel } from "@/components/streameru/StreamerUCertificatePanel";
 import { StreamerUGrowingRoadmap } from "@/components/streameru/StreamerUGrowingRoadmap";
+import { WhyCreatorsFail } from "@/components/streameru/WhyCreatorsFail";
+import { WhyStreamerUWorks } from "@/components/streameru/WhyStreamerUWorks";
 import { BradTip } from "@/components/streameru/founder/FounderInsight";
 import { CourseModuleCard, type ModuleLessonStatus } from "@/components/ui/CourseModuleCard";
 import { ProgressRing } from "@/components/ui/ProgressRing";
@@ -15,11 +28,13 @@ import { listAcademyPrograms } from "@/lib/assessments/programs";
 import {
   readFinalPassed,
   readGraduationPassed,
+  readLocalStreamerUXp,
   readQuizPassed,
 } from "@/lib/assessments/progress-local";
 import { STREAMERU_XP } from "@/lib/assessments/xp";
-import { FOUNDER_PLATFORMS } from "@/lib/founder/content";
 import {
+  ADVANCED_CREATOR_ROADMAP_TOPICS,
+  CURRICULUM,
   CURRICULUM_TOTAL_LESSONS,
   FIRST_PROGRAM_LESSON_SLUG,
   curriculumByProgram,
@@ -27,6 +42,7 @@ import {
 } from "@/lib/resources/curriculum";
 import { lessonDifficulty, trackDefaultDifficulty } from "@/lib/resources/difficulty-styles";
 import { getLessonEstimate, sumStudyMinutesForSlugs } from "@/lib/resources/lesson-estimate";
+import { formatMinutesLabel } from "@/lib/resources/mission-minutes";
 import {
   computeRecommendedFromStorage,
   getDefaultRecommendedLesson,
@@ -45,8 +61,12 @@ import {
   getFirstLessonMeta,
   getFirstSafetyLessonMeta,
   getLibraryHubStats,
-  getPublishedProgramCount,
 } from "@/lib/streameru/academy-meta";
+import { computeStudyStreakDays, getAcademyRank } from "@/lib/streameru/academy-rank";
+import { FOUNDER_ACADEMY_NOTE } from "@/lib/streameru/founder-academy";
+import { FREE_NETWORK } from "@/lib/positioning/free-network";
+import { readMissionCompletionIsoDates } from "@/lib/streameru/read-completion-dates";
+import { tiktokCreatorNetworkApplyUrl } from "@/lib/site";
 
 type Props = {
   publishedSlugs: string[];
@@ -122,17 +142,14 @@ function moduleStatus(
 }
 
 const moduleDescriptions: Record<string, string> = {
-  "Beginner Foundations": "Setup, structure, and your first consistent LIVE weeks.",
+  "Beginner Foundations":
+    "Setup, essential platform safety, and your first consistent LIVE weeks — everything before you stream regularly.",
   "Live Streaming Mastery": "Presence, retention, and stronger on-stream craft.",
   "Battles & Collaboration": "Battle prep, formats, and collaborating with the network.",
   "Growth & Monetization": "Audience growth and sustainable LIVE income habits.",
-  "Rules & Safety":
-    "Essential account protection — start before going LIVE regularly. Advanced compliance comes later in the program.",
+  "Advanced Creator":
+    "Long-term success — branding, analytics, creator business, and advanced growth strategy.",
 };
-
-const founderSfLesson =
-  FOUNDER_PLATFORMS.find((p) => p.id === "sf")?.lesson ??
-  "Everything I learned the hard way now lives here — so you don't have to.";
 
 /**
  * Academy hub: progress from device-local missions + curriculum roadmap.
@@ -151,7 +168,6 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
     CURRICULUM_TOTAL_LESSONS > 0 ? (completedCount / CURRICULUM_TOTAL_LESSONS) * 100 : 0;
   const programs = curriculumByProgram();
   const academyPrograms = listAcademyPrograms();
-  const programCount = getPublishedProgramCount();
   const recommendedSlug =
     snapshot.recommendedHref.replace(/^\/streameru\//, "") || FIRST_PROGRAM_LESSON_SLUG;
   const remaining = Math.max(0, CURRICULUM_TOTAL_LESSONS - completedCount);
@@ -159,6 +175,29 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
   const firstSafety = getFirstSafetyLessonMeta();
   const lessonOneEstimate = getLessonEstimate(firstLesson.slug);
   const libraryStats = getLibraryHubStats();
+  const academyRank = getAcademyRank(completedCount);
+  const studyStreak = useSyncExternalStore(
+    subscribeStreamerUProgress,
+    () => computeStudyStreakDays(readMissionCompletionIsoDates()),
+    () => 0,
+  );
+  const localXp = useSyncExternalStore(
+    subscribeStreamerUProgress,
+    readLocalStreamerUXp,
+    () => 0,
+  );
+  const totalStudyMinutes = sumStudyMinutesForSlugs(CURRICULUM.map((l) => l.slug));
+  const remainingStudyMinutes = sumStudyMinutesForSlugs(
+    CURRICULUM.filter((l) => !snapshot.completedSlugs.has(l.slug)).map((l) => l.slug),
+  );
+  const finalsPassed = academyPrograms.filter((p) => readFinalPassed(p.programKey)).length;
+  const activeProgramCount = academyPrograms.filter((p) => p.lessons.length > 0).length;
+  const diplomaPct = Math.min(
+    100,
+    percent * 0.55 +
+      (activeProgramCount > 0 ? (finalsPassed / activeProgramCount) * 30 : 0) +
+      (readGraduationPassed() ? 15 : 0),
+  );
 
   const currentProgram =
     getCurriculumLesson(recommendedSlug)?.programName ??
@@ -191,19 +230,23 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
         };
       }
     }
-    const allProgramsReady = academyPrograms.every(
-      (p) =>
-        p.lessons.every((l) => snapshot.completedSlugs.has(l.slug)) &&
-        readFinalPassed(p.programKey),
-    );
+    const allProgramsReady = academyPrograms
+      .filter((p) => p.lessons.length > 0)
+      .every(
+        (p) =>
+          p.lessons.every((l) => snapshot.completedSlugs.has(l.slug)) &&
+          readFinalPassed(p.programKey),
+      );
     if (allProgramsReady && !readGraduationPassed()) {
       return { label: "Graduation Exam", href: "/streameru/graduation" };
     }
     return null;
   })();
 
-  const programsComplete = academyPrograms.filter((p) =>
-    p.lessons.every((l) => snapshot.completedSlugs.has(l.slug)),
+  const programsComplete = academyPrograms.filter(
+    (p) =>
+      p.lessons.length > 0 &&
+      p.lessons.every((l) => snapshot.completedSlugs.has(l.slug)),
   ).length;
 
   return (
@@ -224,6 +267,10 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             <p className="mt-2 text-base font-medium text-zinc-300 sm:text-lg">
               The Internet&apos;s Free Live Streaming Academy
             </p>
+            <div className="mt-3">
+              <AcademyVersionBadge />
+            </div>
+            <HeroAuthorityStrip />
             <p className="mt-4 text-base leading-relaxed text-zinc-400 sm:text-lg">
               {ACADEMY_POSITIONING.valueProposition}
             </p>
@@ -237,19 +284,24 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   variant="primary"
                   className="min-h-[48px] px-6"
                 >
-                  Continue learning · Lesson {snapshot.recommendedOrder}
+                  Continue your creator journey · Lesson {snapshot.recommendedOrder}
                 </Button>
               ) : (
-                <Button href={firstLesson.href} variant="primary" className="min-h-[48px] px-6">
-                  Start Lesson 1
+                <Button
+                  href={tiktokCreatorNetworkApplyUrl}
+                  external
+                  variant="primary"
+                  className="min-h-[48px] px-6"
+                >
+                  {FREE_NETWORK.joinAndLearnCta}
                 </Button>
               )}
               <Button
-                href="#course-roadmap"
+                href={hasProgress ? "#course-roadmap" : firstLesson.href}
                 variant="secondaryOnDark"
                 className="min-h-[48px] px-6"
               >
-                Browse course roadmap
+                {hasProgress ? "Earn Your First Certificate" : "Start StreamerU Today"}
               </Button>
               <Button
                 href="/streameru/library"
@@ -294,88 +346,99 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   />
                   <div>
                     <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-                      Continue next
+                      Current rank
                     </p>
-                    <p className="mt-1 text-base font-semibold text-white">
-                      {snapshot.recommendedTitle}
-                    </p>
-                    <p className="mt-2 text-sm text-zinc-400">
-                      {remaining} lesson{remaining === 1 ? "" : "s"} remaining ·{" "}
-                      {programsComplete}/{programCount} programs complete
-                    </p>
+                    <p className="mt-1 text-base font-semibold text-white">{academyRank.label}</p>
+                    <p className="mt-1 text-xs text-zinc-400">{academyRank.blurb}</p>
                   </div>
                 </div>
-                <ul className="space-y-2 text-sm text-zinc-400">
-                  {lastCompleted ? (
-                    <li>
-                      <span className="text-zinc-500">Last completed:</span>{" "}
-                      <span className="font-medium text-zinc-200">
-                        Lesson {lastCompleted.globalOrder} · {lastCompleted.title}
-                      </span>
-                    </li>
-                  ) : null}
-                  {currentProgram ? (
-                    <li>
-                      <span className="text-zinc-500">Current program:</span>{" "}
-                      <span className="font-medium text-zinc-200">{currentProgram}</span>
-                    </li>
-                  ) : null}
+                <dl className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">Current program</dt>
+                    <dd className="mt-0.5 font-semibold text-zinc-100">
+                      {currentProgram ?? "—"}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">Lessons remaining</dt>
+                    <dd className="mt-0.5 font-semibold tabular-nums text-zinc-100">{remaining}</dd>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">Study time left</dt>
+                    <dd className="mt-0.5 font-semibold tabular-nums text-zinc-100">
+                      ~{formatMinutesLabel(remainingStudyMinutes)}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">Study streak</dt>
+                    <dd className="mt-0.5 font-semibold tabular-nums text-zinc-100">
+                      {studyStreak} day{studyStreak === 1 ? "" : "s"}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">Certificates earned</dt>
+                    <dd className="mt-0.5 font-semibold tabular-nums text-zinc-100">
+                      {programsComplete}/{activeProgramCount}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+                    <dt className="text-zinc-500">StreamerU XP</dt>
+                    <dd className="mt-0.5 font-semibold tabular-nums text-zinc-100">{localXp}</dd>
+                  </div>
+                </dl>
+                <div>
+                  <div className="mb-1.5 flex justify-between text-[11px] font-semibold text-zinc-400">
+                    <span>Diploma progress</span>
+                    <span className="tabular-nums text-zinc-200">{Math.round(diplomaPct)}%</span>
+                  </div>
+                  <SuProgressBar
+                    value={diplomaPct}
+                    trackClassName="h-2 bg-white/10"
+                    label="Diploma progress"
+                  />
+                  <p className="mt-1.5 text-[11px] text-zinc-500">
+                    Completion {Math.round(percent)}% · Estimated path study ~
+                    {formatMinutesLabel(totalStudyMinutes)}
+                  </p>
+                </div>
+                <p className="text-sm text-zinc-400">
+                  <span className="text-zinc-500">Continue:</span>{" "}
+                  <Link
+                    href={snapshot.recommendedHref}
+                    className="font-semibold text-white underline-offset-2 hover:underline"
+                  >
+                    {snapshot.recommendedTitle}
+                  </Link>
                   {nextAssessment ? (
-                    <li>
-                      <span className="text-zinc-500">Next assessment:</span>{" "}
+                    <>
+                      {" · "}
                       <Link
                         href={nextAssessment.href}
                         className="font-medium text-accent-muted underline-offset-2 hover:underline"
                       >
                         {nextAssessment.label}
                       </Link>
-                    </li>
+                    </>
                   ) : null}
-                  <li>
-                    <span className="text-zinc-500">Diploma path:</span>{" "}
-                    <span className="font-medium text-zinc-200">
-                      {programsComplete}/{programCount} programs · then Graduation Exam
-                    </span>
-                  </li>
-                </ul>
-                <div>
-                  <p className="mb-2 text-[0.65rem] font-bold uppercase tracking-wider text-zinc-500">
-                    Program breakdown
+                </p>
+                {lastCompleted ? (
+                  <p className="text-xs text-zinc-500">
+                    Last completed: Lesson {lastCompleted.globalOrder} · {lastCompleted.title}
                   </p>
-                  <ul className="space-y-2.5">
-                    {programs.map((program, index) => {
-                      const done = program.lessons.filter((l) =>
-                        snapshot.completedSlugs.has(l.slug),
-                      ).length;
-                      const pct =
-                        program.lessons.length > 0
-                          ? (done / program.lessons.length) * 100
-                          : 0;
-                      return (
-                        <li key={program.programName}>
-                          <div className="mb-1 flex justify-between text-[11px] font-semibold text-zinc-400">
-                            <span>
-                              P{index + 1} · {program.programName}
-                            </span>
-                            <span className="tabular-nums text-zinc-300">
-                              {done}/{program.lessons.length}
-                            </span>
-                          </div>
-                          <SuProgressBar
-                            value={pct}
-                            trackClassName="h-1 bg-white/10"
-                            label={`${program.programName} progress`}
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+                ) : null}
               </>
             )}
           </div>
         </div>
       </section>
+
+      <AcademyStatCards />
+
+      <AcademyReleasePulse />
+
+      <MotivationCheckpoint />
+
+      <AcademyLearningPath />
 
       <section
         className="rounded-2xl border border-teal-500/25 bg-teal-500/[0.07] px-5 py-5 dark:border-teal-400/20 dark:bg-teal-500/10 sm:px-6"
@@ -388,20 +451,19 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
           id="safety-first-heading"
           className="mt-1 text-lg font-bold tracking-tight text-foreground"
         >
-          Rules &amp; Safety — required from the beginning
+          Essential safety lives in Program 1
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-          Protect first. Grow second. Monetize third. Scale last. Essential safety starts before
-          your first serious stream — not after you scale. Advanced compliance and long-term account
-          protection stay later in the Rules &amp; Safety program.
+          Protect first. Grow second. Monetize third. Scale last. Platform rules, community
+          guidelines, account safety, and safe streaming practices are taught in Beginner Foundations
+          — immediately after setup — before you become a regular LIVE streamer.
         </p>
         <p className="mt-3 text-sm">
           <Link
             href={firstSafety.href}
             className="font-semibold text-teal-800 underline-offset-2 hover:underline dark:text-teal-200"
           >
-            Start here before going LIVE regularly → Lesson {firstSafety.globalOrder}:{" "}
-            {firstSafety.title}
+            Safety starts at Lesson {firstSafety.globalOrder}: {firstSafety.title} →
           </Link>
         </p>
       </section>
@@ -413,9 +475,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
           </p>
           <h2 className="mt-1 text-2xl font-bold tracking-tight text-foreground">Programs</h2>
           <p className="mt-1 text-sm text-muted">
-            {PUBLISHED_LESSON_COUNT} lessons available now across {programCount} programs. Follow the
-            numbered path — programs stay available; we recommend order, we don&apos;t hard-lock
-            lessons.
+            {PUBLISHED_LESSON_COUNT} lessons available now across {activeProgramCount} active
+            programs, plus Advanced Creator expanding. Follow the numbered path — we recommend order,
+            we don&apos;t hard-lock lessons.
           </p>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
@@ -426,33 +488,48 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const firstPublished =
               program.lessons.find((l) => published.has(l.slug))?.slug ??
               program.lessons[0]?.slug;
-            const status = moduleStatus(
-              program.lessons,
-              snapshot.completedSlugs,
-              published,
-              recommendedSlug,
-            );
+            const isAdvanced = program.programName === "Advanced Creator";
+            const status = isAdvanced
+              ? "unpublished"
+              : moduleStatus(
+                  program.lessons,
+                  snapshot.completedSlugs,
+                  published,
+                  recommendedSlug,
+                );
             const trackId = program.lessons[0]?.trackId;
             const academyProgram = academyPrograms[index];
             const nextProgram = programs[index + 1];
-            const isRules = program.programName === "Rules & Safety";
-            const unlocks = [
-              { label: "Program Certificate", detail: "after LIVE exams + Program Final" },
-              {
-                label: `+${STREAMERU_XP.programFinalPass + STREAMERU_XP.programCertificate} StreamerU XP`,
-                detail: "final pass + certificate awards",
-              },
-              nextProgram
-                ? { label: "Next program", detail: nextProgram.programName }
-                : {
-                    label: "Graduation progress",
-                    detail: "unlocks path to Graduation Exam & StreamerU Diploma",
+            const isBeginner = program.programName === "Beginner Foundations";
+            const unlocks = isAdvanced
+              ? [
+                  { label: "Program Certificate", detail: "when Advanced Creator lessons ship" },
+                  {
+                    label: "Roadmap topics",
+                    detail: ADVANCED_CREATOR_ROADMAP_TOPICS.join(" · "),
                   },
-              {
-                label: "Career-path progress",
-                detail: "counts toward StreamerU Graduate recognition",
-              },
-            ];
+                  {
+                    label: "Graduation progress",
+                    detail: "capstone path after Growth & Monetization",
+                  },
+                ]
+              : [
+                  { label: "Program Certificate", detail: "after LIVE exams + Program Final" },
+                  {
+                    label: `+${STREAMERU_XP.programFinalPass + STREAMERU_XP.programCertificate} StreamerU XP`,
+                    detail: "final pass + certificate awards",
+                  },
+                  nextProgram
+                    ? { label: "Next program", detail: nextProgram.programName }
+                    : {
+                        label: "Graduation progress",
+                        detail: "unlocks path to Graduation Exam & StreamerU Diploma",
+                      },
+                  {
+                    label: "Career-path progress",
+                    detail: "counts toward StreamerU Graduate recognition",
+                  },
+                ];
             return (
               <li key={program.programName}>
                 <CourseModuleCard
@@ -464,25 +541,31 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   description={moduleDescriptions[program.programName]}
                   index={index}
                   difficulty={
-                    isRules
-                      ? "beginner"
-                      : lessonDifficulty(trackId, program.lessons[0]?.slug) ||
-                        trackDefaultDifficulty(trackId)
+                    isAdvanced
+                      ? "advanced"
+                      : isBeginner
+                        ? "beginner"
+                        : lessonDifficulty(trackId, program.lessons[0]?.slug) ||
+                          trackDefaultDifficulty(trackId)
                   }
-                  badgeLabel={isRules ? "Required · Essential" : null}
+                  badgeLabel={isBeginner ? "Includes essential safety" : isAdvanced ? "Coming soon" : null}
                   guidanceNote={
-                    isRules
-                      ? "Start here before going LIVE regularly — foundational safety is not advanced-only."
-                      : program.programName === "Beginner Foundations"
-                        ? `Also review Lesson ${firstSafety.globalOrder}: ${firstSafety.title} before streaming regularly.`
+                    isBeginner
+                      ? `Lessons ${firstSafety.globalOrder}–6 cover platform rules, bans, violations, and account safety before regular LIVE.`
+                      : isAdvanced
+                        ? "Professional creator curriculum in development — branding, analytics, business, and advanced strategy."
                         : null
                   }
-                  estimatedStudyMinutes={sumStudyMinutesForSlugs(
-                    program.lessons.map((l) => l.slug),
-                  )}
+                  estimatedStudyMinutes={
+                    program.lessons.length > 0
+                      ? sumStudyMinutesForSlugs(program.lessons.map((l) => l.slug))
+                      : undefined
+                  }
                   unlocks={unlocks}
                 />
-                {academyProgram && completedInModule >= program.lessons.length ? (
+                {academyProgram &&
+                program.lessons.length > 0 &&
+                completedInModule >= program.lessons.length ? (
                   <p className="mt-2 px-1 text-xs text-muted">
                     <Link
                       href={`/streameru/programs/${academyProgram.programKey}/final`}
@@ -502,7 +585,28 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
 
       <AcademyAssessmentStrip />
 
+      <CertificateShowcase />
+
       <StreamerUCertificatePanel />
+
+      <AcademyHallOfFameTeaser />
+
+      <BradTip showFounderLink showPhoto>
+        {FOUNDER_ACADEMY_NOTE.paragraphs.map((p) => (
+          <p key={p} className="mt-2 first:mt-0">
+            {p}
+          </p>
+        ))}
+        <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
+          StreamerU packages that experience into free lessons, quizzes, LIVE exams, and credentials
+          — {PUBLISHED_LESSON_COUNT} available now, growing toward a{" "}
+          {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
+        </p>
+      </BradTip>
+
+      <WhyStreamerUWorks />
+
+      <WhyCreatorsFail />
 
       <section className="rounded-2xl border border-border/80 bg-surface/80 p-6 dark:border-zinc-800 dark:bg-zinc-950/50 sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -522,9 +626,6 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                 : ""}
               .
             </p>
-            <p className="mt-2 text-xs text-muted">
-              Categories: beginner, battles, monetization, safety, branding, content, and business.
-            </p>
           </div>
           <Button href="/streameru/library" variant="primary" className="min-h-[44px] shrink-0 px-5">
             Browse Free Worksheets &amp; Checklists
@@ -536,14 +637,11 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
 
       <StreamerUGrowingRoadmap />
 
-      <BradTip showFounderLink>
-        <p>{founderSfLesson}</p>
-        <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-500">
-          StreamerU packages that experience into free lessons, quizzes, LIVE exams, and credentials
-          — {PUBLISHED_LESSON_COUNT} available now, growing toward a{" "}
-          {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
-        </p>
-      </BradTip>
+      <AcademyFaqSeo />
+
+      <AcademyConversionStrip />
+
+      <AcademyExploreLinks />
     </div>
   );
 }
@@ -606,7 +704,7 @@ function ZeroProgressWelcome({
         </li>
       </ul>
       <Button href={lessonHref} variant="primary" className="min-h-[48px] w-full px-6 sm:w-auto">
-        Start Lesson 1
+        Start StreamerU Today
       </Button>
       <p className="text-xs text-zinc-500">
         <a

@@ -52,8 +52,7 @@ export function difficultyTrackAccentClass(level: string | null | undefined): st
 
 /**
  * Map curriculum track → typical difficulty band for program UI.
- * Rules & Safety is essential from day one (not advanced-only).
- * Long-term compliance depth still sits later in the curriculum order.
+ * Essential safety (`rules` topical track) lives inside Beginner Foundations.
  */
 export function trackDefaultDifficulty(trackId: string | null | undefined): DifficultyLevel {
   switch (trackId) {
@@ -70,14 +69,11 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
   }
 }
 
-/** Per-lesson override — advanced compliance stays later in Rules & Safety. */
+/** Per-lesson override — deeper account protection sits later inside Beginner Foundations. */
 export function lessonDifficulty(
   trackId: string | null | undefined,
   slug: string | null | undefined,
 ): DifficultyLevel {
-  if (slug === "long-term-account-safety") return "advanced";
-  if (slug === "how-to-avoid-violations" || slug === "what-gets-you-banned") {
-    return "intermediate";
-  }
+  if (slug === "long-term-account-safety") return "intermediate";
   return trackDefaultDifficulty(trackId);
 }

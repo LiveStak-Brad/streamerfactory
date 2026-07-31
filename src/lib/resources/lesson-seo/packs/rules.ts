@@ -1,6 +1,6 @@
 import type { LessonSeoPack } from "@/lib/resources/lesson-seo/types";
 
-/** Rules & Safety — curriculum lessons 21–24 */
+/** Essential safety lessons inside Beginner Foundations (curriculum lessons 3–6) */
 export const RULES_LESSON_SEO: LessonSeoPack[] = [
   {
     slug: "platform-rules-new-live-creators",
@@ -43,7 +43,7 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
       "tiktok-creator-network",
     ],
     internalLinks: [
-      { label: "Previous: Building income habits", href: "/streameru/building-income-habits" },
+      { label: "Previous: Your first live structure", href: "/streameru/your-first-live-structure" },
       { label: "Next: What gets you banned", href: "/streameru/what-gets-you-banned" },
       { label: "StreamerU hub", href: "/streameru" },
       { label: "Meet the founder", href: "/founder" },
@@ -58,6 +58,10 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
       {
         title: "New creator rules orientation checklist",
         intent: "Official docs to read + questions to ask mentors.",
+      },
+      {
+        title: "Risk Category Field Guide (StreamerU Library)",
+        intent: "Printable seven-category mental model + professional baseline checklist.",
       },
     ],
     suggestedBlogSupport: [
@@ -128,6 +132,10 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
         title: "Risk category self-audit",
         intent: "Checklist of common LIVE risk patterns to review weekly.",
       },
+      {
+        title: "Red-Line Reference Card (StreamerU Library)",
+        intent: "The eight hard-stop behaviors plus the one-second self-check phrase.",
+      },
     ],
     suggestedBlogSupport: [
       {
@@ -197,6 +205,10 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
         title: "Pre-LIVE safety checklist",
         intent: "Two-minute scan before going live.",
       },
+      {
+        title: "Moderator Brief Builder + Topic Fence Planner (StreamerU Library)",
+        intent: "Fill-in templates for briefing a moderator and setting fences before you go live.",
+      },
     ],
     suggestedBlogSupport: [
       {
@@ -251,6 +263,7 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
     ],
     internalLinks: [
       { label: "Previous: How to avoid violations", href: "/streameru/how-to-avoid-violations" },
+      { label: "Next: First 30-minute session", href: "/streameru/first-10-tiktok-live-sessions" },
       { label: "StreamerU hub", href: "/streameru" },
       { label: "Apply to Streamer Factory", href: "/apply" },
       { label: "Meet the founder", href: "/founder" },
@@ -265,6 +278,10 @@ export const RULES_LESSON_SEO: LessonSeoPack[] = [
       {
         title: "Monthly account health review",
         intent: "Security + policy + permissions checklist.",
+      },
+      {
+        title: "Account Stewardship Audit + Monthly Safety Self-Audit (StreamerU Library)",
+        intent: "Printable access, collaborator, and brand-fit review plus a repeatable monthly pass.",
       },
     ],
     suggestedBlogSupport: [

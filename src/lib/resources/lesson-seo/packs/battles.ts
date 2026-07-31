@@ -33,7 +33,17 @@ export const BATTLES_LESSON_SEO: LessonSeoPack[] = [
       {
         question: "Are battles only about gifts?",
         answer:
-          "Gifts often decide the scoreboard, but strong battle creators still entertain: clear roles, reactions, fair play, and a reason for chat to care. If the only strategy is “gift or we lose,” the room burns out. Treat battles as a show with a score, not a score with no show.",
+          "Gifts often decide the scoreboard, but strong battle creators still entertain: clear roles, reactions, fair play, and a reason for chat to care. If the only strategy is “gift or we lose,” the room burns out. Treat the scoreboard as a story you’re narrating together, not a score with no show.",
+      },
+      {
+        question: "What does sportsmanship look like in a TikTok battle?",
+        answer:
+          "Congratulating the other room when they land a strong moment, thanking supporters on both sides, and never mocking anyone’s gift amount or follower count. Good sportsmanship is what makes a partner want to battle you again — a nasty win rarely gets a rematch.",
+      },
+      {
+        question: "Should I book a battle right after finishing this lesson?",
+        answer:
+          "Not yet — this lesson is theory only. Watch a real battle first and note one specific tactic using the Battle Observation Debrief before you move to actually preparing and scheduling a match.",
       },
     ],
     relatedGuideSlugs: [
@@ -103,6 +113,16 @@ export const BATTLES_LESSON_SEO: LessonSeoPack[] = [
         question: "What tech issues should I check before battling?",
         answer:
           "Stable connection, charged device, notifications that won’t hijack audio, and lighting that keeps your face readable when you move. Battles are less forgiving of lag and dark video because viewers compare both sides side by side.",
+      },
+      {
+        question: "What should a partner agreement cover before a first battle?",
+        answer:
+          "Confirm the date and time, format and length, promotion plan for both rooms, and a shared understanding that either of you can call a fair pause if something goes wrong. A five-minute conversation here prevents most first-battle awkwardness.",
+      },
+      {
+        question: "Is this the lesson where I actually run my first battle?",
+        answer:
+          "No — this lesson is preparation only: partner fit, agreements, tech checks, and mindset. Running the match itself, with its open-play-recover-close structure, is the next lesson once your prep checklist is complete.",
       },
     ],
     relatedGuideSlugs: [

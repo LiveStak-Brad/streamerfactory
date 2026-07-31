@@ -5,12 +5,12 @@ const steps = [
   {
     step: "01",
     title: "Join on TikTok",
-    body: "Apply through TikTok's Creator Network for Streamer Factory — that's where invitations and membership run.",
+    body: "Apply through TikTok's Creator Network for Streamer Factory — free membership starts there.",
   },
   {
     step: "02",
     title: "Request site access",
-    body: "After TikTok approves you, sign in here and send contact details so we can verify you and turn on tools.",
+    body: "After TikTok approves you, sign in here and send contact details so we can verify you and unlock the free network tools.",
   },
   {
     step: "03",
@@ -19,8 +19,8 @@ const steps = [
   },
   {
     step: "04",
-    title: "Schedule & grow",
-    body: "Use Battle Hub, the shared calendar, and Battle Finder to coordinate LIVE battles — with coaching as you scale.",
+    title: "Learn, schedule & grow",
+    body: "StreamerU is included. Use Battle Hub, the shared calendar, and Battle Finder to coordinate LIVE battles — with free coaching and community as you scale.",
   },
 ] as const;
 
@@ -31,7 +31,7 @@ export function HowItWorks() {
         align="left"
         eyebrow="Process"
         title="How it works"
-        description="A straightforward path—designed to move fast without cutting corners."
+        description="A free creator network — designed to move fast without cutting corners or charging creators."
       />
       <ol className="relative mt-12 space-y-0 border-l border-accent/30 pl-6 sm:pl-8">
         {steps.map((s, index) => (

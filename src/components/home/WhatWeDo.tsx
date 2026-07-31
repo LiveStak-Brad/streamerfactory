@@ -30,7 +30,7 @@ export function WhatWeDo() {
       <SectionHeader
         eyebrow="Services"
         title="What we do"
-        description="A full-service agency layer for TikTok LIVE—so creators can grow with confidence and clarity."
+        description="A free TikTok LIVE creator network — education, coaching, and ops so creators can grow with confidence. Creators never pay us."
       />
       <ul className="mt-14 grid gap-0 overflow-hidden rounded-3xl border border-border/80 bg-surface shadow-[var(--shadow-card)] dark:border-zinc-800 dark:bg-zinc-950/40 sm:grid-cols-2">
         {items.map((item, index) => (

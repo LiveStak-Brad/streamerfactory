@@ -31,7 +31,7 @@ export function BattleHubPreviewBanner({
           href="/apply"
           className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-semibold text-zinc-900 dark:border-zinc-600 dark:text-zinc-100"
         >
-          Apply to join
+          Join FREE
         </Link>
       </div>
       <p className="mt-4 text-sm leading-relaxed text-amber-900/90 dark:text-amber-200/85">
