@@ -70,7 +70,9 @@ function MonthStandings({
             </div>
           ) : (
             <p className="mt-3 text-center text-sm text-zinc-500">
-              Places 2–5 will appear when this month is locked.
+              {provisional
+                ? "Places 2–5 appear here once the live board has enough creators."
+                : "No runner-ups were recorded for this month."}
             </p>
           )}
         </div>

@@ -1,7 +1,8 @@
 import { ChampionCard } from "@/components/hall-of-fame/ChampionCard";
 import { Reveal } from "@/components/hall-of-fame/Reveal";
+import { RunnerUpCard } from "@/components/hall-of-fame/RunnerUpCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { formatYearMonthLabel } from "@/lib/hall-of-fame/months";
+import { formatYearMonthLabel, tracksRunnerUps } from "@/lib/hall-of-fame/months";
 import type { HallOfFameMonth, HallOfFamePlacement } from "@/lib/hall-of-fame/types";
 
 type MonthlyChampionsProps = {
@@ -13,6 +14,10 @@ function championOf(month: HallOfFameMonth): HallOfFamePlacement | null {
   return month.placements.find((p) => p.place === 1) ?? month.placements[0] ?? null;
 }
 
+function runnersOf(month: HallOfFameMonth): HallOfFamePlacement[] {
+  return month.placements.filter((p) => p.place >= 2).sort((a, b) => a.place - b.place);
+}
+
 export function MonthlyChampions({ months, liveMonth }: MonthlyChampionsProps) {
   const lockedChampions = months
     .map((m) => {
@@ -22,6 +27,8 @@ export function MonthlyChampions({ months, liveMonth }: MonthlyChampionsProps) {
     .filter((row): row is { month: HallOfFameMonth; champ: HallOfFamePlacement } => row != null);
 
   const liveChamp = liveMonth ? championOf(liveMonth) : null;
+  const liveRunners =
+    liveMonth && tracksRunnerUps(liveMonth.yearMonth) ? runnersOf(liveMonth) : [];
 
   return (
     <section aria-labelledby="monthly-champions-heading">
@@ -37,13 +44,38 @@ export function MonthlyChampions({ months, liveMonth }: MonthlyChampionsProps) {
       </h2>
 
       {liveChamp && liveMonth ? (
-        <Reveal className="mx-auto mt-10 max-w-xl">
-          <ChampionCard
-            placement={liveChamp}
-            yearMonth={liveMonth.yearMonth}
-            featured
-            provisional
-          />
+        <Reveal className="mx-auto mt-10 w-full max-w-5xl">
+          <div className="mx-auto max-w-xl">
+            <ChampionCard
+              placement={liveChamp}
+              yearMonth={liveMonth.yearMonth}
+              featured
+              provisional
+            />
+          </div>
+          {tracksRunnerUps(liveMonth.yearMonth) ? (
+            <div className="mt-6 sm:mt-8">
+              <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Current runner-ups · {formatYearMonthLabel(liveMonth.yearMonth)}
+              </p>
+              <p className="mt-1 text-center text-xs text-zinc-600">
+                Provisional with the champion — locks at month end
+              </p>
+              {liveRunners.length > 0 ? (
+                <div className="mx-auto mt-4 grid min-w-0 max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {liveRunners.map((p) => (
+                    <div key={`live-${liveMonth.yearMonth}-${p.place}`} className="min-w-0">
+                      <RunnerUpCard placement={p} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-3 text-center text-sm text-zinc-500">
+                  Places 2–5 appear here once the live board has enough creators.
+                </p>
+              )}
+            </div>
+          ) : null}
         </Reveal>
       ) : null}
 
