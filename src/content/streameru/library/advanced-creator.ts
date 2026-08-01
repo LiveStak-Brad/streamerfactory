@@ -740,7 +740,7 @@ export const ADVANCED_CREATOR_RESOURCES: LibraryResource[] = [
     ],
   },
   {
-    id: "boundary-script-card",
+    id: "privacy-boundary-script-card",
     title: "Boundary Script Card",
     description: "Short lines for pushy chat — say once, then continue the show.",
     category: "safety",

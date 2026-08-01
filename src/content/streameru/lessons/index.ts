@@ -63,6 +63,16 @@ import { lesson as aiForLiveCreators } from "./ai-for-live-creators";
 import { lesson as collaborationGrowthWithoutBegging } from "./collaboration-growth-without-begging";
 import { lesson as fromSpikeToStableGrowth } from "./from-spike-to-stable-growth";
 import { lesson as growthCapstone30DayGrowthExperiment } from "./growth-capstone-30-day-growth-experiment";
+import { lesson as communityDesignBelongingOnPurpose } from "./community-design-belonging-on-purpose";
+import { lesson as chatCultureAndReturnViewerHabits } from "./chat-culture-and-return-viewer-habits";
+import { lesson as moderationSystemsThatScale } from "./moderation-systems-that-scale";
+import { lesson as conflictTrollsAndBoundaryEnforcement } from "./conflict-trolls-and-boundary-enforcement";
+import { lesson as protectingCommunityHealthAndYourself } from "./protecting-community-health-and-yourself";
+import { lesson as accessibilityAndInclusionInCommunitySpaces } from "./accessibility-and-inclusion-in-community-spaces";
+import { lesson as guestHostingThatElevatesBothAudiences } from "./guest-hosting-that-elevates-both-audiences";
+import { lesson as interviewingSkillsForCreators } from "./interviewing-skills-for-creators";
+import { lesson as professionalNetworkingForCreators } from "./professional-networking-for-creators";
+import { lesson as communityCapstoneCommunityAppreciationEvent } from "./community-capstone-community-appreciation-event";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -134,6 +144,16 @@ const LESSONS: ExpandedLesson[] = [
   collaborationGrowthWithoutBegging,
   fromSpikeToStableGrowth,
   growthCapstone30DayGrowthExperiment,
+  communityDesignBelongingOnPurpose,
+  chatCultureAndReturnViewerHabits,
+  moderationSystemsThatScale,
+  conflictTrollsAndBoundaryEnforcement,
+  protectingCommunityHealthAndYourself,
+  accessibilityAndInclusionInCommunitySpaces,
+  guestHostingThatElevatesBothAudiences,
+  interviewingSkillsForCreators,
+  professionalNetworkingForCreators,
+  communityCapstoneCommunityAppreciationEvent,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

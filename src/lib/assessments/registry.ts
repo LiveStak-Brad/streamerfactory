@@ -83,6 +83,17 @@ import { quiz as collaborationGrowthWithoutBegging } from "@/lib/assessments/qui
 import { quiz as fromSpikeToStableGrowth } from "@/lib/assessments/quizzes/growth/from-spike-to-stable-growth";
 import { quiz as growthCapstone30DayGrowthExperiment } from "@/lib/assessments/quizzes/growth/growth-capstone-30-day-growth-experiment";
 
+import { quiz as communityDesignBelongingOnPurpose } from "@/lib/assessments/quizzes/community/community-design-belonging-on-purpose";
+import { quiz as chatCultureAndReturnViewerHabits } from "@/lib/assessments/quizzes/community/chat-culture-and-return-viewer-habits";
+import { quiz as moderationSystemsThatScale } from "@/lib/assessments/quizzes/community/moderation-systems-that-scale";
+import { quiz as conflictTrollsAndBoundaryEnforcement } from "@/lib/assessments/quizzes/community/conflict-trolls-and-boundary-enforcement";
+import { quiz as protectingCommunityHealthAndYourself } from "@/lib/assessments/quizzes/community/protecting-community-health-and-yourself";
+import { quiz as accessibilityAndInclusionInCommunitySpaces } from "@/lib/assessments/quizzes/community/accessibility-and-inclusion-in-community-spaces";
+import { quiz as guestHostingThatElevatesBothAudiences } from "@/lib/assessments/quizzes/community/guest-hosting-that-elevates-both-audiences";
+import { quiz as interviewingSkillsForCreators } from "@/lib/assessments/quizzes/community/interviewing-skills-for-creators";
+import { quiz as professionalNetworkingForCreators } from "@/lib/assessments/quizzes/community/professional-networking-for-creators";
+import { quiz as communityCapstoneCommunityAppreciationEvent } from "@/lib/assessments/quizzes/community/community-capstone-community-appreciation-event";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -91,6 +102,7 @@ import { exam as finalRules } from "@/lib/assessments/exams/program-rules";
 import { exam as finalPresence } from "@/lib/assessments/exams/program-presence";
 import { exam as finalCreation } from "@/lib/assessments/exams/program-creation";
 import { exam as finalGrowth } from "@/lib/assessments/exams/program-growth";
+import { exam as finalCommunity } from "@/lib/assessments/exams/program-community";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -158,6 +170,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   collaborationGrowthWithoutBegging,
   fromSpikeToStableGrowth,
   growthCapstone30DayGrowthExperiment,
+  communityDesignBelongingOnPurpose,
+  chatCultureAndReturnViewerHabits,
+  moderationSystemsThatScale,
+  conflictTrollsAndBoundaryEnforcement,
+  protectingCommunityHealthAndYourself,
+  accessibilityAndInclusionInCommunitySpaces,
+  guestHostingThatElevatesBothAudiences,
+  interviewingSkillsForCreators,
+  professionalNetworkingForCreators,
+  communityCapstoneCommunityAppreciationEvent,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -169,6 +191,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalPresence,
   finalCreation,
   finalGrowth,
+  finalCommunity,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

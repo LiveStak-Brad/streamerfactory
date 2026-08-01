@@ -141,6 +141,16 @@ const GOLD_PACK_SLUGS = new Set([
   "collaboration-growth-without-begging",
   "from-spike-to-stable-growth",
   "growth-capstone-30-day-growth-experiment",
+  "community-design-belonging-on-purpose",
+  "chat-culture-and-return-viewer-habits",
+  "moderation-systems-that-scale",
+  "conflict-trolls-and-boundary-enforcement",
+  "protecting-community-health-and-yourself",
+  "accessibility-and-inclusion-in-community-spaces",
+  "guest-hosting-that-elevates-both-audiences",
+  "interviewing-skills-for-creators",
+  "professional-networking-for-creators",
+  "community-capstone-community-appreciation-event",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {

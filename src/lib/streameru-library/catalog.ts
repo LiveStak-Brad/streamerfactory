@@ -14,6 +14,7 @@ import { ADVANCED_CREATOR_RESOURCES } from "@/content/streameru/library/advanced
 import { PRESENCE_MASTERY_RESOURCES } from "@/content/streameru/library/presence-mastery";
 import { CONTENT_CREATION_RESOURCES } from "@/content/streameru/library/content-creation";
 import { GROWTH_MASTERY_RESOURCES } from "@/content/streameru/library/growth-mastery";
+import { COMMUNITY_MASTERY_RESOURCES } from "@/content/streameru/library/community-mastery";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -42,6 +43,7 @@ const MERGED: LibraryResource[] = [
   ...PRESENCE_MASTERY_RESOURCES,
   ...CONTENT_CREATION_RESOURCES,
   ...GROWTH_MASTERY_RESOURCES,
+  ...COMMUNITY_MASTERY_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];
@@ -53,8 +55,13 @@ export const LIBRARY_CATALOG: LibraryResource[] = MERGED;
 
 const BY_ID = new Map(LIBRARY_CATALOG.map((r) => [r.id, r]));
 
+/** Legacy ids kept so old lesson links still resolve after renames. */
+const ID_ALIASES: Record<string, string> = {
+  "boundary-script-card": "privacy-boundary-script-card",
+};
+
 export function getLibraryResource(id: string): LibraryResource | null {
-  return BY_ID.get(id) ?? null;
+  return BY_ID.get(id) ?? BY_ID.get(ID_ALIASES[id] ?? "") ?? null;
 }
 
 export function getAllLibraryResources(): LibraryResource[] {

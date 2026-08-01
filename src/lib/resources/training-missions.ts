@@ -731,7 +731,10 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
         label: "On-Camera Boundaries List",
         href: "/streameru/library/on-camera-boundaries-list",
       },
-      { label: "Boundary Script Card", href: "/streameru/library/boundary-script-card" },
+      {
+        label: "Boundary Script Card",
+        href: "/streameru/library/privacy-boundary-script-card",
+      },
     ],
   },
 
@@ -1354,6 +1357,310 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
       {
         label: "Growth Results Narrative Worksheet",
         href: "/streameru/library/growth-results-narrative-worksheet",
+      },
+    ],
+  },
+
+  // —— Community Mastery ——
+  "community-design-belonging-on-purpose": {
+    id: "mission-65-community-design",
+    mission_title: "Session: Belonging Design LIVE",
+    mission_description:
+      "Complete a community design one-pager and values sheet, then run a LIVE that installs one weekly ritual on purpose.",
+    mission_steps: steps(
+      [
+        "Complete the Community Design One-Pager and Community Values Worksheet.",
+        "Mark one ritual on the Weekly Rituals Planner you will host today.",
+      ],
+      45,
+      [
+        "Deliver the chosen ritual on LIVE (open welcome, mid recognition, or close return cue).",
+        "Note one design sentence you spoke that protected the room's identity.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a written community design plus a 45+ minute LIVE that installs one belonging ritual — not vibes alone.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Community Design One-Pager", href: "/streameru/library/community-design-one-pager" },
+      { label: "Weekly Rituals Planner", href: "/streameru/library/weekly-rituals-planner" },
+      { label: "Community Values Worksheet", href: "/streameru/library/community-values-worksheet" },
+    ],
+  },
+
+  "chat-culture-and-return-viewer-habits": {
+    id: "mission-66-chat-culture",
+    mission_title: "Session: Return Culture LIVE",
+    mission_description:
+      "Install open/close community scripts and recognition phrases, then run a LIVE that delivers a clear return cue.",
+    mission_steps: steps(
+      [
+        "Complete the Open/Close Community Script and Recognition Phrase Bank.",
+        "Open the Return Viewer Tracker for today's session row.",
+      ],
+      45,
+      [
+        "Deliver open orientation + close return cue on purpose; use at least two recognition phrases.",
+        "Fill today's Return Viewer Tracker row within 15 minutes of ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship open/close + recognition artifacts plus a LIVE that trains return habits — not gift-only status.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Open/Close Community Script",
+        href: "/streameru/library/open-close-community-script",
+      },
+      { label: "Return Viewer Tracker", href: "/streameru/library/return-viewer-tracker" },
+      { label: "Recognition Phrase Bank", href: "/streameru/library/recognition-phrase-bank" },
+    ],
+  },
+
+  "moderation-systems-that-scale": {
+    id: "mission-67-moderation-systems",
+    mission_title: "Session: Moderation Systems LIVE",
+    mission_description:
+      "Write a moderator handbook and escalation path, then host a LIVE that practices calm norm enforcement language.",
+    mission_steps: steps(
+      [
+        "Complete the Moderator Handbook and Escalation Path Checklist.",
+        "Fill the Mod Role Ladder Card (even if you are solo for now).",
+      ],
+      45,
+      [
+        "On LIVE, state one clear chat norm and deliver one calm redirect or recognition of culture-protecting chat.",
+        "Note any handbook tweak after the session.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship written moderation systems plus a LIVE that practices calm standards — not chaos management theater.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Moderator Handbook", href: "/streameru/library/moderator-handbook" },
+      { label: "Mod Role Ladder Card", href: "/streameru/library/mod-role-ladder-card" },
+      {
+        label: "Escalation Path Checklist",
+        href: "/streameru/library/escalation-path-checklist",
+      },
+    ],
+  },
+
+  "conflict-trolls-and-boundary-enforcement": {
+    id: "mission-68-conflict-boundaries",
+    mission_title: "Session: Boundary Enforcement Rehearsal LIVE",
+    mission_description:
+      "Complete a conflict decision tree and enforcement phrase bank, then rehearse calm boundary language on a real LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Conflict Decision Tree Card and Enforcement Phrase Bank.",
+        "Open the Incident Log Template for any real incident (or note 'no incident — rehearsed').",
+      ],
+      45,
+      [
+        "Rehearse at least one redirect/warning phrase on LIVE (even without a troll present).",
+        "File incident log notes or rehearsal notes within 15 minutes of ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship decision-tree + phrase-bank artifacts plus a LIVE that rehearses calm enforcement before heat arrives.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Conflict Decision Tree Card",
+        href: "/streameru/library/conflict-decision-tree-card",
+      },
+      { label: "Enforcement Phrase Bank", href: "/streameru/library/enforcement-phrase-bank" },
+      { label: "Incident Log Template", href: "/streameru/library/incident-log-template" },
+    ],
+  },
+
+  "protecting-community-health-and-yourself": {
+    id: "mission-69-community-health",
+    mission_title: "Session: Health Boundary LIVE",
+    mission_description:
+      "Write a community health policy and boundary scripts, then host a LIVE that protects host capacity on purpose.",
+    mission_steps: steps(
+      [
+        "Complete the Community Health Policy and Community Boundary Script Card.",
+        "Open the Community Health Scorecard for this week's row.",
+      ],
+      45,
+      [
+        "On LIVE, hold at least one health boundary if tested — or state a pre-planned topic/off-limits line.",
+        "Fill this week's Community Health Scorecard row after ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a health policy + boundary scripts plus a LIVE that protects host and room — not endless emotional labor.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Community Health Policy", href: "/streameru/library/community-health-policy" },
+      {
+        label: "Community Boundary Script Card",
+        href: "/streameru/library/community-boundary-script-card",
+      },
+      {
+        label: "Community Health Scorecard",
+        href: "/streameru/library/community-health-scorecard",
+      },
+    ],
+  },
+
+  "accessibility-and-inclusion-in-community-spaces": {
+    id: "mission-70-inclusion",
+    mission_title: "Session: Inclusion Open LIVE",
+    mission_description:
+      "Complete inclusion open checks and a newcomer welcome script, then run a LIVE that orients strangers on purpose.",
+    mission_steps: steps(
+      [
+        "Complete the Inclusion Checklist for Opens and Newcomer Welcome Script.",
+        "Fill the Joke Boundary Card (what fits / what is off-limits).",
+      ],
+      45,
+      [
+        "Deliver a plain-language open + newcomer welcome path on LIVE.",
+        "Note one inclusion upgrade you kept even if the room was mostly regulars.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship inclusion artifacts plus a LIVE that orients newcomers — not an insider-only hang.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Inclusion Checklist for Opens",
+        href: "/streameru/library/inclusion-checklist-for-opens",
+      },
+      { label: "Newcomer Welcome Script", href: "/streameru/library/newcomer-welcome-script" },
+      { label: "Joke Boundary Card", href: "/streameru/library/joke-boundary-card" },
+    ],
+  },
+
+  "guest-hosting-that-elevates-both-audiences": {
+    id: "mission-71-guest-hosting",
+    mission_title: "Session: Guest Hosting Prep LIVE",
+    mission_description:
+      "Complete guest run-of-show and mutual-value promo materials, then run a LIVE that rehearses guest hosting behaviors (with or without a live guest).",
+    mission_steps: steps(
+      [
+        "Complete the Guest LIVE Run of Show and Mutual Value Promo Checklist.",
+        "Draft the Guest Exit Ramp Card for a real or planned guest.",
+      ],
+      45,
+      [
+        "Either host with a guest OR rehearse intro + exit-ramp language solo for a planned guest.",
+        "File promo/exit-ramp artifacts for Capstone evidence.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship mutual-value guest artifacts plus a LIVE that elevates both rooms — not one-sided promo optics.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Guest LIVE Run of Show", href: "/streameru/library/guest-live-run-of-show" },
+      {
+        label: "Mutual Value Promo Checklist",
+        href: "/streameru/library/mutual-value-promo-checklist",
+      },
+      { label: "Guest Exit Ramp Card", href: "/streameru/library/guest-exit-ramp-card" },
+    ],
+  },
+
+  "interviewing-skills-for-creators": {
+    id: "mission-72-interviewing",
+    mission_title: "Session: Hosted Interview LIVE",
+    mission_description:
+      "Build an interview question system and listening redirects, then run a LIVE interview segment (guest or interview-energy solo).",
+    mission_steps: steps(
+      [
+        "Complete the Interview Question System and Listening Redirect Card.",
+        "Open the Highlight Moment Log for today's session.",
+      ],
+      45,
+      [
+        "Host a clear interview lane on LIVE with audible listening / follow-ups.",
+        "Log at least two highlight moments within 15 minutes of ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship interview system artifacts plus a LIVE that proves listening — not a laundry-list interrogation.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Interview Question System", href: "/streameru/library/interview-question-system" },
+      { label: "Listening Redirect Card", href: "/streameru/library/listening-redirect-card" },
+      { label: "Highlight Moment Log", href: "/streameru/library/highlight-moment-log" },
+    ],
+  },
+
+  "professional-networking-for-creators": {
+    id: "mission-73-networking",
+    mission_title: "Session: Professional Networking LIVE",
+    mission_description:
+      "Install a thirty-day networking plan and reputation hygiene card, then run a LIVE while completing one professional outreach artifact.",
+    mission_steps: steps(
+      [
+        "Complete the Thirty-Day Networking Plan and Reputation Hygiene Card.",
+        "Draft one Outreach Notes Template message (specific context + value + small ask).",
+      ],
+      45,
+      [
+        "Send the outreach OR rehearse professional shout/credit habits on LIVE without ambush pitching.",
+        "File the outreach notes for Capstone evidence.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a networking plan + one professional outreach artifact plus a LIVE that protects reputation hygiene.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Thirty-Day Networking Plan",
+        href: "/streameru/library/thirty-day-networking-plan",
+      },
+      { label: "Outreach Notes Template", href: "/streameru/library/outreach-notes-template" },
+      { label: "Reputation Hygiene Card", href: "/streameru/library/reputation-hygiene-card" },
+    ],
+  },
+
+  "community-capstone-community-appreciation-event": {
+    id: "mission-74-community-capstone",
+    mission_title: "Session: Community Appreciation Capstone LIVE",
+    mission_description:
+      "Assemble the Capstone evidence packet and host a Community Appreciation Event with a timed run-of-show and same-day after-action review.",
+    mission_steps: steps(
+      [
+        "Assemble the Community Capstone Evidence Checklist and Community Appreciation Event Run of Show.",
+        "Confirm After-Action Review Worksheet is ready for same-day filing.",
+      ],
+      45,
+      [
+        "Host the appreciation event matching the run-of-show (open, appreciation beat, inclusion move, close return ritual).",
+        "Complete the After-Action Review Worksheet the same day and file the evidence packet.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a reviewable Community Appreciation Event with complete Capstone packet — belonging proof, not banner vibes.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Community Appreciation Event Run of Show",
+        href: "/streameru/library/community-appreciation-event-run-of-show",
+      },
+      {
+        label: "Community Capstone Evidence Checklist",
+        href: "/streameru/library/community-capstone-evidence-checklist",
+      },
+      {
+        label: "After-Action Review Worksheet",
+        href: "/streameru/library/after-action-review-worksheet",
       },
     ],
   },

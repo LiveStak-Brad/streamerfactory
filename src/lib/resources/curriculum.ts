@@ -17,6 +17,7 @@
  * 6. Presence Mastery — camera, voice, storytelling, pacing, recovery craft
  * 7. Content Creation Mastery — worth-watching showcraft (niche, segments, themes, arcs)
  * 8. Growth Mastery — discovery systems, analytics, experiments, durable growth
+ * 9. Community Mastery — belonging culture, mods, rituals, guests, networking
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -49,6 +50,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Presence Mastery",
   "Content Creation Mastery",
   "Growth Mastery",
+  "Community Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -638,6 +640,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Growth Mastery",
     lessonInProgram: 12,
     lessonsInProgram: 12,
+  },
+  // COMMUNITY MASTERY (10) — belonging culture after Advanced Creator
+  {
+    globalOrder: 65,
+    slug: "community-design-belonging-on-purpose",
+    title: "Community Design: Belonging on Purpose",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 66,
+    slug: "chat-culture-and-return-viewer-habits",
+    title: "Chat Culture and Return Viewer Habits",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 67,
+    slug: "moderation-systems-that-scale",
+    title: "Moderation Systems That Scale",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 68,
+    slug: "conflict-trolls-and-boundary-enforcement",
+    title: "Conflict, Trolls, and Boundary Enforcement",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 69,
+    slug: "protecting-community-health-and-yourself",
+    title: "Protecting Community Health (and Yourself)",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 70,
+    slug: "accessibility-and-inclusion-in-community-spaces",
+    title: "Accessibility and Inclusion in Community Spaces",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 71,
+    slug: "guest-hosting-that-elevates-both-audiences",
+    title: "Guest Hosting That Elevates Both Audiences",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 72,
+    slug: "interviewing-skills-for-creators",
+    title: "Interviewing Skills for Creators",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 73,
+    slug: "professional-networking-for-creators",
+    title: "Professional Networking for Creators",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 74,
+    slug: "community-capstone-community-appreciation-event",
+    title: "Community Capstone: Community Appreciation Event",
+    trackId: "community",
+    programName: "Community Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
   },
 ];
 
