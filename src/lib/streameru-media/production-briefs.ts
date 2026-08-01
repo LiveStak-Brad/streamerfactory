@@ -11596,6 +11596,246 @@ const REST: LessonProductionBrief[] = [
       },
     ]),
   ),
+  brief(
+    "understanding-the-tiktok-shop-ecosystem",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Shop Ecosystem Map",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Shop Ecosystem Map", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Understanding the TikTok Shop Ecosystem workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Understanding the TikTok Shop Ecosystem workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Understanding the TikTok Shop Ecosystem; approve before publication.",
+        founderQuestion: "What principle would you use to keep understanding the tiktok shop ecosystem trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "becoming-a-trusted-shop-creator",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Shop Readiness Checklist",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Shop Readiness Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Becoming a Trusted Shop Creator workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Becoming a Trusted Shop Creator workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Becoming a Trusted Shop Creator; approve before publication.",
+        founderQuestion: "What principle would you use to keep becoming a trusted shop creator trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "product-selection-research-and-affiliate-strategy",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Affiliate Evaluation Worksheet",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Affiliate Evaluation Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Product Selection, Research & Affiliate Strategy workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Product Selection, Research & Affiliate Strategy workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Product Selection, Research & Affiliate Strategy; approve before publication.",
+        founderQuestion: "What principle would you use to keep product selection, research & affiliate strategy trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "creating-product-videos-people-actually-watch",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Product Video Brief",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Product Video Brief", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Creating Product Videos People Actually Watch workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Creating Product Videos People Actually Watch workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Creating Product Videos People Actually Watch; approve before publication.",
+        founderQuestion: "What principle would you use to keep creating product videos people actually watch trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "live-shopping-that-educates-and-converts",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Live Shopping Run Sheet",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Live Shopping Run Sheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "LIVE Shopping That Educates and Converts workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "LIVE Shopping That Educates and Converts workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to LIVE Shopping That Educates and Converts; approve before publication.",
+        founderQuestion: "What principle would you use to keep live shopping that educates and converts trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "professional-product-demonstrations-and-studio-setup",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Product Demo Planner",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Product Demo Planner", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Professional Product Demonstrations & Studio Setup workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Professional Product Demonstrations & Studio Setup workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Professional Product Demonstrations & Studio Setup; approve before publication.",
+        founderQuestion: "What principle would you use to keep professional product demonstrations & studio setup trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "shop-analytics-optimization-and-campaign-decisions",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Shop Analytics Worksheet",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Shop Analytics Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Analytics, Optimization & Campaign Decisions workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Analytics, Optimization & Campaign Decisions workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Analytics, Optimization & Campaign Decisions; approve before publication.",
+        founderQuestion: "What principle would you use to keep analytics, optimization & campaign decisions trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "shop-compliance-ethics-and-customer-trust",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Shop Compliance Checklist",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Shop Compliance Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Compliance, Ethics & Customer Trust workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Compliance, Ethics & Customer Trust workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Compliance, Ethics & Customer Trust; approve before publication.",
+        founderQuestion: "What principle would you use to keep compliance, ethics & customer trust trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "scaling-your-tiktok-shop-business",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Seasonal Campaign Planner",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Seasonal Campaign Planner", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "Scaling Your TikTok Shop Business workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "Scaling Your TikTok Shop Business workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Scaling Your TikTok Shop Business; approve before publication.",
+        founderQuestion: "What principle would you use to keep scaling your tiktok shop business trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "tiktok-shop-capstone-signature-shop-campaign",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Signature Shop Campaign Dossier",
+        description: "Clean TikTok Shop systems worksheet", purpose: "Shows the primary reviewable Shop artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use a fictional product and no personal customer or order data.",
+        caption: "Verify facts before a Shop action.", alt: "Blank Signature Shop Campaign Dossier", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "product-system-diagram", assetType: "diagram", title: "TikTok Shop Capstone: Signature Shop Campaign workflow diagram",
+        description: "Trustworthy Shop systems flow", purpose: "Shows roles, verification, demo, disclosure, support handoff, and review.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No unsupported claims, fake reviews, or deceptive offers.",
+        caption: "Shop systems require current verification and customer-safe execution.", alt: "TikTok Shop Capstone: Signature Shop Campaign workflow diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-shop-principle", assetType: "founder_story", title: "Brad experience — Shop systems principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented performance claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to TikTok Shop Capstone: Signature Shop Campaign; approve before publication.",
+        founderQuestion: "What principle would you use to keep tiktok shop capstone: signature shop campaign trustworthy when Shop tools or incentives create pressure?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
 ];
 
 export const LESSON_PRODUCTION_BRIEFS: LessonProductionBrief[] = [LESSON_1, ...REST].sort(

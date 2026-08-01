@@ -106,6 +106,10 @@ export const PROGRAM_META_BY_NAME: Record<StreamerUProgramName, ProgramMeta> = {
     programKey: "selling",
     certificateKey: "cert_selling_influence_mastery",
   },
+  "TikTok Shop Mastery": {
+    programKey: "tts",
+    certificateKey: "cert_tiktok_shop_mastery",
+  },
 };
 
 export function listSemesterPrograms(): SemesterProgram[] {
@@ -231,6 +235,9 @@ export function certificateDisplayName(certificateKey: string): string {
   }
   if (certificateKey === "cert_selling_influence_mastery") {
     return "Selling & Influence Mastery Certificate";
+  }
+  if (certificateKey === "cert_tiktok_shop_mastery") {
+    return "TikTok Shop Mastery Certificate";
   }
   return certificateKey;
 }

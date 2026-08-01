@@ -26,6 +26,7 @@
  * 15. Multi-Guest LIVE Mastery — multi-guest hosting specialty (optional; after Gaming LIVE)
  * 16. AI Creator Mastery — responsible AI specialty (optional; after Multi-Guest LIVE)
  * 17. Selling & Influence Mastery — ethical selling specialty (optional; after AI Creator)
+ * 18. TikTok Shop Mastery — TikTok Shop systems specialty (optional; after Selling & Influence)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -67,6 +68,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Multi-Guest LIVE Mastery",
   "AI Creator Mastery",
   "Selling & Influence Mastery",
+  "TikTok Shop Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1471,6 +1473,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     title: "Selling & Influence Capstone: Ethical Creator Offer",
     trackId: "selling",
     programName: "Selling & Influence Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
+  },
+  // TIKTOK SHOP MASTERY (10) — optional specialty after Selling & Influence
+  {
+    globalOrder: 155,
+    slug: "understanding-the-tiktok-shop-ecosystem",
+    title: "Understanding the TikTok Shop Ecosystem",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 156,
+    slug: "becoming-a-trusted-shop-creator",
+    title: "Becoming a Trusted Shop Creator",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 157,
+    slug: "product-selection-research-and-affiliate-strategy",
+    title: "Product Selection, Research & Affiliate Strategy",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 158,
+    slug: "creating-product-videos-people-actually-watch",
+    title: "Creating Product Videos People Actually Watch",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 159,
+    slug: "live-shopping-that-educates-and-converts",
+    title: "LIVE Shopping That Educates and Converts",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 160,
+    slug: "professional-product-demonstrations-and-studio-setup",
+    title: "Professional Product Demonstrations & Studio Setup",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 161,
+    slug: "shop-analytics-optimization-and-campaign-decisions",
+    title: "Analytics, Optimization & Campaign Decisions",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 162,
+    slug: "shop-compliance-ethics-and-customer-trust",
+    title: "Compliance, Ethics & Customer Trust",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 163,
+    slug: "scaling-your-tiktok-shop-business",
+    title: "Scaling Your TikTok Shop Business",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 164,
+    slug: "tiktok-shop-capstone-signature-shop-campaign",
+    title: "TikTok Shop Capstone: Signature Shop Campaign",
+    trackId: "tts",
+    programName: "TikTok Shop Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
   },

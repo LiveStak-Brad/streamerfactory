@@ -172,6 +172,8 @@ const moduleDescriptions: Record<string, string> = {
     "Responsible AI for creators — mindset, prompts, planning, voice-safe writing, visuals, video/repurposing, safe automation, verified research, ethics/privacy, and an AI Creator Operating System.",
   "Selling & Influence Mastery":
     "Ethical selling for creators — trust, buyer psychology, clear value, trust-centered storytelling, objections, natural CTAs, community-safe offers, long-term relationships, reputation, and an Ethical Creator Offer.",
+  "TikTok Shop Mastery":
+    "Professional TikTok Shop for creators — ecosystem literacy, readiness, affiliate product research, product videos, LIVE shopping systems, demos & setups, analytics interpretation, compliance, campaign scaling, and a Signature Shop Campaign.",
 };
 
 /**
@@ -524,6 +526,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isMultiguest = program.programName === "Multi-Guest LIVE Mastery";
             const isAicreator = program.programName === "AI Creator Mastery";
             const isSelling = program.programName === "Selling & Influence Mastery";
+            const isTts = program.programName === "TikTok Shop Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -542,47 +545,53 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isSelling
+                : isTts
                   ? {
                       label: "Next steps",
                       detail:
-                        "Optional specialty complete · Selling & Influence Lab Honors · other Mastery Paths",
+                        "Optional specialty complete · TikTok Shop Lab Honors · other Mastery Paths",
+                    }
+                  : isSelling
+                  ? {
+                      label: "Next steps",
+                      detail:
+                        "TikTok Shop Mastery (optional) · Selling & Influence Lab Honors · other Mastery Paths",
                     }
                   : isAicreator
                   ? {
                       label: "Next steps",
                       detail:
-                        "Selling & Influence Mastery (optional) · AI Creator Lab Honors · other Mastery Paths",
+                        "Selling & Influence / TikTok Shop Mastery (optional) · AI Creator Lab Honors · other Mastery Paths",
                     }
                   : isMultiguest
                   ? {
                       label: "Next steps",
                       detail:
-                        "AI Creator / Selling & Influence Mastery (optional) · Multi-Guest LIVE Lab Honors · other Mastery Paths",
+                        "AI Creator / Selling & Influence / TikTok Shop Mastery (optional) · Multi-Guest LIVE Lab Honors · other Mastery Paths",
                     }
                   : isGaming
                   ? {
                       label: "Next steps",
                       detail:
-                        "Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Gaming LIVE Lab Honors · other Mastery Paths",
+                        "Multi-Guest / AI Creator / Selling & Influence / TikTok Shop Mastery (optional) · Gaming LIVE Lab Honors · other Mastery Paths",
                     }
                   : isMusic
                   ? {
                       label: "Next steps",
                       detail:
-                        "Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
+                        "Gaming / Multi-Guest / AI Creator / Selling & Influence / TikTok Shop Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
                     }
                   : isBattle
                     ? {
                         label: "Next steps",
                         detail:
-                          "Music / Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Battle Lab Honors · other Mastery Paths",
+                          "Music / Gaming / Multi-Guest / AI Creator / Selling & Influence / TikTok Shop Mastery (optional) · Battle Lab Honors · other Mastery Paths",
                       }
                   : isProduction
                     ? {
                         label: "Next steps",
                         detail:
-                          "Battle / Music / Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Career Creator path · optional Production Lab Honors",
+                          "Battle / Music / Gaming / Multi-Guest / AI Creator / Selling & Influence / TikTok Shop Mastery (optional) · Career Creator path · optional Production Lab Honors",
                       }
                     : isProfessional
                       ? {
@@ -630,6 +639,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                         ? "AI Creator specialty"
                                         : isSelling
                                           ? "Selling & Influence specialty"
+                                          : isTts
+                                            ? "TikTok Shop specialty"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -657,6 +668,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                         ? "optional specialty · Capstone: AI Creator Operating System"
                                         : isSelling
                                           ? "optional specialty · Capstone: Ethical Creator Offer"
+                                          : isTts
+                                            ? "optional specialty · Capstone: Signature Shop Campaign"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];

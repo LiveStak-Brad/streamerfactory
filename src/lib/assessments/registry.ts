@@ -180,6 +180,16 @@ import { quiz as sellingWithoutDamagingCommunity } from "@/lib/assessments/quizz
 import { quiz as longTermCustomerRelationships } from "@/lib/assessments/quizzes/selling/long-term-customer-relationships";
 import { quiz as ethicalInfluenceAndReputation } from "@/lib/assessments/quizzes/selling/ethical-influence-and-reputation";
 import { quiz as sellingInfluenceCapstoneEthicalOffer } from "@/lib/assessments/quizzes/selling/selling-influence-capstone-ethical-offer";
+import { quiz as understandingTheTiktokShopEcosystem } from "@/lib/assessments/quizzes/tts/understanding-the-tiktok-shop-ecosystem";
+import { quiz as becomingATrustedShopCreator } from "@/lib/assessments/quizzes/tts/becoming-a-trusted-shop-creator";
+import { quiz as productSelectionResearchAndAffiliateStrategy } from "@/lib/assessments/quizzes/tts/product-selection-research-and-affiliate-strategy";
+import { quiz as creatingProductVideosPeopleActuallyWatch } from "@/lib/assessments/quizzes/tts/creating-product-videos-people-actually-watch";
+import { quiz as liveShoppingThatEducatesAndConverts } from "@/lib/assessments/quizzes/tts/live-shopping-that-educates-and-converts";
+import { quiz as professionalProductDemonstrationsAndStudioSetup } from "@/lib/assessments/quizzes/tts/professional-product-demonstrations-and-studio-setup";
+import { quiz as shopAnalyticsOptimizationAndCampaignDecisions } from "@/lib/assessments/quizzes/tts/shop-analytics-optimization-and-campaign-decisions";
+import { quiz as shopComplianceEthicsAndCustomerTrust } from "@/lib/assessments/quizzes/tts/shop-compliance-ethics-and-customer-trust";
+import { quiz as scalingYourTiktokShopBusiness } from "@/lib/assessments/quizzes/tts/scaling-your-tiktok-shop-business";
+import { quiz as tiktokShopCapstoneSignatureShopCampaign } from "@/lib/assessments/quizzes/tts/tiktok-shop-capstone-signature-shop-campaign";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -198,6 +208,7 @@ import { exam as finalGaming } from "@/lib/assessments/exams/program-gaming";
 import { exam as finalMultiguest } from "@/lib/assessments/exams/program-multiguest";
 import { exam as finalAicreator } from "@/lib/assessments/exams/program-aicreator";
 import { exam as finalSelling } from "@/lib/assessments/exams/program-selling";
+import { exam as finalTts } from "@/lib/assessments/exams/program-tts";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -355,6 +366,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   longTermCustomerRelationships,
   ethicalInfluenceAndReputation,
   sellingInfluenceCapstoneEthicalOffer,
+  understandingTheTiktokShopEcosystem,
+  becomingATrustedShopCreator,
+  productSelectionResearchAndAffiliateStrategy,
+  creatingProductVideosPeopleActuallyWatch,
+  liveShoppingThatEducatesAndConverts,
+  professionalProductDemonstrationsAndStudioSetup,
+  shopAnalyticsOptimizationAndCampaignDecisions,
+  shopComplianceEthicsAndCustomerTrust,
+  scalingYourTiktokShopBusiness,
+  tiktokShopCapstoneSignatureShopCampaign,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -375,6 +396,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalMultiguest,
   finalAicreator,
   finalSelling,
+  finalTts,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

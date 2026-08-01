@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.4 (Architecture locked)  
+**Version:** 2.5 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -41,7 +41,7 @@ Use language like:
 | Stretch goal | **171+** | Optional long-horizon capacity — never a public obligation |
 | Future | Unlimited | Add only when a real creator problem remains unsolved |
 
-Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Selling & Influence Mastery.
+Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after TikTok Shop Mastery.
 
 **Ship order for craft (locked):** Presence → Content Creation → Growth.  
 Creators fail from awkwardness and empty shows before they fail from analytics.
@@ -182,6 +182,7 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Multi-Guest LIVE Mastery* ○ optional specialty
         ├── AI Creator Mastery*       ○ optional specialty
         ├── Selling & Influence Mastery* ○ optional specialty
+        ├── TikTok Shop Mastery*      ○ optional specialty
         └── Mindset Mastery           ★ recommended for everyone
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
@@ -189,6 +190,7 @@ Advanced Creator (8)  ←  BLACK BELT
 * Multi-Guest LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Community Mastery CM-07/CM-08 are foundations this path deepens; Battle Mastery owns competitive match strategy depth.
 * AI Creator Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach responsible AI assistance, not creator replacement.
 * Selling & Influence Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach ethical influence and value communication — never manipulation or TikTok Shop mechanics.
+* TikTok Shop Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach Shop platform systems, product workflows, LIVE/video shopping execution, affiliate strategy, analytics interpretation, equipment, and compliance — never Selling & Influence communication craft duplication.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -415,7 +417,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 14. Mindset Mastery
+### 14. TikTok Shop Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Teach creators how to build a professional TikTok Shop business through LIVEs and videos while maintaining trust and complying with platform rules. |
+| **Why it exists** | Creators want Shop income but confuse roles, rush product picks, skip disclosures, over-claim benefits, pin products poorly, chase vanity metrics, or damage trust. Selling & Influence owns ethical communication; this path owns Shop systems and execution. |
+| **Who should take it** | Creators who want to participate in TikTok Shop via affiliate and/or shoppable LIVE/video. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Selling & Influence Mastery in specialty ship order; after Core; Advanced Creator required before certificate award. Useful alongside Presence, Content Creation, Production, and Professional Creator. |
+| **Prerequisites** | Core Certification. Advanced Creator required before TikTok Shop Mastery Certificate is awarded. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | TikTok Shop Mastery Certificate |
+| **Skills gained** | Shop ecosystem literacy, creator readiness, affiliate product research, product video systems, LIVE shopping run sheets, product demos & tabletop setups, analytics interpretation, compliance & disclosures, campaign scaling, Signature Shop Campaign Capstone. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | Never teach fake reviews, misleading claims, false urgency/scarcity, hidden sponsorships, review manipulation, unsafe health claims, unverified earnings claims, copyright abuse, or deceptive practices. **Not Selling & Influence Mastery** — do not re-teach buyer psychology scripts, natural CTA craft, or ethical influence frameworks beyond Shop-specific application. Merchant topics stay high-level (listings, inventory, shipping, returns, fulfillment, CS, compliance overview). Version-aware: eligibility, UI, commissions, and policies change — teach principles + verify-current-rules language. |
+
+---
+
+### 15. Mindset Mastery
 
 | Field | Definition |
 |--------|------------|
@@ -431,7 +450,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 15. Manager College (Internal Only)
+### 16. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -474,7 +493,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, and/or Selling & Influence Mastery **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, and/or TikTok Shop Mastery **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -506,6 +525,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Multi-Guest LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | AI Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Selling & Influence Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| TikTok Shop Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -579,6 +599,7 @@ It is distinct from optional Labs/Honors.
 | Multi-Guest LIVE Mastery | Deliver your **signature multi-guest LIVE event** |
 | AI Creator Mastery | Build your **AI Creator Operating System** |
 | Selling & Influence Mastery | Build your **Ethical Creator Offer** |
+| TikTok Shop Mastery | Build your **Signature Shop Campaign** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -633,6 +654,7 @@ Same pattern for every public Mastery Path.
 | Multi-Guest LIVE Lab | Multi-Guest LIVE Mastery Certificate | Signature event pack / replay excerpt | Multi-Guest LIVE Mastery Honors |
 | AI Creator Lab | AI Creator Mastery Certificate | AI Creator OS pack / workflow review | AI Creator Mastery Honors |
 | Selling & Influence Lab | Selling & Influence Mastery Certificate | Ethical Creator Offer pack / communication review | Selling & Influence Mastery Honors |
+| TikTok Shop Lab | TikTok Shop Mastery Certificate | Signature Shop Campaign pack / campaign review | TikTok Shop Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -1997,7 +2019,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 14 — Mindset Mastery (MS) — 8 lessons
+## PATH 14 — TikTok Shop Mastery (TTS) — 10 lessons (optional specialty)
+
+### TTS-01 — Understanding the TikTok Shop Ecosystem
+**Description:** Map creators, affiliates, merchants/sellers, brands, agencies, and customers. Distinguish Shop for Creators roles without confusing merchant operations with creator workflows.  
+**Learning objective:** Complete an ecosystem map and choose a creator path with clear role boundaries.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Core Certification  
+**Practical outcome:** Shop Ecosystem Map + Role Boundary Checklist + Creator Path Decision Card.  
+**Estimated study time:** 30 min  
+**Connections:** Selling & Influence owns communication; this path owns Shop systems.
+
+### TTS-02 — Becoming a Trusted Shop Creator
+**Description:** Eligibility, onboarding readiness, identity/age verification concepts, profile optimization, and account health — with version-aware wording because thresholds change.  
+**Learning objective:** Complete a shop readiness checklist without inventing eligibility guarantees.  
+**Difficulty:** Intermediate  
+**Prerequisites:** TTS-01  
+**Practical outcome:** Shop Readiness Checklist + Creator Onboarding Worksheet + Profile Optimization Scorecard.  
+**Estimated study time:** 35 min  
+**Connections:** Core account safety; Professional Creator reputation.
+
+### TTS-03 — Product Selection, Research & Affiliate Strategy
+**Description:** Evaluate products, commissions, merchant quality, samples, campaigns, category fit, and repeat potential — without recommending junk for commission.  
+**Learning objective:** Score five products with an affiliate evaluation worksheet and reject low-trust options.  
+**Difficulty:** Intermediate  
+**Prerequisites:** TTS-02  
+**Practical outcome:** Affiliate Evaluation Worksheet + Product Research Scorecard + Sample Request Planner.  
+**Estimated study time:** 35 min  
+**Connections:** Capstone product selection evidence.
+
+### TTS-04 — Creating Product Videos People Actually Watch
+**Description:** Hooks, reviews, comparisons, tutorials, unboxings, before/after honesty, evergreen education, and product storytelling for shoppable video.  
+**Learning objective:** Produce one product video brief and one comparison or review plan with honest proof boundaries.  
+**Difficulty:** Intermediate  
+**Prerequisites:** TTS-03  
+**Practical outcome:** Product Video Brief + Review Comparison Planner + Evergreen Product Series Map.  
+**Estimated study time:** 35 min  
+**Connections:** Content Creation showcraft applied to Shop; no claim inflation.
+
+### TTS-05 — LIVE Shopping That Educates and Converts
+**Description:** Run sheets, product sequencing, pin timing, rotation, bundles, demos, viewer questions, entertainment-with-education, and pressure-free CTAs on Shop LIVEs.  
+**Learning objective:** Build a LIVE shopping run sheet with pin plan and education-first segments.  
+**Difficulty:** Advanced  
+**Prerequisites:** TTS-04  
+**Practical outcome:** LIVE Shopping Run Sheet + Product Pin Rotation Planner + LIVE Offer Education Card.  
+**Estimated study time:** 35 min  
+**Connections:** Presence pacing; Selling & Influence natural asks (callback only).
+
+### TTS-06 — Professional Product Demonstrations & Studio Setup
+**Description:** Tabletop setups, lighting, macro/overhead angles, turntables, phone mounts, wireless mics, OBS/TikTok LIVE Studio product scenes, and readable demos for small/large products.  
+**Learning objective:** Plan a multi-angle product demo with a practical small-space studio checklist.  
+**Difficulty:** Advanced  
+**Prerequisites:** TTS-05  
+**Practical outcome:** Product Demo Planner + Tabletop Studio Checklist + Multi-Angle Demo Card.  
+**Estimated study time:** 35 min  
+**Connections:** Production Mastery depth callback; Shop-specific demo focus.
+
+### TTS-07 — Analytics, Optimization & Campaign Decisions
+**Description:** Interpret clicks, CTR, conversion, orders, revenue, commission, AOV, returns/refunds, LIVE vs video analytics, and campaign results — decide without obsessing.  
+**Learning objective:** Complete an analytics worksheet and choose one optimization priority with evidence.  
+**Difficulty:** Advanced  
+**Prerequisites:** TTS-05, TTS-06  
+**Practical outcome:** Shop Analytics Worksheet + Campaign Decision Log + Optimization Priority Card.  
+**Estimated study time:** 35 min  
+**Connections:** Growth Mastery experiments; never grade missions by GMV.
+
+### TTS-08 — Compliance, Ethics & Customer Trust
+**Description:** FTC/affiliate disclosures, branded content, restricted products, health/medical/financial claim limits, IP, truth in advertising, customer service professionalism, and returns communication.  
+**Learning objective:** Build a compliance checklist and disclosure scripts you will actually use on video and LIVE.  
+**Difficulty:** Advanced  
+**Prerequisites:** TTS-01 through TTS-07 recommended; TTS-02 minimum  
+**Practical outcome:** Shop Compliance Checklist + Disclosure Script Bank + Claim Safety Scorecard.  
+**Estimated study time:** 40 min  
+**Connections:** Major emphasis; version-aware policies; Core safety honesty.
+
+### TTS-09 — Scaling Your TikTok Shop Business
+**Description:** Repeat campaigns, seasonal calendars, merchant relationships, category specialization, customer follow-up, retention thinking, and systems that survive platform change.  
+**Learning objective:** Build a seasonal campaign planner and a customer follow-up guide without deceptive urgency.  
+**Difficulty:** Advanced  
+**Prerequisites:** TTS-07, TTS-08  
+**Practical outcome:** Seasonal Campaign Planner + Customer Follow-Up Guide + Shop Scale System Card.  
+**Estimated study time:** 35 min  
+**Connections:** Capstone campaign calendar; long-term trust over spikes.
+
+### TTS-10 — TikTok Shop Capstone: Signature Shop Campaign
+**Description:** Capstone: assemble a complete Signature Shop Campaign with product selection, audience research, calendar, product videos, LIVE plan, compliance checklist, analytics review, customer communication, reflection, and improvement report.  
+**Learning objective:** Deliver and review a Signature Shop Campaign against the mastery rubric.  
+**Difficulty:** Expert  
+**Prerequisites:** TTS-01 through TTS-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Signature Shop Campaign Dossier + Capstone Evidence Checklist + Improvement Report.  
+**Estimated study time:** 45 min  
+**Connections:** Specialty diploma elective; optional TikTok Shop Lab / Honors never gates certificate.
+
+---
+
+## PATH 15 — Mindset Mastery (MS) — 8 lessons
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -2073,7 +2189,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 15 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 16 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -2168,15 +2284,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Multi-Guest LIVE Mastery (optional) | 10 | Planned / shipping |
 | AI Creator Mastery (optional) | 10 | Planned / shipping |
 | Selling & Influence Mastery (optional) | 10 | Planned / shipping |
+| TikTok Shop Mastery (optional) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **162** | Internal planning figure (was 152 before Selling & Influence) |
+| **Public curriculum plan** | **172** | Internal planning figure (was 162 before TikTok Shop) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **170** | |
+| **Grand total including internal** | **180** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 13 path labs | Optional; never diploma gates |
+| Labs → Honors | 14 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 162 planned · stretch 171+ · future unlimited (problem-gated only).
+**Internal:** 172 planned · stretch 181+ · future unlimited (problem-gated only).
 
 ---
 
@@ -2191,7 +2308,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, Gaming, Multi-Guest, AI Creator, and Selling & Influence as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, Multi-Guest, AI Creator, Selling & Influence, and TikTok Shop as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -2269,6 +2386,10 @@ Every planned lesson must answer exactly one question. Samples:
 | AIC-09 | What privacy and ethics lines will I never cross with AI? |
 | SI-01 | What trust have I earned before I make an offer? |
 | SI-10 | Can I deliver an ethical creator offer that protects choice and reputation? |
+| TTS-01 | Who does what in the TikTok Shop ecosystem — and which path am I on? |
+| TTS-05 | How do I run a LIVE shopping session that educates before it asks? |
+| TTS-08 | What disclosures and claim limits protect customers and my account? |
+| TTS-10 | Can I deliver a Signature Shop Campaign with reviewable evidence? |
 | MS-02 | How do I catch burnout before I quit? |
 | MC-02 | How do I tell what a mentee is actually stuck on? |
 
@@ -2338,6 +2459,13 @@ Every planned lesson must answer exactly one question. Samples:
 4. Internal public plan updated **152 → 162**; Mindset/Manager path numbers shifted to 14/15 only in document order — earlier programs unchanged  
 5. Selling & Influence never required for graduation; codes use **SI-**; teach ethical influence and trust-first communication — never manipulation; not TikTok Shop Mastery (no shop mechanics); marketing vs sales distinction; boundary with Professional Creator Mastery (ops vs communication)  
 
+### v2.5 — TikTok Shop Mastery added (fill, do not redesign)
+1. Added **TikTok Shop Mastery** as optional specialty after Selling & Influence Mastery  
+2. 10 lessons (TTS-01–TTS-10); Capstone = Signature Shop Campaign  
+3. Optional TikTok Shop Lab → TikTok Shop Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **162 → 172**; Mindset/Manager path numbers shifted to 15/16 only in document order — earlier programs unchanged  
+5. TikTok Shop never required for graduation; codes use **TTS-**; teach Shop platform/systems/workflows/compliance/analytics/equipment — never Selling & Influence communication duplication; merchant topics high-level; version-aware eligibility/UI/policy language  
+
 ---
 
 ## Document Control
@@ -2350,6 +2478,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 2.1 | 2026-07-31 | Gaming LIVE Mastery optional specialty added after Music LIVE; earlier programs preserved. |
 | 2.2 | 2026-07-31 | Multi-Guest LIVE Mastery optional specialty added after Gaming LIVE; earlier programs preserved. |
 | 2.3 | 2026-07-31 | AI Creator Mastery optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
-| **2.4** | **2026-07-31** | **Selling & Influence Mastery** optional specialty added after AI Creator; earlier programs preserved. |
+| 2.4 | 2026-07-31 | Selling & Influence Mastery optional specialty added after AI Creator; earlier programs preserved. |
+| **2.5** | **2026-07-31** | **TikTok Shop Mastery** optional specialty added after Selling & Influence; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

@@ -25,6 +25,7 @@ const TRACK_TO_CATEGORY: Record<TrainingTrackId, LibraryCategoryId> = {
   multiguest: "content",
   aicreator: "content",
   selling: "monetization",
+  tts: "monetization",
 };
 
 export function libraryCategoryForLessonSlug(slug: string): LibraryCategoryId {

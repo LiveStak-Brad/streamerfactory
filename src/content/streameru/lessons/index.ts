@@ -153,6 +153,16 @@ import { lesson as sellingWithoutDamagingCommunity } from "./selling-without-dam
 import { lesson as longTermCustomerRelationships } from "./long-term-customer-relationships";
 import { lesson as ethicalInfluenceAndReputation } from "./ethical-influence-and-reputation";
 import { lesson as sellingInfluenceCapstoneEthicalOffer } from "./selling-influence-capstone-ethical-offer";
+import { lesson as understandingTheTiktokShopEcosystem } from "./understanding-the-tiktok-shop-ecosystem";
+import { lesson as becomingATrustedShopCreator } from "./becoming-a-trusted-shop-creator";
+import { lesson as productSelectionResearchAndAffiliateStrategy } from "./product-selection-research-and-affiliate-strategy";
+import { lesson as creatingProductVideosPeopleActuallyWatch } from "./creating-product-videos-people-actually-watch";
+import { lesson as liveShoppingThatEducatesAndConverts } from "./live-shopping-that-educates-and-converts";
+import { lesson as professionalProductDemonstrationsAndStudioSetup } from "./professional-product-demonstrations-and-studio-setup";
+import { lesson as shopAnalyticsOptimizationAndCampaignDecisions } from "./shop-analytics-optimization-and-campaign-decisions";
+import { lesson as shopComplianceEthicsAndCustomerTrust } from "./shop-compliance-ethics-and-customer-trust";
+import { lesson as scalingYourTiktokShopBusiness } from "./scaling-your-tiktok-shop-business";
+import { lesson as tiktokShopCapstoneSignatureShopCampaign } from "./tiktok-shop-capstone-signature-shop-campaign";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -314,6 +324,16 @@ const LESSONS: ExpandedLesson[] = [
   longTermCustomerRelationships,
   ethicalInfluenceAndReputation,
   sellingInfluenceCapstoneEthicalOffer,
+  understandingTheTiktokShopEcosystem,
+  becomingATrustedShopCreator,
+  productSelectionResearchAndAffiliateStrategy,
+  creatingProductVideosPeopleActuallyWatch,
+  liveShoppingThatEducatesAndConverts,
+  professionalProductDemonstrationsAndStudioSetup,
+  shopAnalyticsOptimizationAndCampaignDecisions,
+  shopComplianceEthicsAndCustomerTrust,
+  scalingYourTiktokShopBusiness,
+  tiktokShopCapstoneSignatureShopCampaign,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

@@ -3811,6 +3811,249 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— TikTok Shop Mastery ——
+  "understanding-the-tiktok-shop-ecosystem": {
+    id: "mission-155-tts-01",
+    mission_title: "Session: Understanding the TikTok Shop Ecosystem",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Shop Ecosystem Map and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Shop Ecosystem Map", href: "/streameru/library/shop-ecosystem-map" },
+      { label: "Role Boundary Checklist", href: "/streameru/library/role-boundary-checklist" },
+      { label: "Creator Path Decision Card", href: "/streameru/library/creator-path-decision-card" },
+    ],
+  },
+  "becoming-a-trusted-shop-creator": {
+    id: "mission-156-tts-02",
+    mission_title: "Session: Becoming a Trusted Shop Creator",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Shop Readiness Checklist and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Shop Readiness Checklist", href: "/streameru/library/shop-readiness-checklist" },
+      { label: "Creator Onboarding Worksheet", href: "/streameru/library/creator-onboarding-worksheet" },
+      { label: "Profile Optimization Scorecard", href: "/streameru/library/profile-optimization-scorecard" },
+    ],
+  },
+  "product-selection-research-and-affiliate-strategy": {
+    id: "mission-157-tts-03",
+    mission_title: "Session: Product Selection, Research & Affiliate Strategy",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Affiliate Evaluation Worksheet and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Affiliate Evaluation Worksheet", href: "/streameru/library/affiliate-evaluation-worksheet" },
+      { label: "Product Research Scorecard", href: "/streameru/library/product-research-scorecard" },
+      { label: "Sample Request Planner", href: "/streameru/library/sample-request-planner" },
+    ],
+  },
+  "creating-product-videos-people-actually-watch": {
+    id: "mission-158-tts-04",
+    mission_title: "Session: Creating Product Videos People Actually Watch",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Product Video Brief and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Product Video Brief", href: "/streameru/library/product-video-brief" },
+      { label: "Review Comparison Planner", href: "/streameru/library/review-comparison-planner" },
+      { label: "Evergreen Product Series Map", href: "/streameru/library/evergreen-product-series-map" },
+    ],
+  },
+  "live-shopping-that-educates-and-converts": {
+    id: "mission-159-tts-05",
+    mission_title: "Session: LIVE Shopping That Educates and Converts",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Live Shopping Run Sheet and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Live Shopping Run Sheet", href: "/streameru/library/live-shopping-run-sheet" },
+      { label: "Product Pin Rotation Planner", href: "/streameru/library/product-pin-rotation-planner" },
+      { label: "Live Offer Education Card", href: "/streameru/library/live-offer-education-card" },
+    ],
+  },
+  "professional-product-demonstrations-and-studio-setup": {
+    id: "mission-160-tts-06",
+    mission_title: "Session: Professional Product Demonstrations & Studio Setup",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Product Demo Planner and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Product Demo Planner", href: "/streameru/library/product-demo-planner" },
+      { label: "Tabletop Studio Checklist", href: "/streameru/library/tabletop-studio-checklist" },
+      { label: "Multi Angle Demo Card", href: "/streameru/library/multi-angle-demo-card" },
+    ],
+  },
+  "shop-analytics-optimization-and-campaign-decisions": {
+    id: "mission-161-tts-07",
+    mission_title: "Session: Analytics, Optimization & Campaign Decisions",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Shop Analytics Worksheet and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Shop Analytics Worksheet", href: "/streameru/library/shop-analytics-worksheet" },
+      { label: "Campaign Decision Log", href: "/streameru/library/campaign-decision-log" },
+      { label: "Optimization Priority Card", href: "/streameru/library/optimization-priority-card" },
+    ],
+  },
+  "shop-compliance-ethics-and-customer-trust": {
+    id: "mission-162-tts-08",
+    mission_title: "Session: Compliance, Ethics & Customer Trust",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Shop Compliance Checklist and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Shop Compliance Checklist", href: "/streameru/library/shop-compliance-checklist" },
+      { label: "Disclosure Script Bank Shop", href: "/streameru/library/disclosure-script-bank-shop" },
+      { label: "Claim Safety Scorecard", href: "/streameru/library/claim-safety-scorecard" },
+    ],
+  },
+  "scaling-your-tiktok-shop-business": {
+    id: "mission-163-tts-09",
+    mission_title: "Session: Scaling Your TikTok Shop Business",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Seasonal Campaign Planner and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      45,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Seasonal Campaign Planner", href: "/streameru/library/seasonal-campaign-planner" },
+      { label: "Customer Follow Up Guide Shop", href: "/streameru/library/customer-follow-up-guide-shop" },
+      { label: "Shop Scale System Card", href: "/streameru/library/shop-scale-system-card" },
+    ],
+  },
+  "tiktok-shop-capstone-signature-shop-campaign": {
+    id: "mission-164-tts-10",
+    mission_title: "Session: TikTok Shop Capstone: Signature Shop Campaign",
+    mission_description: "Complete a reviewable TikTok Shop systems practice without GMV, commission, order, viewer, or rank targets.",
+    mission_steps: steps(
+      [
+        "Complete Signature Shop Campaign Dossier and its supporting lesson downloads.",
+        "Verify current Shop facts in official tools or documentation before acting.",
+      ],
+      40,
+      [
+        "Run a customer-safe rehearsal or LIVE-relevant execution with accurate claims and disclosures.",
+        "Document one evidence-based improvement for the Signature Shop Campaign.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build trustworthy Shop systems evidence for the Signature Shop Campaign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Signature Shop Campaign Dossier", href: "/streameru/library/signature-shop-campaign-dossier" },
+      { label: "Capstone Evidence Checklist Tiktok Shop", href: "/streameru/library/capstone-evidence-checklist-tiktok-shop" },
+      { label: "Improvement Report Template Shop", href: "/streameru/library/improvement-report-template-shop" },
+    ],
+  },
+
+
 
 
 
