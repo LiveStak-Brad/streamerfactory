@@ -21,6 +21,7 @@ import { BATTLE_MASTERY_RESOURCES } from "@/content/streameru/library/battle-mas
 import { MUSIC_LIVE_MASTERY_RESOURCES } from "@/content/streameru/library/music-live-mastery";
 import { GAMING_LIVE_MASTERY_RESOURCES } from "@/content/streameru/library/gaming-live-mastery";
 import { MULTI_GUEST_LIVE_MASTERY_RESOURCES } from "@/content/streameru/library/multi-guest-live-mastery";
+import { AI_CREATOR_MASTERY_RESOURCES } from "@/content/streameru/library/ai-creator-mastery";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -56,6 +57,7 @@ const MERGED: LibraryResource[] = [
   ...MUSIC_LIVE_MASTERY_RESOURCES,
   ...GAMING_LIVE_MASTERY_RESOURCES,
   ...MULTI_GUEST_LIVE_MASTERY_RESOURCES,
+  ...AI_CREATOR_MASTERY_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];

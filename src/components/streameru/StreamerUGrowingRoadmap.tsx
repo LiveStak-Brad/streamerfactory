@@ -46,7 +46,7 @@ export function StreamerUGrowingRoadmap() {
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
         {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Advanced Creator,
         Presence Mastery, Content Creation Mastery, Growth Mastery, Community Mastery, Professional
-        Creator Mastery, Production Mastery, Battle Mastery, Music LIVE Mastery, Gaming LIVE Mastery, and Multi-Guest LIVE Mastery are published Mastery-path craft on the road to a{" "}
+        Creator Mastery, Production Mastery, Battle Mastery, Music LIVE Mastery, Gaming LIVE Mastery, Multi-Guest LIVE Mastery, and AI Creator Mastery are published Mastery-path craft on the road to a{" "}
         {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
       </p>
 

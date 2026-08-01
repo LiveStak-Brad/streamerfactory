@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.2 (Architecture locked)  
+**Version:** 2.3 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -41,7 +41,7 @@ Use language like:
 | Stretch goal | **171+** | Optional long-horizon capacity — never a public obligation |
 | Future | Unlimited | Add only when a real creator problem remains unsolved |
 
-Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Multi-Guest LIVE Mastery.
+Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after AI Creator Mastery.
 
 **Ship order for craft (locked):** Presence → Content Creation → Growth.  
 Creators fail from awkwardness and empty shows before they fail from analytics.
@@ -180,11 +180,13 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Battle Mastery            ○ optional specialty
         ├── Music LIVE Mastery*       ○ optional specialty
         ├── Gaming LIVE Mastery*      ○ optional specialty
-        └── Multi-Guest LIVE Mastery* ○ optional specialty
+        ├── Multi-Guest LIVE Mastery* ○ optional specialty
+        └── AI Creator Mastery*       ○ optional specialty
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
 * Gaming LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path.
 * Multi-Guest LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Community Mastery CM-07/CM-08 are foundations this path deepens; Battle Mastery owns competitive match strategy depth.
+* AI Creator Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach responsible AI assistance, not creator replacement.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -377,7 +379,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 12. Mindset Mastery
+### 12. AI Creator Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Specialty path to use AI responsibly as a professional assistant — productivity, creativity, planning, editing, research, automation — while protecting authenticity, privacy, and judgment. |
+| **Why it exists** | Creators waste hours or ship low-quality AI output without systems. They need prompt craft, verification, privacy, ethics, and durable workflows — not tool hype or “replace the creator” myths. |
+| **Who should take it** | Creators who want faster planning, better drafts, cleaner editing workflows, and ethical automation. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Multi-Guest LIVE Mastery in specialty ship order; after Core; Advanced Creator required before certificate award. Useful alongside Content Creation, Growth, Community, and Professional Creator. |
+| **Prerequisites** | Core Certification. Advanced Creator required before AI Creator Mastery Certificate is awarded. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | AI Creator Mastery Certificate |
+| **Skills gained** | AI-assisted creator mindset, prompt engineering principles, content/LIVE planning with AI, voice-safe writing, image/branding with AI, video/audio AI workflows, safe automation, research/analytics verification, ethics/privacy/responsible publishing, AI Creator Operating System Capstone. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | Never teach spam, fake engagement, deepfake misuse, plagiarism, AI impersonation, copyright abuse, harassment, or platform violations. AI increases quality — it does not replace judgment. Use version-aware language (tools change; last reviewed dates required). Teach concepts over vendor lock-in. |
+
+---
+
+### 13. Mindset Mastery
 
 | Field | Definition |
 |--------|------------|
@@ -393,7 +412,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 13. Manager College (Internal Only)
+### 14. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -436,7 +455,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, Gaming LIVE, and/or Multi-Guest LIVE **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, and/or AI Creator Mastery **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -466,6 +485,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Music LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Gaming LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Multi-Guest LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| AI Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -537,6 +557,7 @@ It is distinct from optional Labs/Honors.
 | Music LIVE Mastery | Deliver your **signature music LIVE show** |
 | Gaming LIVE Mastery | Deliver your **signature gaming LIVE show** |
 | Multi-Guest LIVE Mastery | Deliver your **signature multi-guest LIVE event** |
+| AI Creator Mastery | Build your **AI Creator Operating System** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -589,6 +610,7 @@ Same pattern for every public Mastery Path.
 | Music LIVE Lab | Music LIVE Mastery Certificate | Signature show pack | Music LIVE Mastery Honors |
 | Gaming LIVE Lab | Gaming LIVE Mastery Certificate | Signature gaming show pack / replay excerpt | Gaming LIVE Mastery Honors |
 | Multi-Guest LIVE Lab | Multi-Guest LIVE Mastery Certificate | Signature event pack / replay excerpt | Multi-Guest LIVE Mastery Honors |
+| AI Creator Lab | AI Creator Mastery Certificate | AI Creator OS pack / workflow review | AI Creator Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -631,7 +653,8 @@ Creators fail from freeze / empty presence before they fail from analytics.
 - Battle Mastery (8) — optional  
 - Music LIVE Mastery (10) — optional  
 - Gaming LIVE Mastery (12) — optional (after Music LIVE; never a required graduation path)  
-- Multi-Guest LIVE Mastery (10) — optional (after Gaming LIVE; never a required graduation path)  
+- Multi-Guest LIVE Mastery (10) — optional (after Gaming LIVE; never a required graduation path)
+- AI Creator Mastery (10) — optional (after Multi-Guest LIVE; never a required graduation path)
 
 ### Phase 6 — Internal quality + optional Labs (Honors)
 - Manager College (8)  
@@ -1764,7 +1787,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 12 — Mindset Mastery (MS) — 8 lessons
+## PATH 12 — AI Creator Mastery (AIC) — 10 lessons (optional specialty)
+
+### AIC-01 — Thinking Like an AI-Powered Creator
+**Description:** AI is a professional assistant, not a replacement for creativity, authenticity, or judgment. Build the mindset and decision matrix for when to use AI — and when to stay fully human.  
+**Learning objective:** Define an AI-assisted creator operating standard with clear human-owned decisions.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Core Certification  
+**Practical outcome:** AI Mindset Scorecard + Human-vs-AI Decision Matrix + AI Stack Starter Card.  
+**Estimated study time:** 30 min  
+**Connections:** Advanced Creator systems thinking; Professional Creator operations.
+
+### AIC-02 — Prompt Engineering for Creators
+**Description:** Magic prompts fail. Teach context, role, examples, constraints, iteration, verification, and output formatting as durable principles.  
+**Learning objective:** Build a reusable prompt pattern library for LIVE and content work.  
+**Difficulty:** Intermediate  
+**Prerequisites:** AIC-01  
+**Practical outcome:** Prompt Pattern Library + Context Brief Template + Iteration Checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Content Creation writing craft; Growth research habits.
+
+### AIC-03 — AI Content Planning and Brainstorming
+**Description:** Use AI to expand ideas, hooks, and weekly plans without outsourcing your creative thesis.  
+**Learning objective:** Produce a one-week LIVE/content plan with AI-assisted brainstorming and human selection.  
+**Difficulty:** Intermediate  
+**Prerequisites:** AIC-02  
+**Practical outcome:** AI Content Planner + Hook Bank Worksheet + LIVE Plan Prompt Pack.  
+**Estimated study time:** 30 min  
+**Connections:** Content Creation Mastery; Growth planning.
+
+### AIC-04 — AI Writing Without Losing Your Voice
+**Description:** Draft faster with AI, then rewrite for voice, truth, and brand fit. Never publish unreviewed AI prose as if it were yours.  
+**Learning objective:** Run a draft → rewrite → authenticity check loop that preserves your voice.  
+**Difficulty:** Intermediate  
+**Prerequisites:** AIC-02, AIC-03  
+**Practical outcome:** Voice Capture Worksheet + Rewrite Comparison Card + Authenticity Checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Presence voice; Content Creation scripting.
+
+### AIC-05 — AI Images, Graphics, and Branding
+**Description:** Prompt, edit, and brand AI visuals with copyright awareness, accessibility, and consistency — version-aware of rapidly changing image tools.  
+**Learning objective:** Create a brand-safe image prompt system for thumbnails and graphics.  
+**Difficulty:** Intermediate  
+**Prerequisites:** AIC-02  
+**Practical outcome:** Image Prompt Guide + Brand Visual Rules Card + Thumbnail Prompt Bank.  
+**Estimated study time:** 35 min  
+**Connections:** Production visuals; Growth packaging.
+
+### AIC-06 — AI Video, Editing, and Repurposing
+**Description:** Captions, clips, cleanup, transcription, and highlight detection speed post — human review still owns publish.  
+**Learning objective:** Install a video AI workflow from replay to publish-ready clips with quality gates.  
+**Difficulty:** Intermediate  
+**Prerequisites:** AIC-01, AIC-04  
+**Practical outcome:** Video AI Workflow Map + Caption Quality Checklist + Replay Clip Prompt Pack.  
+**Estimated study time:** 35 min  
+**Connections:** Content Creation repurposing; Production audio clarity.
+
+### AIC-07 — AI Automation for Creator Workflows
+**Description:** Automate repetitive steps with Zapier/Make/n8n-style concepts and human-in-the-loop gates. Never auto-spam or unattended brand risk.  
+**Learning objective:** Map one safe automation with explicit human approval points.  
+**Difficulty:** Advanced  
+**Prerequisites:** AIC-01 through AIC-03  
+**Practical outcome:** Automation Opportunity Map + Human-in-the-Loop Gate Card + Workflow Safety Checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Professional Creator systems; Community moderation assist (human-owned).
+
+### AIC-08 — AI Research, Analytics, and Decision Making
+**Description:** Use AI for research and metric interpretation with verification checklists so hallucinations never become strategy.  
+**Learning objective:** Make one evidence-based creator decision using AI-assisted analysis plus human verification.  
+**Difficulty:** Advanced  
+**Prerequisites:** AIC-02, AIC-03  
+**Practical outcome:** Research Verification Checklist + Analytics Prompt Pack + Decision Framework Card.  
+**Estimated study time:** 30 min  
+**Connections:** Growth analytics; Advanced Creator reflection.
+
+### AIC-09 — Ethics, Privacy, and Responsible AI
+**Description:** Privacy, bias, copyright, disclosure, prompt-injection awareness, and refusal of deceptive uses. Major emphasis.  
+**Learning objective:** Write a personal Responsible AI Policy with privacy red lines and disclosure language.  
+**Difficulty:** Advanced  
+**Prerequisites:** AIC-01 through AIC-08 recommended; AIC-01 minimum  
+**Practical outcome:** Responsible AI Policy Card + Privacy Red-Line Checklist + Disclosure Script Bank.  
+**Estimated study time:** 35 min  
+**Connections:** Core safety; Professional Creator ethics; Community trust.
+
+### AIC-10 — AI Creator Capstone: Operating System
+**Description:** Capstone: assemble a complete AI Creator Operating System proving prompt craft, workflows, verification, automation map, and continuous improvement.  
+**Learning objective:** Deliver and review an AI Creator Operating System against the mastery rubric.  
+**Difficulty:** Expert  
+**Prerequisites:** AIC-01 through AIC-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** AI Creator OS Dossier + Capstone Evidence Checklist + Improvement Report.  
+**Estimated study time:** 45 min  
+**Connections:** Specialty diploma elective; optional AI Creator Lab / Honors never gates certificate.
+
+---
+
+## PATH 13 — Mindset Mastery (MS) — 8 lessons
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -1840,7 +1957,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 13 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 14 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -1933,15 +2050,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Music LIVE Mastery (optional) | 10 | Planned / shipping |
 | Gaming LIVE Mastery (optional) | 12 | Planned / shipping |
 | Multi-Guest LIVE Mastery (optional) | 10 | Planned / shipping |
+| AI Creator Mastery (optional) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **142** | Internal planning figure (was 132 before Multi-Guest) |
+| **Public curriculum plan** | **152** | Internal planning figure (was 142 before AI Creator) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **150** | |
+| **Grand total including internal** | **160** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 11 path labs | Optional; never diploma gates |
+| Labs → Honors | 12 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 142 planned · stretch 171+ · future unlimited (problem-gated only).
+**Internal:** 152 planned · stretch 171+ · future unlimited (problem-gated only).
 
 ---
 
@@ -1956,7 +2074,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, Gaming, and Multi-Guest as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, Multi-Guest, and AI Creator as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -2029,6 +2147,9 @@ Every planned lesson must answer exactly one question. Samples:
 | MU-04 | How should I order songs so energy doesn’t die? |
 | GM-01 | Which gaming LIVE setup should I use — and what is my fallback? |
 | GM-07 | How do I send OBS video into TikTok LIVE Studio without breaking audio? |
+| MG-01 | When should I open a multi-guest room — and when should I stay solo? |
+| AIC-01 | How do I use AI as an assistant without losing my judgment or voice? |
+| AIC-09 | What privacy and ethics lines will I never cross with AI? |
 | MS-02 | How do I catch burnout before I quit? |
 | MC-02 | How do I tell what a mentee is actually stuck on? |
 
@@ -2084,6 +2205,13 @@ Every planned lesson must answer exactly one question. Samples:
 4. Internal public plan updated **132 → 142**; Mindset/Manager path numbers shifted to 12/13 only in document order — earlier programs unchanged  
 5. Multi-Guest never required for graduation; CM-07/CM-08 foundations deepened; Battle Mastery owns competitive match strategy depth; no drama farming; do not invent TikTok features  
 
+### v2.3 — AI Creator Mastery added (fill, do not redesign)
+1. Added **AI Creator Mastery** as optional specialty after Multi-Guest LIVE Mastery  
+2. 10 lessons (AIC-01–AIC-10); Capstone = AI Creator Operating System  
+3. Optional AI Creator Lab → AI Creator Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **142 → 152**; Mindset/Manager path numbers shifted to 13/14 only in document order — earlier programs unchanged  
+5. AI Creator never required for graduation; codes use **AIC-** (Advanced Creator remains **AC-**); teach responsible assistance not creator replacement; version-aware tool language; no spam/deepfake/plagiarism/impersonation curricula  
+
 ---
 
 ## Document Control
@@ -2094,6 +2222,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 1.1 | 2026-07-31 | Brad structural revisions |
 | 2.0 | 2026-07-31 | Architecture locked. Fill the blueprint; do not redesign it. |
 | 2.1 | 2026-07-31 | Gaming LIVE Mastery optional specialty added after Music LIVE; earlier programs preserved. |
-| **2.2** | **2026-07-31** | **Multi-Guest LIVE Mastery** optional specialty added after Gaming LIVE; earlier programs preserved. |
+| 2.2 | 2026-07-31 | Multi-Guest LIVE Mastery optional specialty added after Gaming LIVE; earlier programs preserved. |
+| **2.3** | **2026-07-31** | **AI Creator Mastery** optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

@@ -19,6 +19,7 @@ export const TRAINING_TRACK_IDS = [
   "music",
   "gaming",
   "multiguest",
+  "aicreator",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -155,6 +156,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Professional multi-guest hosting — conversations, panels, interviews, community rooms, events, talent shows, ethical competitive rooms, moderation, and signature multi-guest LIVE events.",
   },
+  {
+    id: "aicreator",
+    title: "AI Creator Mastery",
+    lessonInLabel: "AI Creator Mastery",
+    partOfLabel: "StreamerU · AI Creator Mastery",
+    description:
+      "Responsible AI for creators — mindset, prompts, planning, voice-safe writing, visuals, video/repurposing, safe automation, verified research, ethics/privacy, and an AI Creator Operating System.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -182,6 +191,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   music: "Music LIVE Mastery",
   gaming: "Gaming LIVE Mastery",
   multiguest: "Multi-Guest LIVE Mastery",
+  aicreator: "AI Creator Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

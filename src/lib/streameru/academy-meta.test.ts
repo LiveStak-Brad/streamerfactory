@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(134);
+    expect(PUBLISHED_LESSON_COUNT).toBe(144);
   });
 
-  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, then Multi-Guest LIVE", () => {
-    expect(getPublishedProgramCount()).toBe(15);
-    expect(getActiveProgramCount()).toBe(15);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, then AI Creator", () => {
+    expect(getPublishedProgramCount()).toBe(16);
+    expect(getActiveProgramCount()).toBe(16);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -35,6 +35,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[12]).toBe("Music LIVE Mastery");
     expect(STREAMERU_PROGRAM_NAMES[13]).toBe("Gaming LIVE Mastery");
     expect(STREAMERU_PROGRAM_NAMES[14]).toBe("Multi-Guest LIVE Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[15]).toBe("AI Creator Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -92,6 +93,10 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(multiguest?.lessons).toHaveLength(10);
     expect(multiguest?.lessons[0]?.slug).toBe("why-multi-guest-live-changes-everything");
     expect(multiguest?.lessons[9]?.slug).toBe("multi-guest-live-capstone-signature-event");
+    const aicreator = curriculumByProgram().find((p) => p.programName === "AI Creator Mastery");
+    expect(aicreator?.lessons).toHaveLength(10);
+    expect(aicreator?.lessons[0]?.slug).toBe("thinking-like-an-ai-powered-creator");
+    expect(aicreator?.lessons[9]?.slug).toBe("ai-creator-capstone-operating-system");
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
@@ -101,7 +106,7 @@ describe("StreamerU academy-meta source of truth", () => {
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.12");
+    expect(ACADEMY_RELEASE.version).toBe("1.13");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

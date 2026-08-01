@@ -24,6 +24,7 @@
  * 13. Music LIVE Mastery — music performance + technical LIVE specialty (optional)
  * 14. Gaming LIVE Mastery — gaming LIVE specialty (optional; after Music LIVE)
  * 15. Multi-Guest LIVE Mastery — multi-guest hosting specialty (optional; after Gaming LIVE)
+ * 16. AI Creator Mastery — responsible AI specialty (optional; after Multi-Guest LIVE)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -63,6 +64,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Music LIVE Mastery",
   "Gaming LIVE Mastery",
   "Multi-Guest LIVE Mastery",
+  "AI Creator Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1286,6 +1288,96 @@ export const CURRICULUM: CurriculumLesson[] = [
     title: "Multi-Guest LIVE Capstone: Signature Event",
     trackId: "multiguest",
     programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 135,
+    slug: "thinking-like-an-ai-powered-creator",
+    title: "Thinking Like an AI-Powered Creator",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 136,
+    slug: "prompt-engineering-for-creators",
+    title: "Prompt Engineering for Creators",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 137,
+    slug: "ai-content-planning-and-brainstorming",
+    title: "AI Content Planning and Brainstorming",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 138,
+    slug: "ai-writing-without-losing-your-voice",
+    title: "AI Writing Without Losing Your Voice",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 139,
+    slug: "ai-images-graphics-and-branding",
+    title: "AI Images, Graphics, and Branding",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 140,
+    slug: "ai-video-editing-and-repurposing",
+    title: "AI Video, Editing, and Repurposing",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 141,
+    slug: "ai-automation-for-creator-workflows",
+    title: "AI Automation for Creator Workflows",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 142,
+    slug: "ai-research-analytics-and-decision-making",
+    title: "AI Research, Analytics, and Decision Making",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 143,
+    slug: "ethics-privacy-and-responsible-ai",
+    title: "Ethics, Privacy, and Responsible AI",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 144,
+    slug: "ai-creator-capstone-operating-system",
+    title: "AI Creator Capstone: Operating System",
+    trackId: "aicreator",
+    programName: "AI Creator Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
   },

@@ -133,6 +133,16 @@ import { lesson as runningBoxBattlesAndCompetitiveRooms } from "./running-box-ba
 import { lesson as interviewingCreatorsLikeAProfessional } from "./interviewing-creators-like-a-professional";
 import { lesson as hostingEventsPanelsAndTalentShows } from "./hosting-events-panels-and-talent-shows";
 import { lesson as multiGuestLiveCapstoneSignatureEvent } from "./multi-guest-live-capstone-signature-event";
+import { lesson as thinkingLikeAnAiPoweredCreator } from "./thinking-like-an-ai-powered-creator";
+import { lesson as promptEngineeringForCreators } from "./prompt-engineering-for-creators";
+import { lesson as aiContentPlanningAndBrainstorming } from "./ai-content-planning-and-brainstorming";
+import { lesson as aiWritingWithoutLosingYourVoice } from "./ai-writing-without-losing-your-voice";
+import { lesson as aiImagesGraphicsAndBranding } from "./ai-images-graphics-and-branding";
+import { lesson as aiVideoEditingAndRepurposing } from "./ai-video-editing-and-repurposing";
+import { lesson as aiAutomationForCreatorWorkflows } from "./ai-automation-for-creator-workflows";
+import { lesson as aiResearchAnalyticsAndDecisionMaking } from "./ai-research-analytics-and-decision-making";
+import { lesson as ethicsPrivacyAndResponsibleAi } from "./ethics-privacy-and-responsible-ai";
+import { lesson as aiCreatorCapstoneOperatingSystem } from "./ai-creator-capstone-operating-system";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -274,6 +284,16 @@ const LESSONS: ExpandedLesson[] = [
   interviewingCreatorsLikeAProfessional,
   hostingEventsPanelsAndTalentShows,
   multiGuestLiveCapstoneSignatureEvent,
+  thinkingLikeAnAiPoweredCreator,
+  promptEngineeringForCreators,
+  aiContentPlanningAndBrainstorming,
+  aiWritingWithoutLosingYourVoice,
+  aiImagesGraphicsAndBranding,
+  aiVideoEditingAndRepurposing,
+  aiAutomationForCreatorWorkflows,
+  aiResearchAnalyticsAndDecisionMaking,
+  ethicsPrivacyAndResponsibleAi,
+  aiCreatorCapstoneOperatingSystem,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

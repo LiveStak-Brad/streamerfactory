@@ -75,6 +75,7 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
     case "music":
     case "gaming":
     case "multiguest":
+    case "aicreator":
       return "advanced";
     default:
       return "beginner";

@@ -3297,6 +3297,279 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— AI Creator Mastery ——
+
+  "thinking-like-an-ai-powered-creator": {
+    id: "mission-135-aic-mindset",
+    mission_title: "Session: AI Mindset Proof",
+    mission_description:
+      "Score your AI mindset, decide human vs AI ownership, and define a starter stack with judgment gates.",
+    mission_steps: steps(
+      [
+        "Complete the AI Mindset Scorecard and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Score your AI mindset, decide human vs AI ownership, and define a starter stack with judgment gates.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "AI Mindset Scorecard", href: "/streameru/library/ai-mindset-scorecard" },
+      { label: "Human vs AI Decision Matrix", href: "/streameru/library/human-vs-ai-decision-matrix" },
+      { label: "AI Stack Starter Card", href: "/streameru/library/ai-stack-starter-card" },
+    ],
+  },
+
+  "prompt-engineering-for-creators": {
+    id: "mission-136-aic-prompts",
+    mission_title: "Session: Prompt Pattern Drill",
+    mission_description:
+      "Write and iterate prompts with context, role, examples, constraints, and verification.",
+    mission_steps: steps(
+      [
+        "Complete the Prompt Pattern Library and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Write and iterate prompts with context, role, examples, constraints, and verification.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Prompt Pattern Library", href: "/streameru/library/prompt-pattern-library" },
+      { label: "Context Brief Template", href: "/streameru/library/context-brief-template" },
+      { label: "Iteration Checklist", href: "/streameru/library/iteration-checklist" },
+    ],
+  },
+
+  "ai-content-planning-and-brainstorming": {
+    id: "mission-137-aic-planning",
+    mission_title: "Session: AI Content Plan Run",
+    mission_description:
+      "Plan LIVE ideas, hooks, and a weekly system with AI while keeping creative decisions.",
+    mission_steps: steps(
+      [
+        "Complete the AI Content Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Plan LIVE ideas, hooks, and a weekly system with AI while keeping creative decisions.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "AI Content Planner", href: "/streameru/library/ai-content-planner" },
+      { label: "Hook Bank Worksheet", href: "/streameru/library/hook-bank-worksheet" },
+      { label: "LIVE Plan Prompt Pack", href: "/streameru/library/live-plan-prompt-pack" },
+    ],
+  },
+
+  "ai-writing-without-losing-your-voice": {
+    id: "mission-138-aic-voice",
+    mission_title: "Session: Voice-Safe Rewrite",
+    mission_description:
+      "Draft with AI, then rewrite until the words sound like you and stay factually true.",
+    mission_steps: steps(
+      [
+        "Complete the Voice Capture Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Draft with AI, then rewrite until the words sound like you and stay factually true.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Voice Capture Worksheet", href: "/streameru/library/voice-capture-worksheet" },
+      { label: "Rewrite Comparison Card", href: "/streameru/library/rewrite-comparison-card" },
+      { label: "Authenticity Checklist", href: "/streameru/library/authenticity-checklist" },
+    ],
+  },
+
+  "ai-images-graphics-and-branding": {
+    id: "mission-139-aic-visuals",
+    mission_title: "Session: Brand-Safe Visual Pass",
+    mission_description:
+      "Generate or edit visuals with clear prompts, brand rules, copyright awareness, and accessibility.",
+    mission_steps: steps(
+      [
+        "Complete the Image Prompt Guide and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Generate or edit visuals with clear prompts, brand rules, copyright awareness, and accessibility.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Image Prompt Guide", href: "/streameru/library/image-prompt-guide" },
+      { label: "Brand Visual Rules Card", href: "/streameru/library/brand-visual-rules-card" },
+      { label: "Thumbnail Prompt Bank", href: "/streameru/library/thumbnail-prompt-bank" },
+    ],
+  },
+
+  "ai-video-editing-and-repurposing": {
+    id: "mission-140-aic-video",
+    mission_title: "Session: AI Video Repurpose Review",
+    mission_description:
+      "Use AI for captions, clips, cleanup, or highlights — then human-review before publish.",
+    mission_steps: steps(
+      [
+        "Complete the Video AI Workflow Map and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Use AI for captions, clips, cleanup, or highlights — then human-review before publish.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Video AI Workflow Map", href: "/streameru/library/video-ai-workflow-map" },
+      { label: "Caption Quality Checklist", href: "/streameru/library/caption-quality-checklist" },
+      { label: "Replay Clip Prompt Pack", href: "/streameru/library/replay-clip-prompt-pack" },
+    ],
+  },
+
+  "ai-automation-for-creator-workflows": {
+    id: "mission-141-aic-automation",
+    mission_title: "Session: Automation Gate Map",
+    mission_description:
+      "Map automation opportunities with human-in-the-loop gates and a workflow safety check.",
+    mission_steps: steps(
+      [
+        "Complete the Automation Opportunity Map and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Map automation opportunities with human-in-the-loop gates and a workflow safety check.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Automation Opportunity Map", href: "/streameru/library/automation-opportunity-map" },
+      { label: "Human-in-the-Loop Gate Card", href: "/streameru/library/human-in-the-loop-gate-card" },
+      { label: "Workflow Safety Checklist", href: "/streameru/library/workflow-safety-checklist" },
+    ],
+  },
+
+  "ai-research-analytics-and-decision-making": {
+    id: "mission-142-aic-research",
+    mission_title: "Session: Verified Decision Drill",
+    mission_description:
+      "Research or interpret metrics with a verification checklist before making a decision.",
+    mission_steps: steps(
+      [
+        "Complete the Research Verification Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Research or interpret metrics with a verification checklist before making a decision.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Research Verification Checklist", href: "/streameru/library/research-verification-checklist" },
+      { label: "Analytics Prompt Pack", href: "/streameru/library/analytics-prompt-pack" },
+      { label: "Decision Framework Card", href: "/streameru/library/decision-framework-card" },
+    ],
+  },
+
+  "ethics-privacy-and-responsible-ai": {
+    id: "mission-143-aic-ethics",
+    mission_title: "Session: Responsible AI Policy Install",
+    mission_description:
+      "Install privacy red lines, disclosure scripts, and a responsible AI policy you can enforce.",
+    mission_steps: steps(
+      [
+        "Complete the Responsible AI Policy Card and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not tool count, output volume, or hype).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Install privacy red lines, disclosure scripts, and a responsible AI policy you can enforce.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Responsible AI Policy Card", href: "/streameru/library/responsible-ai-policy-card" },
+      { label: "Privacy Red Line Checklist", href: "/streameru/library/privacy-red-line-checklist" },
+      { label: "Disclosure Script Bank", href: "/streameru/library/disclosure-script-bank" },
+    ],
+  },
+
+  "ai-creator-capstone-operating-system": {
+    id: "mission-144-aic-capstone",
+    mission_title: "Session: AI Creator OS Capstone",
+    mission_description:
+      "Assemble and review AI Creator Operating System with full dossier evidence.",
+    mission_steps: steps(
+      [
+        "Complete the AI Creator OS Dossier and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the AI Creator OS Dossier + Capstone Evidence Checklist AI Creator and complete the improvement report.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Assemble and review AI Creator Operating System with full dossier evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "AI Creator OS Dossier", href: "/streameru/library/ai-creator-os-dossier" },
+      { label: "Capstone Evidence Checklist AI Creator", href: "/streameru/library/capstone-evidence-checklist-ai-creator" },
+      { label: "Improvement Report Template", href: "/streameru/library/improvement-report-template" },
+    ],
+  },
+
+
 
 
 

@@ -160,6 +160,17 @@ import { quiz as interviewingCreatorsLikeAProfessional } from "@/lib/assessments
 import { quiz as hostingEventsPanelsAndTalentShows } from "@/lib/assessments/quizzes/multiguest/hosting-events-panels-and-talent-shows";
 import { quiz as multiGuestLiveCapstoneSignatureEvent } from "@/lib/assessments/quizzes/multiguest/multi-guest-live-capstone-signature-event";
 
+import { quiz as thinkingLikeAnAiPoweredCreator } from "@/lib/assessments/quizzes/aicreator/thinking-like-an-ai-powered-creator";
+import { quiz as promptEngineeringForCreators } from "@/lib/assessments/quizzes/aicreator/prompt-engineering-for-creators";
+import { quiz as aiContentPlanningAndBrainstorming } from "@/lib/assessments/quizzes/aicreator/ai-content-planning-and-brainstorming";
+import { quiz as aiWritingWithoutLosingYourVoice } from "@/lib/assessments/quizzes/aicreator/ai-writing-without-losing-your-voice";
+import { quiz as aiImagesGraphicsAndBranding } from "@/lib/assessments/quizzes/aicreator/ai-images-graphics-and-branding";
+import { quiz as aiVideoEditingAndRepurposing } from "@/lib/assessments/quizzes/aicreator/ai-video-editing-and-repurposing";
+import { quiz as aiAutomationForCreatorWorkflows } from "@/lib/assessments/quizzes/aicreator/ai-automation-for-creator-workflows";
+import { quiz as aiResearchAnalyticsAndDecisionMaking } from "@/lib/assessments/quizzes/aicreator/ai-research-analytics-and-decision-making";
+import { quiz as ethicsPrivacyAndResponsibleAi } from "@/lib/assessments/quizzes/aicreator/ethics-privacy-and-responsible-ai";
+import { quiz as aiCreatorCapstoneOperatingSystem } from "@/lib/assessments/quizzes/aicreator/ai-creator-capstone-operating-system";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -175,6 +186,7 @@ import { exam as finalBattle } from "@/lib/assessments/exams/program-battle";
 import { exam as finalMusic } from "@/lib/assessments/exams/program-music";
 import { exam as finalGaming } from "@/lib/assessments/exams/program-gaming";
 import { exam as finalMultiguest } from "@/lib/assessments/exams/program-multiguest";
+import { exam as finalAicreator } from "@/lib/assessments/exams/program-aicreator";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -312,6 +324,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   interviewingCreatorsLikeAProfessional,
   hostingEventsPanelsAndTalentShows,
   multiGuestLiveCapstoneSignatureEvent,
+  thinkingLikeAnAiPoweredCreator,
+  promptEngineeringForCreators,
+  aiContentPlanningAndBrainstorming,
+  aiWritingWithoutLosingYourVoice,
+  aiImagesGraphicsAndBranding,
+  aiVideoEditingAndRepurposing,
+  aiAutomationForCreatorWorkflows,
+  aiResearchAnalyticsAndDecisionMaking,
+  ethicsPrivacyAndResponsibleAi,
+  aiCreatorCapstoneOperatingSystem,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -330,6 +352,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalMusic,
   finalGaming,
   finalMultiguest,
+  finalAicreator,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));
