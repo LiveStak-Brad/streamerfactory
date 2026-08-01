@@ -18,6 +18,8 @@
  * 7. Content Creation Mastery — worth-watching showcraft (niche, segments, themes, arcs)
  * 8. Growth Mastery — discovery systems, analytics, experiments, durable growth
  * 9. Community Mastery — belonging culture, mods, rituals, guests, networking
+ * 10. Professional Creator Mastery — creator-side career professionalism
+ * 11. Production Mastery — lighting, audio, framing, OBS, mobile, accessibility, triage
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -52,6 +54,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Growth Mastery",
   "Community Mastery",
   "Professional Creator Mastery",
+  "Production Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -821,6 +824,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     title: "Professional Creator Capstone: Creator Operating Manual",
     trackId: "professional",
     programName: "Professional Creator Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
+  },
+  // PRODUCTION MASTERY (10) — technical quality systems after Advanced Creator
+  {
+    globalOrder: 85,
+    slug: "production-decisions-before-gear-purchases",
+    title: "Production Decisions Before Gear Purchases",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 86,
+    slug: "lighting-systems-that-make-you-look-intentional",
+    title: "Lighting Systems That Make You Look Intentional",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 87,
+    slug: "camera-framing-and-visual-hierarchy",
+    title: "Camera Framing and Visual Hierarchy",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 88,
+    slug: "audio-first-clean-sound-wins-trust",
+    title: "Audio First: Clean Sound Wins Trust",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 89,
+    slug: "room-design-and-background-as-brand",
+    title: "Room Design and Background as Brand",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 90,
+    slug: "obs-and-scene-discipline-without-overbuilding",
+    title: "OBS and Scene Discipline (Without Overbuilding)",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 91,
+    slug: "mobile-first-production-excellence",
+    title: "Mobile-First Production Excellence",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 92,
+    slug: "accessibility-basics-for-live-viewers",
+    title: "Accessibility Basics for LIVE Viewers",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 93,
+    slug: "troubleshooting-under-pressure",
+    title: "Troubleshooting Under Pressure",
+    trackId: "production",
+    programName: "Production Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 94,
+    slug: "production-capstone-your-signature-look",
+    title: "Production Capstone: Your Signature Look",
+    trackId: "production",
+    programName: "Production Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
   },

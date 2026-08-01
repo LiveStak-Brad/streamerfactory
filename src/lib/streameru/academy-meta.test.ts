@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(84);
+    expect(PUBLISHED_LESSON_COUNT).toBe(94);
   });
 
-  it("includes Presence then Content Creation Mastery before Growth, then Community, then Professional Creator", () => {
-    expect(getPublishedProgramCount()).toBe(10);
-    expect(getActiveProgramCount()).toBe(10);
+  it("includes Presence then Content Creation Mastery before Growth, then Community, Professional Creator, then Production", () => {
+    expect(getPublishedProgramCount()).toBe(11);
+    expect(getActiveProgramCount()).toBe(11);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -30,6 +30,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[7]).toBe("Growth Mastery");
     expect(STREAMERU_PROGRAM_NAMES[8]).toBe("Community Mastery");
     expect(STREAMERU_PROGRAM_NAMES[9]).toBe("Professional Creator Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[10]).toBe("Production Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -67,6 +68,10 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(professional?.lessons[9]?.slug).toBe(
       "professional-creator-capstone-creator-operating-manual",
     );
+    const production = curriculumByProgram().find((p) => p.programName === "Production Mastery");
+    expect(production?.lessons).toHaveLength(10);
+    expect(production?.lessons[0]?.slug).toBe("production-decisions-before-gear-purchases");
+    expect(production?.lessons[9]?.slug).toBe("production-capstone-your-signature-look");
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
@@ -76,7 +81,7 @@ describe("StreamerU academy-meta source of truth", () => {
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.7");
+    expect(ACADEMY_RELEASE.version).toBe("1.8");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

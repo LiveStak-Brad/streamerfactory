@@ -158,6 +158,8 @@ const moduleDescriptions: Record<string, string> = {
     "Belonging culture — rituals, return habits, moderation, healthy boundaries, guest hosting, and networking so people keep coming back.",
   "Professional Creator Mastery":
     "Creator-side career professionalism — positioning, offers, money ops, IP awareness, brand communication, contracts literacy, and capacity.",
+  "Production Mastery":
+    "Technical LIVE quality — lighting, audio, framing, room design, OBS discipline, mobile production, accessibility, and troubleshooting with the gear you own.",
 };
 
 /**
@@ -503,6 +505,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isGrowth = program.programName === "Growth Mastery";
             const isCommunity = program.programName === "Community Mastery";
             const isProfessional = program.programName === "Professional Creator Mastery";
+            const isProduction = program.programName === "Production Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -521,25 +524,30 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isProfessional
+                : isProduction
                   ? {
                       label: "Next steps",
-                      detail: "Career Creator path · optional Professional Creator Lab Honors",
+                      detail: "Career Creator path · optional Production Lab Honors",
                     }
-                  : isCommunity
+                  : isProfessional
                     ? {
                         label: "Next steps",
-                        detail: "Professional Creator Mastery · optional Community Lab Honors",
+                        detail: "Production Mastery · Career Creator path · optional Professional Creator Lab Honors",
                       }
-                    : isGrowth
+                    : isCommunity
                       ? {
                           label: "Next steps",
-                          detail: "Community Mastery · Career Creator path · optional Growth Lab Honors",
+                          detail: "Professional Creator Mastery · optional Community Lab Honors",
                         }
-                      : {
-                          label: "Graduation progress",
-                          detail: "unlocks path to Graduation Exam & StreamerU Diploma",
-                        },
+                      : isGrowth
+                        ? {
+                            label: "Next steps",
+                            detail: "Community Mastery · Career Creator path · optional Growth Lab Honors",
+                          }
+                        : {
+                            label: "Graduation progress",
+                            detail: "unlocks path to Graduation Exam & StreamerU Diploma",
+                          },
               {
                 label: isAdvanced
                   ? "Black-belt bridge"
@@ -553,7 +561,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                           ? "Belonging mastery"
                           : isProfessional
                             ? "Career professionalism"
-                            : "Career-path progress",
+                            : isProduction
+                              ? "Production quality"
+                              : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
                   : isPresence
@@ -566,7 +576,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                           ? "elective Mastery Path · Capstone: community appreciation event"
                           : isProfessional
                             ? "required for Career Creator Diploma · Capstone: Creator Operating Manual"
-                            : "counts toward StreamerU Graduate recognition",
+                            : isProduction
+                              ? "elective Mastery Path · Capstone: signature production look"
+                              : "counts toward StreamerU Graduate recognition",
               },
             ];
             return (
@@ -580,7 +592,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   description={moduleDescriptions[program.programName]}
                   index={index}
                   difficulty={
-                    isAdvanced || isGrowth || isCommunity || isProfessional
+                    isAdvanced || isGrowth || isCommunity || isProfessional || isProduction
                       ? "advanced"
                       : isPresence || isCreation
                         ? "intermediate"

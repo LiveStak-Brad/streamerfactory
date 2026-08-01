@@ -14,6 +14,7 @@ export const TRAINING_TRACK_IDS = [
   "growth",
   "community",
   "professional",
+  "production",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -110,6 +111,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Positioning, offers, income operations, IP awareness, brand communication, privacy/security, contracts literacy, and capacity planning — creator-side career sustainability.",
   },
+  {
+    id: "production",
+    title: "Production Mastery",
+    lessonInLabel: "Production Mastery",
+    partOfLabel: "StreamerU · Production Mastery",
+    description:
+      "Lighting, audio, framing, room design, OBS discipline, mobile production, accessibility, and troubleshooting — professional LIVE quality with whatever gear you own.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -132,6 +141,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   growth: "Growth",
   community: "Community",
   professional: "Professional Creator",
+  production: "Production",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

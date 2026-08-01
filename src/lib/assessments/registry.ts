@@ -105,6 +105,17 @@ import { quiz as contractsLiteracyForCreators } from "@/lib/assessments/quizzes/
 import { quiz as timeCapacityAndSayingNo } from "@/lib/assessments/quizzes/professional/time-capacity-and-saying-no";
 import { quiz as professionalCreatorCapstoneCreatorOperatingManual } from "@/lib/assessments/quizzes/professional/professional-creator-capstone-creator-operating-manual";
 
+import { quiz as productionDecisionsBeforeGearPurchases } from "@/lib/assessments/quizzes/production/production-decisions-before-gear-purchases";
+import { quiz as lightingSystemsThatMakeYouLookIntentional } from "@/lib/assessments/quizzes/production/lighting-systems-that-make-you-look-intentional";
+import { quiz as cameraFramingAndVisualHierarchy } from "@/lib/assessments/quizzes/production/camera-framing-and-visual-hierarchy";
+import { quiz as audioFirstCleanSoundWinsTrust } from "@/lib/assessments/quizzes/production/audio-first-clean-sound-wins-trust";
+import { quiz as roomDesignAndBackgroundAsBrand } from "@/lib/assessments/quizzes/production/room-design-and-background-as-brand";
+import { quiz as obsAndSceneDisciplineWithoutOverbuilding } from "@/lib/assessments/quizzes/production/obs-and-scene-discipline-without-overbuilding";
+import { quiz as mobileFirstProductionExcellence } from "@/lib/assessments/quizzes/production/mobile-first-production-excellence";
+import { quiz as accessibilityBasicsForLiveViewers } from "@/lib/assessments/quizzes/production/accessibility-basics-for-live-viewers";
+import { quiz as troubleshootingUnderPressure } from "@/lib/assessments/quizzes/production/troubleshooting-under-pressure";
+import { quiz as productionCapstoneYourSignatureLook } from "@/lib/assessments/quizzes/production/production-capstone-your-signature-look";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -115,6 +126,7 @@ import { exam as finalCreation } from "@/lib/assessments/exams/program-creation"
 import { exam as finalGrowth } from "@/lib/assessments/exams/program-growth";
 import { exam as finalCommunity } from "@/lib/assessments/exams/program-community";
 import { exam as finalProfessional } from "@/lib/assessments/exams/program-professional";
+import { exam as finalProduction } from "@/lib/assessments/exams/program-production";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -202,6 +214,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   contractsLiteracyForCreators,
   timeCapacityAndSayingNo,
   professionalCreatorCapstoneCreatorOperatingManual,
+  productionDecisionsBeforeGearPurchases,
+  lightingSystemsThatMakeYouLookIntentional,
+  cameraFramingAndVisualHierarchy,
+  audioFirstCleanSoundWinsTrust,
+  roomDesignAndBackgroundAsBrand,
+  obsAndSceneDisciplineWithoutOverbuilding,
+  mobileFirstProductionExcellence,
+  accessibilityBasicsForLiveViewers,
+  troubleshootingUnderPressure,
+  productionCapstoneYourSignatureLook,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -215,6 +237,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalGrowth,
   finalCommunity,
   finalProfessional,
+  finalProduction,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

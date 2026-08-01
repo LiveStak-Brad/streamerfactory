@@ -1937,6 +1937,279 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Production Mastery ——
+
+  "production-decisions-before-gear-purchases": {
+    id: "mission-85-setup-audit",
+    mission_title: "Session: Setup Audit Before Gear",
+    mission_description:
+      "Complete setup audit + decision memo; apply one free/low-cost fix before buying.",
+    mission_steps: steps(
+      [
+        "Complete the Setup Audit Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete setup audit + decision memo; apply one free/low-cost fix before buying.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Setup Audit Worksheet", href: "/streameru/library/setup-audit-worksheet" },
+      { label: "Upgrade Decision Memo", href: "/streameru/library/upgrade-decision-memo" },
+      { label: "Gear ROI Scorecard", href: "/streameru/library/gear-roi-scorecard" },
+    ],
+  },
+
+  "lighting-systems-that-make-you-look-intentional": {
+    id: "mission-86-lighting-system",
+    mission_title: "Session: Intentional Lighting Setup",
+    mission_description:
+      "Build repeatable lighting for primary LIVE location; photo + diagram evidence.",
+    mission_steps: steps(
+      [
+        "Complete the Lighting Diagram Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build repeatable lighting for primary LIVE location; photo + diagram evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Lighting Diagram Worksheet", href: "/streameru/library/lighting-diagram-worksheet" },
+      { label: "Lighting Setup Checklist", href: "/streameru/library/lighting-setup-checklist" },
+      { label: "Soft-Light Placement Card", href: "/streameru/library/soft-light-placement-card" },
+    ],
+  },
+
+  "camera-framing-and-visual-hierarchy": {
+    id: "mission-87-framing-lock",
+    mission_title: "Session: Framing Consistency",
+    mission_description:
+      "Lock a professional frame across three sessions with reference screenshots.",
+    mission_steps: steps(
+      [
+        "Complete the Framing Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Lock a professional frame across three sessions with reference screenshots.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Framing Checklist", href: "/streameru/library/framing-checklist" },
+      { label: "Visual Hierarchy Scorecard", href: "/streameru/library/visual-hierarchy-scorecard" },
+      { label: "Reference Frame Card", href: "/streameru/library/reference-frame-card" },
+    ],
+  },
+
+  "audio-first-clean-sound-wins-trust": {
+    id: "mission-88-audio-pass",
+    mission_title: "Session: Clean Audio Pass/Fail",
+    mission_description:
+      "Reach clean-audio standard with test recording pass/fail before LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Audio Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Reach clean-audio standard with test recording pass/fail before LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Audio Checklist", href: "/streameru/library/audio-checklist" },
+      { label: "Mic Placement Guide", href: "/streameru/library/mic-placement-guide" },
+      { label: "Pre-LIVE Audio Pass/Fail Card", href: "/streameru/library/pre-live-audio-pass-fail-card" },
+    ],
+  },
+
+  "room-design-and-background-as-brand": {
+    id: "mission-89-background-brand",
+    mission_title: "Session: Background Redesign",
+    mission_description:
+      "Redesign background for brand clarity; document before/after + rationale.",
+    mission_steps: steps(
+      [
+        "Complete the Background Evaluation Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Redesign background for brand clarity; document before/after + rationale.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Background Evaluation Checklist", href: "/streameru/library/background-evaluation-checklist" },
+      { label: "Room Redesign Planner", href: "/streameru/library/room-redesign-planner" },
+      { label: "Before/After Rationale Card", href: "/streameru/library/before-after-rationale-card" },
+    ],
+  },
+
+  "obs-and-scene-discipline-without-overbuilding": {
+    id: "mission-90-obs-scenes",
+    mission_title: "Session: Three-Scene OBS Discipline",
+    mission_description:
+      "Build three-scene system + backup plan; rehearse under stress once.",
+    mission_steps: steps(
+      [
+        "Complete the OBS Scene Map Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build three-scene system + backup plan; rehearse under stress once.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "OBS Scene Map Worksheet", href: "/streameru/library/obs-scene-map-worksheet" },
+      { label: "Scene Startup Checklist", href: "/streameru/library/scene-startup-checklist" },
+      { label: "Tech Fail Backup Plan Card", href: "/streameru/library/tech-fail-backup-plan-card" },
+    ],
+  },
+
+  "mobile-first-production-excellence": {
+    id: "mission-91-mobile-kit",
+    mission_title: "Session: Mobile Production Endurance",
+    mission_description:
+      "Complete mobile kit + session log for a 90-minute failure-resistant plan.",
+    mission_steps: steps(
+      [
+        "Complete the Mobile Production Kit List and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete mobile kit + session log for a 90-minute failure-resistant plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Production Kit List", href: "/streameru/library/mobile-production-kit-list" },
+      { label: "Mobile Session Log", href: "/streameru/library/mobile-session-log" },
+      { label: "Power & Heat Checklist", href: "/streameru/library/power-and-heat-checklist" },
+    ],
+  },
+
+  "accessibility-basics-for-live-viewers": {
+    id: "mission-92-accessibility",
+    mission_title: "Session: Five Accessibility Upgrades",
+    mission_description:
+      "Apply five accessibility upgrades to setup/hosting; checklist evidence.",
+    mission_steps: steps(
+      [
+        "Complete the LIVE Accessibility Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Apply five accessibility upgrades to setup/hosting; checklist evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "LIVE Accessibility Checklist", href: "/streameru/library/live-accessibility-checklist" },
+      { label: "Overlay Contrast Card", href: "/streameru/library/overlay-contrast-card" },
+      { label: "Inclusive Hosting Habits Card", href: "/streameru/library/inclusive-hosting-habits-card" },
+    ],
+  },
+
+  "troubleshooting-under-pressure": {
+    id: "mission-93-triage-drill",
+    mission_title: "Session: Tech Triage Drill",
+    mission_description:
+      "Recover a simulated failure with triage tree in under two minutes; document.",
+    mission_steps: steps(
+      [
+        "Complete the Tech Triage Card and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (implementation graded — not viewer count).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Recover a simulated failure with triage tree in under two minutes; document.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Tech Triage Card", href: "/streameru/library/tech-triage-card" },
+      { label: "Failure Recovery Runbook", href: "/streameru/library/failure-recovery-runbook" },
+      { label: "Post-Incident Production Review", href: "/streameru/library/post-incident-production-review" },
+    ],
+  },
+
+  "production-capstone-your-signature-look": {
+    id: "mission-94-signature-look",
+    mission_title: "Session: Signature Look Capstone",
+    mission_description:
+      "Assemble production bible + demo evidence packet for signature look review.",
+    mission_steps: steps(
+      [
+        "Complete the Production Bible One-Pager and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the full Production Bible + Signature Look demo evidence packet and complete the Capstone Evidence Portfolio Checklist.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Assemble production bible + demo evidence packet for signature look review.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Production Bible One-Pager", href: "/streameru/library/production-bible-one-pager" },
+      { label: "Signature Look Demo Checklist", href: "/streameru/library/signature-look-demo-checklist" },
+      { label: "Capstone Evidence Portfolio Checklist", href: "/streameru/library/production-capstone-evidence-checklist" },
+    ],
+  },
+
+
 
   "presence-capstone-signature-20-minute-live": {
     id: "mission-42-presence-capstone",

@@ -83,6 +83,16 @@ import { lesson as privacySecurityAndReputationAsBusinessAssets } from "./privac
 import { lesson as contractsLiteracyForCreators } from "./contracts-literacy-for-creators";
 import { lesson as timeCapacityAndSayingNo } from "./time-capacity-and-saying-no";
 import { lesson as professionalCreatorCapstoneCreatorOperatingManual } from "./professional-creator-capstone-creator-operating-manual";
+import { lesson as productionDecisionsBeforeGearPurchases } from "./production-decisions-before-gear-purchases";
+import { lesson as lightingSystemsThatMakeYouLookIntentional } from "./lighting-systems-that-make-you-look-intentional";
+import { lesson as cameraFramingAndVisualHierarchy } from "./camera-framing-and-visual-hierarchy";
+import { lesson as audioFirstCleanSoundWinsTrust } from "./audio-first-clean-sound-wins-trust";
+import { lesson as roomDesignAndBackgroundAsBrand } from "./room-design-and-background-as-brand";
+import { lesson as obsAndSceneDisciplineWithoutOverbuilding } from "./obs-and-scene-discipline-without-overbuilding";
+import { lesson as mobileFirstProductionExcellence } from "./mobile-first-production-excellence";
+import { lesson as accessibilityBasicsForLiveViewers } from "./accessibility-basics-for-live-viewers";
+import { lesson as troubleshootingUnderPressure } from "./troubleshooting-under-pressure";
+import { lesson as productionCapstoneYourSignatureLook } from "./production-capstone-your-signature-look";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -174,6 +184,16 @@ const LESSONS: ExpandedLesson[] = [
   contractsLiteracyForCreators,
   timeCapacityAndSayingNo,
   professionalCreatorCapstoneCreatorOperatingManual,
+  productionDecisionsBeforeGearPurchases,
+  lightingSystemsThatMakeYouLookIntentional,
+  cameraFramingAndVisualHierarchy,
+  audioFirstCleanSoundWinsTrust,
+  roomDesignAndBackgroundAsBrand,
+  obsAndSceneDisciplineWithoutOverbuilding,
+  mobileFirstProductionExcellence,
+  accessibilityBasicsForLiveViewers,
+  troubleshootingUnderPressure,
+  productionCapstoneYourSignatureLook,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

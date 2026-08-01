@@ -161,6 +161,16 @@ const GOLD_PACK_SLUGS = new Set([
   "contracts-literacy-for-creators",
   "time-capacity-and-saying-no",
   "professional-creator-capstone-creator-operating-manual",
+  "production-decisions-before-gear-purchases",
+  "lighting-systems-that-make-you-look-intentional",
+  "camera-framing-and-visual-hierarchy",
+  "audio-first-clean-sound-wins-trust",
+  "room-design-and-background-as-brand",
+  "obs-and-scene-discipline-without-overbuilding",
+  "mobile-first-production-excellence",
+  "accessibility-basics-for-live-viewers",
+  "troubleshooting-under-pressure",
+  "production-capstone-your-signature-look",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {
