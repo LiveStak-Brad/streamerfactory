@@ -12316,6 +12316,246 @@ const REST: LessonProductionBrief[] = [
       },
     ]),
   ),
+  brief(
+    "building-a-mobile-creator-mindset",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Mobile Mindset Checklist",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Mobile Mindset Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Building a Mobile Creator Mindset system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Building a Mobile Creator Mindset system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Building a Mobile Creator Mindset; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from building a mobile creator mindset when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "choosing-the-right-mobile-equipment",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Mobile Gear Checklist",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Mobile Gear Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Choosing the Right Mobile Equipment system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Choosing the Right Mobile Equipment system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Choosing the Right Mobile Equipment; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from choosing the right mobile equipment when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "mobile-audio-and-lighting",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Mobile Audio Setup Card",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Mobile Audio Setup Card", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Mobile Audio & Lighting system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Mobile Audio & Lighting system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Mobile Audio & Lighting; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from mobile audio & lighting when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "streaming-anywhere-professionally",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Mobile Streaming Checklist",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Mobile Streaming Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Streaming Anywhere Professionally system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Streaming Anywhere Professionally system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Streaming Anywhere Professionally; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from streaming anywhere professionally when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "creating-high-quality-videos-on-your-phone",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Phone Edit Workflow",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Phone Edit Workflow", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Creating High-Quality Videos on Your Phone system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Creating High-Quality Videos on Your Phone system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Creating High-Quality Videos on Your Phone; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from creating high-quality videos on your phone when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "traveling-as-a-creator",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Travel Packing Guide",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Travel Packing Guide", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Traveling as a Creator system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Traveling as a Creator system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Traveling as a Creator; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from traveling as a creator when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "mobile-productivity-and-cloud-workflows",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Cloud Organization System",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Cloud Organization System", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Mobile Productivity & Cloud Workflows system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Mobile Productivity & Cloud Workflows system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Mobile Productivity & Cloud Workflows; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from mobile productivity & cloud workflows when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "irl-streaming-safely-and-responsibly",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Irl Safety Checklist",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Irl Safety Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "IRL Streaming Safely & Responsibly system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "IRL Streaming Safely & Responsibly system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to IRL Streaming Safely & Responsibly; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from irl streaming safely & responsibly when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "building-a-complete-mobile-creator-kit",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Creator Backpack Inventory",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Creator Backpack Inventory", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Building a Complete Mobile Creator Kit system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Building a Complete Mobile Creator Kit system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Building a Complete Mobile Creator Kit; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from building a complete mobile creator kit when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "mobile-creator-capstone-complete-system",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Complete Mobile Creator System",
+        description: "Clean Mobile Creator worksheet", purpose: "Shows the primary reviewable mobile artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive mobile setup notes. No unsafe locations or real bystanders.",
+        caption: "Build mobile evidence before you chase locations.", alt: "Blank Complete Mobile Creator System", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "mobile-system-diagram", assetType: "diagram", title: "Mobile Creator Capstone: Complete Mobile Creator System system diagram",
+        description: "Mobile creator readiness flow", purpose: "Shows gear, power, audio, safety, cloud, kit, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No dangerous IRL imagery or privacy violations.",
+        caption: "Mobile creation is a system of reliability and redundancy.", alt: "Mobile Creator Capstone: Complete Mobile Creator System system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-mobile-principle", assetType: "founder_story", title: "Brad experience — mobile creator principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented travel claims or unsafe IRL anecdotes.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Mobile Creator Capstone: Complete Mobile Creator System; approve before publication.",
+        founderQuestion: "What mobile creator principle would you want creators to remember from mobile creator capstone: complete mobile creator system when hype culture pushes unsafe IRL or gear flexing?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
 ];
 
 export const LESSON_PRODUCTION_BRIEFS: LessonProductionBrief[] = [LESSON_1, ...REST].sort(

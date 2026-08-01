@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(184);
+    expect(PUBLISHED_LESSON_COUNT).toBe(194);
   });
 
-  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, Creator Wellness, then Brand Partnerships", () => {
-    expect(getPublishedProgramCount()).toBe(20);
-    expect(getActiveProgramCount()).toBe(20);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, Creator Wellness, Brand Partnerships, then Mobile Creator", () => {
+    expect(getPublishedProgramCount()).toBe(21);
+    expect(getActiveProgramCount()).toBe(21);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -40,6 +40,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[17]).toBe("TikTok Shop Mastery");
     expect(STREAMERU_PROGRAM_NAMES[18]).toBe("Creator Wellness & Longevity Mastery");
     expect(STREAMERU_PROGRAM_NAMES[19]).toBe("Brand Partnerships Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[20]).toBe("Mobile Creator Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -125,16 +126,24 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(partnerships?.lessons[9]?.slug).toBe(
       "brand-partnerships-capstone-professional-portfolio",
     );
+    const mobile = curriculumByProgram().find(
+      (p) => p.programName === "Mobile Creator Mastery",
+    );
+    expect(mobile?.lessons).toHaveLength(10);
+    expect(mobile?.lessons[0]?.slug).toBe("building-a-mobile-creator-mindset");
+    expect(mobile?.lessons[9]?.slug).toBe(
+      "mobile-creator-capstone-complete-system",
+    );
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
-    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(201);
-    expect(PLANNED_TRACK_COUNT).toBe(21);
+    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(211);
+    expect(PLANNED_TRACK_COUNT).toBe(22);
     expect(PLANNED_CURRICULUM_LESSON_COUNT).toBeGreaterThan(PUBLISHED_LESSON_COUNT);
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.17");
+    expect(ACADEMY_RELEASE.version).toBe("1.18");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

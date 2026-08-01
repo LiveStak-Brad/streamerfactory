@@ -178,6 +178,8 @@ const moduleDescriptions: Record<string, string> = {
     "Career longevity for creators — burnout prevention, ergonomics, voice care, mental resilience, sustainable schedules, personal financial buffers, boundaries, creative recovery, setback protocols, and a Personal Creator Longevity Plan.",
   "Brand Partnerships Mastery":
     "Professional brand partnerships — readiness, EPK/media kit, fit research, outreach, negotiation principles, campaign delivery, reporting, renewals, and a Professional Brand Partnership Portfolio.",
+  "Mobile Creator Mastery":
+    "Professional mobile creator systems — phone-first workflows, portable audio/light, anywhere streaming, travel kits, cloud/offline backups, safe IRL practice, and a Complete Mobile Creator System.",
 };
 
 /**
@@ -533,6 +535,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isTts = program.programName === "TikTok Shop Mastery";
             const isWellness = program.programName === "Creator Wellness & Longevity Mastery";
             const isPartnerships = program.programName === "Brand Partnerships Mastery";
+            const isMobile = program.programName === "Mobile Creator Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -551,11 +554,17 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
+                : isMobile
+                  ? {
+                      label: "Next steps",
+                      detail:
+                        "Public curriculum complete · Leadership Academy (invite only) · Mobile Creator Lab Honors · other Mastery Paths",
+                    }
                 : isPartnerships
                   ? {
                       label: "Next steps",
                       detail:
-                        "Optional specialty complete · Brand Partnerships Lab Honors · other Mastery Paths",
+                        "Mobile Creator Mastery (optional final public path) · Brand Partnerships Lab Honors · other Mastery Paths",
                     }
                 : isWellness
                   ? {

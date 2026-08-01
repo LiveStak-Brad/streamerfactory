@@ -80,6 +80,7 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
     case "tts":
     case "wellness":
     case "partnerships":
+    case "mobile":
       return "advanced";
     default:
       return "beginner";

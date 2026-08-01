@@ -4537,6 +4537,249 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Mobile Creator Mastery ——
+  "building-a-mobile-creator-mindset": {
+    id: "mission-185-mob-01",
+    mission_title: "Session: Building a Mobile Creator Mindset",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Mobile Mindset Checklist and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Mindset Checklist", href: "/streameru/library/mobile-mindset-checklist" },
+      { label: "Mobility Vs Studio Scorecard", href: "/streameru/library/mobility-vs-studio-scorecard" },
+      { label: "Freedom Operating Principles Card", href: "/streameru/library/freedom-operating-principles-card" },
+    ],
+  },
+  "choosing-the-right-mobile-equipment": {
+    id: "mission-186-mob-02",
+    mission_title: "Session: Choosing the Right Mobile Equipment",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Mobile Gear Checklist and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Gear Checklist", href: "/streameru/library/mobile-gear-checklist" },
+      { label: "Phone Capability Worksheet", href: "/streameru/library/phone-capability-worksheet" },
+      { label: "Upgrade Priority Matrix", href: "/streameru/library/upgrade-priority-matrix" },
+    ],
+  },
+  "mobile-audio-and-lighting": {
+    id: "mission-187-mob-03",
+    mission_title: "Session: Mobile Audio & Lighting",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Mobile Audio Setup Card and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Audio Setup Card", href: "/streameru/library/mobile-audio-setup-card" },
+      { label: "Portable Lighting Checklist", href: "/streameru/library/portable-lighting-checklist" },
+      { label: "Wind And Noise Plan", href: "/streameru/library/wind-and-noise-plan" },
+    ],
+  },
+  "streaming-anywhere-professionally": {
+    id: "mission-188-mob-04",
+    mission_title: "Session: Streaming Anywhere Professionally",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Mobile Streaming Checklist and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Streaming Checklist", href: "/streameru/library/mobile-streaming-checklist" },
+      { label: "Anywhere Setup Runbook", href: "/streameru/library/anywhere-setup-runbook" },
+      { label: "Heat And Power Checklist", href: "/streameru/library/heat-and-power-checklist" },
+    ],
+  },
+  "creating-high-quality-videos-on-your-phone": {
+    id: "mission-189-mob-05",
+    mission_title: "Session: Creating High-Quality Videos on Your Phone",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Phone Edit Workflow and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Phone Edit Workflow", href: "/streameru/library/phone-edit-workflow" },
+      { label: "Mobile Caption Checklist", href: "/streameru/library/mobile-caption-checklist" },
+      { label: "Thumbnail On Phone Guide", href: "/streameru/library/thumbnail-on-phone-guide" },
+    ],
+  },
+  "traveling-as-a-creator": {
+    id: "mission-190-mob-06",
+    mission_title: "Session: Traveling as a Creator",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Travel Packing Guide and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Travel Packing Guide", href: "/streameru/library/travel-packing-guide" },
+      { label: "Airport Creator Checklist", href: "/streameru/library/airport-creator-checklist" },
+      { label: "Hotel Stream Runbook", href: "/streameru/library/hotel-stream-runbook" },
+    ],
+  },
+  "mobile-productivity-and-cloud-workflows": {
+    id: "mission-191-mob-07",
+    mission_title: "Session: Mobile Productivity & Cloud Workflows",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Cloud Organization System and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Cloud Organization System", href: "/streameru/library/cloud-organization-system" },
+      { label: "Battery Planner", href: "/streameru/library/battery-planner" },
+      { label: "Offline Workflow Card", href: "/streameru/library/offline-workflow-card" },
+    ],
+  },
+  "irl-streaming-safely-and-responsibly": {
+    id: "mission-192-mob-08",
+    mission_title: "Session: IRL Streaming Safely & Responsibly",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Irl Safety Checklist and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Irl Safety Checklist", href: "/streameru/library/irl-safety-checklist" },
+      { label: "Public Privacy Checklist", href: "/streameru/library/public-privacy-checklist" },
+      { label: "Emergency Backup Plan", href: "/streameru/library/emergency-backup-plan" },
+    ],
+  },
+  "building-a-complete-mobile-creator-kit": {
+    id: "mission-193-mob-09",
+    mission_title: "Session: Building a Complete Mobile Creator Kit",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Creator Backpack Inventory and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Creator Backpack Inventory", href: "/streameru/library/creator-backpack-inventory" },
+      { label: "Kit Redundancy Map", href: "/streameru/library/kit-redundancy-map" },
+      { label: "Ninety Day Kit Upgrade Plan", href: "/streameru/library/ninety-day-kit-upgrade-plan" },
+    ],
+  },
+  "mobile-creator-capstone-complete-system": {
+    id: "mission-194-mob-10",
+    mission_title: "Session: Mobile Creator Capstone: Complete Mobile Creator System",
+    mission_description: "Complete reviewable mobile creator artifacts graded on preparation and execution evidence—not viewers, gifts, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Complete Mobile Creator System and its supporting lesson downloads.",
+        "Build or update one mobile creator artifact for the Complete Mobile Creator System.",
+      ],
+      40,
+      [
+        "Implement one dated improvement: gear checklist, audio card, runbook step, safety rule, or kit inventory row.",
+        "Document one review note for the Complete Mobile Creator System.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete Mobile Creator System evidence",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Complete Mobile Creator System", href: "/streameru/library/complete-mobile-creator-system" },
+      { label: "Mobile System Evidence Checklist", href: "/streameru/library/mobile-system-evidence-checklist" },
+      { label: "Ninety Day Mobile Improvement Plan", href: "/streameru/library/ninety-day-mobile-improvement-plan" },
+    ],
+  },
+
+
 
 
 

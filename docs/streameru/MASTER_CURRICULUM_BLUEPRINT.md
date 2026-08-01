@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.7 (Architecture locked)  
+**Version:** 2.8 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -185,6 +185,7 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── TikTok Shop Mastery*      ○ optional specialty
         ├── Creator Wellness & Longevity Mastery ★ recommended for everyone
         ├── Brand Partnerships Mastery* ○ optional specialty
+        ├── Mobile Creator Mastery*   ○ optional specialty — final public Mastery Path
         └── Mindset Mastery           ★ planned — Brad must approve relationship to Creator Wellness
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
@@ -195,6 +196,7 @@ Advanced Creator (8)  ←  BLACK BELT
 * TikTok Shop Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach Shop platform systems, product workflows, LIVE/video shopping execution, affiliate strategy, analytics interpretation, equipment, and compliance — never Selling & Influence communication craft duplication.
 * Creator Wellness & Longevity Mastery: Core required; Advanced Creator required before certificate award; recommended for everyone. Expands longevity habits beyond psychology-only framing (burnout, ergonomics, voice, mental resilience, schedules, personal financial wellness, relationships, creativity, setbacks). **Brad approval required:** whether this replaces, absorbs, or sits beside locked Mindset Mastery for Career Creator Diploma requirements.
 * Brand Partnerships Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach professionalism, EPK/media kit readiness, outreach, negotiation principles, campaign delivery, reporting, and long-term brand relationships — never fake metrics, hidden advertising, or legal advice. Drives Streamer Factory EPK Builder field requirements.
+* Mobile Creator Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. **Final public Mastery Path** before private Streamer Factory Leadership Academy (invitation only; do not expose internal leadership curriculum). Teach phone-first professional workflows, portable gear principles, travel/IRL readiness, connectivity, power/heat management, cloud/offline systems — never unsafe filming, trespassing, privacy violations, dangerous driving, illegal recording, or chasing yearly device launches.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -473,7 +475,25 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 17. Mindset Mastery (planned — relationship pending Brad approval)
+### 17. Mobile Creator Mastery (Optional Specialty — Final Public Path)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Teach creators how to build a professional creator career using equipment they can carry anywhere: mobility, reliability, battery/heat management, portable audio/light, phone-only streaming and editing, travel workflows, cloud/offline systems, and safe IRL practice. |
+| **Why it exists** | Many creators believe quality requires a studio. Career freedom comes from portable systems that stay professional under travel, heat, weak signal, and public constraints. Production Mastery owns studio craft depth; this path owns phone-first and travel-ready systems. |
+| **Who should take it** | Creators who stream or create from phones, travel often, work IRL, or want a backpack-sized professional kit. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Brand Partnerships in catalog order; after Core; Advanced Creator required before certificate award. Useful alongside Production, Content Creation, Presence, and Growth. |
+| **Prerequisites** | Core Certification. Advanced Creator required before Mobile Creator Mastery Certificate is awarded. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | Mobile Creator Mastery Certificate |
+| **Skills gained** | Mobile mindset, equipment principles (not yearly phone picks), portable audio/lighting, anywhere streaming, phone-only video creation, travel creator systems, cloud/offline productivity, safe IRL streaming, complete backpack kit design, Complete Mobile Creator System Capstone. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. Completing the Capstone marks the end of the **public** StreamerU curriculum ladder; eligible creators may later be invited to private Leadership Academy (reference only — never publish internal leadership lessons). |
+| **Hard boundaries** | Never teach unsafe filming, trespassing, ignoring privacy/consent, dangerous driving while filming, illegal recording, risky public behavior, or “stream through danger.” Teach principles over product SKUs; avoid chasing yearly device releases. **Not Production Mastery** studio depth duplication. Connectivity and airline rules are version-aware general education—not legal/travel advice. |
+| **Brad approval needed** | Confirm Leadership Academy teaser language at Capstone; confirm optional specialty status; confirm boundary vs Production Mastery gear lessons; confirm IRL safety wording. |
+
+---
+
+### 18. Mindset Mastery (planned — relationship pending Brad approval)
 
 | Field | Definition |
 |--------|------------|
@@ -490,7 +510,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 18. Manager College (Internal Only)
+### 19. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -533,7 +553,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, and/or Brand Partnerships Mastery **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, Brand Partnerships, and/or Mobile Creator Mastery **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -568,6 +588,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | TikTok Shop Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Creator Wellness & Longevity Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Brand Partnerships Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Mobile Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public — final public Mastery Path |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public — relationship to Creator Wellness pending Brad approval |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -644,6 +665,7 @@ It is distinct from optional Labs/Honors.
 | TikTok Shop Mastery | Build your **Signature Shop Campaign** |
 | Creator Wellness & Longevity Mastery | Assemble your **Personal Creator Longevity Plan** |
 | Brand Partnerships Mastery | Build your **Professional Brand Partnership Portfolio** (incl. Streamer Factory EPK) |
+| Mobile Creator Mastery | Build your **Complete Mobile Creator System** (backpack, power, cloud, streaming, editing, safety) |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -701,6 +723,7 @@ Same pattern for every public Mastery Path.
 | TikTok Shop Lab | TikTok Shop Mastery Certificate | Signature Shop Campaign pack / campaign review | TikTok Shop Mastery Honors |
 | Creator Wellness Lab | Creator Wellness & Longevity Mastery Certificate | Personal Creator Longevity Plan pack / habit review | Creator Wellness & Longevity Mastery Honors |
 | Brand Partnerships Lab | Brand Partnerships Mastery Certificate | Professional Brand Partnership Portfolio / EPK review | Brand Partnerships Mastery Honors |
+| Mobile Creator Lab | Mobile Creator Mastery Certificate | Complete Mobile Creator System review | Mobile Creator Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -2347,7 +2370,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 17 — Mindset Mastery (MS) — 8 lessons (planned; Brad approval on relationship to CWL)
+## PATH 17 — Mobile Creator Mastery (MOB) — 10 lessons (optional specialty; final public path)
+
+### MOB-01 — Building a Mobile Creator Mindset
+**Description:** Adopt mobility, reliability, simplicity, preparedness, and redundancy as professional operating principles—not excuses for low quality.  
+**Learning objective:** Complete a mobile mindset checklist and mobility-vs-studio scorecard with honest capacity.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Advanced Creator Certificate  
+**Practical outcome:** Mobile mindset checklist + mobility vs studio scorecard + freedom operating principles card.  
+**Estimated study time:** 38 min  
+**Connections:** Capstone Complete Mobile Creator System; freedom over expensive studios.
+
+### MOB-02 — Choosing the Right Mobile Equipment
+**Description:** Evaluate phone capability, storage, RAM, battery health, thermal behavior, and ports by principle—not yearly device hype.  
+**Learning objective:** Build a mobile gear checklist and upgrade-priority matrix for your real workflow.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MOB-01  
+**Practical outcome:** Mobile gear checklist + phone capability worksheet + upgrade priority matrix.  
+**Estimated study time:** 38 min  
+**Connections:** Teach principles before products; version-aware hardware notes.
+
+### MOB-03 — Mobile Audio & Lighting
+**Description:** Choose portable mics, adapters, wind protection, and travel lighting that raise quality without a studio.  
+**Learning objective:** Complete audio setup and portable lighting checklists with a wind/noise plan.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MOB-02  
+**Practical outcome:** Mobile audio setup card + portable lighting checklist + wind and noise plan.  
+**Estimated study time:** 38 min  
+**Connections:** Lavalier/wireless/USB/shotgun principles; ring/LED/natural light.
+
+### MOB-04 — Streaming Anywhere Professionally
+**Description:** Run phone LIVE with heat/power plans, chat/moderation awareness, and a fast anywhere setup runbook.  
+**Learning objective:** Complete a mobile streaming checklist and heat/power plan for a real session.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MOB-03  
+**Practical outcome:** Mobile streaming checklist + anywhere setup runbook + heat and power checklist.  
+**Estimated study time:** 38 min  
+**Connections:** TikTok LIVE mobile / vertical streaming principles; phone-only LIVE mission.
+
+### MOB-05 — Creating High-Quality Videos on Your Phone
+**Description:** Film, edit, caption, color-correct, and thumbnail entirely on mobile with a repeatable workflow.  
+**Learning objective:** Ship one phone-only edit with captions and a mobile thumbnail draft.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MOB-04  
+**Practical outcome:** Phone edit workflow + mobile caption checklist + thumbnail on phone guide.  
+**Estimated study time:** 38 min  
+**Connections:** Phone-only editing; Content Creation callbacks only.
+
+### MOB-06 — Traveling as a Creator
+**Description:** Pack, fly, hotel-stream, and event-create with checklists that survive real travel friction.  
+**Learning objective:** Complete a travel packing guide and hotel/airport creator runbook.  
+**Difficulty:** Advanced  
+**Prerequisites:** MOB-05  
+**Practical outcome:** Travel packing guide + airport creator checklist + hotel stream runbook.  
+**Estimated study time:** 38 min  
+**Connections:** Airport/hotel/café/convention workflows; airline battery rules as general education.
+
+### MOB-07 — Mobile Productivity & Cloud Workflows
+**Description:** Organize files, cloud backups, portable SSDs, battery planning, and offline editing so travel does not lose work.  
+**Learning objective:** Install a cloud organization system, battery planner, and offline workflow card.  
+**Difficulty:** Advanced  
+**Prerequisites:** MOB-06  
+**Practical outcome:** Cloud organization system + battery planner + offline workflow card.  
+**Estimated study time:** 38 min  
+**Connections:** 3-2-1 backup principles; external storage; public internet safety.
+
+### MOB-08 — IRL Streaming Safely & Responsibly
+**Description:** Plan public filming with privacy, consent, safety exits, weather, audio, and stabilization—never stream through danger.  
+**Learning objective:** Complete IRL safety, privacy, and emergency backup checklists before a public test.  
+**Difficulty:** Advanced  
+**Prerequisites:** MOB-07  
+**Practical outcome:** IRL safety checklist + public privacy checklist + emergency backup plan.  
+**Estimated study time:** 38 min  
+**Connections:** Hard boundaries: no trespass, illegal recording, dangerous driving, unsafe public behavior.
+
+### MOB-09 — Building a Complete Mobile Creator Kit
+**Description:** Design a backpack inventory with redundancy for power, audio, mounts, connectivity, and weather.  
+**Learning objective:** Inventory a creator backpack and map single points of failure.  
+**Difficulty:** Advanced  
+**Prerequisites:** MOB-08  
+**Practical outcome:** Creator backpack inventory + kit redundancy map + ninety-day kit upgrade plan.  
+**Estimated study time:** 38 min  
+**Connections:** Gimbals, tripods, mounts, power banks, cooling, capture accessories as principles.
+
+### MOB-10 — Mobile Creator Capstone: Complete Mobile Creator System
+**Description:** Assemble a reviewable Complete Mobile Creator System covering kit, travel, power, cloud, streaming, editing, and safety.  
+**Learning objective:** Submit objectively reviewable evidence for every system layer plus reflection; introduce private Leadership Academy as next invitation-only stage without exposing internal curriculum.  
+**Difficulty:** Expert  
+**Prerequisites:** MOB-01 through MOB-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Complete Mobile Creator System + mobile system evidence checklist + ninety-day mobile improvement plan.  
+**Estimated study time:** 45 min  
+**Connections:** Optional Mobile Creator Lab / Honors never gates certificate. Capstone closes the public StreamerU curriculum; Leadership Academy is invite-only and not published here.
+
+---
+
+## PATH 18 — Mindset Mastery (MS) — 8 lessons (planned; Brad approval on relationship to CWL)
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -2521,15 +2638,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | TikTok Shop Mastery (optional) | 10 | Planned / shipping |
 | Creator Wellness & Longevity Mastery | 10 | Planned / shipping |
 | Brand Partnerships Mastery (optional) | 10 | Planned / shipping |
+| Mobile Creator Mastery (optional; final public) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned — Brad must approve vs Creator Wellness |
-| **Public curriculum plan** | **192** | Internal planning figure (was 182 before Brand Partnerships; may drop to 184 if Mindset is retired) |
+| **Public curriculum plan** | **202** | Internal planning figure (was 192 before Mobile Creator; may drop to 194 if Mindset is retired) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **200** | |
+| **Grand total including internal** | **210** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 16 path labs | Optional; never diploma gates |
+| Labs → Honors | 17 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 192 planned · stretch 201+ · future unlimited (problem-gated only).
+**Internal:** 202 planned · stretch 211+ · future unlimited (problem-gated only).
 
 ---
 
@@ -2544,7 +2662,8 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, Gaming, Multi-Guest, AI Creator, Selling & Influence, TikTok Shop, and Brand Partnerships as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, Multi-Guest, AI Creator, Selling & Influence, TikTok Shop, Brand Partnerships, and Mobile Creator as optional specialties | ✅ Locked |
+| Mobile Creator Mastery as final public Mastery Path before private Leadership Academy (invite-only reference only) | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -2723,6 +2842,15 @@ Every planned lesson must answer exactly one question. Samples:
 6. Curriculum defines Streamer Factory EPK Builder field requirements  
 7. **Brad approval required:** Career Creator / diploma requirement status; EPK Builder product priority; boundary confirmation with Professional Creator brand-communication lessons  
 
+### v2.8 — Mobile Creator Mastery added (fill, do not redesign)
+1. Added **Mobile Creator Mastery** as optional specialty after Brand Partnerships Mastery in catalog order — **final public Mastery Path** before private Leadership Academy  
+2. 10 lessons (MOB-01–MOB-10); Capstone = Complete Mobile Creator System  
+3. Optional Mobile Creator Lab → Mobile Creator Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **192 → 202**; Mindset/Manager path numbers shifted only in document order — earlier programs unchanged  
+5. Codes use **MOB-** (not MC — Manager College retains MC-); teach mobility, portable gear principles, phone-only workflows, travel/IRL safety, connectivity, power/heat, cloud/offline systems — never unsafe filming, trespassing, privacy violations, dangerous driving, illegal recording, or yearly device chasing  
+6. Capstone introduces invitation-only Leadership Academy existence only — never exposes internal leadership curriculum  
+7. **Brad approval required:** Leadership Academy teaser wording; optional specialty status; Production Mastery boundary; IRL safety language  
+
 ---
 
 ## Document Control
@@ -2738,6 +2866,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 2.4 | 2026-07-31 | Selling & Influence Mastery optional specialty added after AI Creator; earlier programs preserved. |
 | 2.5 | 2026-07-31 | TikTok Shop Mastery optional specialty added after Selling & Influence; earlier programs preserved. |
 | 2.6 | 2026-07-31 | Creator Wellness & Longevity Mastery recommended path added; Mindset Mastery relationship pending Brad approval. |
-| **2.7** | **2026-07-31** | **Brand Partnerships Mastery** optional specialty added; Streamer Factory EPK Builder requirements defined; earlier programs preserved. |
+| 2.7 | 2026-07-31 | Brand Partnerships Mastery optional specialty added; Streamer Factory EPK Builder requirements defined; earlier programs preserved. |
+| **2.8** | **2026-07-31** | **Mobile Creator Mastery** final public optional specialty added; Leadership Academy referenced at Capstone only; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

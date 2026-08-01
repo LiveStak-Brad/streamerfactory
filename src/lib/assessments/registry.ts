@@ -210,6 +210,16 @@ import { quiz as deliveringOutstandingCampaigns } from "@/lib/assessments/quizze
 import { quiz as reportingResultsAndBuildingRepeatBusiness } from "@/lib/assessments/quizzes/partnerships/reporting-results-and-building-repeat-business";
 import { quiz as becomingALongTermBrandPartner } from "@/lib/assessments/quizzes/partnerships/becoming-a-long-term-brand-partner";
 import { quiz as brandPartnershipsCapstoneProfessionalPortfolio } from "@/lib/assessments/quizzes/partnerships/brand-partnerships-capstone-professional-portfolio";
+import { quiz as buildingAMobileCreatorMindset } from "@/lib/assessments/quizzes/mobile/building-a-mobile-creator-mindset";
+import { quiz as choosingTheRightMobileEquipment } from "@/lib/assessments/quizzes/mobile/choosing-the-right-mobile-equipment";
+import { quiz as mobileAudioAndLighting } from "@/lib/assessments/quizzes/mobile/mobile-audio-and-lighting";
+import { quiz as streamingAnywhereProfessionally } from "@/lib/assessments/quizzes/mobile/streaming-anywhere-professionally";
+import { quiz as creatingHighQualityVideosOnYourPhone } from "@/lib/assessments/quizzes/mobile/creating-high-quality-videos-on-your-phone";
+import { quiz as travelingAsACreator } from "@/lib/assessments/quizzes/mobile/traveling-as-a-creator";
+import { quiz as mobileProductivityAndCloudWorkflows } from "@/lib/assessments/quizzes/mobile/mobile-productivity-and-cloud-workflows";
+import { quiz as irlStreamingSafelyAndResponsibly } from "@/lib/assessments/quizzes/mobile/irl-streaming-safely-and-responsibly";
+import { quiz as buildingACompleteMobileCreatorKit } from "@/lib/assessments/quizzes/mobile/building-a-complete-mobile-creator-kit";
+import { quiz as mobileCreatorCapstoneCompleteSystem } from "@/lib/assessments/quizzes/mobile/mobile-creator-capstone-complete-system";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -231,6 +241,7 @@ import { exam as finalSelling } from "@/lib/assessments/exams/program-selling";
 import { exam as finalTts } from "@/lib/assessments/exams/program-tts";
 import { exam as finalWellness } from "@/lib/assessments/exams/program-wellness";
 import { exam as finalPartnerships } from "@/lib/assessments/exams/program-partnerships";
+import { exam as finalMobile } from "@/lib/assessments/exams/program-mobile";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -418,6 +429,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   reportingResultsAndBuildingRepeatBusiness,
   becomingALongTermBrandPartner,
   brandPartnershipsCapstoneProfessionalPortfolio,
+  buildingAMobileCreatorMindset,
+  choosingTheRightMobileEquipment,
+  mobileAudioAndLighting,
+  streamingAnywhereProfessionally,
+  creatingHighQualityVideosOnYourPhone,
+  travelingAsACreator,
+  mobileProductivityAndCloudWorkflows,
+  irlStreamingSafelyAndResponsibly,
+  buildingACompleteMobileCreatorKit,
+  mobileCreatorCapstoneCompleteSystem,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -441,6 +462,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalTts,
   finalWellness,
   finalPartnerships,
+  finalMobile,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

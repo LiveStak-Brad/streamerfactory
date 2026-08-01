@@ -24,6 +24,7 @@ export const TRAINING_TRACK_IDS = [
   "tts",
   "wellness",
   "partnerships",
+  "mobile",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -200,6 +201,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Professional brand partnerships — readiness, EPK/media kit, fit research, outreach, negotiation principles, campaign delivery, reporting, renewals, and a Professional Brand Partnership Portfolio.",
   },
+  {
+    id: "mobile",
+    title: "Mobile Creator Mastery",
+    lessonInLabel: "Mobile Creator Mastery",
+    partOfLabel: "StreamerU · Mobile Creator Mastery",
+    description:
+      "Phone-first mobile creation — mindset, gear principles, portable audio and light, anywhere streaming, phone editing, travel kits, cloud workflows, IRL safety, complete kit redundancy, and a Complete Mobile Creator System Capstone.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -232,6 +241,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   tts: "TikTok Shop Mastery",
   wellness: "Creator Wellness & Longevity Mastery",
   partnerships: "Brand Partnerships Mastery",
+  mobile: "Mobile Creator Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

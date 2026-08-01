@@ -183,6 +183,16 @@ import { lesson as deliveringOutstandingCampaigns } from "./delivering-outstandi
 import { lesson as reportingResultsAndBuildingRepeatBusiness } from "./reporting-results-and-building-repeat-business";
 import { lesson as becomingALongTermBrandPartner } from "./becoming-a-long-term-brand-partner";
 import { lesson as brandPartnershipsCapstoneProfessionalPortfolio } from "./brand-partnerships-capstone-professional-portfolio";
+import { lesson as buildingAMobileCreatorMindset } from "./building-a-mobile-creator-mindset";
+import { lesson as choosingTheRightMobileEquipment } from "./choosing-the-right-mobile-equipment";
+import { lesson as mobileAudioAndLighting } from "./mobile-audio-and-lighting";
+import { lesson as streamingAnywhereProfessionally } from "./streaming-anywhere-professionally";
+import { lesson as creatingHighQualityVideosOnYourPhone } from "./creating-high-quality-videos-on-your-phone";
+import { lesson as travelingAsACreator } from "./traveling-as-a-creator";
+import { lesson as mobileProductivityAndCloudWorkflows } from "./mobile-productivity-and-cloud-workflows";
+import { lesson as irlStreamingSafelyAndResponsibly } from "./irl-streaming-safely-and-responsibly";
+import { lesson as buildingACompleteMobileCreatorKit } from "./building-a-complete-mobile-creator-kit";
+import { lesson as mobileCreatorCapstoneCompleteSystem } from "./mobile-creator-capstone-complete-system";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -374,6 +384,16 @@ const LESSONS: ExpandedLesson[] = [
   reportingResultsAndBuildingRepeatBusiness,
   becomingALongTermBrandPartner,
   brandPartnershipsCapstoneProfessionalPortfolio,
+  buildingAMobileCreatorMindset,
+  choosingTheRightMobileEquipment,
+  mobileAudioAndLighting,
+  streamingAnywhereProfessionally,
+  creatingHighQualityVideosOnYourPhone,
+  travelingAsACreator,
+  mobileProductivityAndCloudWorkflows,
+  irlStreamingSafelyAndResponsibly,
+  buildingACompleteMobileCreatorKit,
+  mobileCreatorCapstoneCompleteSystem,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));
