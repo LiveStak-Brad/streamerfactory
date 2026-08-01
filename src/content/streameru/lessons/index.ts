@@ -73,6 +73,16 @@ import { lesson as guestHostingThatElevatesBothAudiences } from "./guest-hosting
 import { lesson as interviewingSkillsForCreators } from "./interviewing-skills-for-creators";
 import { lesson as professionalNetworkingForCreators } from "./professional-networking-for-creators";
 import { lesson as communityCapstoneCommunityAppreciationEvent } from "./community-capstone-community-appreciation-event";
+import { lesson as positioningForMoneyWithoutSellingYourSoul } from "./positioning-for-money-without-selling-your-soul";
+import { lesson as offerDesignForLiveCreators } from "./offer-design-for-live-creators";
+import { lesson as incomeSystemsAndMoneyOperations } from "./income-systems-and-money-operations";
+import { lesson as readingBusinessHealthBeyondGiftTotals } from "./reading-business-health-beyond-gift-totals";
+import { lesson as copyrightAndIpAwarenessForCreators } from "./copyright-and-ip-awareness-for-creators";
+import { lesson as brandDealsAndPartnerCommunication } from "./brand-deals-and-partner-communication";
+import { lesson as privacySecurityAndReputationAsBusinessAssets } from "./privacy-security-and-reputation-as-business-assets";
+import { lesson as contractsLiteracyForCreators } from "./contracts-literacy-for-creators";
+import { lesson as timeCapacityAndSayingNo } from "./time-capacity-and-saying-no";
+import { lesson as professionalCreatorCapstoneCreatorOperatingManual } from "./professional-creator-capstone-creator-operating-manual";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -154,6 +164,16 @@ const LESSONS: ExpandedLesson[] = [
   interviewingSkillsForCreators,
   professionalNetworkingForCreators,
   communityCapstoneCommunityAppreciationEvent,
+  positioningForMoneyWithoutSellingYourSoul,
+  offerDesignForLiveCreators,
+  incomeSystemsAndMoneyOperations,
+  readingBusinessHealthBeyondGiftTotals,
+  copyrightAndIpAwarenessForCreators,
+  brandDealsAndPartnerCommunication,
+  privacySecurityAndReputationAsBusinessAssets,
+  contractsLiteracyForCreators,
+  timeCapacityAndSayingNo,
+  professionalCreatorCapstoneCreatorOperatingManual,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

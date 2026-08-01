@@ -94,6 +94,17 @@ import { quiz as interviewingSkillsForCreators } from "@/lib/assessments/quizzes
 import { quiz as professionalNetworkingForCreators } from "@/lib/assessments/quizzes/community/professional-networking-for-creators";
 import { quiz as communityCapstoneCommunityAppreciationEvent } from "@/lib/assessments/quizzes/community/community-capstone-community-appreciation-event";
 
+import { quiz as positioningForMoneyWithoutSellingYourSoul } from "@/lib/assessments/quizzes/professional/positioning-for-money-without-selling-your-soul";
+import { quiz as offerDesignForLiveCreators } from "@/lib/assessments/quizzes/professional/offer-design-for-live-creators";
+import { quiz as incomeSystemsAndMoneyOperations } from "@/lib/assessments/quizzes/professional/income-systems-and-money-operations";
+import { quiz as readingBusinessHealthBeyondGiftTotals } from "@/lib/assessments/quizzes/professional/reading-business-health-beyond-gift-totals";
+import { quiz as copyrightAndIpAwarenessForCreators } from "@/lib/assessments/quizzes/professional/copyright-and-ip-awareness-for-creators";
+import { quiz as brandDealsAndPartnerCommunication } from "@/lib/assessments/quizzes/professional/brand-deals-and-partner-communication";
+import { quiz as privacySecurityAndReputationAsBusinessAssets } from "@/lib/assessments/quizzes/professional/privacy-security-and-reputation-as-business-assets";
+import { quiz as contractsLiteracyForCreators } from "@/lib/assessments/quizzes/professional/contracts-literacy-for-creators";
+import { quiz as timeCapacityAndSayingNo } from "@/lib/assessments/quizzes/professional/time-capacity-and-saying-no";
+import { quiz as professionalCreatorCapstoneCreatorOperatingManual } from "@/lib/assessments/quizzes/professional/professional-creator-capstone-creator-operating-manual";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -103,6 +114,7 @@ import { exam as finalPresence } from "@/lib/assessments/exams/program-presence"
 import { exam as finalCreation } from "@/lib/assessments/exams/program-creation";
 import { exam as finalGrowth } from "@/lib/assessments/exams/program-growth";
 import { exam as finalCommunity } from "@/lib/assessments/exams/program-community";
+import { exam as finalProfessional } from "@/lib/assessments/exams/program-professional";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -180,6 +192,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   interviewingSkillsForCreators,
   professionalNetworkingForCreators,
   communityCapstoneCommunityAppreciationEvent,
+  positioningForMoneyWithoutSellingYourSoul,
+  offerDesignForLiveCreators,
+  incomeSystemsAndMoneyOperations,
+  readingBusinessHealthBeyondGiftTotals,
+  copyrightAndIpAwarenessForCreators,
+  brandDealsAndPartnerCommunication,
+  privacySecurityAndReputationAsBusinessAssets,
+  contractsLiteracyForCreators,
+  timeCapacityAndSayingNo,
+  professionalCreatorCapstoneCreatorOperatingManual,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -192,6 +214,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalCreation,
   finalGrowth,
   finalCommunity,
+  finalProfessional,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

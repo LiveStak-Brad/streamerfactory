@@ -156,6 +156,8 @@ const moduleDescriptions: Record<string, string> = {
     "Discovery systems — diagnosis, analytics, experiments, scheduling, and durable growth habits so you get found without chasing myths.",
   "Community Mastery":
     "Belonging culture — rituals, return habits, moderation, healthy boundaries, guest hosting, and networking so people keep coming back.",
+  "Professional Creator Mastery":
+    "Creator-side career professionalism — positioning, offers, money ops, IP awareness, brand communication, contracts literacy, and capacity.",
 };
 
 /**
@@ -500,6 +502,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isCreation = program.programName === "Content Creation Mastery";
             const isGrowth = program.programName === "Growth Mastery";
             const isCommunity = program.programName === "Community Mastery";
+            const isProfessional = program.programName === "Professional Creator Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -518,20 +521,25 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isCommunity
+                : isProfessional
                   ? {
                       label: "Next steps",
-                      detail: "Professional Creator path · optional Community Lab Honors",
+                      detail: "Career Creator path · optional Professional Creator Lab Honors",
                     }
-                  : isGrowth
+                  : isCommunity
                     ? {
                         label: "Next steps",
-                        detail: "Community Mastery · Career Creator path · optional Growth Lab Honors",
+                        detail: "Professional Creator Mastery · optional Community Lab Honors",
                       }
-                    : {
-                        label: "Graduation progress",
-                        detail: "unlocks path to Graduation Exam & StreamerU Diploma",
-                      },
+                    : isGrowth
+                      ? {
+                          label: "Next steps",
+                          detail: "Community Mastery · Career Creator path · optional Growth Lab Honors",
+                        }
+                      : {
+                          label: "Graduation progress",
+                          detail: "unlocks path to Graduation Exam & StreamerU Diploma",
+                        },
               {
                 label: isAdvanced
                   ? "Black-belt bridge"
@@ -543,7 +551,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                         ? "Discovery mastery"
                         : isCommunity
                           ? "Belonging mastery"
-                          : "Career-path progress",
+                          : isProfessional
+                            ? "Career professionalism"
+                            : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
                   : isPresence
@@ -554,7 +564,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                         ? "required for Career Creator Diploma · Capstone: 30-day growth experiment"
                         : isCommunity
                           ? "elective Mastery Path · Capstone: community appreciation event"
-                          : "counts toward StreamerU Graduate recognition",
+                          : isProfessional
+                            ? "required for Career Creator Diploma · Capstone: Creator Operating Manual"
+                            : "counts toward StreamerU Graduate recognition",
               },
             ];
             return (
@@ -568,7 +580,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   description={moduleDescriptions[program.programName]}
                   index={index}
                   difficulty={
-                    isAdvanced || isGrowth || isCommunity
+                    isAdvanced || isGrowth || isCommunity || isProfessional
                       ? "advanced"
                       : isPresence || isCreation
                         ? "intermediate"

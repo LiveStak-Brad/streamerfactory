@@ -17,18 +17,19 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(74);
+    expect(PUBLISHED_LESSON_COUNT).toBe(84);
   });
 
-  it("includes Presence then Content Creation Mastery before Growth, then Community", () => {
-    expect(getPublishedProgramCount()).toBe(9);
-    expect(getActiveProgramCount()).toBe(9);
+  it("includes Presence then Content Creation Mastery before Growth, then Community, then Professional Creator", () => {
+    expect(getPublishedProgramCount()).toBe(10);
+    expect(getActiveProgramCount()).toBe(10);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
     expect(STREAMERU_PROGRAM_NAMES[6]).toBe("Content Creation Mastery");
     expect(STREAMERU_PROGRAM_NAMES[7]).toBe("Growth Mastery");
     expect(STREAMERU_PROGRAM_NAMES[8]).toBe("Community Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[9]).toBe("Professional Creator Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -56,6 +57,16 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(community?.lessons[9]?.slug).toBe(
       "community-capstone-community-appreciation-event",
     );
+    const professional = curriculumByProgram().find(
+      (p) => p.programName === "Professional Creator Mastery",
+    );
+    expect(professional?.lessons).toHaveLength(10);
+    expect(professional?.lessons[0]?.slug).toBe(
+      "positioning-for-money-without-selling-your-soul",
+    );
+    expect(professional?.lessons[9]?.slug).toBe(
+      "professional-creator-capstone-creator-operating-manual",
+    );
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
@@ -65,7 +76,7 @@ describe("StreamerU academy-meta source of truth", () => {
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.6");
+    expect(ACADEMY_RELEASE.version).toBe("1.7");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

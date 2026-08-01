@@ -1665,6 +1665,279 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Professional Creator Mastery ——
+
+  "positioning-for-money-without-selling-your-soul": {
+    id: "mission-75-positioning",
+    mission_title: "Session: Positioning LIVE",
+    mission_description:
+      "Ship positioning + won't-do; say positioning once on LIVE without hard-selling.",
+    mission_steps: steps(
+      [
+        "Complete the Positioning Statement Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship positioning + won't-do; say positioning once on LIVE without hard-selling.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Positioning Statement Worksheet", href: "/streameru/library/positioning-statement-worksheet" },
+      { label: "Won't-Do List Card", href: "/streameru/library/wont-do-list-card" },
+      { label: "Income-Safe Offer Fit Checker", href: "/streameru/library/income-safe-offer-fit-checker" },
+    ],
+  },
+
+  "offer-design-for-live-creators": {
+    id: "mission-76-offer-design",
+    mission_title: "Session: Offer Design LIVE",
+    mission_description:
+      "Complete offer sheet; run primary offer cue once without pressure tactics.",
+    mission_steps: steps(
+      [
+        "Complete the LIVE Offer Sheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete offer sheet; run primary offer cue once without pressure tactics.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "LIVE Offer Sheet", href: "/streameru/library/live-offer-sheet" },
+      { label: "Primary/Secondary Offer Planner", href: "/streameru/library/primary-secondary-offer-planner" },
+      { label: "Offer Ethics Checklist", href: "/streameru/library/offer-ethics-checklist" },
+    ],
+  },
+
+  "income-systems-and-money-operations": {
+    id: "mission-77-income-ops",
+    mission_title: "Session: Income Ops Setup",
+    mission_description:
+      "Install 90-day tracker, buffer rules, and a simple receipt folder from recent activity.",
+    mission_steps: steps(
+      [
+        "Complete the 90-Day Income Tracker and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Install 90-day tracker, buffer rules, and a simple receipt folder from recent activity.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "90-Day Income Tracker", href: "/streameru/library/ninety-day-income-tracker" },
+      { label: "Buffer Rules Card", href: "/streameru/library/buffer-rules-card" },
+      { label: "Expense Categories Checklist", href: "/streameru/library/expense-categories-checklist" },
+    ],
+  },
+
+  "reading-business-health-beyond-gift-totals": {
+    id: "mission-78-business-health",
+    mission_title: "Session: Business Health Snapshot",
+    mission_description:
+      "Complete 30-day health snapshot; name one concentration risk and one sustainability action.",
+    mission_steps: steps(
+      [
+        "Complete the Business Health Snapshot and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete 30-day health snapshot; name one concentration risk and one sustainability action.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Business Health Snapshot", href: "/streameru/library/business-health-snapshot" },
+      { label: "Concentration Risk Scorecard", href: "/streameru/library/concentration-risk-scorecard" },
+      { label: "Sustainable Rate Worksheet", href: "/streameru/library/sustainable-rate-worksheet" },
+    ],
+  },
+
+  "copyright-and-ip-awareness-for-creators": {
+    id: "mission-79-ip-audit",
+    mission_title: "Session: IP Safer Defaults",
+    mission_description:
+      "Complete IP risk audit; change one safer default before next LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the IP Risk Audit Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete IP risk audit; change one safer default before next LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "IP Risk Audit Checklist", href: "/streameru/library/ip-risk-audit-checklist" },
+      { label: "Safer Defaults Card", href: "/streameru/library/safer-defaults-card" },
+      { label: "Clip/Music Decision Tree", href: "/streameru/library/clip-music-decision-tree" },
+    ],
+  },
+
+  "brand-deals-and-partner-communication": {
+    id: "mission-80-brand-comms",
+    mission_title: "Session: Brand Response Framework",
+    mission_description:
+      "Score a sample/real inquiry; draft a professional response protecting audience trust.",
+    mission_steps: steps(
+      [
+        "Complete the Brand Inquiry Scorecard and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Score a sample/real inquiry; draft a professional response protecting audience trust.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Brand Inquiry Scorecard", href: "/streameru/library/brand-inquiry-scorecard" },
+      { label: "Professional Response Templates", href: "/streameru/library/professional-response-templates" },
+      { label: "Audience Trust Protection Checklist", href: "/streameru/library/audience-trust-protection-checklist" },
+    ],
+  },
+
+  "privacy-security-and-reputation-as-business-assets": {
+    id: "mission-81-incident-ready",
+    mission_title: "Session: Incident Response Ready",
+    mission_description:
+      "Write incident checklist; complete a privacy/security hygiene pass.",
+    mission_steps: steps(
+      [
+        "Complete the Incident Response Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Write incident checklist; complete a privacy/security hygiene pass.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Incident Response Checklist", href: "/streameru/library/incident-response-checklist" },
+      { label: "Reputation Risk Audit", href: "/streameru/library/reputation-risk-audit" },
+      { label: "Privacy Hygiene Scorecard", href: "/streameru/library/privacy-hygiene-scorecard" },
+    ],
+  },
+
+  "contracts-literacy-for-creators": {
+    id: "mission-82-contracts-literacy",
+    mission_title: "Session: Contract Red Flags",
+    mission_description:
+      "Run red-flag checklist on a sample/past agreement; list five flags or green checks.",
+    mission_steps: steps(
+      [
+        "Complete the Contract Red-Flag Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run red-flag checklist on a sample/past agreement; list five flags or green checks.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Contract Red-Flag Checklist", href: "/streameru/library/contract-red-flag-checklist" },
+      { label: "Key Terms Decoder Card", href: "/streameru/library/key-terms-decoder-card" },
+      { label: "Pause-and-Ask Decision Tree", href: "/streameru/library/pause-and-ask-decision-tree" },
+    ],
+  },
+
+  "time-capacity-and-saying-no": {
+    id: "mission-83-capacity-policy",
+    mission_title: "Session: Capacity Policy Week",
+    mission_description:
+      "Write capacity policy; protect one recovery block; prepare a professional no.",
+    mission_steps: steps(
+      [
+        "Complete the Capacity Policy One-Pager and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not earnings).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Write capacity policy; protect one recovery block; prepare a professional no.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Capacity Policy One-Pager", href: "/streameru/library/capacity-policy-one-pager" },
+      { label: "Professional No Scripts", href: "/streameru/library/professional-no-scripts" },
+      { label: "Weekly Capacity Planner", href: "/streameru/library/weekly-capacity-planner" },
+    ],
+  },
+
+  "professional-creator-capstone-creator-operating-manual": {
+    id: "mission-84-operating-manual",
+    mission_title: "Session: Creator Operating Manual Capstone",
+    mission_description:
+      "Assemble complete Creator Operating Manual evidence packet for review.",
+    mission_steps: steps(
+      [
+        "Complete the Creator Operating Manual Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the full Creator Operating Manual evidence packet and complete the Capstone Evidence Checklist.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Assemble complete Creator Operating Manual evidence packet for review.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Creator Operating Manual Template", href: "/streameru/library/creator-operating-manual-template" },
+      { label: "Capstone Evidence Checklist", href: "/streameru/library/professional-capstone-evidence-checklist" },
+      { label: "90-Day Operating Plan + Review Worksheet", href: "/streameru/library/ninety-day-operating-plan-review" },
+    ],
+  },
+
+
   "presence-capstone-signature-20-minute-live": {
     id: "mission-42-presence-capstone",
     mission_title: "Session: Signature 20-Minute LIVE Capstone",

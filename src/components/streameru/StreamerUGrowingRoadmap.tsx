@@ -51,8 +51,9 @@ export function StreamerUGrowingRoadmap() {
       </h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
         {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Advanced Creator,
-        Presence Mastery, Content Creation Mastery, Growth Mastery, and Community Mastery are published
-        Mastery-path craft on the road to a {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
+        Presence Mastery, Content Creation Mastery, Growth Mastery, Community Mastery, and Professional
+        Creator Mastery are published Mastery-path craft on the road to a{" "}
+        {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
       </p>
 
       <div className="mt-6 rounded-xl border border-border/70 bg-surface/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/60">

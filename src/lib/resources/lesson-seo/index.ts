@@ -9,6 +9,7 @@ import { PRESENCE_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/presence";
 import { CONTENT_CREATION_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/content-creation";
 import { GROWTH_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/growth-mastery";
 import { COMMUNITY_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/community-mastery";
+import { PROFESSIONAL_CREATOR_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/professional-creator-mastery";
 import type { LessonSeoPack } from "@/lib/resources/lesson-seo/types";
 
 export type { LessonSeoPack, LessonFaq, LessonInternalLink, LessonContentSuggestion } from "@/lib/resources/lesson-seo/types";
@@ -24,6 +25,7 @@ const ALL_PACKS: LessonSeoPack[] = [
   ...CONTENT_CREATION_LESSON_SEO,
   ...GROWTH_MASTERY_LESSON_SEO,
   ...COMMUNITY_MASTERY_LESSON_SEO,
+  ...PROFESSIONAL_CREATOR_MASTERY_LESSON_SEO,
 ];
 
 const PACKS_BY_SLUG = new Map(ALL_PACKS.map((pack) => [pack.slug, pack]));

@@ -151,6 +151,16 @@ const GOLD_PACK_SLUGS = new Set([
   "interviewing-skills-for-creators",
   "professional-networking-for-creators",
   "community-capstone-community-appreciation-event",
+  "positioning-for-money-without-selling-your-soul",
+  "offer-design-for-live-creators",
+  "income-systems-and-money-operations",
+  "reading-business-health-beyond-gift-totals",
+  "copyright-and-ip-awareness-for-creators",
+  "brand-deals-and-partner-communication",
+  "privacy-security-and-reputation-as-business-assets",
+  "contracts-literacy-for-creators",
+  "time-capacity-and-saying-no",
+  "professional-creator-capstone-creator-operating-manual",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {
