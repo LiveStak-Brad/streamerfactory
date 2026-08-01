@@ -16,6 +16,7 @@ export const TRAINING_TRACK_IDS = [
   "professional",
   "production",
   "battle",
+  "music",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -128,6 +129,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Elite battle strategy — matchups, energy architecture, partner ecosystems, ethical clutch hosting, production clarity, debriefs, and multi-battle event pacing.",
   },
+  {
+    id: "music",
+    title: "Music LIVE Mastery",
+    lessonInLabel: "Music LIVE Mastery",
+    partOfLabel: "StreamerU · Music LIVE Mastery",
+    description:
+      "Music performance on LIVE — formats, performance audio, stamina, setlists, requests, growth, rights-aware repertoire, collabs, and ethical monetization.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -152,6 +161,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   professional: "Professional Creator",
   production: "Production",
   battle: "Battle Mastery",
+  music: "Music LIVE Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

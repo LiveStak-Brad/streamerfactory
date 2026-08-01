@@ -20,6 +20,7 @@ const TRACK_TO_CATEGORY: Record<TrainingTrackId, LibraryCategoryId> = {
   professional: "content",
   production: "content",
   battle: "battles",
+  music: "content",
 };
 
 export function libraryCategoryForLessonSlug(slug: string): LibraryCategoryId {

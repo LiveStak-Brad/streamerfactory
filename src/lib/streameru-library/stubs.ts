@@ -179,6 +179,16 @@ const GOLD_PACK_SLUGS = new Set([
   "battle-analytics-and-debrief-mastery",
   "multi-battle-nights-and-event-pacing",
   "battle-capstone-signature-battle-system",
+  "music-live-formats-that-work",
+  "performance-audio-for-musicians-on-live",
+  "vocal-stamina-and-performance-presence",
+  "setlists-segments-and-audience-energy",
+  "requests-tips-and-fan-interaction-systems",
+  "growing-a-music-audience-on-live",
+  "music-rights-and-safer-live-choices",
+  "collab-performances-and-guest-musicians",
+  "monetizing-music-live-ethically",
+  "music-live-capstone-signature-show",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {

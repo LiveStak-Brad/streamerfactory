@@ -162,6 +162,8 @@ const moduleDescriptions: Record<string, string> = {
     "Technical LIVE quality — lighting, audio, framing, room design, OBS discipline, mobile production, accessibility, and troubleshooting with the gear you own.",
   "Battle Mastery":
     "Elite battle craft — matchups, energy architecture, partner ecosystems, ethical clutch hosting, production clarity, debriefs, and multi-battle event pacing.",
+  "Music LIVE Mastery":
+    "Music performance on LIVE — formats, performance audio, stamina, setlists, requests, growth, rights-aware repertoire, collabs, and ethical monetization.",
 };
 
 /**
@@ -509,6 +511,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isProfessional = program.programName === "Professional Creator Mastery";
             const isProduction = program.programName === "Production Mastery";
             const isBattle = program.programName === "Battle Mastery";
+            const isMusic = program.programName === "Music LIVE Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -527,15 +530,20 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isBattle
+                : isMusic
                   ? {
                       label: "Next steps",
-                      detail: "Optional specialty complete · Battle Lab Honors · other Mastery Paths",
+                      detail: "Optional specialty complete · Music LIVE Lab Honors · other Mastery Paths",
                     }
+                  : isBattle
+                    ? {
+                        label: "Next steps",
+                        detail: "Music LIVE Mastery (optional) · Battle Lab Honors · other Mastery Paths",
+                      }
                   : isProduction
                     ? {
                         label: "Next steps",
-                        detail: "Battle Mastery (optional) · Career Creator path · optional Production Lab Honors",
+                        detail: "Battle Mastery / Music LIVE Mastery (optional) · Career Creator path · optional Production Lab Honors",
                       }
                     : isProfessional
                       ? {
@@ -573,6 +581,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                               ? "Production quality"
                               : isBattle
                                 ? "Battle specialty"
+                                : isMusic
+                                  ? "Music LIVE specialty"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -590,6 +600,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                               ? "elective Mastery Path · Capstone: signature production look"
                               : isBattle
                                 ? "optional specialty · Capstone: signature battle system"
+                                : isMusic
+                                  ? "optional specialty · Capstone: signature music LIVE show"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];
@@ -609,7 +621,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                     isCommunity ||
                     isProfessional ||
                     isProduction ||
-                    isBattle
+                    isBattle ||
+                    isMusic
                       ? "advanced"
                       : isPresence || isCreation
                         ? "intermediate"

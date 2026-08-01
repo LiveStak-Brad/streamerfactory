@@ -2427,6 +2427,279 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Music LIVE Mastery ——
+
+  "music-live-formats-that-work": {
+    id: "mission-103-music-format",
+    mission_title: "Session: Music Format Choice",
+    mission_description:
+      "Choose primary + secondary Music LIVE formats and write a sample run-of-show.",
+    mission_steps: steps(
+      [
+        "Complete the Format Choice Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Choose primary + secondary Music LIVE formats and write a sample run-of-show.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Format Choice Worksheet", href: "/streameru/library/format-choice-worksheet" },
+      { label: "Sample Run-of-Show Template", href: "/streameru/library/sample-run-of-show-template" },
+      { label: "Format Fit Scorecard", href: "/streameru/library/format-fit-scorecard" },
+    ],
+  },
+
+  "performance-audio-for-musicians-on-live": {
+    id: "mission-104-music-audio",
+    mission_title: "Session: Music Sound Check",
+    mission_description:
+      "Complete signal-flow map, sound check, and short test clip (OBS or TikTok LIVE Studio path documented).",
+    mission_steps: steps(
+      [
+        "Complete the Music Audio Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete signal-flow map, sound check, and short test clip (OBS or TikTok LIVE Studio path documented).",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Music Audio Checklist", href: "/streameru/library/music-audio-checklist" },
+      { label: "Signal-Flow Map Worksheet", href: "/streameru/library/signal-flow-map-worksheet" },
+      { label: "Sound-Check Sheet", href: "/streameru/library/sound-check-sheet" },
+    ],
+  },
+
+  "vocal-stamina-and-performance-presence": {
+    id: "mission-105-music-stamina",
+    mission_title: "Session: Music Stamina Plan",
+    mission_description:
+      "Build stamina plan + warm-up and run or rehearse a timed music session.",
+    mission_steps: steps(
+      [
+        "Complete the Performance Stamina Plan and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build stamina plan + warm-up and run or rehearse a timed music session.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Performance Stamina Plan", href: "/streameru/library/performance-stamina-plan" },
+      { label: "Warm-Up Routine Card", href: "/streameru/library/warm-up-routine-card" },
+      { label: "Mistake Recovery Scripts", href: "/streameru/library/mistake-recovery-scripts" },
+    ],
+  },
+
+  "setlists-segments-and-audience-energy": {
+    id: "mission-106-music-setlist",
+    mission_title: "Session: Setlist Energy Design",
+    mission_description:
+      "Build two annotated setlists with intentional energy arcs.",
+    mission_steps: steps(
+      [
+        "Complete the Setlist Energy Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build two annotated setlists with intentional energy arcs.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Setlist Energy Planner", href: "/streameru/library/setlist-energy-planner" },
+      { label: "Two-Setlist Annotation Sheet", href: "/streameru/library/two-setlist-annotation-sheet" },
+      { label: "Talk-Break Script Bank", href: "/streameru/library/talk-break-script-bank" },
+    ],
+  },
+
+  "requests-tips-and-fan-interaction-systems": {
+    id: "mission-107-music-requests",
+    mission_title: "Session: Request System Install",
+    mission_description:
+      "Write request policy + explanation script and test in practice or LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Request Policy Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Write request policy + explanation script and test in practice or LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Request Policy Template", href: "/streameru/library/request-policy-template" },
+      { label: "On-Stream Request Explanation Script", href: "/streameru/library/on-stream-request-explanation-script" },
+      { label: "Gift/Shoutout Fairness Card", href: "/streameru/library/gift-shoutout-fairness-card" },
+    ],
+  },
+
+  "growing-a-music-audience-on-live": {
+    id: "mission-108-music-growth",
+    mission_title: "Session: Music Growth Plan",
+    mission_description:
+      "Design and start documenting a four-week music growth plan.",
+    mission_steps: steps(
+      [
+        "Complete the Four-Week Music Growth Plan and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Design and start documenting a four-week music growth plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Four-Week Music Growth Plan", href: "/streameru/library/four-week-music-growth-plan" },
+      { label: "Clip Moment Planner", href: "/streameru/library/clip-moment-planner" },
+      { label: "Return-Fan Conversion Checklist", href: "/streameru/library/return-fan-conversion-checklist" },
+    ],
+  },
+
+  "music-rights-and-safer-live-choices": {
+    id: "mission-109-music-rights",
+    mission_title: "Session: Rights-Safe Repertoire",
+    mission_description:
+      "Create repertoire risk tiers for your actual song list with safer defaults.",
+    mission_steps: steps(
+      [
+        "Complete the Rights-Safe Repertoire Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Create repertoire risk tiers for your actual song list with safer defaults.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Rights-Safe Repertoire Checklist", href: "/streameru/library/rights-safe-repertoire-checklist" },
+      { label: "Risk Tiers Worksheet", href: "/streameru/library/risk-tiers-worksheet" },
+      { label: "Safer Defaults Decision Card", href: "/streameru/library/safer-defaults-decision-card" },
+    ],
+  },
+
+  "collab-performances-and-guest-musicians": {
+    id: "mission-110-music-collab",
+    mission_title: "Session: Music Collab Ops",
+    mission_description:
+      "Complete collab run-of-show + guest audio plan (rehearsal or documented simulation).",
+    mission_steps: steps(
+      [
+        "Complete the Collab Run-of-Show Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete collab run-of-show + guest audio plan (rehearsal or documented simulation).",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Collab Run-of-Show Template", href: "/streameru/library/collab-run-of-show-template" },
+      { label: "Guest Audio Plan Worksheet", href: "/streameru/library/guest-audio-plan-worksheet" },
+      { label: "Collab Promo Checklist", href: "/streameru/library/collab-promo-checklist" },
+    ],
+  },
+
+  "monetizing-music-live-ethically": {
+    id: "mission-111-music-monetize",
+    mission_title: "Session: Ethical Music Monetization",
+    mission_description:
+      "Design an ethical monetization layer for your primary format.",
+    mission_steps: steps(
+      [
+        "Complete the Monetization Layer Plan and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers or gifts).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Design an ethical monetization layer for your primary format.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Monetization Layer Plan", href: "/streameru/library/monetization-layer-plan" },
+      { label: "Soft CTA Script Bank", href: "/streameru/library/soft-cta-script-bank" },
+      { label: "Ethical Offer Boundaries Card", href: "/streameru/library/ethical-offer-boundaries-card" },
+    ],
+  },
+
+  "music-live-capstone-signature-show": {
+    id: "mission-112-music-capstone",
+    mission_title: "Session: Signature Music LIVE Capstone",
+    mission_description:
+      "Deliver and review signature Music LIVE show with full dossier evidence.",
+    mission_steps: steps(
+      [
+        "Complete the Signature Show Dossier Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the Signature Show Dossier + evidence checklist and complete replay review.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Deliver and review signature Music LIVE show with full dossier evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Signature Show Dossier Template", href: "/streameru/library/signature-show-dossier-template" },
+      { label: "Capstone Evidence Checklist", href: "/streameru/library/capstone-evidence-checklist-music" },
+      { label: "Replay Review Scorecard", href: "/streameru/library/replay-review-scorecard-music" },
+    ],
+  },
+
+
 
 
 

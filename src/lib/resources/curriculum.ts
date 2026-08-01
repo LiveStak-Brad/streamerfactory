@@ -21,6 +21,7 @@
  * 10. Professional Creator Mastery — creator-side career professionalism
  * 11. Production Mastery — lighting, audio, framing, OBS, mobile, accessibility, triage
  * 12. Battle Mastery — elite battle strategy specialty (optional)
+ * 13. Music LIVE Mastery — music performance + technical LIVE specialty (optional)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -57,6 +58,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Professional Creator Mastery",
   "Production Mastery",
   "Battle Mastery",
+  "Music LIVE Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -992,6 +994,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Battle Mastery",
     lessonInProgram: 8,
     lessonsInProgram: 8,
+  },
+  // MUSIC LIVE MASTERY (10) — optional specialty after Core; Advanced Creator required for certificate
+  {
+    globalOrder: 103,
+    slug: "music-live-formats-that-work",
+    title: "Music LIVE Formats That Work",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 104,
+    slug: "performance-audio-for-musicians-on-live",
+    title: "Performance Audio for Musicians on LIVE",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 105,
+    slug: "vocal-stamina-and-performance-presence",
+    title: "Vocal Stamina and Performance Presence",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 106,
+    slug: "setlists-segments-and-audience-energy",
+    title: "Setlists, Segments, and Audience Energy",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 107,
+    slug: "requests-tips-and-fan-interaction-systems",
+    title: "Requests, Tips, and Fan Interaction Systems",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 108,
+    slug: "growing-a-music-audience-on-live",
+    title: "Growing a Music Audience on LIVE",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 109,
+    slug: "music-rights-and-safer-live-choices",
+    title: "Music Rights and Safer LIVE Choices",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 110,
+    slug: "collab-performances-and-guest-musicians",
+    title: "Collab Performances and Guest Musicians",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 111,
+    slug: "monetizing-music-live-ethically",
+    title: "Monetizing Music LIVE Ethically",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 112,
+    slug: "music-live-capstone-signature-show",
+    title: "Music LIVE Capstone: Signature Show",
+    trackId: "music",
+    programName: "Music LIVE Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
   },
 ];
 

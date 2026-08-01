@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(102);
+    expect(PUBLISHED_LESSON_COUNT).toBe(112);
   });
 
-  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, then Battle", () => {
-    expect(getPublishedProgramCount()).toBe(12);
-    expect(getActiveProgramCount()).toBe(12);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, then Music LIVE", () => {
+    expect(getPublishedProgramCount()).toBe(13);
+    expect(getActiveProgramCount()).toBe(13);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -32,6 +32,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[9]).toBe("Professional Creator Mastery");
     expect(STREAMERU_PROGRAM_NAMES[10]).toBe("Production Mastery");
     expect(STREAMERU_PROGRAM_NAMES[11]).toBe("Battle Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[12]).toBe("Music LIVE Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -77,6 +78,10 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(battle?.lessons).toHaveLength(8);
     expect(battle?.lessons[0]?.slug).toBe("battle-strategy-beyond-basics");
     expect(battle?.lessons[7]?.slug).toBe("battle-capstone-signature-battle-system");
+    const music = curriculumByProgram().find((p) => p.programName === "Music LIVE Mastery");
+    expect(music?.lessons).toHaveLength(10);
+    expect(music?.lessons[0]?.slug).toBe("music-live-formats-that-work");
+    expect(music?.lessons[9]?.slug).toBe("music-live-capstone-signature-show");
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
@@ -86,7 +91,7 @@ describe("StreamerU academy-meta source of truth", () => {
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.9");
+    expect(ACADEMY_RELEASE.version).toBe("1.10");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

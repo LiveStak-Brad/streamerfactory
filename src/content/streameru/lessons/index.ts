@@ -101,6 +101,16 @@ import { lesson as battleProductionAndOnScreenClarity } from "./battle-productio
 import { lesson as battleAnalyticsAndDebriefMastery } from "./battle-analytics-and-debrief-mastery";
 import { lesson as multiBattleNightsAndEventPacing } from "./multi-battle-nights-and-event-pacing";
 import { lesson as battleCapstoneSignatureBattleSystem } from "./battle-capstone-signature-battle-system";
+import { lesson as musicLiveFormatsThatWork } from "./music-live-formats-that-work";
+import { lesson as performanceAudioForMusiciansOnLive } from "./performance-audio-for-musicians-on-live";
+import { lesson as vocalStaminaAndPerformancePresence } from "./vocal-stamina-and-performance-presence";
+import { lesson as setlistsSegmentsAndAudienceEnergy } from "./setlists-segments-and-audience-energy";
+import { lesson as requestsTipsAndFanInteractionSystems } from "./requests-tips-and-fan-interaction-systems";
+import { lesson as growingAMusicAudienceOnLive } from "./growing-a-music-audience-on-live";
+import { lesson as musicRightsAndSaferLiveChoices } from "./music-rights-and-safer-live-choices";
+import { lesson as collabPerformancesAndGuestMusicians } from "./collab-performances-and-guest-musicians";
+import { lesson as monetizingMusicLiveEthically } from "./monetizing-music-live-ethically";
+import { lesson as musicLiveCapstoneSignatureShow } from "./music-live-capstone-signature-show";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -210,6 +220,16 @@ const LESSONS: ExpandedLesson[] = [
   battleAnalyticsAndDebriefMastery,
   multiBattleNightsAndEventPacing,
   battleCapstoneSignatureBattleSystem,
+  musicLiveFormatsThatWork,
+  performanceAudioForMusiciansOnLive,
+  vocalStaminaAndPerformancePresence,
+  setlistsSegmentsAndAudienceEnergy,
+  requestsTipsAndFanInteractionSystems,
+  growingAMusicAudienceOnLive,
+  musicRightsAndSaferLiveChoices,
+  collabPerformancesAndGuestMusicians,
+  monetizingMusicLiveEthically,
+  musicLiveCapstoneSignatureShow,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

@@ -125,6 +125,17 @@ import { quiz as battleAnalyticsAndDebriefMastery } from "@/lib/assessments/quiz
 import { quiz as multiBattleNightsAndEventPacing } from "@/lib/assessments/quizzes/battle/multi-battle-nights-and-event-pacing";
 import { quiz as battleCapstoneSignatureBattleSystem } from "@/lib/assessments/quizzes/battle/battle-capstone-signature-battle-system";
 
+import { quiz as musicLiveFormatsThatWork } from "@/lib/assessments/quizzes/music/music-live-formats-that-work";
+import { quiz as performanceAudioForMusiciansOnLive } from "@/lib/assessments/quizzes/music/performance-audio-for-musicians-on-live";
+import { quiz as vocalStaminaAndPerformancePresence } from "@/lib/assessments/quizzes/music/vocal-stamina-and-performance-presence";
+import { quiz as setlistsSegmentsAndAudienceEnergy } from "@/lib/assessments/quizzes/music/setlists-segments-and-audience-energy";
+import { quiz as requestsTipsAndFanInteractionSystems } from "@/lib/assessments/quizzes/music/requests-tips-and-fan-interaction-systems";
+import { quiz as growingAMusicAudienceOnLive } from "@/lib/assessments/quizzes/music/growing-a-music-audience-on-live";
+import { quiz as musicRightsAndSaferLiveChoices } from "@/lib/assessments/quizzes/music/music-rights-and-safer-live-choices";
+import { quiz as collabPerformancesAndGuestMusicians } from "@/lib/assessments/quizzes/music/collab-performances-and-guest-musicians";
+import { quiz as monetizingMusicLiveEthically } from "@/lib/assessments/quizzes/music/monetizing-music-live-ethically";
+import { quiz as musicLiveCapstoneSignatureShow } from "@/lib/assessments/quizzes/music/music-live-capstone-signature-show";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -137,6 +148,7 @@ import { exam as finalCommunity } from "@/lib/assessments/exams/program-communit
 import { exam as finalProfessional } from "@/lib/assessments/exams/program-professional";
 import { exam as finalProduction } from "@/lib/assessments/exams/program-production";
 import { exam as finalBattle } from "@/lib/assessments/exams/program-battle";
+import { exam as finalMusic } from "@/lib/assessments/exams/program-music";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -242,6 +254,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   battleAnalyticsAndDebriefMastery,
   multiBattleNightsAndEventPacing,
   battleCapstoneSignatureBattleSystem,
+  musicLiveFormatsThatWork,
+  performanceAudioForMusiciansOnLive,
+  vocalStaminaAndPerformancePresence,
+  setlistsSegmentsAndAudienceEnergy,
+  requestsTipsAndFanInteractionSystems,
+  growingAMusicAudienceOnLive,
+  musicRightsAndSaferLiveChoices,
+  collabPerformancesAndGuestMusicians,
+  monetizingMusicLiveEthically,
+  musicLiveCapstoneSignatureShow,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -257,6 +279,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalProfessional,
   finalProduction,
   finalBattle,
+  finalMusic,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));
