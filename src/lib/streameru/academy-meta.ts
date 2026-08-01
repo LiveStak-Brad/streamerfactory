@@ -19,8 +19,8 @@ export const PUBLISHED_LESSON_COUNT = CURRICULUM_TOTAL_LESSONS;
  * Bump version / dates when a meaningful lesson batch ships.
  */
 export const ACADEMY_RELEASE = {
-  version: "1.2",
-  versionLabel: "StreamerU v1.2",
+  version: "1.5",
+  versionLabel: "StreamerU v1.5",
   currentReleaseLabel: "Current Release",
   lastUpdatedLabel: "July 2026",
   lastLessonAddedLabel: "July 2026",

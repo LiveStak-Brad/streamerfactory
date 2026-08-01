@@ -11,6 +11,9 @@ import { ESSENTIAL_SAFETY_RESOURCES } from "@/content/streameru/library/essentia
 import { LIVE_STREAMING_MASTERY_RESOURCES } from "@/content/streameru/library/live-streaming-mastery";
 import { BATTLES_RESOURCES } from "@/content/streameru/library/battles";
 import { ADVANCED_CREATOR_RESOURCES } from "@/content/streameru/library/advanced-creator";
+import { PRESENCE_MASTERY_RESOURCES } from "@/content/streameru/library/presence-mastery";
+import { CONTENT_CREATION_RESOURCES } from "@/content/streameru/library/content-creation";
+import { GROWTH_MASTERY_RESOURCES } from "@/content/streameru/library/growth-mastery";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -36,6 +39,9 @@ const MERGED: LibraryResource[] = [
   ...LIVE_STREAMING_MASTERY_RESOURCES,
   ...BATTLES_RESOURCES,
   ...ADVANCED_CREATOR_RESOURCES,
+  ...PRESENCE_MASTERY_RESOURCES,
+  ...CONTENT_CREATION_RESOURCES,
+  ...GROWTH_MASTERY_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];

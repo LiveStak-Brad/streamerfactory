@@ -148,6 +148,12 @@ const moduleDescriptions: Record<string, string> = {
   "Growth & Monetization": "Audience growth and sustainable LIVE income habits.",
   "Advanced Creator":
     "The black-belt bridge — how professionals operate: systems, brand, analytics, standards, and judgment.",
+  "Presence Mastery":
+    "On-camera craft — voice, confidence, storytelling, pacing, and recovery so you become worth staying for.",
+  "Content Creation Mastery":
+    "Showcraft — niche, memorability, segments, themes, arcs, events, and anticipation so people choose to watch.",
+  "Growth Mastery":
+    "Discovery systems — diagnosis, analytics, experiments, scheduling, and durable growth habits so you get found without chasing myths.",
 };
 
 /**
@@ -488,6 +494,9 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               program.lessons.find((l) => published.has(l.slug))?.slug ??
               program.lessons[0]?.slug;
             const isAdvanced = program.programName === "Advanced Creator";
+            const isPresence = program.programName === "Presence Mastery";
+            const isCreation = program.programName === "Content Creation Mastery";
+            const isGrowth = program.programName === "Growth Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -506,20 +515,34 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isAdvanced
+                : isGrowth
                   ? {
-                      label: "Mastery Paths",
-                      detail: "unlocks Presence, Content Creation, Growth, and more",
+                      label: "Next steps",
+                      detail: "Career Creator path · optional Growth Lab Honors",
                     }
                   : {
                       label: "Graduation progress",
                       detail: "unlocks path to Graduation Exam & StreamerU Diploma",
                     },
               {
-                label: isAdvanced ? "Black-belt bridge" : "Career-path progress",
+                label: isAdvanced
+                  ? "Black-belt bridge"
+                  : isPresence
+                    ? "Craft mastery"
+                    : isCreation
+                      ? "Showcraft mastery"
+                      : isGrowth
+                        ? "Discovery mastery"
+                        : "Career-path progress",
                 detail: isAdvanced
-                  ? "how professionals think — required before Mastery Paths"
-                  : "counts toward StreamerU Graduate recognition",
+                  ? "how professionals think — recommended before Mastery Paths"
+                  : isPresence
+                    ? "on-camera presence craft — elective for Professional Creator Diploma"
+                    : isCreation
+                      ? "worth-watching showcraft — recommended before Growth Mastery"
+                      : isGrowth
+                        ? "required for Career Creator Diploma · Capstone: 30-day growth experiment"
+                        : "counts toward StreamerU Graduate recognition",
               },
             ];
             return (
@@ -533,12 +556,14 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                   description={moduleDescriptions[program.programName]}
                   index={index}
                   difficulty={
-                    isAdvanced
+                    isAdvanced || isGrowth
                       ? "advanced"
-                      : isBeginner
-                        ? "beginner"
-                        : lessonDifficulty(trackId, program.lessons[0]?.slug) ||
-                          trackDefaultDifficulty(trackId)
+                      : isPresence || isCreation
+                        ? "intermediate"
+                        : isBeginner
+                          ? "beginner"
+                          : lessonDifficulty(trackId, program.lessons[0]?.slug) ||
+                            trackDefaultDifficulty(trackId)
                   }
                   badgeLabel={isBeginner ? "Includes essential safety" : null}
                   guidanceNote={

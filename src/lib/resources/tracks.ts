@@ -9,6 +9,9 @@ export const TRAINING_TRACK_IDS = [
   "monetization",
   "rules",
   "content",
+  "presence",
+  "creation",
+  "growth",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -65,6 +68,30 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Hooks, segments, and how you talk about battles and collabs without noise.",
   },
+  {
+    id: "presence",
+    title: "Presence Mastery",
+    lessonInLabel: "Presence Mastery",
+    partOfLabel: "StreamerU · Presence Mastery",
+    description:
+      "Camera presence, vocal delivery, storytelling, emotional pacing, and recovery — so you become worth staying for on LIVE.",
+  },
+  {
+    id: "creation",
+    title: "Content Creation Mastery",
+    lessonInLabel: "Content Creation Mastery",
+    partOfLabel: "StreamerU · Content Creation Mastery",
+    description:
+      "Niche clarity, memorable show identity, recurring segments, themes, arcs, events, and anticipation — so your LIVE is worth watching.",
+  },
+  {
+    id: "growth",
+    title: "Growth Mastery",
+    lessonInLabel: "Growth Mastery",
+    partOfLabel: "StreamerU · Growth Mastery",
+    description:
+      "Discovery systems, analytics diagnosis, ethical experiments, scheduling, and durable growth habits — so you get found without chasing myths.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -82,6 +109,9 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   monetization: "Monetization",
   rules: "Safety",
   content: "Content",
+  presence: "Presence",
+  creation: "Content Creation",
+  growth: "Growth",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

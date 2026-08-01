@@ -243,6 +243,6 @@ Take the interactive lesson quiz on this page (70% to pass). It checks Capstone 
 
 ## Next Lesson Preview
 
-There is no AC-09. After Capstone execution, Program Final, and your Advanced Creator Certificate, Mastery Paths open — with **Presence Mastery** recommended first for most creators, then Content Creation and Growth. You learned how professionals think. Now you specialize in craft.
+There is no AC-09. After Capstone execution, Program Final, and your Advanced Creator Certificate, open **Presence Mastery** with [Camera Presence: Owning the Frame](/streameru/camera-presence-owning-the-frame) — the first Mastery Path lesson. Presence trains on-camera craft so you become worth staying for. Content Creation Mastery comes after Presence for most creators.
 `,
 };

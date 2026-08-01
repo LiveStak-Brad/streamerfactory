@@ -185,7 +185,10 @@ export function StreamerUCertificatePanel({ variant = "full", className = "" }: 
                   <li>
                     Graduation Exam {snap.graduationPassed ? "passed ✓" : "not yet"}
                   </li>
-                  <li>Career path: StreamerU Graduate → Manager College (expanding)</li>
+                  <li>
+                    Career path: StreamerU Graduate → Advanced Creator → Presence Mastery → Manager
+                    College (expanding)
+                  </li>
                 </ul>
               </div>
             </>

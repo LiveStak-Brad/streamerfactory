@@ -50,9 +50,9 @@ export function StreamerUGrowingRoadmap() {
         StreamerU is growing
       </h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-        {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Program 5 —
-        Advanced Creator — is the published black-belt bridge (8 lessons) on the road to a{" "}
-        {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
+        {ACADEMY_RELEASE.cadence}. Essential safety lives in Beginner Foundations. Advanced Creator,
+        Presence Mastery, Content Creation Mastery, and Growth Mastery are published Mastery-path craft on the road
+        to a {PLANNED_CURRICULUM_LESSON_COUNT}-lesson university curriculum.
       </p>
 
       <div className="mt-6 rounded-xl border border-border/70 bg-surface/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/60">

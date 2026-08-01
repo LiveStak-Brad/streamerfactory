@@ -31,6 +31,38 @@ import { lesson as growthExperimentsThatDontWreckYourShow } from "./growth-exper
 import { lesson as professionalStandardsOnLive } from "./professional-standards-on-live";
 import { lesson as privacySecurityAndPersonalBoundaries } from "./privacy-security-and-personal-boundaries";
 import { lesson as advancedCreatorCapstone30DayProSprint } from "./advanced-creator-capstone-30-day-pro-sprint";
+import { lesson as cameraPresenceOwningTheFrame } from "./camera-presence-owning-the-frame";
+import { lesson as voiceThatHoldsARoom } from "./voice-that-holds-a-room";
+import { lesson as confidenceWhenTheChatIsQuiet } from "./confidence-when-the-chat-is-quiet";
+import { lesson as storytellingOnLiveNotScripts } from "./storytelling-on-live-not-scripts";
+import { lesson as audiencePsychologyWhyPeopleStay } from "./audience-psychology-why-people-stay";
+import { lesson as emotionalPacingAcrossALive } from "./emotional-pacing-across-a-live";
+import { lesson as humorWarmthAndAuthenticity } from "./humor-warmth-and-authenticity";
+import { lesson as handlingPressureMomentsLive } from "./handling-pressure-moments-live";
+import { lesson as interviewEnergySoloAndGuests } from "./interview-energy-solo-and-guests";
+import { lesson as presenceCapstoneSignature20MinuteLive } from "./presence-capstone-signature-20-minute-live";
+import { lesson as findingYourNicheWithoutBoxingYourselfIn } from "./finding-your-niche-without-boxing-yourself-in";
+import { lesson as becomingMemorableOnLive } from "./becoming-memorable-on-live";
+import { lesson as creatingRecurringSegmentsViewersExpect } from "./creating-recurring-segments-viewers-expect";
+import { lesson as runningThemedWeeks } from "./running-themed-weeks";
+import { lesson as storyArcsAcrossMultipleLives } from "./story-arcs-across-multiple-lives";
+import { lesson as communityEventsOnLive } from "./community-events-on-live";
+import { lesson as interactiveShowsThatArentChaos } from "./interactive-shows-that-arent-chaos";
+import { lesson as seasonalContentWithoutGimmicks } from "./seasonal-content-without-gimmicks";
+import { lesson as buildingAnticipationBeforeAndDuringLive } from "./building-anticipation-before-and-during-live";
+import { lesson as contentCreationCapstone7DayThemedLiveSeries } from "./content-creation-capstone-7-day-themed-live-series";
+import { lesson as growthDiagnosisFramework } from "./growth-diagnosis-framework";
+import { lesson as retentionScienceBeyondTheBasics } from "./retention-science-beyond-the-basics";
+import { lesson as analyticsDeepDiveForLiveCreators } from "./analytics-deep-dive-for-live-creators";
+import { lesson as experimentDesignForCreators } from "./experiment-design-for-creators";
+import { lesson as schedulingAsStrategy } from "./scheduling-as-strategy";
+import { lesson as discoveryInventoryNeverMissAPublishWindow } from "./discovery-inventory-never-miss-a-publish-window";
+import { lesson as algorithmDurableGrowth } from "./algorithm-durable-growth";
+import { lesson as clipsDiscoveryAndLive } from "./clips-discovery-and-live";
+import { lesson as aiForLiveCreators } from "./ai-for-live-creators";
+import { lesson as collaborationGrowthWithoutBegging } from "./collaboration-growth-without-begging";
+import { lesson as fromSpikeToStableGrowth } from "./from-spike-to-stable-growth";
+import { lesson as growthCapstone30DayGrowthExperiment } from "./growth-capstone-30-day-growth-experiment";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -70,6 +102,38 @@ const LESSONS: ExpandedLesson[] = [
   professionalStandardsOnLive,
   privacySecurityAndPersonalBoundaries,
   advancedCreatorCapstone30DayProSprint,
+  cameraPresenceOwningTheFrame,
+  voiceThatHoldsARoom,
+  confidenceWhenTheChatIsQuiet,
+  storytellingOnLiveNotScripts,
+  audiencePsychologyWhyPeopleStay,
+  emotionalPacingAcrossALive,
+  humorWarmthAndAuthenticity,
+  handlingPressureMomentsLive,
+  interviewEnergySoloAndGuests,
+  presenceCapstoneSignature20MinuteLive,
+  findingYourNicheWithoutBoxingYourselfIn,
+  becomingMemorableOnLive,
+  creatingRecurringSegmentsViewersExpect,
+  runningThemedWeeks,
+  storyArcsAcrossMultipleLives,
+  communityEventsOnLive,
+  interactiveShowsThatArentChaos,
+  seasonalContentWithoutGimmicks,
+  buildingAnticipationBeforeAndDuringLive,
+  contentCreationCapstone7DayThemedLiveSeries,
+  growthDiagnosisFramework,
+  retentionScienceBeyondTheBasics,
+  analyticsDeepDiveForLiveCreators,
+  experimentDesignForCreators,
+  schedulingAsStrategy,
+  discoveryInventoryNeverMissAPublishWindow,
+  algorithmDurableGrowth,
+  clipsDiscoveryAndLive,
+  aiForLiveCreators,
+  collaborationGrowthWithoutBegging,
+  fromSpikeToStableGrowth,
+  growthCapstone30DayGrowthExperiment,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

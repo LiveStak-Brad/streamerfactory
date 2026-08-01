@@ -64,6 +64,11 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
       return "intermediate";
     case "monetization":
       return "advanced";
+    case "presence":
+    case "creation":
+      return "intermediate";
+    case "growth":
+      return "advanced";
     default:
       return "beginner";
   }

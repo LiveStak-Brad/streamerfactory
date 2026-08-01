@@ -770,6 +770,907 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
       },
     ],
   },
+
+  // —— Presence Mastery ——
+  "camera-presence-owning-the-frame": {
+    id: "mission-33-camera-presence",
+    mission_title: "Session: 10-Minute Presence Drill LIVE",
+    mission_description:
+      "Run a presence drill on TikTok LIVE focused on framing, eye line, posture, and grounded stillness — then file self-review notes.",
+    mission_steps: steps(
+      [
+        "Set framing using the Camera Frame Checklist (headroom, eye line, background clutter).",
+        "Write three self-review questions you will answer after the drill.",
+      ],
+      35,
+      [
+        "Complete one continuous 10-minute presence drill block with intentional eye line and stillness.",
+        "File Presence Self-Review Notes the same day (what looked grounded vs restless).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Finish a real LIVE with a 10-minute presence drill and written self-review — graded by craft behaviors, not viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Presence Drill Card", href: "/streameru/library/presence-drill-card" },
+      { label: "Camera Frame Checklist", href: "/streameru/library/camera-frame-checklist" },
+    ],
+  },
+
+  "voice-that-holds-a-room": {
+    id: "mission-34-voice-holds-room",
+    mission_title: "Session: Vocal Variety Segment LIVE",
+    mission_description:
+      "Complete the five-tool vocal warm-up, then run a 15-minute LIVE segment with intentional pace and energy variety.",
+    mission_steps: steps(
+      [
+        "Run the Voice Warm-Up Routine (all five tools) before Go Live.",
+        "Mark three moments in your plan where pace or emphasis will change on purpose.",
+      ],
+      40,
+      [
+        "Deliver one continuous 15-minute segment with audible variety (not max volume the whole time).",
+        "Write before/after voice notes: one improvement and one habit to keep.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Prove vocal variety across a real 15-minute LIVE segment after a completed warm-up.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Voice Warm-Up Routine", href: "/streameru/library/voice-warmup-routine" },
+      { label: "Vocal Variety Scorecard", href: "/streameru/library/vocal-variety-scorecard" },
+    ],
+  },
+
+  "confidence-when-the-chat-is-quiet": {
+    id: "mission-35-quiet-chat-confidence",
+    mission_title: "Session: Quiet-Chat Protocol LIVE",
+    mission_description:
+      "Complete a full planned segment using your quiet-chat protocol even if chat is empty — no apology spirals.",
+    mission_steps: steps(
+      [
+        "Fill your Quiet-Chat Protocol Card and Silence Rescue Card before Go Live.",
+        "Choose one self-contained segment that does not require chat to function.",
+      ],
+      40,
+      [
+        "Run the full segment without begging for comments; use rescue moves if silence hits.",
+        "Log which protocol step you used and whether the spiral started (and how you stopped it).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete a full LIVE segment under quiet-chat conditions using a written protocol — not viewer validation.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Quiet-Chat Protocol Card", href: "/streameru/library/quiet-chat-protocol-card" },
+      { label: "Silence Rescue Card", href: "/streameru/library/silence-rescue-card" },
+    ],
+  },
+
+  "storytelling-on-live-not-scripts": {
+    id: "mission-36-live-storytelling",
+    mission_title: "Session: Three Micro-Stories LIVE",
+    mission_description:
+      "Deliver three 60–90 second LIVE stories from your bank with clear setup, turn, and payoff.",
+    mission_steps: steps(
+      [
+        "Complete a Micro-Story Bank of at least 10 stories; star three for today's LIVE.",
+        "For each starred story, write setup / turn / payoff in one line each (not a script essay).",
+      ],
+      40,
+      [
+        "Deliver all three stories on LIVE with clear payoffs; recover if chat interrupts.",
+        "Note which story landed hardest and one delivery tweak.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Land three banked micro-stories on a real LIVE with clear payoffs — memory over scripts.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Micro-Story Bank", href: "/streameru/library/micro-story-bank" },
+      { label: "Story Delivery Checklist", href: "/streameru/library/story-delivery-checklist" },
+    ],
+  },
+
+  "audience-psychology-why-people-stay": {
+    id: "mission-37-motive-redesign",
+    mission_title: "Session: Motive Redesign LIVE",
+    mission_description:
+      "Map your show to four viewer motives and run one redesigned segment that serves two motives ethically.",
+    mission_steps: steps(
+      [
+        "Complete the Viewer Motive Map for your usual LIVE.",
+        "Redesign one segment with entry, moves, exit, and an ethics gate (no manipulation).",
+      ],
+      45,
+      [
+        "Run the redesigned segment as planned on LIVE.",
+        "Log motives landed, leave-risk moments, and one tweak for next time.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Demonstrate motive-aware segment design on LIVE without manipulative tactics.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Viewer Motive Map", href: "/streameru/library/viewer-motive-map" },
+      { label: "Segment Redesign Worksheet", href: "/streameru/library/segment-redesign-worksheet" },
+    ],
+  },
+
+  "emotional-pacing-across-a-live": {
+    id: "mission-38-energy-arc",
+    mission_title: "Session: Energy Arc LIVE",
+    mission_description:
+      "Run a LIVE from an annotated energy map with planned peaks, rests, and recovery beats.",
+    mission_steps: steps(
+      [
+        "Draw an Energy Arc Map for today's session (peaks, rests, recovery).",
+        "Mark one rest beat you will protect even if chat gets busy.",
+      ],
+      45,
+      [
+        "Execute the map on LIVE — hit at least one planned peak and one planned rest.",
+        "Score the session on the Pacing Self-Scorecard (plan vs actual).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Prove intentional emotional pacing across a real LIVE — not flat or maxed the whole time.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Energy Arc Map", href: "/streameru/library/energy-arc-map" },
+      { label: "Pacing Self-Scorecard", href: "/streameru/library/pacing-self-scorecard" },
+    ],
+  },
+
+  "humor-warmth-and-authenticity": {
+    id: "mission-39-personality-levers",
+    mission_title: "Session: Personality Levers LIVE",
+    mission_description:
+      "Practice three authentic personality levers on LIVE without forced bits.",
+    mission_steps: steps(
+      [
+        "Fill the Personality Lever Card with three levers that fit you.",
+        "Write a Forced-Bit Kill List of jokes/bits you will not fake today.",
+      ],
+      40,
+      [
+        "Use all three levers naturally during the LIVE (not as a comedy special).",
+        "Note which lever felt true and which felt forced — retire forced moves.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Demonstrate three authentic personality levers on LIVE without desperate forced bits.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Personality Lever Card", href: "/streameru/library/personality-lever-card" },
+      { label: "Forced-Bit Kill List", href: "/streameru/library/forced-bit-kill-list" },
+    ],
+  },
+
+  "handling-pressure-moments-live": {
+    id: "mission-40-pressure-recovery",
+    mission_title: "Session: Pressure Recovery LIVE",
+    mission_description:
+      "Keep recovery scripts ready and execute composure resets for pressure events during a real LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Pressure Recovery Card for four scenarios (troll, tech fail, gift interrupt, sudden crowd).",
+        "Place the Composure Reset Checklist where you can glance mid-LIVE.",
+      ],
+      40,
+      [
+        "If a real pressure event hits, use a scripted recovery; if not, practice one reset after a planned mild interruption you create (e.g. water break announce).",
+        "Log which recovery you used and how fast you returned to the planned beat.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Execute a composure recovery pattern on LIVE and return to the show without spiral or rage-quit.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Pressure Recovery Card", href: "/streameru/library/pressure-recovery-card" },
+      { label: "Composure Reset Checklist", href: "/streameru/library/composure-reset-checklist" },
+    ],
+  },
+
+  "interview-energy-solo-and-guests": {
+    id: "mission-41-interview-energy",
+    mission_title: "Session: Interview Segment LIVE",
+    mission_description:
+      "Host a continuous 10-minute interview-style segment with question craft, listening, and follow-ups.",
+    mission_steps: steps(
+      [
+        "Complete Interview Segment Plan + Question Bank (8–12 questions).",
+        "Star five always-ready questions for cold starts.",
+      ],
+      40,
+      [
+        "Run one continuous 10-minute interview-style block (chat as guest is enough).",
+        "Log one strong follow-up you used and one moment you talked over instead of listening.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Host a 10-minute interview-energy segment with visible listening and follow-ups.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Interview Segment Plan", href: "/streameru/library/interview-segment-plan" },
+      { label: "Question Bank Worksheet", href: "/streameru/library/question-bank-worksheet" },
+    ],
+  },
+
+  // —— Growth Mastery ——
+  "growth-diagnosis-framework": {
+    id: "mission-53-growth-diagnosis",
+    mission_title: "Session: Diagnosis Observation LIVE",
+    mission_description:
+      "Complete a written growth diagnosis, then run a LIVE that tests one diagnostic observation — not a full rebuild.",
+    mission_steps: steps(
+      [
+        "Complete the Growth Diagnosis Worksheet (primary bottleneck + evidence + one observation to test).",
+        "Fill the One-Leak Decision Card so you are not fixing four lanes at once.",
+      ],
+      45,
+      [
+        "On LIVE, test only the single diagnostic observation written on the card.",
+        "Within 15 minutes of ending, log what you observed on the Bottleneck Evidence Log.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a written diagnosis plus a 45+ minute LIVE that tests one observation — behavior proof, not viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Growth Diagnosis Worksheet", href: "/streameru/library/growth-diagnosis-worksheet" },
+      { label: "Bottleneck Evidence Log", href: "/streameru/library/bottleneck-evidence-log" },
+      { label: "One-Leak Decision Card", href: "/streameru/library/one-leak-decision-card" },
+    ],
+  },
+
+  "retention-science-beyond-the-basics": {
+    id: "mission-54-retention-science",
+    mission_title: "Session: Retention Redesign LIVE",
+    mission_description:
+      "Apply one mid-LIVE retention structural change and file comparison notes against a prior session.",
+    mission_steps: steps(
+      [
+        "Complete the Mid-LIVE Drop-Off Map and Retention Redesign Sheet (one structural change only).",
+        "Note the baseline session you will compare against.",
+      ],
+      45,
+      [
+        "Execute the single retention change on purpose through the mid-LIVE window.",
+        "Fill the Two-Session Comparison Log within 15 minutes of ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship one retention redesign on a 45+ minute LIVE with honest comparison notes — not a viral spike.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mid-LIVE Drop-Off Map", href: "/streameru/library/mid-live-drop-off-map" },
+      { label: "Retention Redesign Sheet", href: "/streameru/library/retention-redesign-sheet" },
+      { label: "Two-Session Comparison Log", href: "/streameru/library/two-session-comparison-log" },
+    ],
+  },
+
+  "analytics-deep-dive-for-live-creators": {
+    id: "mission-55-analytics-deep-dive",
+    mission_title: "Session: Analytics Decision LIVE",
+    mission_description:
+      "Complete a monthly analytics review (three decisions max), then run a LIVE that executes one decision.",
+    mission_steps: steps(
+      [
+        "Complete the Monthly Analytics Review Template from the last 2–4 weeks of LIVE data.",
+        "Cut priorities to three decisions max on the Three-Decisions Max Worksheet.",
+      ],
+      45,
+      [
+        "Execute exactly one of those decisions on LIVE.",
+        "Note leading vs lagging signals you will watch next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a completed monthly review (≤3 decisions) plus a LIVE that executes one decision.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Monthly Analytics Review Template",
+        href: "/streameru/library/monthly-analytics-review-template",
+      },
+      {
+        label: "Leading vs Lagging Indicators Card",
+        href: "/streameru/library/leading-vs-lagging-indicators-card",
+      },
+      {
+        label: "Three-Decisions Max Worksheet",
+        href: "/streameru/library/three-decisions-max-worksheet",
+      },
+    ],
+  },
+
+  "experiment-design-for-creators": {
+    id: "mission-56-experiment-design",
+    mission_title: "Session: Clean Experiment LIVE",
+    mission_description:
+      "Run one clean A/B-style LIVE experiment from a design sheet with kill criteria and sample-size humility.",
+    mission_steps: steps(
+      [
+        "Complete the Clean Experiment Design Sheet (one variable, success criteria, kill rule, window).",
+        "Read the Sample-Size Humility Card so you do not overclaim from one session.",
+      ],
+      45,
+      [
+        "Execute the single variable on purpose while keeping brand and capacity stable.",
+        "Log the session on the Experiment Conclusion Log (variable present? notes? early keep/adapt/kill lean).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a clean experiment design plus honest day execution on a 45+ minute LIVE.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Clean Experiment Design Sheet", href: "/streameru/library/clean-experiment-design-sheet" },
+      { label: "Sample-Size Humility Card", href: "/streameru/library/sample-size-humility-card" },
+      { label: "Experiment Conclusion Log", href: "/streameru/library/experiment-conclusion-log" },
+    ],
+  },
+
+  "scheduling-as-strategy": {
+    id: "mission-57-scheduling-strategy",
+    mission_title: "Session: Schedule Test LIVE",
+    mission_description:
+      "Choose a schedule strategy, go LIVE in the tested slot, and log attendance/retention notes.",
+    mission_steps: steps(
+      [
+        "Complete the Schedule Strategy Sheet and mark the two-week test window.",
+        "Confirm the slot is sustainable on the Sustainable Cadence Planner.",
+      ],
+      45,
+      [
+        "Run the LIVE in the chosen test slot.",
+        "Fill the Two-Week Schedule Test Log row for today's session.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a written schedule strategy plus a LIVE in the tested slot with notes filed.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Schedule Strategy Sheet", href: "/streameru/library/schedule-strategy-sheet" },
+      { label: "Two-Week Schedule Test Log", href: "/streameru/library/two-week-schedule-test-log" },
+      { label: "Sustainable Cadence Planner", href: "/streameru/library/sustainable-cadence-planner" },
+    ],
+  },
+
+  "discovery-inventory-never-miss-a-publish-window": {
+    id: "mission-58-discovery-inventory",
+    mission_title: "Session: Discovery Inventory Capture LIVE",
+    mission_description:
+      "Install a four-week discovery inventory board and capture 2–3 clippable moments with LIVE CTAs planned.",
+    mission_steps: steps(
+      [
+        "Build the Four-Week Discovery Inventory Board (clip moments, promos, experiment slots).",
+        "Open the Publish Window Checklist for this week.",
+      ],
+      45,
+      [
+        "During LIVE, capture or clearly mark 2–3 clippable moments.",
+        "Log them on the Clip Moment Capture Log with intended LIVE CTAs.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a four-week inventory board plus a LIVE that stocks the discovery pipeline — not show redesign.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Four-Week Discovery Inventory Board",
+        href: "/streameru/library/four-week-discovery-inventory-board",
+      },
+      { label: "Clip Moment Capture Log", href: "/streameru/library/clip-moment-capture-log" },
+      { label: "Publish Window Checklist", href: "/streameru/library/publish-window-checklist" },
+    ],
+  },
+
+  "algorithm-durable-growth": {
+    id: "mission-59-algorithm-durable",
+    mission_title: "Session: Durable Tactics LIVE",
+    mission_description:
+      "Complete a myth audit, replace fragile tactics with durable principles, and run a LIVE using only durable tactics.",
+    mission_steps: steps(
+      [
+        "Complete the Growth Myth Audit Worksheet and Durable Tactics List.",
+        "Confirm Algorithm-Proof Principles Card off-limits (no bait, spam, fake engagement).",
+      ],
+      45,
+      [
+        "Run LIVE using only durable tactics from your list.",
+        "Note any myth urge you refused mid-stream.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a myth audit + durable tactics list plus a LIVE that refuses hack culture.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Growth Myth Audit Worksheet", href: "/streameru/library/growth-myth-audit-worksheet" },
+      { label: "Durable Tactics List", href: "/streameru/library/durable-tactics-list" },
+      {
+        label: "Algorithm-Proof Principles Card",
+        href: "/streameru/library/algorithm-proof-principles-card",
+      },
+    ],
+  },
+
+  "clips-discovery-and-live": {
+    id: "mission-60-clips-discovery",
+    mission_title: "Session: Clip-to-LIVE Loop LIVE",
+    mission_description:
+      "Install a weekly clip workflow with focus guardrails, capture during/after LIVE, and prepare three clips with LIVE CTAs.",
+    mission_steps: steps(
+      [
+        "Complete the Weekly Clip Workflow Checklist and Focus Guardrails Card.",
+        "Prepare Clip-to-LIVE CTA Templates for this week's posts.",
+      ],
+      45,
+      [
+        "Capture clip moments during or immediately after LIVE without stealing recovery time past your guardrail.",
+        "Queue or post three clips with LIVE CTAs (execution graded, not views).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a clip workflow plus three CTA'd clips that serve LIVE — without destroying focus.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Weekly Clip Workflow Checklist",
+        href: "/streameru/library/weekly-clip-workflow-checklist",
+      },
+      { label: "Clip-to-LIVE CTA Templates", href: "/streameru/library/clip-to-live-cta-templates" },
+      { label: "Focus Guardrails Card", href: "/streameru/library/focus-guardrails-card" },
+    ],
+  },
+
+  "ai-for-live-creators": {
+    id: "mission-61-ai-for-live",
+    mission_title: "Session: AI-Assisted Prep LIVE",
+    mission_description:
+      "Use an AI-assisted prep workflow with authenticity rules, then deliver a LIVE that still sounds like you.",
+    mission_steps: steps(
+      [
+        "Run the AI-Assisted Prep Workflow and Authenticity Rules Card before Go Live.",
+        "Complete the AI Use Decision Checklist (what AI may draft vs what you must rewrite).",
+      ],
+      45,
+      [
+        "Host LIVE in your voice — no robotic verbatim AI scripts.",
+        "Log what AI helped vs what you rewrote within 15 minutes of ending.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship AI-assisted prep plus an authentic 45+ minute LIVE with a help/rewrite log.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "AI-Assisted Prep Workflow", href: "/streameru/library/ai-assisted-prep-workflow" },
+      { label: "Authenticity Rules Card", href: "/streameru/library/authenticity-rules-card" },
+      { label: "AI Use Decision Checklist", href: "/streameru/library/ai-use-decision-checklist" },
+    ],
+  },
+
+  "collaboration-growth-without-begging": {
+    id: "mission-62-collab-growth",
+    mission_title: "Session: Collab Growth LIVE",
+    mission_description:
+      "Complete professional collab outreach materials and either send one outreach or run a retention-prep LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Collab Outreach Template and Value Exchange Planner.",
+        "Draft the Post-Collab Retention Plan for new arrivals.",
+      ],
+      45,
+      [
+        "Send one professional outreach OR rehearse welcome/return retention language on LIVE.",
+        "File the outreach/retention artifacts for Capstone evidence.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship professional collab artifacts plus outreach or retention-prep LIVE — no begging, no recruiting.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Collab Outreach Template", href: "/streameru/library/collab-outreach-template" },
+      { label: "Value Exchange Planner", href: "/streameru/library/value-exchange-planner" },
+      { label: "Post-Collab Retention Plan", href: "/streameru/library/post-collab-retention-plan" },
+    ],
+  },
+
+  "from-spike-to-stable-growth": {
+    id: "mission-63-spike-stable",
+    mission_title: "Session: Spike Capture Rehearsal LIVE",
+    mission_description:
+      "Install a spike-capture playbook and rehearse welcome/return offer behaviors on a normal LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Spike Capture Playbook and Post-Spike Pacing Planner.",
+        "Write the Welcome Ritual Script Card you will rehearse today.",
+      ],
+      45,
+      [
+        "Rehearse welcome + return offer on LIVE even without a spike.",
+        "Note one pacing rule you will protect if a spike arrives.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a spike playbook plus a LIVE that rehearses capture systems before you need them.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Spike Capture Playbook", href: "/streameru/library/spike-capture-playbook" },
+      { label: "Welcome Ritual Script Card", href: "/streameru/library/welcome-ritual-script-card" },
+      { label: "Post-Spike Pacing Planner", href: "/streameru/library/post-spike-pacing-planner" },
+    ],
+  },
+
+  "growth-capstone-30-day-growth-experiment": {
+    id: "mission-64-growth-capstone",
+    mission_title: "Session: Growth Capstone Kickoff LIVE",
+    mission_description:
+      "Assemble the 30-day growth experiment dossier/planner and kick off the experiment on a real LIVE.",
+    mission_steps: steps(
+      [
+        "Assemble the 30-Day Growth Experiment Dossier Checklist and Growth Capstone 30-Day Planner (diagnosis, one test, schedule/discovery notes, review date).",
+        "Confirm results narrative worksheet is ready for end-of-window filing.",
+      ],
+      45,
+      [
+        "State your experiment goal in plain language, run at least one planned segment, and close with next LIVE day.",
+        "Start the thirty-day clock and file kickoff notes in the dossier the same day.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Kick off a reviewable 30-day growth experiment with a complete plan packet and a real LIVE start.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "30-Day Growth Experiment Dossier Checklist",
+        href: "/streameru/library/thirty-day-growth-experiment-dossier-checklist",
+      },
+      {
+        label: "Growth Capstone 30-Day Planner",
+        href: "/streameru/library/growth-capstone-30-day-planner",
+      },
+      {
+        label: "Growth Results Narrative Worksheet",
+        href: "/streameru/library/growth-results-narrative-worksheet",
+      },
+    ],
+  },
+
+  "presence-capstone-signature-20-minute-live": {
+    id: "mission-42-presence-capstone",
+    mission_title: "Session: Signature 20-Minute LIVE Capstone",
+    mission_description:
+      "Deliver your signature 20-minute LIVE with full evidence package — run of show, opening, pacing, story, chat plan, recovery, close, and replay review.",
+    mission_steps: steps(
+      [
+        "Assemble the Signature LIVE Run of Show and Presence Evidence Package Checklist (all required pages).",
+        "Record a short before snapshot of your presence goals vs Advanced Creator baseline notes.",
+      ],
+      45,
+      [
+        "Deliver a continuous signature block of at least 20 minutes matching the run of show.",
+        "Complete replay self-review rubric and before/after comparison the same day; file the evidence package.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Produce a reviewable signature 20-minute LIVE portfolio artifact with scored self-review — not virality metrics.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Signature LIVE Run of Show",
+        href: "/streameru/library/signature-live-run-of-show",
+      },
+      {
+        label: "Presence Evidence Package Checklist",
+        href: "/streameru/library/presence-evidence-package-checklist",
+      },
+      {
+        label: "Presence Replay Review Rubric",
+        href: "/streameru/library/presence-replay-review-rubric",
+      },
+    ],
+  },
+
+  // —— Content Creation Mastery ——
+  "finding-your-niche-without-boxing-yourself-in": {
+    id: "mission-43-niche-proof",
+    mission_title: "Session: Niche Proof LIVE",
+    mission_description:
+      "Write your niche statement and in/out boundaries, then run a LIVE that stays inside those boundaries.",
+    mission_steps: steps(
+      [
+        "Complete the Niche Statement Worksheet and In/Out Boundary Card before you go live.",
+        "Circle three topics that are IN for today and one topic you will refuse if chat pulls you OUT.",
+      ],
+      45,
+      [
+        "Open by stating what this show is for in one clear sentence.",
+        "Stay inside your IN list for the full session; if you drift, name the reset and return.",
+        "Within 15 minutes of ending, fill the Niche Proof LIVE Log (kept / drifted / one sharpen).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a written niche statement + boundary card plus a 45+ minute LIVE that stayed inside those boundaries — behavior proof, not viewer count.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Niche Statement Worksheet", href: "/streameru/library/niche-statement-worksheet" },
+      { label: "In/Out Boundary Card", href: "/streameru/library/in-out-boundary-card" },
+      { label: "Niche Proof LIVE Log", href: "/streameru/library/niche-proof-live-log" },
+    ],
+  },
+
+  "becoming-memorable-on-live": {
+    id: "mission-44-memorability",
+    mission_title: "Session: Memorability Kit LIVE",
+    mission_description:
+      "Design three signature elements and use all three in one LIVE so a friend could describe your show.",
+    mission_steps: steps(
+      [
+        "Complete the Memorability Kit (three signatures) and Signature Moment Planner before you go live.",
+        "Write the exact open phrase / visual cue / emotional texture you will run today.",
+      ],
+      45,
+      [
+        "Use all three signature elements at least once in a planned way (not only if mood hits).",
+        "After ending, fill the Friend-Describe Test Card as if a stranger watched for five minutes.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run a 45+ minute LIVE that delivers three planned signature elements with a completed Friend-Describe Test — memorability by design.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Memorability Kit", href: "/streameru/library/memorability-kit" },
+      { label: "Signature Moment Planner", href: "/streameru/library/signature-moment-planner" },
+      { label: "Friend-Describe Test Card", href: "/streameru/library/friend-describe-test-card" },
+    ],
+  },
+
+  "creating-recurring-segments-viewers-expect": {
+    id: "mission-45-segment-bible",
+    mission_title: "Session: Two Segments Launch LIVE",
+    mission_description:
+      "Launch two named recurring segments with clear rules, length, and payoff — beyond unnamed retention loops.",
+    mission_steps: steps(
+      [
+        "Complete Segment Bible entries for two named segments (rules, length, payoff, viewer promise).",
+        "Fill the Two-Segment Launch Plan with when each segment runs today.",
+      ],
+      45,
+      [
+        "Run both named segments on LIVE with spoken names and clear starts/ends.",
+        "Score both with the Segment Replay Rubric the same day.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship two named segment bible entries and execute both on a 45+ minute LIVE with replay scores.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Segment Bible Template", href: "/streameru/library/segment-bible-template" },
+      { label: "Two-Segment Launch Plan", href: "/streameru/library/two-segment-launch-plan" },
+      { label: "Segment Replay Rubric", href: "/streameru/library/segment-replay-rubric" },
+    ],
+  },
+
+  "running-themed-weeks": {
+    id: "mission-46-themed-week",
+    mission_title: "Session: Themed Week Kickoff LIVE",
+    mission_description:
+      "Plan a real themed week with daily angles and a finale, then kick it off on LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Themed Week Planner (theme, daily angles Mon–Sun or your real cadence, finale).",
+        "Fill today's Daily Angle Card and the Week Finale Checklist draft.",
+      ],
+      45,
+      [
+        "Open naming the week theme and today's angle; protect the angle for the session.",
+        "Close with tomorrow's angle tease (a promise you will keep).",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Kick off a written themed week with a 45+ minute LIVE that delivers today's angle and teases tomorrow honestly.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Themed Week Planner", href: "/streameru/library/themed-week-planner" },
+      { label: "Daily Angle Card", href: "/streameru/library/daily-angle-card" },
+      { label: "Week Finale Checklist", href: "/streameru/library/week-finale-checklist" },
+    ],
+  },
+
+  "story-arcs-across-multiple-lives": {
+    id: "mission-47-arc-map",
+    mission_title: "Session: Arc Checkpoint LIVE",
+    mission_description:
+      "Design a 3–7 session story arc and run one checkpoint LIVE with a clear unfinished loop.",
+    mission_steps: steps(
+      [
+        "Complete the Multi-LIVE Arc Map (sessions, checkpoints, finale) and Checkpoint Checklist for today.",
+        "Write the unfinished loop you will leave open and the payoff session it points to.",
+      ],
+      45,
+      [
+        "Deliver today's checkpoint beat and leave one honest unfinished loop (no fake cliffhangers).",
+        "Fill the Arc Debrief Sheet: what advanced, what stalled, next checkpoint.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship an arc map and run a 45+ minute checkpoint LIVE that advances the arc without scripted drama.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Multi-LIVE Arc Map", href: "/streameru/library/multi-live-arc-map" },
+      { label: "Checkpoint Checklist", href: "/streameru/library/checkpoint-checklist" },
+      { label: "Arc Debrief Sheet", href: "/streameru/library/arc-debrief-sheet" },
+    ],
+  },
+
+  "community-events-on-live": {
+    id: "mission-48-community-event",
+    mission_title: "Session: Community Event LIVE",
+    mission_description:
+      "Produce and host one community event with a run-of-show and a five-day promo checklist.",
+    mission_steps: steps(
+      [
+        "Complete the Event Run-of-Show and Five-Day Promo Checklist (even if promo window is shortened, mark what you actually did).",
+        "Define roles, start/end, and one invite-a-friend reason.",
+      ],
+      45,
+      [
+        "Host the event LIVE following the run-of-show; use kill-switches if chaos spikes.",
+        "Complete the Event After-Action Review the same day.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Host a planned community event LIVE with run-of-show proof and after-action notes — execution over crowd size.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Event Run-of-Show", href: "/streameru/library/event-run-of-show" },
+      { label: "Five-Day Promo Checklist", href: "/streameru/library/five-day-promo-checklist" },
+      { label: "Event After-Action Review", href: "/streameru/library/event-after-action-review" },
+    ],
+  },
+
+  "interactive-shows-that-arent-chaos": {
+    id: "mission-49-interactive-format",
+    mission_title: "Session: Interactive Format LIVE",
+    mission_description:
+      "Build one interactive show format with rules, roles, and kill-switches — then run it without losing the host seat.",
+    mission_steps: steps(
+      [
+        "Complete the Interactive Format Card and Roles & Kill-Switch Sheet before you go live.",
+        "Rehearse the kill-switch line out loud once.",
+      ],
+      45,
+      [
+        "Run the interactive format for a planned block; use a kill-switch if chat spikes into chaos.",
+        "Score the block with the Interactive Replay Rubric.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run a hostable interactive format on a 45+ minute LIVE with rules, roles, and a used-or-ready kill-switch.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Interactive Format Card", href: "/streameru/library/interactive-format-card" },
+      { label: "Roles & Kill-Switch Sheet", href: "/streameru/library/roles-kill-switch-sheet" },
+      { label: "Interactive Replay Rubric", href: "/streameru/library/interactive-replay-rubric" },
+    ],
+  },
+
+  "seasonal-content-without-gimmicks": {
+    id: "mission-50-seasonal-calendar",
+    mission_title: "Session: Season Peak LIVE",
+    mission_description:
+      "Build a 90-day seasonal calendar with three peaks, then run one LIVE aligned to a real season peak — not forced trend bait.",
+    mission_steps: steps(
+      [
+        "Complete the 90-Day Seasonal Calendar and Season Peak Planner (three peaks).",
+        "Fill the Season Keep/Cut List for today's peak (what fits your niche vs gimmick).",
+      ],
+      45,
+      [
+        "Run a LIVE that serves one calendar peak honestly inside your niche boundaries.",
+        "Log keep/cut decisions after the session.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Ship a 90-day seasonal calendar and execute one peak-aligned 45+ minute LIVE without gimmick chasing.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "90-Day Seasonal Calendar",
+        href: "/streameru/library/ninety-day-seasonal-calendar",
+      },
+      { label: "Season Peak Planner", href: "/streameru/library/season-peak-planner" },
+      { label: "Season Keep/Cut List", href: "/streameru/library/season-keep-cut-list" },
+    ],
+  },
+
+  "building-anticipation-before-and-during-live": {
+    id: "mission-51-anticipation",
+    mission_title: "Session: Anticipation System LIVE",
+    mission_description:
+      "Install anticipation across pre-LIVE, mid-LIVE, and end-LIVE — and keep at least one promise you make.",
+    mission_steps: steps(
+      [
+        "Complete the Anticipation Playbook (pre / mid / end) and Tease-to-Payoff Card for today.",
+        "Write one promise you will keep before the next LIVE.",
+      ],
+      45,
+      [
+        "Deliver pre-tease (bio/title/open), one mid-LIVE unfinished loop, and an end-LIVE next-time promise.",
+        "Add the kept (or broken) promise to the Kept Promise Log the same day — honesty required.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run anticipation pre/mid/end on a 45+ minute LIVE and log one kept promise — trust over hype.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Anticipation Playbook", href: "/streameru/library/anticipation-playbook" },
+      { label: "Kept Promise Log", href: "/streameru/library/kept-promise-log" },
+      { label: "Tease-to-Payoff Card", href: "/streameru/library/tease-to-payoff-card" },
+    ],
+  },
+
+  "content-creation-capstone-7-day-themed-live-series": {
+    id: "mission-52-cc-capstone",
+    mission_title: "Session: 7-Day Series Kickoff LIVE",
+    mission_description:
+      "Assemble the Capstone evidence package and kick off your 7-day themed LIVE series on a real LIVE.",
+    mission_steps: steps(
+      [
+        "Complete the Capstone Evidence Checklist and 7-Day Series Planner (theme, daily angles, segments, anticipation, reinvention keep/change/test).",
+        "File niche statement, segment bibles, and anticipation playbook into the Capstone folder.",
+      ],
+      45,
+      [
+        "Kick off Day 1 of the series on LIVE: name the theme, deliver today's angle, tease Day 2.",
+        "Start the seven-day clock and begin Series Review Scorecard notes the same day.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Kick off a reviewable 7-day themed LIVE series with a complete plan packet and a real Day-1 LIVE — portfolio evidence, not virality.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      {
+        label: "Capstone Evidence Checklist",
+        href: "/streameru/library/cc-capstone-evidence-checklist",
+      },
+      { label: "7-Day Series Planner", href: "/streameru/library/seven-day-series-planner" },
+      { label: "Series Review Scorecard", href: "/streameru/library/series-review-scorecard" },
+    ],
+  },
 };
 
 export function getMissionForLessonSlug(slug: string): TrainingMission | null {

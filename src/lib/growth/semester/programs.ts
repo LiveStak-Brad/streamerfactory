@@ -58,6 +58,18 @@ export const PROGRAM_META_BY_NAME: Record<StreamerUProgramName, ProgramMeta> = {
     programKey: "rules",
     certificateKey: "cert_rules_safety",
   },
+  "Presence Mastery": {
+    programKey: "presence",
+    certificateKey: "cert_presence_mastery",
+  },
+  "Content Creation Mastery": {
+    programKey: "creation",
+    certificateKey: "cert_content_creation_mastery",
+  },
+  "Growth Mastery": {
+    programKey: "growth",
+    certificateKey: "cert_growth_mastery",
+  },
 };
 
 export function listSemesterPrograms(): SemesterProgram[] {
@@ -131,7 +143,10 @@ export function getCoreCurriculumLessons(): CurriculumLesson[] {
 
 export const CORE_CURRICULUM_TOTAL_LESSONS = getCoreCurriculumLessons().length;
 
-/** StreamerU Diploma / Core Graduate — all Core lessons complete (not Advanced Creator). */
+/**
+ * StreamerU Diploma / Core Graduate — all Core lessons complete.
+ * Advanced Creator and Mastery Paths never gate the Core Diploma.
+ */
 export function isFullGraduate(completedLessonSlugs: string[]): boolean {
   const done = new Set(completedLessonSlugs);
   return getCoreCurriculumLessons().every((l) => done.has(l.slug));
@@ -151,5 +166,10 @@ export function graduateCertificateKey(): string {
 /** Public certificate title overrides for preserved keys after reorganization. */
 export function certificateDisplayName(certificateKey: string): string {
   if (certificateKey === "cert_rules_safety") return "Advanced Creator Certificate";
+  if (certificateKey === "cert_presence_mastery") return "Presence Mastery Certificate";
+  if (certificateKey === "cert_content_creation_mastery") {
+    return "Content Creation Mastery Certificate";
+  }
+  if (certificateKey === "cert_growth_mastery") return "Growth Mastery Certificate";
   return certificateKey;
 }

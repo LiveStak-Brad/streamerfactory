@@ -48,11 +48,49 @@ import { quiz as professionalStandardsOnLive } from "@/lib/assessments/quizzes/r
 import { quiz as privacySecurityAndPersonalBoundaries } from "@/lib/assessments/quizzes/rules/privacy-security-and-personal-boundaries";
 import { quiz as advancedCreatorCapstone30DayProSprint } from "@/lib/assessments/quizzes/rules/advanced-creator-capstone-30-day-pro-sprint";
 
+import { quiz as cameraPresenceOwningTheFrame } from "@/lib/assessments/quizzes/presence/camera-presence-owning-the-frame";
+import { quiz as voiceThatHoldsARoom } from "@/lib/assessments/quizzes/presence/voice-that-holds-a-room";
+import { quiz as confidenceWhenTheChatIsQuiet } from "@/lib/assessments/quizzes/presence/confidence-when-the-chat-is-quiet";
+import { quiz as storytellingOnLiveNotScripts } from "@/lib/assessments/quizzes/presence/storytelling-on-live-not-scripts";
+import { quiz as audiencePsychologyWhyPeopleStay } from "@/lib/assessments/quizzes/presence/audience-psychology-why-people-stay";
+import { quiz as emotionalPacingAcrossALive } from "@/lib/assessments/quizzes/presence/emotional-pacing-across-a-live";
+import { quiz as humorWarmthAndAuthenticity } from "@/lib/assessments/quizzes/presence/humor-warmth-and-authenticity";
+import { quiz as handlingPressureMomentsLive } from "@/lib/assessments/quizzes/presence/handling-pressure-moments-live";
+import { quiz as interviewEnergySoloAndGuests } from "@/lib/assessments/quizzes/presence/interview-energy-solo-and-guests";
+import { quiz as presenceCapstoneSignature20MinuteLive } from "@/lib/assessments/quizzes/presence/presence-capstone-signature-20-minute-live";
+
+import { quiz as findingYourNicheWithoutBoxingYourselfIn } from "@/lib/assessments/quizzes/creation/finding-your-niche-without-boxing-yourself-in";
+import { quiz as becomingMemorableOnLive } from "@/lib/assessments/quizzes/creation/becoming-memorable-on-live";
+import { quiz as creatingRecurringSegmentsViewersExpect } from "@/lib/assessments/quizzes/creation/creating-recurring-segments-viewers-expect";
+import { quiz as runningThemedWeeks } from "@/lib/assessments/quizzes/creation/running-themed-weeks";
+import { quiz as storyArcsAcrossMultipleLives } from "@/lib/assessments/quizzes/creation/story-arcs-across-multiple-lives";
+import { quiz as communityEventsOnLive } from "@/lib/assessments/quizzes/creation/community-events-on-live";
+import { quiz as interactiveShowsThatArentChaos } from "@/lib/assessments/quizzes/creation/interactive-shows-that-arent-chaos";
+import { quiz as seasonalContentWithoutGimmicks } from "@/lib/assessments/quizzes/creation/seasonal-content-without-gimmicks";
+import { quiz as buildingAnticipationBeforeAndDuringLive } from "@/lib/assessments/quizzes/creation/building-anticipation-before-and-during-live";
+import { quiz as contentCreationCapstone7DayThemedLiveSeries } from "@/lib/assessments/quizzes/creation/content-creation-capstone-7-day-themed-live-series";
+
+import { quiz as growthDiagnosisFramework } from "@/lib/assessments/quizzes/growth/growth-diagnosis-framework";
+import { quiz as retentionScienceBeyondTheBasics } from "@/lib/assessments/quizzes/growth/retention-science-beyond-the-basics";
+import { quiz as analyticsDeepDiveForLiveCreators } from "@/lib/assessments/quizzes/growth/analytics-deep-dive-for-live-creators";
+import { quiz as experimentDesignForCreators } from "@/lib/assessments/quizzes/growth/experiment-design-for-creators";
+import { quiz as schedulingAsStrategy } from "@/lib/assessments/quizzes/growth/scheduling-as-strategy";
+import { quiz as discoveryInventoryNeverMissAPublishWindow } from "@/lib/assessments/quizzes/growth/discovery-inventory-never-miss-a-publish-window";
+import { quiz as algorithmDurableGrowth } from "@/lib/assessments/quizzes/growth/algorithm-durable-growth";
+import { quiz as clipsDiscoveryAndLive } from "@/lib/assessments/quizzes/growth/clips-discovery-and-live";
+import { quiz as aiForLiveCreators } from "@/lib/assessments/quizzes/growth/ai-for-live-creators";
+import { quiz as collaborationGrowthWithoutBegging } from "@/lib/assessments/quizzes/growth/collaboration-growth-without-begging";
+import { quiz as fromSpikeToStableGrowth } from "@/lib/assessments/quizzes/growth/from-spike-to-stable-growth";
+import { quiz as growthCapstone30DayGrowthExperiment } from "@/lib/assessments/quizzes/growth/growth-capstone-30-day-growth-experiment";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
 import { exam as finalMonetization } from "@/lib/assessments/exams/program-monetization";
 import { exam as finalRules } from "@/lib/assessments/exams/program-rules";
+import { exam as finalPresence } from "@/lib/assessments/exams/program-presence";
+import { exam as finalCreation } from "@/lib/assessments/exams/program-creation";
+import { exam as finalGrowth } from "@/lib/assessments/exams/program-growth";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -88,6 +126,38 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   professionalStandardsOnLive,
   privacySecurityAndPersonalBoundaries,
   advancedCreatorCapstone30DayProSprint,
+  cameraPresenceOwningTheFrame,
+  voiceThatHoldsARoom,
+  confidenceWhenTheChatIsQuiet,
+  storytellingOnLiveNotScripts,
+  audiencePsychologyWhyPeopleStay,
+  emotionalPacingAcrossALive,
+  humorWarmthAndAuthenticity,
+  handlingPressureMomentsLive,
+  interviewEnergySoloAndGuests,
+  presenceCapstoneSignature20MinuteLive,
+  findingYourNicheWithoutBoxingYourselfIn,
+  becomingMemorableOnLive,
+  creatingRecurringSegmentsViewersExpect,
+  runningThemedWeeks,
+  storyArcsAcrossMultipleLives,
+  communityEventsOnLive,
+  interactiveShowsThatArentChaos,
+  seasonalContentWithoutGimmicks,
+  buildingAnticipationBeforeAndDuringLive,
+  contentCreationCapstone7DayThemedLiveSeries,
+  growthDiagnosisFramework,
+  retentionScienceBeyondTheBasics,
+  analyticsDeepDiveForLiveCreators,
+  experimentDesignForCreators,
+  schedulingAsStrategy,
+  discoveryInventoryNeverMissAPublishWindow,
+  algorithmDurableGrowth,
+  clipsDiscoveryAndLive,
+  aiForLiveCreators,
+  collaborationGrowthWithoutBegging,
+  fromSpikeToStableGrowth,
+  growthCapstone30DayGrowthExperiment,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -96,6 +166,9 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalBattles,
   finalMonetization,
   finalRules,
+  finalPresence,
+  finalCreation,
+  finalGrowth,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));
