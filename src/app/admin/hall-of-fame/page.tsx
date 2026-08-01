@@ -3,7 +3,12 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPanel } from "@/components/admin/ui/AdminPanel";
 import { AdminSectionTitle } from "@/components/admin/ui/AdminSectionTitle";
 import { Container } from "@/components/ui/Container";
-import { yearMonthFromDate } from "@/lib/hall-of-fame/months";
+import { ensurePreviousMonthArchived } from "@/lib/hall-of-fame/archive";
+import {
+  completedYearMonthToArchive,
+  formatYearMonthLabel,
+  yearMonthFromDate,
+} from "@/lib/hall-of-fame/months";
 import { getHallOfFamePageData, getLiveHallOfFameMonth } from "@/lib/hall-of-fame/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -15,10 +20,14 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminHallOfFamePage() {
-  const yearMonth = yearMonthFromDate();
+  // Catch-up: lock the month that just ended before rendering the admin tools.
+  await ensurePreviousMonthArchived().catch(() => null);
+
+  const currentYm = yearMonthFromDate();
+  const archiveYm = completedYearMonthToArchive();
   const data = await getHallOfFamePageData();
-  const live = await getLiveHallOfFameMonth(yearMonth);
-  const alreadyArchived = data.archivedMonths.some((m) => m.yearMonth === yearMonth);
+  const live = await getLiveHallOfFameMonth(archiveYm);
+  const alreadyArchived = data.archivedMonths.some((m) => m.yearMonth === archiveYm);
 
   let tablesMissing = false;
   try {
@@ -43,9 +52,16 @@ export default async function AdminHallOfFamePage() {
           ]}
         />
 
+        <p className="mt-4 rounded-xl border border-border/70 bg-muted-bg/50 px-4 py-3 text-sm text-muted dark:border-zinc-800">
+          Live rankings now show{" "}
+          <span className="font-semibold text-foreground">{formatYearMonthLabel(currentYm)}</span>.
+          Archive target is the completed month:{" "}
+          <span className="font-semibold text-foreground">{formatYearMonthLabel(archiveYm)}</span>.
+        </p>
+
         <div className="mt-8">
           <HallOfFameArchivePanel
-            yearMonth={yearMonth}
+            yearMonth={archiveYm}
             alreadyArchived={alreadyArchived}
             preview={live?.placements ?? []}
             tablesMissing={tablesMissing}

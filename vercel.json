@@ -21,6 +21,10 @@
     {
       "path": "/api/cron/battle-reminders",
       "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/archive-hall-of-fame",
+      "schedule": "10 0 * * *"
     }
   ]
 }

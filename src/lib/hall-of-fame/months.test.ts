@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   archivePlaceCount,
+  completedYearMonthToArchive,
   formatYearMonthLabel,
   isValidYearMonth,
+  previousYearMonth,
   tracksRunnerUps,
   yearMonthFromDate,
 } from "@/lib/hall-of-fame/months";
@@ -28,5 +30,13 @@ describe("hall-of-fame months", () => {
 
   it("builds year-month from UTC date", () => {
     expect(yearMonthFromDate(new Date("2026-07-29T12:00:00Z"))).toBe("2026-07");
+    expect(yearMonthFromDate(new Date("2026-08-01T00:05:00Z"))).toBe("2026-08");
+  });
+
+  it("previous / completed month for rollover archive", () => {
+    expect(previousYearMonth("2026-08")).toBe("2026-07");
+    expect(previousYearMonth("2026-01")).toBe("2025-12");
+    expect(completedYearMonthToArchive(new Date("2026-08-01T05:00:00Z"))).toBe("2026-07");
+    expect(completedYearMonthToArchive(new Date("2026-07-31T23:00:00Z"))).toBe("2026-06");
   });
 });

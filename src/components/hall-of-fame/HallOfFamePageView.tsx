@@ -5,9 +5,12 @@ import { MonthlyChampions } from "@/components/hall-of-fame/MonthlyChampions";
 import { NetworkLeadership } from "@/components/hall-of-fame/NetworkLeadership";
 import { StreamerUGraduates } from "@/components/hall-of-fame/StreamerUGraduates";
 import { Button } from "@/components/ui/Button";
+import { ensurePreviousMonthArchived } from "@/lib/hall-of-fame/archive";
 import { getHallOfFamePageData } from "@/lib/hall-of-fame/queries";
 
 export async function HallOfFamePageView() {
+  // Month rollover catch-up: permanently save last month before rendering live/history.
+  await ensurePreviousMonthArchived().catch(() => null);
   const data = await getHallOfFamePageData();
 
   return (

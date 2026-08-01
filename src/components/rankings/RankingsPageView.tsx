@@ -3,6 +3,7 @@ import { RankingsBoard } from "@/components/rankings/RankingsBoard";
 import { RankingsPodium } from "@/components/rankings/RankingsPodium";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { ensurePreviousMonthArchived } from "@/lib/hall-of-fame/archive";
 import { formatPeriodLabel, periodBounds, toDateString } from "@/lib/rankings/periods";
 import { createClient } from "@/lib/supabase/server";
 import { getLeaderboardWithMeta } from "@/lib/rankings/queries";
@@ -22,6 +23,9 @@ export async function RankingsPageView({
   highlightProfileId = null,
   showAdminHint = false,
 }: RankingsPageViewProps) {
+  // Persist completed month champions before the live board shows the new month.
+  await ensurePreviousMonthArchived().catch(() => null);
+
   const periodKind = parseRankingPeriod(periodKindProp);
   const anchor = anchorProp ?? toDateString(new Date());
   const calendarPeriod = periodBounds(

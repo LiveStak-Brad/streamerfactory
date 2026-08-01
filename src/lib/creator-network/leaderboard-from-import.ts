@@ -104,7 +104,7 @@ type LoadImportOptions =
   | { mode: "any" }
   | { mode: "period"; periodKind: StatPeriodKind; anchor?: Date };
 
-async function fetchRecentImportBatches(limit = 40) {
+async function fetchRecentImportBatches(limit = 80) {
   const supabase = await getLeaderboardSupabase();
   const { data: batches, error: batchErr } = await supabase
     .from("creator_network_import_batches")
@@ -135,8 +135,6 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
 
   /** Newest batch synced during this calendar month (even if stamped period is off). */
   let sameMonthFallback: LoadedImportBatch | null = null;
-  /** Absolute newest batch with real diamonds — better than first-month seed. */
-  let newestWithDiamonds: LoadedImportBatch | null = null;
 
   for (const batch of batches) {
     const { data: rows, error: rowsErr } = await supabase
@@ -163,14 +161,11 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
     if (!sameMonthFallback && created >= periodStart && created <= periodEnd) {
       sameMonthFallback = { batch, rows: typed };
     }
-    if (!newestWithDiamonds) {
-      newestWithDiamonds = { batch, rows: typed };
-    }
   }
 
-  // Prefer a sync from this calendar month; never silently resurrect first-month seed
-  // when a later diamond sync exists.
-  return sameMonthFallback ?? newestWithDiamonds;
+  // Never fall back to a different month's diamonds. That made July leaders appear as
+  // "live August," then vanish when a new sync arrived — without Hall of Fame archive.
+  return sameMonthFallback;
 }
 
 /** Latest import batch (any period) — used for member directory avatars. */

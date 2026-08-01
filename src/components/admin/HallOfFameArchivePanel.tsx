@@ -34,7 +34,13 @@ export function HallOfFameArchivePanel({
     startTransition(async () => {
       const result = await archiveHallOfFameMonthAction(yearMonth);
       if (result.ok) {
-        setMessage(`Locked ${formatYearMonthLabel(result.yearMonth)} (${result.placed} placements).`);
+        if (result.alreadyLocked) {
+          setMessage(`${formatYearMonthLabel(result.yearMonth)} is already locked in Hall of Fame history.`);
+        } else {
+          setMessage(
+            `Locked ${formatYearMonthLabel(result.yearMonth)} (${result.placed} placements).`,
+          );
+        }
       } else {
         setError(result.error);
       }
@@ -45,8 +51,9 @@ export function HallOfFameArchivePanel({
     <div className="rounded-2xl border border-border/80 bg-surface p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/60 sm:p-6">
       <h2 className="text-lg font-bold tracking-tight text-foreground">Month-end archive</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        One update per month: lock the live leaderboard into permanent Hall of Fame history. Previous
-        months are never overwritten. The next month’s live board continues on Rankings automatically.
+        After midnight UTC on the 1st, the completed month is locked into permanent Hall of Fame
+        history (cron + automatic catch-up). Previous months are never overwritten. The new month’s
+        live board continues on Rankings once Creator Network stats are synced for that month.
       </p>
 
       {tablesMissing ? (

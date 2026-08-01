@@ -28,6 +28,18 @@ export function yearMonthFromDate(date: Date = new Date()): YearMonth {
   return `${y}-${m}`;
 }
 
+/** Completed calendar month before `yearMonth` (UTC). */
+export function previousYearMonth(yearMonth: YearMonth): YearMonth {
+  const [y, m] = yearMonth.split("-").map(Number);
+  const prev = new Date(Date.UTC(y, m - 2, 1));
+  return yearMonthFromDate(prev);
+}
+
+/** Month that should be locked once the new month begins (previous UTC month). */
+export function completedYearMonthToArchive(date: Date = new Date()): YearMonth {
+  return previousYearMonth(yearMonthFromDate(date));
+}
+
 /** Mid-month UTC anchor for leaderboard period queries. */
 export function anchorDateForYearMonth(yearMonth: YearMonth): Date {
   const [y, m] = yearMonth.split("-").map(Number);
