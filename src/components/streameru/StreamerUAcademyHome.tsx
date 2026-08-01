@@ -176,6 +176,8 @@ const moduleDescriptions: Record<string, string> = {
     "Professional TikTok Shop for creators — ecosystem literacy, readiness, affiliate product research, product videos, LIVE shopping systems, demos & setups, analytics interpretation, compliance, campaign scaling, and a Signature Shop Campaign.",
   "Creator Wellness & Longevity Mastery":
     "Career longevity for creators — burnout prevention, ergonomics, voice care, mental resilience, sustainable schedules, personal financial buffers, boundaries, creative recovery, setback protocols, and a Personal Creator Longevity Plan.",
+  "Brand Partnerships Mastery":
+    "Professional brand partnerships — readiness, EPK/media kit, fit research, outreach, negotiation principles, campaign delivery, reporting, renewals, and a Professional Brand Partnership Portfolio.",
 };
 
 /**
@@ -530,6 +532,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isSelling = program.programName === "Selling & Influence Mastery";
             const isTts = program.programName === "TikTok Shop Mastery";
             const isWellness = program.programName === "Creator Wellness & Longevity Mastery";
+            const isPartnerships = program.programName === "Brand Partnerships Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -548,11 +551,17 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
+                : isPartnerships
+                  ? {
+                      label: "Next steps",
+                      detail:
+                        "Optional specialty complete · Brand Partnerships Lab Honors · other Mastery Paths",
+                    }
                 : isWellness
                   ? {
                       label: "Next steps",
                       detail:
-                        "Recommended longevity path complete · Creator Wellness Lab Honors · other Mastery Paths",
+                        "Brand Partnerships Mastery (optional) · Creator Wellness Lab Honors · other Mastery Paths",
                     }
                 : isTts
                   ? {

@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(174);
+    expect(PUBLISHED_LESSON_COUNT).toBe(184);
   });
 
-  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, then Creator Wellness", () => {
-    expect(getPublishedProgramCount()).toBe(19);
-    expect(getActiveProgramCount()).toBe(19);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, Creator Wellness, then Brand Partnerships", () => {
+    expect(getPublishedProgramCount()).toBe(20);
+    expect(getActiveProgramCount()).toBe(20);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -39,6 +39,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[16]).toBe("Selling & Influence Mastery");
     expect(STREAMERU_PROGRAM_NAMES[17]).toBe("TikTok Shop Mastery");
     expect(STREAMERU_PROGRAM_NAMES[18]).toBe("Creator Wellness & Longevity Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[19]).toBe("Brand Partnerships Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -116,16 +117,24 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(wellness?.lessons[9]?.slug).toBe(
       "creator-wellness-capstone-personal-longevity-plan",
     );
+    const partnerships = curriculumByProgram().find(
+      (p) => p.programName === "Brand Partnerships Mastery",
+    );
+    expect(partnerships?.lessons).toHaveLength(10);
+    expect(partnerships?.lessons[0]?.slug).toBe("understanding-brand-partnerships");
+    expect(partnerships?.lessons[9]?.slug).toBe(
+      "brand-partnerships-capstone-professional-portfolio",
+    );
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
-    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(191);
-    expect(PLANNED_TRACK_COUNT).toBe(20);
+    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(201);
+    expect(PLANNED_TRACK_COUNT).toBe(21);
     expect(PLANNED_CURRICULUM_LESSON_COUNT).toBeGreaterThan(PUBLISHED_LESSON_COUNT);
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.16");
+    expect(ACADEMY_RELEASE.version).toBe("1.17");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

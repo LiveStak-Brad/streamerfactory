@@ -173,6 +173,16 @@ import { lesson as healthyRelationshipsAndPersonalBoundaries } from "./healthy-r
 import { lesson as maintainingCreativityForYears } from "./maintaining-creativity-for-years";
 import { lesson as recoveringFromSetbacksWithoutQuitting } from "./recovering-from-setbacks-without-quitting";
 import { lesson as creatorWellnessCapstonePersonalLongevityPlan } from "./creator-wellness-capstone-personal-longevity-plan";
+import { lesson as understandingBrandPartnerships } from "./understanding-brand-partnerships";
+import { lesson as buildingYourProfessionalCreatorProfile } from "./building-your-professional-creator-profile";
+import { lesson as creatingAnElectronicPressKit } from "./creating-an-electronic-press-kit";
+import { lesson as findingBrandsThatFitYourAudience } from "./finding-brands-that-fit-your-audience";
+import { lesson as professionalOutreachAndCommunication } from "./professional-outreach-and-communication";
+import { lesson as negotiatingSponsorshipsProfessionally } from "./negotiating-sponsorships-professionally";
+import { lesson as deliveringOutstandingCampaigns } from "./delivering-outstanding-campaigns";
+import { lesson as reportingResultsAndBuildingRepeatBusiness } from "./reporting-results-and-building-repeat-business";
+import { lesson as becomingALongTermBrandPartner } from "./becoming-a-long-term-brand-partner";
+import { lesson as brandPartnershipsCapstoneProfessionalPortfolio } from "./brand-partnerships-capstone-professional-portfolio";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -354,6 +364,16 @@ const LESSONS: ExpandedLesson[] = [
   maintainingCreativityForYears,
   recoveringFromSetbacksWithoutQuitting,
   creatorWellnessCapstonePersonalLongevityPlan,
+  understandingBrandPartnerships,
+  buildingYourProfessionalCreatorProfile,
+  creatingAnElectronicPressKit,
+  findingBrandsThatFitYourAudience,
+  professionalOutreachAndCommunication,
+  negotiatingSponsorshipsProfessionally,
+  deliveringOutstandingCampaigns,
+  reportingResultsAndBuildingRepeatBusiness,
+  becomingALongTermBrandPartner,
+  brandPartnershipsCapstoneProfessionalPortfolio,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

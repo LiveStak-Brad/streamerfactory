@@ -200,6 +200,16 @@ import { quiz as healthyRelationshipsAndPersonalBoundaries } from "@/lib/assessm
 import { quiz as maintainingCreativityForYears } from "@/lib/assessments/quizzes/wellness/maintaining-creativity-for-years";
 import { quiz as recoveringFromSetbacksWithoutQuitting } from "@/lib/assessments/quizzes/wellness/recovering-from-setbacks-without-quitting";
 import { quiz as creatorWellnessCapstonePersonalLongevityPlan } from "@/lib/assessments/quizzes/wellness/creator-wellness-capstone-personal-longevity-plan";
+import { quiz as understandingBrandPartnerships } from "@/lib/assessments/quizzes/partnerships/understanding-brand-partnerships";
+import { quiz as buildingYourProfessionalCreatorProfile } from "@/lib/assessments/quizzes/partnerships/building-your-professional-creator-profile";
+import { quiz as creatingAnElectronicPressKit } from "@/lib/assessments/quizzes/partnerships/creating-an-electronic-press-kit";
+import { quiz as findingBrandsThatFitYourAudience } from "@/lib/assessments/quizzes/partnerships/finding-brands-that-fit-your-audience";
+import { quiz as professionalOutreachAndCommunication } from "@/lib/assessments/quizzes/partnerships/professional-outreach-and-communication";
+import { quiz as negotiatingSponsorshipsProfessionally } from "@/lib/assessments/quizzes/partnerships/negotiating-sponsorships-professionally";
+import { quiz as deliveringOutstandingCampaigns } from "@/lib/assessments/quizzes/partnerships/delivering-outstanding-campaigns";
+import { quiz as reportingResultsAndBuildingRepeatBusiness } from "@/lib/assessments/quizzes/partnerships/reporting-results-and-building-repeat-business";
+import { quiz as becomingALongTermBrandPartner } from "@/lib/assessments/quizzes/partnerships/becoming-a-long-term-brand-partner";
+import { quiz as brandPartnershipsCapstoneProfessionalPortfolio } from "@/lib/assessments/quizzes/partnerships/brand-partnerships-capstone-professional-portfolio";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -220,6 +230,7 @@ import { exam as finalAicreator } from "@/lib/assessments/exams/program-aicreato
 import { exam as finalSelling } from "@/lib/assessments/exams/program-selling";
 import { exam as finalTts } from "@/lib/assessments/exams/program-tts";
 import { exam as finalWellness } from "@/lib/assessments/exams/program-wellness";
+import { exam as finalPartnerships } from "@/lib/assessments/exams/program-partnerships";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -397,6 +408,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   maintainingCreativityForYears,
   recoveringFromSetbacksWithoutQuitting,
   creatorWellnessCapstonePersonalLongevityPlan,
+  understandingBrandPartnerships,
+  buildingYourProfessionalCreatorProfile,
+  creatingAnElectronicPressKit,
+  findingBrandsThatFitYourAudience,
+  professionalOutreachAndCommunication,
+  negotiatingSponsorshipsProfessionally,
+  deliveringOutstandingCampaigns,
+  reportingResultsAndBuildingRepeatBusiness,
+  becomingALongTermBrandPartner,
+  brandPartnershipsCapstoneProfessionalPortfolio,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -419,6 +440,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalSelling,
   finalTts,
   finalWellness,
+  finalPartnerships,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

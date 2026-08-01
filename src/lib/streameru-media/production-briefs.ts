@@ -12076,6 +12076,246 @@ const REST: LessonProductionBrief[] = [
       },
     ]),
   ),
+  brief(
+    "understanding-brand-partnerships",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Brand Readiness Checklist",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Brand Readiness Checklist", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Understanding Brand Partnerships system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Understanding Brand Partnerships system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Understanding Brand Partnerships; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from understanding brand partnerships when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "building-your-professional-creator-profile",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Creator Bio Worksheet",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Creator Bio Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Building Your Professional Creator Profile system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Building Your Professional Creator Profile system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Building Your Professional Creator Profile; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from building your professional creator profile when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "creating-an-electronic-press-kit",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Epk Field Worksheet",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Epk Field Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Creating an Electronic Press Kit (EPK) system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Creating an Electronic Press Kit (EPK) system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Creating an Electronic Press Kit (EPK); approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from creating an electronic press kit (epk) when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "finding-brands-that-fit-your-audience",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Brand Fit Scorecard",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Brand Fit Scorecard", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Finding Brands That Fit Your Audience system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Finding Brands That Fit Your Audience system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Finding Brands That Fit Your Audience; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from finding brands that fit your audience when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "professional-outreach-and-communication",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Outreach Email Templates",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Outreach Email Templates", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Professional Outreach & Communication system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Professional Outreach & Communication system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Professional Outreach & Communication; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from professional outreach & communication when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "negotiating-sponsorships-professionally",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Negotiation Scope Worksheet",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Negotiation Scope Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Negotiating Sponsorships Professionally system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Negotiating Sponsorships Professionally system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Negotiating Sponsorships Professionally; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from negotiating sponsorships professionally when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "delivering-outstanding-campaigns",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Campaign Planner",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Campaign Planner", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Delivering Outstanding Campaigns system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Delivering Outstanding Campaigns system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Delivering Outstanding Campaigns; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from delivering outstanding campaigns when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "reporting-results-and-building-repeat-business",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Campaign Report Template",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Campaign Report Template", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Reporting Results & Building Repeat Business system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Reporting Results & Building Repeat Business system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Reporting Results & Building Repeat Business; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from reporting results & building repeat business when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "becoming-a-long-term-brand-partner",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Brand Relationship Planner",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Brand Relationship Planner", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Becoming a Long-Term Brand Partner system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Becoming a Long-Term Brand Partner system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Becoming a Long-Term Brand Partner; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from becoming a long-term brand partner when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "brand-partnerships-capstone-professional-portfolio",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Professional Brand Partnership Portfolio",
+        description: "Clean Brand Partnerships worksheet", purpose: "Shows the primary reviewable partnership artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive professional notes. No fake metrics or brand logos without permission.",
+        caption: "Build partnership evidence before you pitch.", alt: "Blank Professional Brand Partnership Portfolio", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "partnership-system-diagram", assetType: "diagram", title: "Brand Partnerships Capstone: Professional Portfolio system diagram",
+        description: "Brand partnership readiness flow", purpose: "Shows research, EPK, outreach, delivery, reporting, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hype-culture imagery or hidden-ad messaging.",
+        caption: "Partnerships are a system of professional artifacts.", alt: "Brand Partnerships Capstone: Professional Portfolio system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-partnership-principle", assetType: "founder_story", title: "Brad experience — brand partnership principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented deal claims or fake brand results.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Brand Partnerships Capstone: Professional Portfolio; approve before publication.",
+        founderQuestion: "What brand partnership principle would you want creators to remember from brand partnerships capstone: professional portfolio when hype culture pushes fake metrics or hidden ads?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
 ];
 
 export const LESSON_PRODUCTION_BRIEFS: LessonProductionBrief[] = [LESSON_1, ...REST].sort(

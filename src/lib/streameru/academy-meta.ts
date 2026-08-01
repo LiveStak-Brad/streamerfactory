@@ -19,8 +19,8 @@ export const PUBLISHED_LESSON_COUNT = CURRICULUM_TOTAL_LESSONS;
  * Bump version / dates when a meaningful lesson batch ships.
  */
 export const ACADEMY_RELEASE = {
-  version: "1.16",
-  versionLabel: "StreamerU v1.16",
+  version: "1.17",
+  versionLabel: "StreamerU v1.17",
   currentReleaseLabel: "Current Release",
   lastUpdatedLabel: "July 2026",
   lastLessonAddedLabel: "July 2026",
@@ -57,10 +57,10 @@ export function getActiveProgramCount(): number {
  * Approved university curriculum roadmap size (architecture), not the live catalog.
  * Surface only with “planned / in development” framing.
  */
-export const PLANNED_CURRICULUM_LESSON_COUNT = 191;
+export const PLANNED_CURRICULUM_LESSON_COUNT = 201;
 
 /** Planned track count from the university architecture roadmap. */
-export const PLANNED_TRACK_COUNT = 20;
+export const PLANNED_TRACK_COUNT = 21;
 
 /** First essential safety lesson inside Beginner Foundations — before regular LIVE. */
 export const FIRST_SAFETY_LESSON_SLUG = "platform-rules-new-live-creators";

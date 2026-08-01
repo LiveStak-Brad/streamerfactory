@@ -4295,6 +4295,249 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Brand Partnerships Mastery ——
+  "understanding-brand-partnerships": {
+    id: "mission-175-bp-01",
+    mission_title: "Session: Understanding Brand Partnerships",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Brand Readiness Checklist and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Brand Readiness Checklist", href: "/streameru/library/brand-readiness-checklist" },
+      { label: "Partnership Types Map", href: "/streameru/library/partnership-types-map" },
+      { label: "Brand Safety Values Card", href: "/streameru/library/brand-safety-values-card" },
+    ],
+  },
+  "building-your-professional-creator-profile": {
+    id: "mission-176-bp-02",
+    mission_title: "Session: Building Your Professional Creator Profile",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Creator Bio Worksheet and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Creator Bio Worksheet", href: "/streameru/library/creator-bio-worksheet" },
+      { label: "Audience Overview Worksheet", href: "/streameru/library/audience-overview-worksheet" },
+      { label: "Portfolio Selection Guide", href: "/streameru/library/portfolio-selection-guide" },
+    ],
+  },
+  "creating-an-electronic-press-kit": {
+    id: "mission-177-bp-03",
+    mission_title: "Session: Creating an Electronic Press Kit (EPK)",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Epk Field Worksheet and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Epk Field Worksheet", href: "/streameru/library/epk-field-worksheet" },
+      { label: "Media Kit Layout Checklist", href: "/streameru/library/media-kit-layout-checklist" },
+      { label: "Epk Assets Inventory", href: "/streameru/library/epk-assets-inventory" },
+    ],
+  },
+  "finding-brands-that-fit-your-audience": {
+    id: "mission-178-bp-04",
+    mission_title: "Session: Finding Brands That Fit Your Audience",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Brand Fit Scorecard and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Brand Fit Scorecard", href: "/streameru/library/brand-fit-scorecard" },
+      { label: "Sponsorship Tracker", href: "/streameru/library/sponsorship-tracker" },
+      { label: "Target Brand Research Sheet", href: "/streameru/library/target-brand-research-sheet" },
+    ],
+  },
+  "professional-outreach-and-communication": {
+    id: "mission-179-bp-05",
+    mission_title: "Session: Professional Outreach & Communication",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Outreach Email Templates and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Outreach Email Templates", href: "/streameru/library/outreach-email-templates" },
+      { label: "Follow Up Cadence Card", href: "/streameru/library/follow-up-cadence-card" },
+      { label: "Linkedin Intro Checklist", href: "/streameru/library/linkedin-intro-checklist" },
+    ],
+  },
+  "negotiating-sponsorships-professionally": {
+    id: "mission-180-bp-06",
+    mission_title: "Session: Negotiating Sponsorships Professionally",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Negotiation Scope Worksheet and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Negotiation Scope Worksheet", href: "/streameru/library/negotiation-scope-worksheet" },
+      { label: "Rate Card Planner", href: "/streameru/library/rate-card-planner" },
+      { label: "Deal Terms Checklist", href: "/streameru/library/deal-terms-checklist" },
+    ],
+  },
+  "delivering-outstanding-campaigns": {
+    id: "mission-181-bp-07",
+    mission_title: "Session: Delivering Outstanding Campaigns",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Campaign Planner and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Campaign Planner", href: "/streameru/library/campaign-planner" },
+      { label: "Deliverables Checklist", href: "/streameru/library/deliverables-checklist" },
+      { label: "Ftc Disclosure Reminder Card", href: "/streameru/library/ftc-disclosure-reminder-card" },
+    ],
+  },
+  "reporting-results-and-building-repeat-business": {
+    id: "mission-182-bp-08",
+    mission_title: "Session: Reporting Results & Building Repeat Business",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Campaign Report Template and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Campaign Report Template", href: "/streameru/library/campaign-report-template" },
+      { label: "Renewal Conversation Checklist", href: "/streameru/library/renewal-conversation-checklist" },
+      { label: "Proof Metrics Worksheet", href: "/streameru/library/proof-metrics-worksheet" },
+    ],
+  },
+  "becoming-a-long-term-brand-partner": {
+    id: "mission-183-bp-09",
+    mission_title: "Session: Becoming a Long-Term Brand Partner",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Brand Relationship Planner and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      45,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Brand Relationship Planner", href: "/streameru/library/brand-relationship-planner" },
+      { label: "Reputation Scorecard", href: "/streameru/library/reputation-scorecard" },
+      { label: "Partnership Renewal Roadmap", href: "/streameru/library/partnership-renewal-roadmap" },
+    ],
+  },
+  "brand-partnerships-capstone-professional-portfolio": {
+    id: "mission-184-bp-10",
+    mission_title: "Session: Brand Partnerships Capstone: Professional Portfolio",
+    mission_description: "Complete reviewable brand partnership artifacts graded on professional evidence—not deals closed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Professional Brand Partnership Portfolio and its supporting lesson downloads.",
+        "Build or update one professional partnership artifact for the Professional Brand Partnership Portfolio.",
+      ],
+      40,
+      [
+        "Implement one dated improvement: EPK field, outreach draft, scope note, campaign plan, or report section.",
+        "Document one review note for the Professional Brand Partnership Portfolio.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build evidence for the Professional Brand Partnership Portfolio and Streamer Factory EPK.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Professional Brand Partnership Portfolio", href: "/streameru/library/professional-brand-partnership-portfolio" },
+      { label: "Epk Evidence Checklist", href: "/streameru/library/epk-evidence-checklist" },
+      { label: "Ninety Day Partnership Improvement Plan", href: "/streameru/library/ninety-day-partnership-improvement-plan" },
+    ],
+  },
+
+
 
 
 

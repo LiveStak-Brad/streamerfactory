@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.6 (Architecture locked)  
+**Version:** 2.7 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -184,6 +184,7 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Selling & Influence Mastery* ○ optional specialty
         ├── TikTok Shop Mastery*      ○ optional specialty
         ├── Creator Wellness & Longevity Mastery ★ recommended for everyone
+        ├── Brand Partnerships Mastery* ○ optional specialty
         └── Mindset Mastery           ★ planned — Brad must approve relationship to Creator Wellness
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
@@ -193,6 +194,7 @@ Advanced Creator (8)  ←  BLACK BELT
 * Selling & Influence Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach ethical influence and value communication — never manipulation or TikTok Shop mechanics.
 * TikTok Shop Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach Shop platform systems, product workflows, LIVE/video shopping execution, affiliate strategy, analytics interpretation, equipment, and compliance — never Selling & Influence communication craft duplication.
 * Creator Wellness & Longevity Mastery: Core required; Advanced Creator required before certificate award; recommended for everyone. Expands longevity habits beyond psychology-only framing (burnout, ergonomics, voice, mental resilience, schedules, personal financial wellness, relationships, creativity, setbacks). **Brad approval required:** whether this replaces, absorbs, or sits beside locked Mindset Mastery for Career Creator Diploma requirements.
+* Brand Partnerships Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach professionalism, EPK/media kit readiness, outreach, negotiation principles, campaign delivery, reporting, and long-term brand relationships — never fake metrics, hidden advertising, or legal advice. Drives Streamer Factory EPK Builder field requirements.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -453,7 +455,25 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 16. Mindset Mastery (planned — relationship pending Brad approval)
+### 16. Brand Partnerships Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Teach creators how to become brand-ready professionals brands want to rebook: trust, preparation, EPK/media kit systems, fit research, outreach, negotiation principles, campaign delivery, honest reporting, and long-term partnerships. |
+| **Why it exists** | Creators chase sponsorships without readiness artifacts, inflate metrics, skip disclosures, or damage reputation with unprofessional delivery. Professional Creator covers career ops/contracts literacy at a high level; Selling & Influence owns ethical offer communication; TikTok Shop owns Shop systems. This path owns partnership professionalism and the Streamer Factory EPK. |
+| **Who should take it** | Creators ready to work with brands responsibly—or preparing before the first inbound ask. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Creator Wellness in catalog order; after Core; Advanced Creator required before certificate award. Useful alongside Professional Creator, Selling & Influence, Content Creation, and Presence. |
+| **Prerequisites** | Core Certification. Advanced Creator required before Brand Partnerships Mastery Certificate is awarded. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | Brand Partnerships Mastery Certificate |
+| **Skills gained** | Partnership literacy, professional profile, Streamer Factory EPK/media kit, brand-fit research, outreach & follow-up, negotiation principles (scope/usage/exclusivity/payment), campaign delivery & FTC disclosure habits, reporting & renewals, long-term partner reputation, Professional Brand Partnership Portfolio Capstone. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | Never teach fake metrics, buying followers, misleading analytics, fake testimonials, unethical sponsorships, hidden advertising, or contract avoidance. Contracts/FTC/usage rights taught as principles only—not legal advice; creators should seek qualified counsel for real agreements. **Not Selling & Influence** (no buyer-psychology/CTA craft duplication). **Not TikTok Shop** (no Shop mechanics). **Not Professional Creator** full business accounting—callback only for ops/contracts literacy. Product integration: curriculum defines Streamer Factory EPK Builder fields. |
+| **Brad approval needed** | Confirm optional specialty status vs Career Creator requirement; confirm EPK Builder product priority; confirm boundary language with Professional Creator brand-communication lessons. |
+
+---
+
+### 17. Mindset Mastery (planned — relationship pending Brad approval)
 
 | Field | Definition |
 |--------|------------|
@@ -470,7 +490,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 17. Manager College (Internal Only)
+### 18. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -513,7 +533,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, and/or TikTok Shop Mastery **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, and/or Brand Partnerships Mastery **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -547,6 +567,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Selling & Influence Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | TikTok Shop Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Creator Wellness & Longevity Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Brand Partnerships Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public — relationship to Creator Wellness pending Brad approval |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -622,6 +643,7 @@ It is distinct from optional Labs/Honors.
 | Selling & Influence Mastery | Build your **Ethical Creator Offer** |
 | TikTok Shop Mastery | Build your **Signature Shop Campaign** |
 | Creator Wellness & Longevity Mastery | Assemble your **Personal Creator Longevity Plan** |
+| Brand Partnerships Mastery | Build your **Professional Brand Partnership Portfolio** (incl. Streamer Factory EPK) |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -678,6 +700,7 @@ Same pattern for every public Mastery Path.
 | Selling & Influence Lab | Selling & Influence Mastery Certificate | Ethical Creator Offer pack / communication review | Selling & Influence Mastery Honors |
 | TikTok Shop Lab | TikTok Shop Mastery Certificate | Signature Shop Campaign pack / campaign review | TikTok Shop Mastery Honors |
 | Creator Wellness Lab | Creator Wellness & Longevity Mastery Certificate | Personal Creator Longevity Plan pack / habit review | Creator Wellness & Longevity Mastery Honors |
+| Brand Partnerships Lab | Brand Partnerships Mastery Certificate | Professional Brand Partnership Portfolio / EPK review | Brand Partnerships Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -2230,7 +2253,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 16 — Mindset Mastery (MS) — 8 lessons (planned; Brad approval on relationship to CWL)
+## PATH 16 — Brand Partnerships Mastery (BP) — 10 lessons (optional specialty)
+
+### BP-01 — Understanding Brand Partnerships
+**Description:** Map partnership types, brand safety, and readiness so you chase fit—not random sponsorships.  
+**Learning objective:** Complete a brand readiness checklist and partnership-types map with honest capacity.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Advanced Creator Certificate  
+**Practical outcome:** Brand readiness checklist + partnership types map + brand safety values card.  
+**Estimated study time:** 38 min  
+**Connections:** PC brand communication callbacks; Capstone Professional Brand Partnership Portfolio.
+
+### BP-02 — Building Your Professional Creator Profile
+**Description:** Write a brand-ready bio, audience overview, and portfolio selection brands can trust.  
+**Learning objective:** Produce reviewable profile artifacts without inflating metrics.  
+**Difficulty:** Intermediate  
+**Prerequisites:** BP-01  
+**Practical outcome:** Creator bio worksheet + audience overview worksheet + portfolio selection guide.  
+**Estimated study time:** 38 min  
+**Connections:** Advanced Creator brand system; Streamer Factory EPK fields.
+
+### BP-03 — Creating an Electronic Press Kit (EPK)
+**Description:** Build a complete EPK with every Streamer Factory EPK Builder field brands expect.  
+**Learning objective:** Define biography, headshot, stats (with timeframe), demographics, categories, collaborations, portfolio, contact, optional/private rate card, brand values, press photos, media gallery, PDF, and public EPK page.  
+**Difficulty:** Intermediate  
+**Prerequisites:** BP-02  
+**Practical outcome:** EPK field worksheet + media kit layout checklist + EPK assets inventory.  
+**Estimated study time:** 38 min  
+**Connections:** Product requirement input for Streamer Factory EPK Builder.
+
+### BP-04 — Finding Brands That Fit Your Audience
+**Description:** Score brand fit, research targets, and track opportunities without spray-and-pray.  
+**Learning objective:** Build a scored target list and sponsorship tracker.  
+**Difficulty:** Intermediate  
+**Prerequisites:** BP-03  
+**Practical outcome:** Brand fit scorecard + sponsorship tracker + target brand research sheet.  
+**Estimated study time:** 38 min  
+**Connections:** Version-aware marketplace/inbox routes.
+
+### BP-05 — Professional Outreach & Communication
+**Description:** Write clear outreach, follow-up, and introductions that respect brand decision-makers.  
+**Learning objective:** Draft a professional outreach email and follow-up cadence.  
+**Difficulty:** Intermediate  
+**Prerequisites:** BP-04  
+**Practical outcome:** Outreach email templates + follow-up cadence card + LinkedIn intro checklist.  
+**Estimated study time:** 38 min  
+**Connections:** LinkedIn etiquette principles; never spam tactics.
+
+### BP-06 — Negotiating Sponsorships Professionally
+**Description:** Scope deliverables, usage rights, exclusivity, and payment schedules with principles—not legal advice.  
+**Learning objective:** Complete a deal-terms checklist and know when to seek counsel.  
+**Difficulty:** Advanced  
+**Prerequisites:** BP-05  
+**Practical outcome:** Negotiation scope worksheet + rate card planner + deal terms checklist.  
+**Estimated study time:** 38 min  
+**Connections:** PC contracts literacy callback; not legal advice.
+
+### BP-07 — Delivering Outstanding Campaigns
+**Description:** Plan, produce, disclose, and deliver campaign work brands can confidently rebook.  
+**Learning objective:** Run a mock or real campaign plan with FTC disclosure reminders.  
+**Difficulty:** Advanced  
+**Prerequisites:** BP-06  
+**Practical outcome:** Campaign planner + deliverables checklist + FTC disclosure reminder card.  
+**Estimated study time:** 38 min  
+**Connections:** Version-aware disclosure placement by platform format.
+
+### BP-08 — Reporting Results & Building Repeat Business
+**Description:** Write honest wrap-up reports and renewal conversations that protect reputation.  
+**Learning objective:** Produce a campaign report with timeframe-labeled metrics and a renewal checklist.  
+**Difficulty:** Advanced  
+**Prerequisites:** BP-07  
+**Practical outcome:** Campaign report template + renewal conversation checklist + proof metrics worksheet.  
+**Estimated study time:** 38 min  
+**Connections:** Never fake or inflate analytics.
+
+### BP-09 — Becoming a Long-Term Brand Partner
+**Description:** Build reliability, brand safety, and relationship systems for multi-campaign partnerships.  
+**Learning objective:** Create a relationship planner and reputation scorecard.  
+**Difficulty:** Advanced  
+**Prerequisites:** BP-08  
+**Practical outcome:** Brand relationship planner + reputation scorecard + partnership renewal roadmap.  
+**Estimated study time:** 38 min  
+**Connections:** Reputation and brand safety as career assets.
+
+### BP-10 — Brand Partnerships Capstone: Professional Portfolio
+**Description:** Assemble a complete Professional Brand Partnership Portfolio with Streamer Factory EPK evidence.  
+**Learning objective:** Submit a reviewable portfolio including EPK, bio, portfolio, audience summary, brand values, outreach email, mock proposal, deliverables plan, reporting template, and reflection.  
+**Difficulty:** Expert  
+**Prerequisites:** BP-01 through BP-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Professional Brand Partnership Portfolio + EPK evidence checklist + ninety-day partnership improvement plan.  
+**Estimated study time:** 45 min  
+**Connections:** Optional Brand Partnerships Lab / Honors never gates certificate.
+
+---
+
+## PATH 17 — Mindset Mastery (MS) — 8 lessons (planned; Brad approval on relationship to CWL)
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -2306,7 +2423,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 17 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 18 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -2403,15 +2520,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Selling & Influence Mastery (optional) | 10 | Planned / shipping |
 | TikTok Shop Mastery (optional) | 10 | Planned / shipping |
 | Creator Wellness & Longevity Mastery | 10 | Planned / shipping |
+| Brand Partnerships Mastery (optional) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned — Brad must approve vs Creator Wellness |
-| **Public curriculum plan** | **182** | Internal planning figure (was 172 before Creator Wellness; may drop to 174 if Mindset is retired) |
+| **Public curriculum plan** | **192** | Internal planning figure (was 182 before Brand Partnerships; may drop to 184 if Mindset is retired) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **190** | |
+| **Grand total including internal** | **200** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 15 path labs | Optional; never diploma gates |
+| Labs → Honors | 16 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 182 planned · stretch 191+ · future unlimited (problem-gated only).
+**Internal:** 192 planned · stretch 201+ · future unlimited (problem-gated only).
 
 ---
 
@@ -2426,7 +2544,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, Gaming, Multi-Guest, AI Creator, Selling & Influence, and TikTok Shop as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, Multi-Guest, AI Creator, Selling & Influence, TikTok Shop, and Brand Partnerships as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -2508,6 +2626,10 @@ Every planned lesson must answer exactly one question. Samples:
 | TTS-05 | How do I run a LIVE shopping session that educates before it asks? |
 | TTS-08 | What disclosures and claim limits protect customers and my account? |
 | TTS-10 | Can I deliver a Signature Shop Campaign with reviewable evidence? |
+| BP-01 | What makes me brand-ready before I chase sponsorships? |
+| BP-03 | Can I complete every Streamer Factory EPK field honestly? |
+| BP-05 | Can I write outreach a brand decision-maker will actually answer? |
+| BP-10 | Can I deliver a Professional Brand Partnership Portfolio with reviewable EPK evidence? |
 | MS-02 | How do I catch burnout before I quit? |
 | MC-02 | How do I tell what a mentee is actually stuck on? |
 
@@ -2592,6 +2714,15 @@ Every planned lesson must answer exactly one question. Samples:
 5. Codes use **CWL-**; teach longevity habits (burnout, ergonomics, voice, mental resilience, schedules, personal financial wellness, relationships, creativity, setbacks) — never medical/therapy advice or Professional Creator business accounting  
 6. **Brad approval required:** Mindset Mastery Certificate rename/retire/merge decision and Career Creator Diploma requirement update  
 
+### v2.7 — Brand Partnerships Mastery added (fill, do not redesign)
+1. Added **Brand Partnerships Mastery** as optional specialty after Creator Wellness & Longevity Mastery in catalog order  
+2. 10 lessons (BP-01–BP-10); Capstone = Professional Brand Partnership Portfolio (incl. Streamer Factory EPK)  
+3. Optional Brand Partnerships Lab → Brand Partnerships Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **182 → 192**; Mindset/Manager path numbers shifted only in document order — earlier programs unchanged  
+5. Codes use **BP-**; teach professionalism, EPK/media kit, fit research, outreach, negotiation principles, campaign delivery, reporting, renewals — never fake metrics, hidden ads, or legal advice; not Selling & Influence / TikTok Shop / Professional Creator accounting duplication  
+6. Curriculum defines Streamer Factory EPK Builder field requirements  
+7. **Brad approval required:** Career Creator / diploma requirement status; EPK Builder product priority; boundary confirmation with Professional Creator brand-communication lessons  
+
 ---
 
 ## Document Control
@@ -2606,6 +2737,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 2.3 | 2026-07-31 | AI Creator Mastery optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
 | 2.4 | 2026-07-31 | Selling & Influence Mastery optional specialty added after AI Creator; earlier programs preserved. |
 | 2.5 | 2026-07-31 | TikTok Shop Mastery optional specialty added after Selling & Influence; earlier programs preserved. |
-| **2.6** | **2026-07-31** | **Creator Wellness & Longevity Mastery** recommended path added; Mindset Mastery relationship pending Brad approval. |
+| 2.6 | 2026-07-31 | Creator Wellness & Longevity Mastery recommended path added; Mindset Mastery relationship pending Brad approval. |
+| **2.7** | **2026-07-31** | **Brand Partnerships Mastery** optional specialty added; Streamer Factory EPK Builder requirements defined; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**
