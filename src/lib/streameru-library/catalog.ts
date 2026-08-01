@@ -24,6 +24,7 @@ import { MULTI_GUEST_LIVE_MASTERY_RESOURCES } from "@/content/streameru/library/
 import { AI_CREATOR_MASTERY_RESOURCES } from "@/content/streameru/library/ai-creator-mastery";
 import { SELLING_INFLUENCE_MASTERY_RESOURCES } from "@/content/streameru/library/selling-influence-mastery";
 import { TIKTOK_SHOP_MASTERY_RESOURCES } from "@/content/streameru/library/tiktok-shop-mastery";
+import { CREATOR_WELLNESS_LONGEVITY_MASTERY_RESOURCES } from "@/content/streameru/library/creator-wellness-longevity-mastery";
 import {
   buildStubLessonResources,
   CATEGORY_SEED_PLACEHOLDERS,
@@ -62,6 +63,7 @@ const MERGED: LibraryResource[] = [
   ...AI_CREATOR_MASTERY_RESOURCES,
   ...SELLING_INFLUENCE_MASTERY_RESOURCES,
   ...TIKTOK_SHOP_MASTERY_RESOURCES,
+  ...CREATOR_WELLNESS_LONGEVITY_MASTERY_RESOURCES,
   ...buildStubLessonResources(),
   ...CATEGORY_SEED_PLACEHOLDERS,
 ];

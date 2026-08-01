@@ -22,6 +22,7 @@ export const TRAINING_TRACK_IDS = [
   "aicreator",
   "selling",
   "tts",
+  "wellness",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -182,6 +183,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Professional TikTok Shop for creators — ecosystem literacy, readiness, affiliate product research, product videos, LIVE shopping systems, demos & setups, analytics interpretation, compliance, campaign scaling, and a Signature Shop Campaign.",
   },
+  {
+    id: "wellness",
+    title: "Creator Wellness & Longevity Mastery",
+    lessonInLabel: "Creator Wellness & Longevity Mastery",
+    partOfLabel: "StreamerU · Creator Wellness & Longevity Mastery",
+    description:
+      "Career longevity for creators — burnout prevention, ergonomics, voice care, mental resilience, sustainable schedules, personal financial buffers, boundaries, creative recovery, setback protocols, and a Personal Creator Longevity Plan.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -212,6 +221,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   aicreator: "AI Creator Mastery",
   selling: "Selling & Influence Mastery",
   tts: "TikTok Shop Mastery",
+  wellness: "Creator Wellness & Longevity Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {

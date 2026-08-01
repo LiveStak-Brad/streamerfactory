@@ -4053,6 +4053,249 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Creator Wellness & Longevity Mastery ——
+  "building-a-career-that-lasts": {
+    id: "mission-165-cwl-01",
+    mission_title: "Session: Building a Career That Lasts",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Longevity Career Map and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Longevity Career Map", href: "/streameru/library/longevity-career-map" },
+      { label: "Decade Definition Worksheet", href: "/streameru/library/decade-definition-worksheet" },
+      { label: "Consistency Over Intensity Card", href: "/streameru/library/consistency-over-intensity-card" },
+    ],
+  },
+  "preventing-creator-burnout": {
+    id: "mission-166-cwl-02",
+    mission_title: "Session: Preventing Creator Burnout",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Burnout Early Warning Dashboard and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Burnout Early Warning Dashboard", href: "/streameru/library/burnout-early-warning-dashboard" },
+      { label: "Recovery Week Plan", href: "/streameru/library/recovery-week-plan" },
+      { label: "Streaming Fatigue Audit", href: "/streameru/library/streaming-fatigue-audit" },
+    ],
+  },
+  "physical-health-for-long-streaming-sessions": {
+    id: "mission-167-cwl-03",
+    mission_title: "Session: Physical Health for Long Streaming Sessions",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Ergonomic Workstation Guide and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Ergonomic Workstation Guide", href: "/streameru/library/ergonomic-workstation-guide" },
+      { label: "Voice Care Checklist", href: "/streameru/library/voice-care-checklist" },
+      { label: "Stretch And Hydration Routine", href: "/streameru/library/stretch-and-hydration-routine" },
+    ],
+  },
+  "mental-resilience-and-handling-online-pressure": {
+    id: "mission-168-cwl-04",
+    mission_title: "Session: Mental Resilience & Handling Online Pressure",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Aftercare Routine Card and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Aftercare Routine Card", href: "/streameru/library/aftercare-routine-card" },
+      { label: "Comparison Rules Worksheet", href: "/streameru/library/comparison-rules-worksheet" },
+      { label: "Criticism Response Framework", href: "/streameru/library/criticism-response-framework" },
+    ],
+  },
+  "time-management-and-sustainable-schedules": {
+    id: "mission-169-cwl-05",
+    mission_title: "Session: Time Management & Sustainable Schedules",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Weekly Energy Calendar and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Weekly Energy Calendar", href: "/streameru/library/weekly-energy-calendar" },
+      { label: "Recovery Day Planner", href: "/streameru/library/recovery-day-planner" },
+      { label: "Sleep And Batching Planner", href: "/streameru/library/sleep-and-batching-planner" },
+    ],
+  },
+  "financial-wellness-for-variable-income": {
+    id: "mission-170-cwl-06",
+    mission_title: "Session: Financial Wellness for Variable Income",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Income Variability Buffer Plan and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Income Variability Buffer Plan", href: "/streameru/library/income-variability-buffer-plan" },
+      { label: "Slow Month Playbook", href: "/streameru/library/slow-month-playbook" },
+      { label: "Personal Tax Savings Checklist", href: "/streameru/library/personal-tax-savings-checklist" },
+    ],
+  },
+  "healthy-relationships-and-personal-boundaries": {
+    id: "mission-171-cwl-07",
+    mission_title: "Session: Healthy Relationships & Personal Boundaries",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Boundary Worksheet and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Boundary Worksheet", href: "/streameru/library/boundary-worksheet" },
+      { label: "Partner Family Communication Card", href: "/streameru/library/partner-family-communication-card" },
+      { label: "Privacy Expectations Guide", href: "/streameru/library/privacy-expectations-guide" },
+    ],
+  },
+  "maintaining-creativity-for-years": {
+    id: "mission-172-cwl-08",
+    mission_title: "Session: Maintaining Creativity for Years",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Creative Recovery Menu and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Creative Recovery Menu", href: "/streameru/library/creative-recovery-menu" },
+      { label: "Inspiration Input Diet", href: "/streameru/library/inspiration-input-diet" },
+      { label: "Creativity Capacity Scorecard", href: "/streameru/library/creativity-capacity-scorecard" },
+    ],
+  },
+  "recovering-from-setbacks-without-quitting": {
+    id: "mission-173-cwl-09",
+    mission_title: "Session: Recovering from Setbacks Without Quitting",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Setback Diagnosis Worksheet and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      45,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Setback Diagnosis Worksheet", href: "/streameru/library/setback-diagnosis-worksheet" },
+      { label: "Comeback 14 Day Plan", href: "/streameru/library/comeback-14-day-plan" },
+      { label: "Anti Quit Decision Card", href: "/streameru/library/anti-quit-decision-card" },
+    ],
+  },
+  "creator-wellness-capstone-personal-longevity-plan": {
+    id: "mission-174-cwl-10",
+    mission_title: "Session: Creator Wellness Capstone: Personal Longevity Plan",
+    mission_description: "Complete a reviewable Creator Wellness practice graded on implementation evidence—not hours streamed, gifts, viewers, or rank.",
+    mission_steps: steps(
+      [
+        "Complete Personal Creator Longevity Plan and its supporting lesson downloads.",
+        "Size the habit for an ordinary week and write the floor, ceiling, and stop condition.",
+      ],
+      40,
+      [
+        "Implement one real change in a session, recovery day, household agreement, or personal finance workflow.",
+        "Document one dated improvement for the Personal Creator Longevity Plan.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Build longevity evidence for the Personal Creator Longevity Plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Personal Creator Longevity Plan", href: "/streameru/library/personal-creator-longevity-plan" },
+      { label: "Longevity Evidence Checklist", href: "/streameru/library/longevity-evidence-checklist" },
+      { label: "Ninety Day Wellness Improvement Plan", href: "/streameru/library/ninety-day-wellness-improvement-plan" },
+    ],
+  },
+
+
 
 
 

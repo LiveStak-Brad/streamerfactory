@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.5 (Architecture locked)  
+**Version:** 2.6 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -183,7 +183,8 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── AI Creator Mastery*       ○ optional specialty
         ├── Selling & Influence Mastery* ○ optional specialty
         ├── TikTok Shop Mastery*      ○ optional specialty
-        └── Mindset Mastery           ★ recommended for everyone
+        ├── Creator Wellness & Longevity Mastery ★ recommended for everyone
+        └── Mindset Mastery           ★ planned — Brad must approve relationship to Creator Wellness
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
 * Gaming LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path.
@@ -191,6 +192,7 @@ Advanced Creator (8)  ←  BLACK BELT
 * AI Creator Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach responsible AI assistance, not creator replacement.
 * Selling & Influence Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach ethical influence and value communication — never manipulation or TikTok Shop mechanics.
 * TikTok Shop Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach Shop platform systems, product workflows, LIVE/video shopping execution, affiliate strategy, analytics interpretation, equipment, and compliance — never Selling & Influence communication craft duplication.
+* Creator Wellness & Longevity Mastery: Core required; Advanced Creator required before certificate award; recommended for everyone. Expands longevity habits beyond psychology-only framing (burnout, ergonomics, voice, mental resilience, schedules, personal financial wellness, relationships, creativity, setbacks). **Brad approval required:** whether this replaces, absorbs, or sits beside locked Mindset Mastery for Career Creator Diploma requirements.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -434,7 +436,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 15. Mindset Mastery
+### 15. Creator Wellness & Longevity Mastery
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Build a creator career that can still be enjoyed and sustained five, ten, or twenty years from now: burnout prevention, physical/voice care, mental resilience, sustainable schedules, personal financial buffers, relationships/boundaries, creative recovery, and setback protocols. |
+| **Why it exists** | Most creators quit from unsustainable load, body breakdown, online pressure, money panic, or relationship damage—not only skill gaps. Longevity is a career skill. |
+| **Who should take it** | Any creator who wants durable habits before crisis. **Recommended for everyone.** |
+| **Recommended order** | Available after Advanced Creator; can be interleaved with any path. |
+| **Prerequisites** | Advanced Creator Certificate before certificate award. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | Creator Wellness & Longevity Mastery Certificate |
+| **Skills gained** | Longevity floor design, burnout early-warning systems, ergonomics & voice care, criticism/comparison hygiene, energy calendars, personal income buffers, household/parasocial boundaries, creative recovery, setback comeback protocols, Personal Creator Longevity Plan. |
+| **Relationship to graduation** | Strongly recommended for everyone. **Brad must approve** whether Career Creator Diploma requires this path in place of, or in addition to, Mindset Mastery. |
+| **Hard boundaries** | No medical diagnosis/treatment, no therapy, no toxic hustle, no grinding through illness/sleep deprivation. Personal financial wellness only—not Professional Creator business accounting. General education; licensed professionals for clinical/personalized advice. |
+
+---
+
+### 16. Mindset Mastery (planned — relationship pending Brad approval)
 
 | Field | Definition |
 |--------|------------|
@@ -446,11 +465,12 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | **Estimated lesson count** | **8** |
 | **Certificate earned** | Mindset Mastery Certificate |
 | **Skills gained** | Confidence routines, motivation systems, burnout detection, time/energy management, creative recovery, decision frameworks, healthy comparison. |
-| **Relationship to graduation** | Strongly recommended for Professional Creator; required for Career Creator Diploma. |
+| **Relationship to graduation** | Strongly recommended for Professional Creator; required for Career Creator Diploma **until Brad approves** whether Creator Wellness & Longevity Mastery replaces or complements this requirement. |
+| **Brad approval needed** | Do not rename Mindset Mastery Certificate without approval. Decide: retire, merge into Creator Wellness, or keep both with clear non-overlap. |
 
 ---
 
-### 16. Manager College (Internal Only)
+### 17. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -526,7 +546,8 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | AI Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Selling & Influence Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | TikTok Shop Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
-| Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Creator Wellness & Longevity Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public — relationship to Creator Wellness pending Brad approval |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
 | **Career Creator Diploma** | Professional Creator Diploma + Professional Creator Mastery + Mindset + Growth. **Labs not required.** | Public |
@@ -600,6 +621,7 @@ It is distinct from optional Labs/Honors.
 | AI Creator Mastery | Build your **AI Creator Operating System** |
 | Selling & Influence Mastery | Build your **Ethical Creator Offer** |
 | TikTok Shop Mastery | Build your **Signature Shop Campaign** |
+| Creator Wellness & Longevity Mastery | Assemble your **Personal Creator Longevity Plan** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -655,6 +677,7 @@ Same pattern for every public Mastery Path.
 | AI Creator Lab | AI Creator Mastery Certificate | AI Creator OS pack / workflow review | AI Creator Mastery Honors |
 | Selling & Influence Lab | Selling & Influence Mastery Certificate | Ethical Creator Offer pack / communication review | Selling & Influence Mastery Honors |
 | TikTok Shop Lab | TikTok Shop Mastery Certificate | Signature Shop Campaign pack / campaign review | TikTok Shop Mastery Honors |
+| Creator Wellness Lab | Creator Wellness & Longevity Mastery Certificate | Personal Creator Longevity Plan pack / habit review | Creator Wellness & Longevity Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -2113,7 +2136,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 15 — Mindset Mastery (MS) — 8 lessons
+## PATH 15 — Creator Wellness & Longevity Mastery (CWL) — 10 lessons
+
+### CWL-01 — Building a Career That Lasts
+**Description:** Define a decade-minded creator career built on consistency, recovery, and sustainable ambition.  
+**Learning objective:** Write a longevity floor and consistency-over-intensity rule for an ordinary week.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Advanced Creator Certificate  
+**Practical outcome:** Longevity career map + decade definition worksheet + consistency-over-intensity card.  
+**Estimated study time:** 38 min  
+**Connections:** AC-01; PC capacity lessons; Capstone Personal Creator Longevity Plan.
+
+### CWL-02 — Preventing Creator Burnout
+**Description:** Detect burnout early, reduce load on purpose, and run a recovery week before quitting feels inevitable.  
+**Learning objective:** Build an early-warning dashboard and recovery week plan.  
+**Difficulty:** Intermediate  
+**Prerequisites:** CWL-01  
+**Practical outcome:** Burnout dashboard + recovery week plan + streaming fatigue audit.  
+**Estimated study time:** 38 min  
+**Connections:** GR-05; BT stamina parallels.
+
+### CWL-03 — Physical Health for Long Streaming Sessions
+**Description:** Ergonomics, voice care, movement, hydration, and eye breaks for long LIVE days.  
+**Learning objective:** Adjust a workstation and install voice/stretch/hydration routines.  
+**Difficulty:** Intermediate  
+**Prerequisites:** CWL-01  
+**Practical outcome:** Ergonomic workstation guide + voice care checklist + stretch/hydration routine.  
+**Estimated study time:** 38 min  
+**Connections:** Production PD posture/audio adjacent; Presence voice craft callbacks only.
+
+### CWL-04 — Mental Resilience & Handling Online Pressure
+**Description:** Criticism triage, comparison rules, parasocial boundaries, and post-LIVE aftercare.  
+**Learning objective:** Install emotional hygiene that is practical habit work—not therapy.  
+**Difficulty:** Intermediate  
+**Prerequisites:** CWL-02  
+**Practical outcome:** Aftercare routine + comparison rules + criticism response framework.  
+**Estimated study time:** 38 min  
+**Connections:** Community boundaries; AC privacy.
+
+### CWL-05 — Time Management & Sustainable Schedules
+**Description:** Energy calendars, batching, recovery days, deep work, and sleep protection.  
+**Learning objective:** Rebuild one sustainable week with a real recovery day.  
+**Difficulty:** Intermediate  
+**Prerequisites:** CWL-02  
+**Practical outcome:** Weekly energy calendar + recovery day planner + sleep/batching planner.  
+**Estimated study time:** 38 min  
+**Connections:** Growth scheduling; Professional capacity.
+
+### CWL-06 — Financial Wellness for Variable Income
+**Description:** Personal baselines, emergency buffers, tax set-asides, and slow-month playbooks.  
+**Learning objective:** Create a personal income buffer plan without business accounting.  
+**Difficulty:** Advanced  
+**Prerequisites:** CWL-05  
+**Practical outcome:** Income variability buffer plan + slow-month playbook + personal tax-savings checklist.  
+**Estimated study time:** 38 min  
+**Connections:** Professional Creator owns business accounting/contracts; this path stays personal.
+
+### CWL-07 — Healthy Relationships & Personal Boundaries
+**Description:** Household agreements, parasocial limits, privacy, and streaming around family/children.  
+**Learning objective:** Publish a boundary package and schedule a household check-in.  
+**Difficulty:** Advanced  
+**Prerequisites:** CWL-04  
+**Practical outcome:** Boundary worksheet + partner/family communication card + privacy expectations guide.  
+**Estimated study time:** 38 min  
+**Connections:** Community CM boundaries; AC privacy.
+
+### CWL-08 — Maintaining Creativity for Years
+**Description:** Creative recovery menus, input diets, format rotation, and capacity scoring.  
+**Learning objective:** Install a creative recovery menu before forcing novelty.  
+**Difficulty:** Advanced  
+**Prerequisites:** CWL-05  
+**Practical outcome:** Creative recovery menu + inspiration input diet + creativity capacity scorecard.  
+**Estimated study time:** 38 min  
+**Connections:** Content Creation craft; Growth experiment pacing.
+
+### CWL-09 — Recovering from Setbacks Without Quitting
+**Description:** Diagnose setbacks, stabilize seventy-two hours, and run a staged comeback.  
+**Learning objective:** Separate pause conditions from true quit conditions and write a 14-day return plan.  
+**Difficulty:** Advanced  
+**Prerequisites:** CWL-02, CWL-04  
+**Practical outcome:** Setback diagnosis worksheet + comeback 14-day plan + anti-quit decision card.  
+**Estimated study time:** 38 min  
+**Connections:** Presence pressure moments; Professional standards.
+
+### CWL-10 — Creator Wellness Capstone: Personal Longevity Plan
+**Description:** Assemble workspace, schedule, recovery, health, boundaries, buffers, habits, reflection, and a 90-day plan into one reviewable dossier.  
+**Learning objective:** Submit a Personal Creator Longevity Plan with objectively reviewable evidence.  
+**Difficulty:** Advanced  
+**Prerequisites:** CWL-01 through CWL-09  
+**Practical outcome:** Personal Creator Longevity Plan + evidence checklist + ninety-day wellness improvement plan.  
+**Estimated study time:** 45 min  
+**Connections:** Optional Creator Wellness Lab / Honors never gates certificate.
+
+---
+
+## PATH 16 — Mindset Mastery (MS) — 8 lessons (planned; Brad approval on relationship to CWL)
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -2189,7 +2306,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 16 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 17 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -2285,15 +2402,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | AI Creator Mastery (optional) | 10 | Planned / shipping |
 | Selling & Influence Mastery (optional) | 10 | Planned / shipping |
 | TikTok Shop Mastery (optional) | 10 | Planned / shipping |
-| Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **172** | Internal planning figure (was 162 before TikTok Shop) |
+| Creator Wellness & Longevity Mastery | 10 | Planned / shipping |
+| Mindset Mastery | 8 | Planned — Brad must approve vs Creator Wellness |
+| **Public curriculum plan** | **182** | Internal planning figure (was 172 before Creator Wellness; may drop to 174 if Mindset is retired) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **180** | |
+| **Grand total including internal** | **190** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 14 path labs | Optional; never diploma gates |
+| Labs → Honors | 15 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 172 planned · stretch 181+ · future unlimited (problem-gated only).
+**Internal:** 182 planned · stretch 191+ · future unlimited (problem-gated only).
 
 ---
 
@@ -2466,6 +2584,14 @@ Every planned lesson must answer exactly one question. Samples:
 4. Internal public plan updated **162 → 172**; Mindset/Manager path numbers shifted to 15/16 only in document order — earlier programs unchanged  
 5. TikTok Shop never required for graduation; codes use **TTS-**; teach Shop platform/systems/workflows/compliance/analytics/equipment — never Selling & Influence communication duplication; merchant topics high-level; version-aware eligibility/UI/policy language  
 
+### v2.6 — Creator Wellness & Longevity Mastery added (fill, do not redesign)
+1. Added **Creator Wellness & Longevity Mastery** as recommended path after TikTok Shop Mastery in catalog order  
+2. 10 lessons (CWL-01–CWL-10); Capstone = Personal Creator Longevity Plan  
+3. Optional Creator Wellness Lab → Creator Wellness & Longevity Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **172 → 182**; Mindset/Manager path numbers shifted only in document order — earlier programs unchanged  
+5. Codes use **CWL-**; teach longevity habits (burnout, ergonomics, voice, mental resilience, schedules, personal financial wellness, relationships, creativity, setbacks) — never medical/therapy advice or Professional Creator business accounting  
+6. **Brad approval required:** Mindset Mastery Certificate rename/retire/merge decision and Career Creator Diploma requirement update  
+
 ---
 
 ## Document Control
@@ -2479,6 +2605,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 2.2 | 2026-07-31 | Multi-Guest LIVE Mastery optional specialty added after Gaming LIVE; earlier programs preserved. |
 | 2.3 | 2026-07-31 | AI Creator Mastery optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
 | 2.4 | 2026-07-31 | Selling & Influence Mastery optional specialty added after AI Creator; earlier programs preserved. |
-| **2.5** | **2026-07-31** | **TikTok Shop Mastery** optional specialty added after Selling & Influence; earlier programs preserved. |
+| 2.5 | 2026-07-31 | TikTok Shop Mastery optional specialty added after Selling & Influence; earlier programs preserved. |
+| **2.6** | **2026-07-31** | **Creator Wellness & Longevity Mastery** recommended path added; Mindset Mastery relationship pending Brad approval. |
 
 **End of Master Curriculum Blueprint**

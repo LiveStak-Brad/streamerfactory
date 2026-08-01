@@ -163,6 +163,16 @@ import { lesson as shopAnalyticsOptimizationAndCampaignDecisions } from "./shop-
 import { lesson as shopComplianceEthicsAndCustomerTrust } from "./shop-compliance-ethics-and-customer-trust";
 import { lesson as scalingYourTiktokShopBusiness } from "./scaling-your-tiktok-shop-business";
 import { lesson as tiktokShopCapstoneSignatureShopCampaign } from "./tiktok-shop-capstone-signature-shop-campaign";
+import { lesson as buildingACareerThatLasts } from "./building-a-career-that-lasts";
+import { lesson as preventingCreatorBurnout } from "./preventing-creator-burnout";
+import { lesson as physicalHealthForLongStreamingSessions } from "./physical-health-for-long-streaming-sessions";
+import { lesson as mentalResilienceAndHandlingOnlinePressure } from "./mental-resilience-and-handling-online-pressure";
+import { lesson as timeManagementAndSustainableSchedules } from "./time-management-and-sustainable-schedules";
+import { lesson as financialWellnessForVariableIncome } from "./financial-wellness-for-variable-income";
+import { lesson as healthyRelationshipsAndPersonalBoundaries } from "./healthy-relationships-and-personal-boundaries";
+import { lesson as maintainingCreativityForYears } from "./maintaining-creativity-for-years";
+import { lesson as recoveringFromSetbacksWithoutQuitting } from "./recovering-from-setbacks-without-quitting";
+import { lesson as creatorWellnessCapstonePersonalLongevityPlan } from "./creator-wellness-capstone-personal-longevity-plan";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -334,6 +344,16 @@ const LESSONS: ExpandedLesson[] = [
   shopComplianceEthicsAndCustomerTrust,
   scalingYourTiktokShopBusiness,
   tiktokShopCapstoneSignatureShopCampaign,
+  buildingACareerThatLasts,
+  preventingCreatorBurnout,
+  physicalHealthForLongStreamingSessions,
+  mentalResilienceAndHandlingOnlinePressure,
+  timeManagementAndSustainableSchedules,
+  financialWellnessForVariableIncome,
+  healthyRelationshipsAndPersonalBoundaries,
+  maintainingCreativityForYears,
+  recoveringFromSetbacksWithoutQuitting,
+  creatorWellnessCapstonePersonalLongevityPlan,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

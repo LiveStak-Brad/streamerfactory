@@ -27,6 +27,7 @@
  * 16. AI Creator Mastery — responsible AI specialty (optional; after Multi-Guest LIVE)
  * 17. Selling & Influence Mastery — ethical selling specialty (optional; after AI Creator)
  * 18. TikTok Shop Mastery — TikTok Shop systems specialty (optional; after Selling & Influence)
+ * 19. Creator Wellness & Longevity Mastery — sustainable career habits (recommended; after TikTok Shop in catalog order)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -69,6 +70,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "AI Creator Mastery",
   "Selling & Influence Mastery",
   "TikTok Shop Mastery",
+  "Creator Wellness & Longevity Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1564,6 +1566,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     title: "TikTok Shop Capstone: Signature Shop Campaign",
     trackId: "tts",
     programName: "TikTok Shop Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
+  },
+  // CREATOR WELLNESS & LONGEVITY MASTERY (10)
+  {
+    globalOrder: 165,
+    slug: "building-a-career-that-lasts",
+    title: "Building a Career That Lasts",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 166,
+    slug: "preventing-creator-burnout",
+    title: "Preventing Creator Burnout",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 167,
+    slug: "physical-health-for-long-streaming-sessions",
+    title: "Physical Health for Long Streaming Sessions",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 168,
+    slug: "mental-resilience-and-handling-online-pressure",
+    title: "Mental Resilience & Handling Online Pressure",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 169,
+    slug: "time-management-and-sustainable-schedules",
+    title: "Time Management & Sustainable Schedules",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 170,
+    slug: "financial-wellness-for-variable-income",
+    title: "Financial Wellness for Variable Income",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 171,
+    slug: "healthy-relationships-and-personal-boundaries",
+    title: "Healthy Relationships & Personal Boundaries",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 172,
+    slug: "maintaining-creativity-for-years",
+    title: "Maintaining Creativity for Years",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 173,
+    slug: "recovering-from-setbacks-without-quitting",
+    title: "Recovering from Setbacks Without Quitting",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 174,
+    slug: "creator-wellness-capstone-personal-longevity-plan",
+    title: "Creator Wellness Capstone: Personal Longevity Plan",
+    trackId: "wellness",
+    programName: "Creator Wellness & Longevity Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
   },

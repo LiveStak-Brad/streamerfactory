@@ -78,6 +78,7 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
     case "aicreator":
     case "selling":
     case "tts":
+    case "wellness":
       return "advanced";
     default:
       return "beginner";

@@ -190,6 +190,16 @@ import { quiz as shopAnalyticsOptimizationAndCampaignDecisions } from "@/lib/ass
 import { quiz as shopComplianceEthicsAndCustomerTrust } from "@/lib/assessments/quizzes/tts/shop-compliance-ethics-and-customer-trust";
 import { quiz as scalingYourTiktokShopBusiness } from "@/lib/assessments/quizzes/tts/scaling-your-tiktok-shop-business";
 import { quiz as tiktokShopCapstoneSignatureShopCampaign } from "@/lib/assessments/quizzes/tts/tiktok-shop-capstone-signature-shop-campaign";
+import { quiz as buildingACareerThatLasts } from "@/lib/assessments/quizzes/wellness/building-a-career-that-lasts";
+import { quiz as preventingCreatorBurnout } from "@/lib/assessments/quizzes/wellness/preventing-creator-burnout";
+import { quiz as physicalHealthForLongStreamingSessions } from "@/lib/assessments/quizzes/wellness/physical-health-for-long-streaming-sessions";
+import { quiz as mentalResilienceAndHandlingOnlinePressure } from "@/lib/assessments/quizzes/wellness/mental-resilience-and-handling-online-pressure";
+import { quiz as timeManagementAndSustainableSchedules } from "@/lib/assessments/quizzes/wellness/time-management-and-sustainable-schedules";
+import { quiz as financialWellnessForVariableIncome } from "@/lib/assessments/quizzes/wellness/financial-wellness-for-variable-income";
+import { quiz as healthyRelationshipsAndPersonalBoundaries } from "@/lib/assessments/quizzes/wellness/healthy-relationships-and-personal-boundaries";
+import { quiz as maintainingCreativityForYears } from "@/lib/assessments/quizzes/wellness/maintaining-creativity-for-years";
+import { quiz as recoveringFromSetbacksWithoutQuitting } from "@/lib/assessments/quizzes/wellness/recovering-from-setbacks-without-quitting";
+import { quiz as creatorWellnessCapstonePersonalLongevityPlan } from "@/lib/assessments/quizzes/wellness/creator-wellness-capstone-personal-longevity-plan";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -209,6 +219,7 @@ import { exam as finalMultiguest } from "@/lib/assessments/exams/program-multigu
 import { exam as finalAicreator } from "@/lib/assessments/exams/program-aicreator";
 import { exam as finalSelling } from "@/lib/assessments/exams/program-selling";
 import { exam as finalTts } from "@/lib/assessments/exams/program-tts";
+import { exam as finalWellness } from "@/lib/assessments/exams/program-wellness";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -376,6 +387,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   shopComplianceEthicsAndCustomerTrust,
   scalingYourTiktokShopBusiness,
   tiktokShopCapstoneSignatureShopCampaign,
+  buildingACareerThatLasts,
+  preventingCreatorBurnout,
+  physicalHealthForLongStreamingSessions,
+  mentalResilienceAndHandlingOnlinePressure,
+  timeManagementAndSustainableSchedules,
+  financialWellnessForVariableIncome,
+  healthyRelationshipsAndPersonalBoundaries,
+  maintainingCreativityForYears,
+  recoveringFromSetbacksWithoutQuitting,
+  creatorWellnessCapstonePersonalLongevityPlan,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -397,6 +418,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalAicreator,
   finalSelling,
   finalTts,
+  finalWellness,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(164);
+    expect(PUBLISHED_LESSON_COUNT).toBe(174);
   });
 
-  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, then TikTok Shop", () => {
-    expect(getPublishedProgramCount()).toBe(18);
-    expect(getActiveProgramCount()).toBe(18);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, Battle, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, Selling & Influence, TikTok Shop, then Creator Wellness", () => {
+    expect(getPublishedProgramCount()).toBe(19);
+    expect(getActiveProgramCount()).toBe(19);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -38,6 +38,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[15]).toBe("AI Creator Mastery");
     expect(STREAMERU_PROGRAM_NAMES[16]).toBe("Selling & Influence Mastery");
     expect(STREAMERU_PROGRAM_NAMES[17]).toBe("TikTok Shop Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[18]).toBe("Creator Wellness & Longevity Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -107,16 +108,24 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(tts?.lessons).toHaveLength(10);
     expect(tts?.lessons[0]?.slug).toBe("understanding-the-tiktok-shop-ecosystem");
     expect(tts?.lessons[9]?.slug).toBe("tiktok-shop-capstone-signature-shop-campaign");
+    const wellness = curriculumByProgram().find(
+      (p) => p.programName === "Creator Wellness & Longevity Mastery",
+    );
+    expect(wellness?.lessons).toHaveLength(10);
+    expect(wellness?.lessons[0]?.slug).toBe("building-a-career-that-lasts");
+    expect(wellness?.lessons[9]?.slug).toBe(
+      "creator-wellness-capstone-personal-longevity-plan",
+    );
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
-    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(181);
-    expect(PLANNED_TRACK_COUNT).toBe(19);
+    expect(PLANNED_CURRICULUM_LESSON_COUNT).toBe(191);
+    expect(PLANNED_TRACK_COUNT).toBe(20);
     expect(PLANNED_CURRICULUM_LESSON_COUNT).toBeGreaterThan(PUBLISHED_LESSON_COUNT);
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.15");
+    expect(ACADEMY_RELEASE.version).toBe("1.16");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

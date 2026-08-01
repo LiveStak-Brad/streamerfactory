@@ -174,6 +174,8 @@ const moduleDescriptions: Record<string, string> = {
     "Ethical selling for creators — trust, buyer psychology, clear value, trust-centered storytelling, objections, natural CTAs, community-safe offers, long-term relationships, reputation, and an Ethical Creator Offer.",
   "TikTok Shop Mastery":
     "Professional TikTok Shop for creators — ecosystem literacy, readiness, affiliate product research, product videos, LIVE shopping systems, demos & setups, analytics interpretation, compliance, campaign scaling, and a Signature Shop Campaign.",
+  "Creator Wellness & Longevity Mastery":
+    "Career longevity for creators — burnout prevention, ergonomics, voice care, mental resilience, sustainable schedules, personal financial buffers, boundaries, creative recovery, setback protocols, and a Personal Creator Longevity Plan.",
 };
 
 /**
@@ -527,6 +529,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isAicreator = program.programName === "AI Creator Mastery";
             const isSelling = program.programName === "Selling & Influence Mastery";
             const isTts = program.programName === "TikTok Shop Mastery";
+            const isWellness = program.programName === "Creator Wellness & Longevity Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -545,17 +548,23 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
+                : isWellness
+                  ? {
+                      label: "Next steps",
+                      detail:
+                        "Recommended longevity path complete · Creator Wellness Lab Honors · other Mastery Paths",
+                    }
                 : isTts
                   ? {
                       label: "Next steps",
                       detail:
-                        "Optional specialty complete · TikTok Shop Lab Honors · other Mastery Paths",
+                        "Creator Wellness & Longevity Mastery · TikTok Shop Lab Honors · other Mastery Paths",
                     }
                   : isSelling
                   ? {
                       label: "Next steps",
                       detail:
-                        "TikTok Shop Mastery (optional) · Selling & Influence Lab Honors · other Mastery Paths",
+                        "TikTok Shop / Creator Wellness Mastery · Selling & Influence Lab Honors · other Mastery Paths",
                     }
                   : isAicreator
                   ? {
@@ -641,6 +650,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                           ? "Selling & Influence specialty"
                                           : isTts
                                             ? "TikTok Shop specialty"
+                                            : isWellness
+                                              ? "Longevity mastery"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -670,6 +681,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                           ? "optional specialty · Capstone: Ethical Creator Offer"
                                           : isTts
                                             ? "optional specialty · Capstone: Signature Shop Campaign"
+                                            : isWellness
+                                              ? "recommended for everyone · Capstone: Personal Creator Longevity Plan"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];

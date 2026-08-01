@@ -11836,6 +11836,246 @@ const REST: LessonProductionBrief[] = [
       },
     ]),
   ),
+  brief(
+    "building-a-career-that-lasts",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Longevity Career Map",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Longevity Career Map", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Building a Career That Lasts system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Building a Career That Lasts system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Building a Career That Lasts; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from building a career that lasts when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "preventing-creator-burnout",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Burnout Early Warning Dashboard",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Burnout Early Warning Dashboard", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Preventing Creator Burnout system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Preventing Creator Burnout system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Preventing Creator Burnout; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from preventing creator burnout when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "physical-health-for-long-streaming-sessions",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Ergonomic Workstation Guide",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Ergonomic Workstation Guide", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Physical Health for Long Streaming Sessions system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Physical Health for Long Streaming Sessions system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Physical Health for Long Streaming Sessions; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from physical health for long streaming sessions when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "mental-resilience-and-handling-online-pressure",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Aftercare Routine Card",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Aftercare Routine Card", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Mental Resilience & Handling Online Pressure system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Mental Resilience & Handling Online Pressure system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Mental Resilience & Handling Online Pressure; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from mental resilience & handling online pressure when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "time-management-and-sustainable-schedules",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Weekly Energy Calendar",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Weekly Energy Calendar", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Time Management & Sustainable Schedules system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Time Management & Sustainable Schedules system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Time Management & Sustainable Schedules; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from time management & sustainable schedules when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "financial-wellness-for-variable-income",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Income Variability Buffer Plan",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Income Variability Buffer Plan", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Financial Wellness for Variable Income system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Financial Wellness for Variable Income system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Financial Wellness for Variable Income; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from financial wellness for variable income when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "healthy-relationships-and-personal-boundaries",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Boundary Worksheet",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Boundary Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Healthy Relationships & Personal Boundaries system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Healthy Relationships & Personal Boundaries system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Healthy Relationships & Personal Boundaries; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from healthy relationships & personal boundaries when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "maintaining-creativity-for-years",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Creative Recovery Menu",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Creative Recovery Menu", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Maintaining Creativity for Years system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Maintaining Creativity for Years system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Maintaining Creativity for Years; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from maintaining creativity for years when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "recovering-from-setbacks-without-quitting",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Setback Diagnosis Worksheet",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Setback Diagnosis Worksheet", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Recovering from Setbacks Without Quitting system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Recovering from Setbacks Without Quitting system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Recovering from Setbacks Without Quitting; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from recovering from setbacks without quitting when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
+  brief(
+    "creator-wellness-capstone-personal-longevity-plan",
+    assetsFor([
+      {
+        key: "worksheet-blank", assetType: "screenshot", title: "Blank Personal Creator Longevity Plan",
+        description: "Clean Creator Wellness worksheet", purpose: "Shows the primary reviewable wellness artifact",
+        placement: "Screenshots — first screenshot placeholder", captureInstructions: "Use fictional non-sensitive personal notes. No medical diagnoses.",
+        caption: "Size habits for an ordinary week.", alt: "Blank Personal Creator Longevity Plan", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 20,
+      },
+      {
+        key: "wellness-system-diagram", assetType: "diagram", title: "Creator Wellness Capstone: Personal Longevity Plan system diagram",
+        description: "Longevity habit flow", purpose: "Shows warning signals, protective habits, recovery, and Capstone filing.",
+        placement: "Diagrams — first diagram placeholder", captureInstructions: "Minimal branded diagram. No hustle-culture imagery or medical claims.",
+        caption: "Longevity is a system of ordinary-week habits.", alt: "Creator Wellness Capstone: Personal Longevity Plan system diagram", priority: "essential", required: true, ownership: "cursor_can_create", cursorCanGenerate: true, estimatedMinutes: 30,
+      },
+      {
+        key: "brad-wellness-principle", assetType: "founder_story", title: "Brad experience — wellness longevity principle",
+        description: "Approved founder principle; never invent stories", purpose: "Founder framing without invented personal medical or income claims.",
+        placement: "From Brad's Experience", captureInstructions: "Ask Brad for a verifiable 80–120 word principle relevant to Creator Wellness Capstone: Personal Longevity Plan; approve before publication.",
+        founderQuestion: "What longevity principle would you want creators to remember from creator wellness capstone: personal longevity plan when grind culture tells them to ignore recovery?",
+        caption: "From Brad's experience", alt: "", priority: "helpful", required: false, ownership: "brad_must_approve", estimatedMinutes: 10,
+      },
+    ]),
+  ),
 ];
 
 export const LESSON_PRODUCTION_BRIEFS: LessonProductionBrief[] = [LESSON_1, ...REST].sort(

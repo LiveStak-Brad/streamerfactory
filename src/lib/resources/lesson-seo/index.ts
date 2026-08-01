@@ -18,6 +18,7 @@ import { MULTI_GUEST_LIVE_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/
 import { AI_CREATOR_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/ai-creator-mastery";
 import { SELLING_INFLUENCE_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/selling-influence-mastery";
 import { TIKTOK_SHOP_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/tiktok-shop-mastery";
+import { CREATOR_WELLNESS_LONGEVITY_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/creator-wellness-longevity-mastery";
 import type { LessonSeoPack } from "@/lib/resources/lesson-seo/types";
 
 export type { LessonSeoPack, LessonFaq, LessonInternalLink, LessonContentSuggestion } from "@/lib/resources/lesson-seo/types";
@@ -42,6 +43,7 @@ const ALL_PACKS: LessonSeoPack[] = [
   ...AI_CREATOR_MASTERY_LESSON_SEO,
   ...SELLING_INFLUENCE_MASTERY_LESSON_SEO,
   ...TIKTOK_SHOP_MASTERY_LESSON_SEO,
+  ...CREATOR_WELLNESS_LONGEVITY_MASTERY_LESSON_SEO,
 ];
 
 const PACKS_BY_SLUG = new Map(ALL_PACKS.map((pack) => [pack.slug, pack]));
