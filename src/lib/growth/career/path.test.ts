@@ -36,7 +36,9 @@ function baseSnapshot(overrides: Partial<CreatorSnapshot> = {}): CreatorSnapshot
 
 describe("career eligibility vs appointment", () => {
   it("unlocks mentor eligibility without appointing mentor", () => {
-    const more = CURRICULUM.slice(0, 10).map((l) => l.slug);
+    // Mentor eligibility requires 40% of the published StreamerU curriculum.
+    const need = Math.ceil(CURRICULUM.length * 0.4);
+    const more = CURRICULUM.slice(0, need).map((l) => l.slug);
     const elig = evaluateCareerEligibility(baseSnapshot(), more, false);
     expect(elig.mentorEligible).toBe(true);
     expect(elig.mentorAppointed).toBe(false);

@@ -41,7 +41,7 @@ Use language like:
 | Stretch goal | **171+** | Optional long-horizon capacity — never a public obligation |
 | Future | Unlimited | Add only when a real creator problem remains unsolved |
 
-Breakdown of the internal 120: 24 Core + 8 Advanced Creator + 88 across 9 Mastery Paths (+ 8 Manager College internal).
+Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Gaming LIVE Mastery.
 
 **Ship order for craft (locked):** Presence → Content Creation → Growth.  
 Creators fail from awkwardness and empty shows before they fail from analytics.
@@ -178,9 +178,11 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Production Mastery
         ├── Professional Creator Mastery
         ├── Battle Mastery            ○ optional specialty
-        └── Music LIVE Mastery*       ○ optional specialty
+        ├── Music LIVE Mastery*       ○ optional specialty
+        └── Gaming LIVE Mastery*      ○ optional specialty
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
+* Gaming LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -339,7 +341,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 10. Mindset Mastery
+### 10. Gaming LIVE Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Specialty path for gaming creators on LIVE: reliable setup, commentary, chat systems, audio routing, OBS and TikTok LIVE Studio workflows (including OBS Virtual Camera), console/mobile capture, interactive tools, moderation, and signature show design. |
+| **Why it exists** | Gaming creators face unique problems (capture methods, stream-key vs no-stream-key paths, mic/game/Discord balance, talking while concentrating, party chat, TikFinity discipline) that general LIVE and Production lessons cannot cover deeply. |
+| **Who should take it** | PC, console, and mobile gaming creators who want a reliable, entertaining gaming LIVE. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Music LIVE Mastery in specialty ship order; after Core; Advanced Creator required before certificate award. |
+| **Prerequisites** | Core Certification. Advanced Creator required before Gaming LIVE Certificate is awarded. Production Mastery recommended parallel (not a hard gate). |
+| **Estimated lesson count** | **12** |
+| **Certificate earned** | Gaming LIVE Mastery Certificate |
+| **Skills gained** | Setup selection, commentary systems, chat timing, audio routing, TikTok LIVE Studio gaming, OBS gaming, stream-key literacy, OBS Virtual Camera workflow, console/mobile capture, vertical layouts, soundboards/TikFinity discipline, community games, moderation, troubleshooting, ethical monetization. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | Do not assume stream-key access. Do not claim OBS ↔ LIVE Studio feature parity. Do not teach stream-key circumvention. Dual-PC is not required for most creators. Do not overload alerts/automation at the expense of stream quality. |
+
+---
+
+### 11. Mindset Mastery
 
 | Field | Definition |
 |--------|------------|
@@ -355,7 +374,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 11. Manager College (Internal Only)
+### 12. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -398,7 +417,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery and/or Music LIVE **only if those are your craft**
+7. Battle Mastery, Music LIVE, and/or Gaming LIVE **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -426,6 +445,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Community Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Professional Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Music LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Gaming LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -495,6 +515,7 @@ It is distinct from optional Labs/Honors.
 | Mindset Mastery | Assemble and run your **anti-quit system** (14-day proof log) |
 | Battle Mastery | Document and run your **signature battle system** for one week |
 | Music LIVE Mastery | Deliver your **signature music LIVE show** |
+| Gaming LIVE Mastery | Deliver your **signature gaming LIVE show** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -545,6 +566,7 @@ Same pattern for every public Mastery Path.
 | Professional Creator Lab | Professional Creator Mastery Certificate | Creator Operating Manual (review pass) | Professional Creator Mastery Honors |
 | Battle Lab | Battle Mastery Certificate | Battle week pack | Battle Mastery Honors |
 | Music LIVE Lab | Music LIVE Mastery Certificate | Signature show pack | Music LIVE Mastery Honors |
+| Gaming LIVE Lab | Gaming LIVE Mastery Certificate | Signature gaming show pack / replay excerpt | Gaming LIVE Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -586,6 +608,7 @@ Creators fail from freeze / empty presence before they fail from analytics.
 ### Phase 5 — Optional specialties
 - Battle Mastery (8) — optional  
 - Music LIVE Mastery (10) — optional  
+- Gaming LIVE Mastery (12) — optional (after Music LIVE; never a required graduation path)  
 
 ### Phase 6 — Internal quality + optional Labs (Honors)
 - Manager College (8)  
@@ -1512,7 +1535,119 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 10 — Mindset Mastery (MS) — 8 lessons
+## PATH 10 — Gaming LIVE Mastery (GM) — 12 lessons (optional specialty)
+
+### GM-01 — Choosing Your Gaming LIVE Setup
+**Description:** Decide among TikTok LIVE Studio, OBS + stream key (when available), OBS Virtual Camera into LIVE Studio, single-PC, dual-PC, console capture, and mobile — with a written source-flow map.  
+**Learning objective:** Select a primary gaming LIVE setup path with rationale and a beginner-safe fallback.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Core Certification  
+**Practical outcome:** Gaming setup decision matrix + source-flow diagram.  
+**Estimated study time:** 30 min  
+**Connections:** Production PD-01–PD-03 recommended; stream-key access not assumed.
+
+### GM-02 — Gaming Commentary Systems That Survive High Focus
+**Description:** Build commentary loops that work during concentration, downtime, loading screens, and different game types — without constant yelling or jargon overload.  
+**Learning objective:** Create a commentary loop card matched to your primary game type.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-01; Presence PR-02 recommended  
+**Practical outcome:** Commentary loop card + dead-air recovery scripts.  
+**Estimated study time:** 25 min  
+**Connections:** Presence Mastery; Content Creation segments.
+
+### GM-03 — Reading Chat Without Losing the Game
+**Description:** Time chat reading to safe moments, include new viewers, and protect focus during high-stakes play.  
+**Learning objective:** Install a chat-reading plan with safe-moment timing.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-02  
+**Practical outcome:** Chat-reading plan + new-viewer context scripts.  
+**Estimated study time:** 25 min  
+**Connections:** Community CM-02; Presence PR-05.
+
+### GM-04 — Game Audio, Mic Balance, and Discord Routing
+**Description:** Balance microphone, game audio, Discord/party chat, music, soundboards, and alerts without double audio or buried commentary.  
+**Learning objective:** Complete an audio-routing map and a mic-vs-game balance pass for your setup.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-01; Production PD-04 recommended  
+**Practical outcome:** Audio-routing map + balance checklist.  
+**Estimated study time:** 30 min  
+**Connections:** Production PD-04 (applied to gaming).
+
+### GM-05 — TikTok LIVE Studio for Gaming
+**Description:** Configure TikTok LIVE Studio for PC gaming: captures, camera, audio devices, scenes, vertical layout, and known limitations vs OBS.  
+**Learning objective:** Complete a LIVE Studio gaming checklist and scene plan for a no-stream-key path.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-01, GM-04  
+**Practical outcome:** LIVE Studio gaming checklist + scene plan.  
+**Estimated study time:** 30 min  
+**Connections:** Platform-native path; version-aware UI review required.
+
+### GM-06 — OBS for Gaming and Stream-Key Reality
+**Description:** OBS gaming sources, encoders, vertical canvas, performance discipline, and honest stream-key eligibility limits.  
+**Learning objective:** Build an OBS gaming scene plan and document stream-key vs no-stream-key workflow.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-01, GM-04; Production PD-06 recommended  
+**Practical outcome:** OBS scene plan + stream-key safety card + single-PC performance checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Production OBS discipline; stream key not guaranteed.
+
+### GM-07 — OBS Virtual Camera into TikTok LIVE Studio
+**Description:** Send OBS program video into LIVE Studio via Virtual Camera; route audio separately; recover when detection fails.  
+**Learning objective:** Prove a working Virtual Camera video path with separate audio routing and a recovery card.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-05, GM-06  
+**Practical outcome:** Virtual Camera checklist + dual-app audio routing map.  
+**Estimated study time:** 30 min  
+**Connections:** Critical no-stream-key production path; Virtual Camera = video only.
+
+### GM-08 — Console Capture and Party-Chat Routing
+**Description:** Capture console gameplay cleanly; solve headset/party-chat routing; manage latency and protected-output issues.  
+**Learning objective:** Map console → capture card → OBS or LIVE Studio with a party-chat audio plan.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-04; GM-05 or GM-06  
+**Practical outcome:** Console routing map + capture-card checklist.  
+**Estimated study time:** 30 min  
+**Connections:** Capture-card privacy and chat-link style solutions.
+
+### GM-09 — Mobile Gaming LIVE Workflows
+**Description:** Native mobile LIVE, mirroring, heat/battery/notification safety, and capture into desktop tools when needed.  
+**Learning objective:** Complete a mobile gaming checklist and a private-notification safety pass.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-01  
+**Practical outcome:** Mobile gaming checklist + notification safety card.  
+**Estimated study time:** 25 min  
+**Connections:** Production mobile production callbacks.
+
+### GM-10 — Vertical Layouts, Alerts, Soundboards, and TikFinity
+**Description:** Design readable vertical gaming layouts; add alerts/soundboards/TikFinity with cooldowns and discipline — never overload.  
+**Learning objective:** Build a soundboard plan, TikFinity trigger map (where used), and alert-volume checklist.  
+**Difficulty:** Intermediate  
+**Prerequisites:** GM-05 or GM-06; GM-03 recommended  
+**Practical outcome:** Soundboard worksheet + TikFinity trigger map + alert-volume checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Verify current TikFinity support; automation discipline.
+
+### GM-11 — Gaming Community, Moderation, Troubleshooting, and Growth
+**Description:** Community games, challenges, tournaments, collabs; gaming moderation/safety; troubleshooting trees; gaming growth and ethical monetization.  
+**Learning objective:** Install community rules, a troubleshooting decision tree, and ethical growth/monetization defaults.  
+**Difficulty:** Advanced  
+**Prerequisites:** GM-02 through GM-10  
+**Practical outcome:** Community rules + troubleshooting tree + tournament run-of-show.  
+**Estimated study time:** 35 min  
+**Connections:** Community CM-03–CM-05; Growth GR callbacks; never gift/rank graded.
+
+### GM-12 — Gaming LIVE Capstone: Signature Gaming Show
+**Description:** Capstone: signature gaming LIVE proving technical reliability and engaging hosting with a full dossier.  
+**Learning objective:** Deliver and review a signature Gaming LIVE show against the mastery rubric.  
+**Difficulty:** Expert  
+**Prerequisites:** GM-01 through GM-11; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Signature gaming show dossier + recorded/documented LIVE + replay review.  
+**Estimated study time:** 40 min  
+**Connections:** Specialty diploma elective; optional Gaming LIVE Lab / Honors never gates certificate.
+
+---
+
+## PATH 11 — Mindset Mastery (MS) — 8 lessons
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -1588,7 +1723,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 11 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 12 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -1678,16 +1813,17 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Battle Mastery (optional) | 8 | Planned |
 | Community Mastery | 10 | Planned |
 | Professional Creator Mastery | 10 | Planned |
-| Music LIVE Mastery (optional) | 10 | Planned |
+| Music LIVE Mastery (optional) | 10 | Planned / shipping |
+| Gaming LIVE Mastery (optional) | 12 | Planned / shipping |
 | Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **120** | Internal planning figure |
+| **Public curriculum plan** | **132** | Internal planning figure (was 120 before Gaming) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **128** | |
+| **Grand total including internal** | **140** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 9 path labs | Optional; never diploma gates |
+| Labs → Honors | 10 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 120 planned · stretch 171+ · future unlimited (problem-gated only).
+**Internal:** 132 planned · stretch 171+ · future unlimited (problem-gated only).
 
 ---
 
@@ -1702,7 +1838,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle and Music as optional specialties | ✅ Locked |
+| Battle, Music, and Gaming as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -1773,6 +1909,8 @@ Every planned lesson must answer exactly one question. Samples:
 | CM-03 | How do I build a mod team that protects culture? |
 | PC-02 | What should I actually offer on LIVE to earn? |
 | MU-04 | How should I order songs so energy doesn’t die? |
+| GM-01 | Which gaming LIVE setup should I use — and what is my fallback? |
+| GM-07 | How do I send OBS video into TikTok LIVE Studio without breaking audio? |
 | MS-02 | How do I catch burnout before I quit? |
 | MC-02 | How do I tell what a mentee is actually stuck on? |
 
@@ -1814,6 +1952,13 @@ Every planned lesson must answer exactly one question. Samples:
 6. Canonical Capstones aligned (20-min LIVE, 7-day series, 30-day growth experiment, community event, Creator Operating Manual, etc.)  
 7. Architecture officially **locked** for multi-year build  
 
+### v2.1 — Gaming LIVE Mastery added (fill, do not redesign)
+1. Added **Gaming LIVE Mastery** as optional specialty after Music LIVE Mastery  
+2. 12 lessons (GM-01–GM-12); Capstone = signature gaming LIVE show  
+3. Optional Gaming LIVE Lab → Gaming LIVE Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **120 → 132**; Mindset/Manager path numbers shifted to 11/12 only in document order — earlier programs unchanged  
+5. Gaming never required for graduation; stream-key access never assumed  
+
 ---
 
 ## Document Control
@@ -1822,6 +1967,7 @@ Every planned lesson must answer exactly one question. Samples:
 |---------|------|-------|
 | 1.0 | 2026-07-31 | Initial permanent blueprint — curriculum design only |
 | 1.1 | 2026-07-31 | Brad structural revisions |
-| **2.0** | **2026-07-31** | **Architecture locked.** Fill the blueprint; do not redesign it. |
+| 2.0 | 2026-07-31 | Architecture locked. Fill the blueprint; do not redesign it. |
+| **2.1** | **2026-07-31** | **Gaming LIVE Mastery** optional specialty added after Music LIVE; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

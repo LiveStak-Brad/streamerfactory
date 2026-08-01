@@ -7,10 +7,10 @@ import { sumStudyMinutesForSlugs } from "@/lib/resources/lesson-estimate";
  * certificate, and member widget (device-local Live Exam completions + shared estimates).
  */
 describe("StreamerU progress and estimate sources of truth", () => {
-  it("curriculum includes Mastery Paths through Music LIVE Mastery and matches program lesson totals", () => {
-    expect(CURRICULUM_TOTAL_LESSONS).toBe(112);
+  it("curriculum includes Mastery Paths through Gaming LIVE Mastery and matches program lesson totals", () => {
+    expect(CURRICULUM_TOTAL_LESSONS).toBe(124);
     const programs = curriculumByProgram();
-    expect(programs).toHaveLength(13);
+    expect(programs).toHaveLength(14);
     expect(programs[0]?.programName).toBe("Beginner Foundations");
     expect(programs[0]?.lessons).toHaveLength(9);
     expect(programs[4]?.programName).toBe("Advanced Creator");
@@ -31,6 +31,8 @@ describe("StreamerU progress and estimate sources of truth", () => {
     expect(programs[11]?.lessons).toHaveLength(8);
     expect(programs[12]?.programName).toBe("Music LIVE Mastery");
     expect(programs[12]?.lessons).toHaveLength(10);
+    expect(programs[13]?.programName).toBe("Gaming LIVE Mastery");
+    expect(programs[13]?.lessons).toHaveLength(12);
     const lessonCount = programs.reduce((n, p) => n + p.lessons.length, 0);
     expect(lessonCount).toBe(CURRICULUM_TOTAL_LESSONS);
   });

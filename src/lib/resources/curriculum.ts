@@ -22,6 +22,7 @@
  * 11. Production Mastery — lighting, audio, framing, OBS, mobile, accessibility, triage
  * 12. Battle Mastery — elite battle strategy specialty (optional)
  * 13. Music LIVE Mastery — music performance + technical LIVE specialty (optional)
+ * 14. Gaming LIVE Mastery — gaming LIVE specialty (optional; after Music LIVE)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -59,6 +60,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Production Mastery",
   "Battle Mastery",
   "Music LIVE Mastery",
+  "Gaming LIVE Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1085,6 +1087,115 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Music LIVE Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
+  },
+  // GAMING LIVE MASTERY (12) — optional specialty after Music LIVE; Advanced Creator required for certificate
+  {
+    globalOrder: 113,
+    slug: "choosing-your-gaming-live-setup",
+    title: "Choosing Your Gaming LIVE Setup",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 114,
+    slug: "gaming-commentary-systems-that-survive-high-focus",
+    title: "Gaming Commentary Systems That Survive High Focus",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 115,
+    slug: "reading-chat-without-losing-the-game",
+    title: "Reading Chat Without Losing the Game",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 116,
+    slug: "game-audio-mic-balance-and-discord-routing",
+    title: "Game Audio, Mic Balance, and Discord Routing",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 117,
+    slug: "tiktok-live-studio-for-gaming",
+    title: "TikTok LIVE Studio for Gaming",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 118,
+    slug: "obs-for-gaming-and-stream-key-reality",
+    title: "OBS for Gaming and Stream-Key Reality",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 119,
+    slug: "obs-virtual-camera-into-tiktok-live-studio",
+    title: "OBS Virtual Camera into TikTok LIVE Studio",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 120,
+    slug: "console-capture-and-party-chat-routing",
+    title: "Console Capture and Party-Chat Routing",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 121,
+    slug: "mobile-gaming-live-workflows",
+    title: "Mobile Gaming LIVE Workflows",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 122,
+    slug: "vertical-layouts-alerts-soundboards-and-tikfinity",
+    title: "Vertical Layouts, Alerts, Soundboards, and TikFinity",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 123,
+    slug: "gaming-community-moderation-troubleshooting-and-growth",
+    title: "Gaming Community, Moderation, Troubleshooting, and Growth",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 11,
+    lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 124,
+    slug: "gaming-live-capstone-signature-show",
+    title: "Gaming LIVE Capstone: Signature Gaming Show",
+    trackId: "gaming",
+    programName: "Gaming LIVE Mastery",
+    lessonInProgram: 12,
+    lessonsInProgram: 12,
   },
 ];
 

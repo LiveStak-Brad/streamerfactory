@@ -111,6 +111,18 @@ import { lesson as musicRightsAndSaferLiveChoices } from "./music-rights-and-saf
 import { lesson as collabPerformancesAndGuestMusicians } from "./collab-performances-and-guest-musicians";
 import { lesson as monetizingMusicLiveEthically } from "./monetizing-music-live-ethically";
 import { lesson as musicLiveCapstoneSignatureShow } from "./music-live-capstone-signature-show";
+import { lesson as choosingYourGamingLiveSetup } from "./choosing-your-gaming-live-setup";
+import { lesson as gamingCommentarySystemsThatSurviveHighFocus } from "./gaming-commentary-systems-that-survive-high-focus";
+import { lesson as readingChatWithoutLosingTheGame } from "./reading-chat-without-losing-the-game";
+import { lesson as gameAudioMicBalanceAndDiscordRouting } from "./game-audio-mic-balance-and-discord-routing";
+import { lesson as tiktokLiveStudioForGaming } from "./tiktok-live-studio-for-gaming";
+import { lesson as obsForGamingAndStreamKeyReality } from "./obs-for-gaming-and-stream-key-reality";
+import { lesson as obsVirtualCameraIntoTiktokLiveStudio } from "./obs-virtual-camera-into-tiktok-live-studio";
+import { lesson as consoleCaptureAndPartyChatRouting } from "./console-capture-and-party-chat-routing";
+import { lesson as mobileGamingLiveWorkflows } from "./mobile-gaming-live-workflows";
+import { lesson as verticalLayoutsAlertsSoundboardsAndTikfinity } from "./vertical-layouts-alerts-soundboards-and-tikfinity";
+import { lesson as gamingCommunityModerationTroubleshootingAndGrowth } from "./gaming-community-moderation-troubleshooting-and-growth";
+import { lesson as gamingLiveCapstoneSignatureShow } from "./gaming-live-capstone-signature-show";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -230,6 +242,18 @@ const LESSONS: ExpandedLesson[] = [
   collabPerformancesAndGuestMusicians,
   monetizingMusicLiveEthically,
   musicLiveCapstoneSignatureShow,
+  choosingYourGamingLiveSetup,
+  gamingCommentarySystemsThatSurviveHighFocus,
+  readingChatWithoutLosingTheGame,
+  gameAudioMicBalanceAndDiscordRouting,
+  tiktokLiveStudioForGaming,
+  obsForGamingAndStreamKeyReality,
+  obsVirtualCameraIntoTiktokLiveStudio,
+  consoleCaptureAndPartyChatRouting,
+  mobileGamingLiveWorkflows,
+  verticalLayoutsAlertsSoundboardsAndTikfinity,
+  gamingCommunityModerationTroubleshootingAndGrowth,
+  gamingLiveCapstoneSignatureShow,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

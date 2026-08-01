@@ -136,6 +136,19 @@ import { quiz as collabPerformancesAndGuestMusicians } from "@/lib/assessments/q
 import { quiz as monetizingMusicLiveEthically } from "@/lib/assessments/quizzes/music/monetizing-music-live-ethically";
 import { quiz as musicLiveCapstoneSignatureShow } from "@/lib/assessments/quizzes/music/music-live-capstone-signature-show";
 
+import { quiz as choosingYourGamingLiveSetup } from "@/lib/assessments/quizzes/gaming/choosing-your-gaming-live-setup";
+import { quiz as gamingCommentarySystemsThatSurviveHighFocus } from "@/lib/assessments/quizzes/gaming/gaming-commentary-systems-that-survive-high-focus";
+import { quiz as readingChatWithoutLosingTheGame } from "@/lib/assessments/quizzes/gaming/reading-chat-without-losing-the-game";
+import { quiz as gameAudioMicBalanceAndDiscordRouting } from "@/lib/assessments/quizzes/gaming/game-audio-mic-balance-and-discord-routing";
+import { quiz as tiktokLiveStudioForGaming } from "@/lib/assessments/quizzes/gaming/tiktok-live-studio-for-gaming";
+import { quiz as obsForGamingAndStreamKeyReality } from "@/lib/assessments/quizzes/gaming/obs-for-gaming-and-stream-key-reality";
+import { quiz as obsVirtualCameraIntoTiktokLiveStudio } from "@/lib/assessments/quizzes/gaming/obs-virtual-camera-into-tiktok-live-studio";
+import { quiz as consoleCaptureAndPartyChatRouting } from "@/lib/assessments/quizzes/gaming/console-capture-and-party-chat-routing";
+import { quiz as mobileGamingLiveWorkflows } from "@/lib/assessments/quizzes/gaming/mobile-gaming-live-workflows";
+import { quiz as verticalLayoutsAlertsSoundboardsAndTikfinity } from "@/lib/assessments/quizzes/gaming/vertical-layouts-alerts-soundboards-and-tikfinity";
+import { quiz as gamingCommunityModerationTroubleshootingAndGrowth } from "@/lib/assessments/quizzes/gaming/gaming-community-moderation-troubleshooting-and-growth";
+import { quiz as gamingLiveCapstoneSignatureShow } from "@/lib/assessments/quizzes/gaming/gaming-live-capstone-signature-show";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -149,6 +162,7 @@ import { exam as finalProfessional } from "@/lib/assessments/exams/program-profe
 import { exam as finalProduction } from "@/lib/assessments/exams/program-production";
 import { exam as finalBattle } from "@/lib/assessments/exams/program-battle";
 import { exam as finalMusic } from "@/lib/assessments/exams/program-music";
+import { exam as finalGaming } from "@/lib/assessments/exams/program-gaming";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -264,6 +278,18 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   collabPerformancesAndGuestMusicians,
   monetizingMusicLiveEthically,
   musicLiveCapstoneSignatureShow,
+  choosingYourGamingLiveSetup,
+  gamingCommentarySystemsThatSurviveHighFocus,
+  readingChatWithoutLosingTheGame,
+  gameAudioMicBalanceAndDiscordRouting,
+  tiktokLiveStudioForGaming,
+  obsForGamingAndStreamKeyReality,
+  obsVirtualCameraIntoTiktokLiveStudio,
+  consoleCaptureAndPartyChatRouting,
+  mobileGamingLiveWorkflows,
+  verticalLayoutsAlertsSoundboardsAndTikfinity,
+  gamingCommunityModerationTroubleshootingAndGrowth,
+  gamingLiveCapstoneSignatureShow,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -280,6 +306,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalProduction,
   finalBattle,
   finalMusic,
+  finalGaming,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

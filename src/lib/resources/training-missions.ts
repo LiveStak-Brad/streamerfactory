@@ -2699,6 +2699,333 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Gaming LIVE Mastery ——
+
+  "choosing-your-gaming-live-setup": {
+    id: "mission-113-gaming-setup",
+    mission_title: "Session: Gaming Setup Decision",
+    mission_description:
+      "Choose a primary gaming LIVE setup path with source-flow map and beginner fallback.",
+    mission_steps: steps(
+      [
+        "Complete the Gaming Setup Decision Matrix and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Choose a primary gaming LIVE setup path with source-flow map and beginner fallback.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Gaming Setup Decision Matrix", href: "/streameru/library/gaming-setup-decision-matrix" },
+      { label: "Source-Flow Diagram Worksheet", href: "/streameru/library/source-flow-diagram-worksheet-gaming" },
+      { label: "Beginner Setup Checklist", href: "/streameru/library/beginner-gaming-setup-checklist" },
+    ],
+  },
+
+  "gaming-commentary-systems-that-survive-high-focus": {
+    id: "mission-114-gaming-commentary",
+    mission_title: "Session: Commentary Loop",
+    mission_description:
+      "Build a commentary loop card for your primary game type and practice dead-air recovery.",
+    mission_steps: steps(
+      [
+        "Complete the Commentary Loop Card and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build a commentary loop card for your primary game type and practice dead-air recovery.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Commentary Loop Card", href: "/streameru/library/commentary-loop-card" },
+      { label: "Game-Type Commentary Map", href: "/streameru/library/game-type-commentary-map" },
+      { label: "Dead-Air Recovery Scripts", href: "/streameru/library/dead-air-recovery-scripts-gaming" },
+    ],
+  },
+
+  "reading-chat-without-losing-the-game": {
+    id: "mission-115-gaming-chat",
+    mission_title: "Session: Chat-Reading Plan",
+    mission_description:
+      "Install a chat-reading plan with safe-moment timing and new-viewer context scripts.",
+    mission_steps: steps(
+      [
+        "Complete the Chat-Reading Plan and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Install a chat-reading plan with safe-moment timing and new-viewer context scripts.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Chat-Reading Plan", href: "/streameru/library/chat-reading-plan-gaming" },
+      { label: "Safe-Moment Timing Card", href: "/streameru/library/safe-moment-timing-card" },
+      { label: "New-Viewer Context Scripts", href: "/streameru/library/new-viewer-context-scripts" },
+    ],
+  },
+
+  "game-audio-mic-balance-and-discord-routing": {
+    id: "mission-116-gaming-audio",
+    mission_title: "Session: Gaming Audio Balance",
+    mission_description:
+      "Complete audio-routing map and mic-vs-game balance pass (Discord/party included where used).",
+    mission_steps: steps(
+      [
+        "Complete the Audio-Routing Map and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete audio-routing map and mic-vs-game balance pass (Discord/party included where used).",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Audio-Routing Map", href: "/streameru/library/audio-routing-map-gaming" },
+      { label: "Mic-vs-Game Balance Checklist", href: "/streameru/library/mic-vs-game-balance-checklist" },
+      { label: "Discord Routing Worksheet", href: "/streameru/library/discord-routing-worksheet" },
+    ],
+  },
+
+  "tiktok-live-studio-for-gaming": {
+    id: "mission-117-gaming-live-studio",
+    mission_title: "Session: LIVE Studio Gaming Setup",
+    mission_description:
+      "Complete TikTok LIVE Studio gaming checklist and scene plan on a no-stream-key path.",
+    mission_steps: steps(
+      [
+        "Complete the TikTok LIVE Studio Gaming Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete TikTok LIVE Studio gaming checklist and scene plan on a no-stream-key path.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "TikTok LIVE Studio Gaming Checklist", href: "/streameru/library/tiktok-live-studio-gaming-checklist" },
+      { label: "LIVE Studio Scene Plan", href: "/streameru/library/live-studio-scene-plan-gaming" },
+      { label: "LIVE Studio Audio Device Card", href: "/streameru/library/live-studio-audio-device-card" },
+    ],
+  },
+
+  "obs-for-gaming-and-stream-key-reality": {
+    id: "mission-118-gaming-obs",
+    mission_title: "Session: OBS Gaming + Key Reality",
+    mission_description:
+      "Build OBS gaming scene plan, stream-key safety card, and single-PC performance checklist.",
+    mission_steps: steps(
+      [
+        "Complete the OBS Gaming Scene Plan and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build OBS gaming scene plan, stream-key safety card, and single-PC performance checklist.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "OBS Gaming Scene Plan", href: "/streameru/library/obs-gaming-scene-plan" },
+      { label: "Stream-Key Safety Card", href: "/streameru/library/stream-key-safety-card" },
+      { label: "Single-PC Performance Checklist", href: "/streameru/library/single-pc-performance-checklist" },
+    ],
+  },
+
+  "obs-virtual-camera-into-tiktok-live-studio": {
+    id: "mission-119-gaming-virtual-cam",
+    mission_title: "Session: Virtual Camera Proof",
+    mission_description:
+      "Prove OBS Virtual Camera into LIVE Studio with separate audio routing and recovery card.",
+    mission_steps: steps(
+      [
+        "Complete the OBS Virtual Camera Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Prove OBS Virtual Camera into LIVE Studio with separate audio routing and recovery card.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "OBS Virtual Camera Checklist", href: "/streameru/library/obs-virtual-camera-checklist" },
+      { label: "Dual-App Audio Routing Map", href: "/streameru/library/dual-app-audio-routing-map" },
+      { label: "Virtual Camera Recovery Card", href: "/streameru/library/virtual-camera-recovery-card" },
+    ],
+  },
+
+  "console-capture-and-party-chat-routing": {
+    id: "mission-120-gaming-console",
+    mission_title: "Session: Console Capture Map",
+    mission_description:
+      "Map console → capture card → OBS or LIVE Studio with party-chat audio plan.",
+    mission_steps: steps(
+      [
+        "Complete the Console Routing Map and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Map console → capture card → OBS or LIVE Studio with party-chat audio plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Console Routing Map", href: "/streameru/library/console-routing-map" },
+      { label: "Capture-Card Connection Checklist", href: "/streameru/library/capture-card-connection-checklist" },
+      { label: "Party-Chat Audio Plan", href: "/streameru/library/party-chat-audio-plan" },
+    ],
+  },
+
+  "mobile-gaming-live-workflows": {
+    id: "mission-121-gaming-mobile",
+    mission_title: "Session: Mobile Gaming Safety",
+    mission_description:
+      "Complete mobile gaming checklist, notification safety pass, and mirror test sheet.",
+    mission_steps: steps(
+      [
+        "Complete the Mobile Gaming Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete mobile gaming checklist, notification safety pass, and mirror test sheet.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Mobile Gaming Checklist", href: "/streameru/library/mobile-gaming-checklist" },
+      { label: "Notification Safety Card", href: "/streameru/library/notification-safety-card" },
+      { label: "Mobile Mirror Test Sheet", href: "/streameru/library/mobile-mirror-test-sheet" },
+    ],
+  },
+
+  "vertical-layouts-alerts-soundboards-and-tikfinity": {
+    id: "mission-122-gaming-tikfinity",
+    mission_title: "Session: Alerts & TikFinity Discipline",
+    mission_description:
+      "Build soundboard plan, TikFinity trigger map with cooldowns, and alert-volume checklist.",
+    mission_steps: steps(
+      [
+        "Complete the Soundboard Planning Worksheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build soundboard plan, TikFinity trigger map with cooldowns, and alert-volume checklist.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Soundboard Planning Worksheet", href: "/streameru/library/soundboard-planning-worksheet" },
+      { label: "TikFinity Trigger Map", href: "/streameru/library/tikfinity-trigger-map" },
+      { label: "Alert-Volume Checklist", href: "/streameru/library/alert-volume-checklist" },
+    ],
+  },
+
+  "gaming-community-moderation-troubleshooting-and-growth": {
+    id: "mission-123-gaming-community",
+    mission_title: "Session: Community + Troubleshooting",
+    mission_description:
+      "Install community rules, troubleshooting decision tree, and tournament run-of-show.",
+    mission_steps: steps(
+      [
+        "Complete the Gaming Community Rules Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, wins, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Install community rules, troubleshooting decision tree, and tournament run-of-show.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Gaming Community Rules Template", href: "/streameru/library/gaming-community-rules-template" },
+      { label: "Troubleshooting Decision Tree", href: "/streameru/library/troubleshooting-decision-tree-gaming" },
+      { label: "Tournament Run-of-Show", href: "/streameru/library/tournament-run-of-show" },
+    ],
+  },
+
+  "gaming-live-capstone-signature-show": {
+    id: "mission-124-gaming-capstone",
+    mission_title: "Session: Signature Gaming LIVE Capstone",
+    mission_description:
+      "Deliver and review signature Gaming LIVE show with full dossier evidence.",
+    mission_steps: steps(
+      [
+        "Complete the Signature Gaming Show Dossier Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the Signature Gaming Show Dossier + evidence checklist and complete replay review.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Deliver and review signature Gaming LIVE show with full dossier evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Signature Gaming Show Dossier Template", href: "/streameru/library/signature-gaming-show-dossier-template" },
+      { label: "Capstone Evidence Checklist", href: "/streameru/library/capstone-evidence-checklist-gaming" },
+      { label: "Replay Review Scorecard", href: "/streameru/library/replay-review-scorecard-gaming" },
+    ],
+  },
+
+
 
 
 

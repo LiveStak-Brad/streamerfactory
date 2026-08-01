@@ -189,6 +189,18 @@ const GOLD_PACK_SLUGS = new Set([
   "collab-performances-and-guest-musicians",
   "monetizing-music-live-ethically",
   "music-live-capstone-signature-show",
+  "choosing-your-gaming-live-setup",
+  "gaming-commentary-systems-that-survive-high-focus",
+  "reading-chat-without-losing-the-game",
+  "game-audio-mic-balance-and-discord-routing",
+  "tiktok-live-studio-for-gaming",
+  "obs-for-gaming-and-stream-key-reality",
+  "obs-virtual-camera-into-tiktok-live-studio",
+  "console-capture-and-party-chat-routing",
+  "mobile-gaming-live-workflows",
+  "vertical-layouts-alerts-soundboards-and-tikfinity",
+  "gaming-community-moderation-troubleshooting-and-growth",
+  "gaming-live-capstone-signature-show",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {

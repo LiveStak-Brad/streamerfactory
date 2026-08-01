@@ -73,6 +73,7 @@ export function trackDefaultDifficulty(trackId: string | null | undefined): Diff
     case "production":
     case "battle":
     case "music":
+    case "gaming":
       return "advanced";
     default:
       return "beginner";

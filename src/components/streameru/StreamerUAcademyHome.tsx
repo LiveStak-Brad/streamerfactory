@@ -164,6 +164,8 @@ const moduleDescriptions: Record<string, string> = {
     "Elite battle craft — matchups, energy architecture, partner ecosystems, ethical clutch hosting, production clarity, debriefs, and multi-battle event pacing.",
   "Music LIVE Mastery":
     "Music performance on LIVE — formats, performance audio, stamina, setlists, requests, growth, rights-aware repertoire, collabs, and ethical monetization.",
+  "Gaming LIVE Mastery":
+    "Gaming on LIVE — reliable setups, commentary, chat systems, audio routing, OBS and TikTok LIVE Studio workflows, console/mobile capture, TikFinity discipline, moderation, and signature show design.",
 };
 
 /**
@@ -512,6 +514,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isProduction = program.programName === "Production Mastery";
             const isBattle = program.programName === "Battle Mastery";
             const isMusic = program.programName === "Music LIVE Mastery";
+            const isGaming = program.programName === "Gaming LIVE Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -530,20 +533,25 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isMusic
+                : isGaming
                   ? {
                       label: "Next steps",
-                      detail: "Optional specialty complete · Music LIVE Lab Honors · other Mastery Paths",
+                      detail: "Optional specialty complete · Gaming LIVE Lab Honors · other Mastery Paths",
+                    }
+                  : isMusic
+                  ? {
+                      label: "Next steps",
+                      detail: "Gaming LIVE Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
                     }
                   : isBattle
                     ? {
                         label: "Next steps",
-                        detail: "Music LIVE Mastery (optional) · Battle Lab Honors · other Mastery Paths",
+                        detail: "Music LIVE / Gaming LIVE Mastery (optional) · Battle Lab Honors · other Mastery Paths",
                       }
                   : isProduction
                     ? {
                         label: "Next steps",
-                        detail: "Battle Mastery / Music LIVE Mastery (optional) · Career Creator path · optional Production Lab Honors",
+                        detail: "Battle / Music / Gaming LIVE Mastery (optional) · Career Creator path · optional Production Lab Honors",
                       }
                     : isProfessional
                       ? {
@@ -583,6 +591,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                 ? "Battle specialty"
                                 : isMusic
                                   ? "Music LIVE specialty"
+                                  : isGaming
+                                    ? "Gaming LIVE specialty"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -602,6 +612,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                 ? "optional specialty · Capstone: signature battle system"
                                 : isMusic
                                   ? "optional specialty · Capstone: signature music LIVE show"
+                                  : isGaming
+                                    ? "optional specialty · Capstone: signature gaming LIVE show"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];
@@ -622,7 +634,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                     isProfessional ||
                     isProduction ||
                     isBattle ||
-                    isMusic
+                    isMusic ||
+                    isGaming
                       ? "advanced"
                       : isPresence || isCreation
                         ? "intermediate"

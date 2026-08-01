@@ -17,6 +17,7 @@ export const TRAINING_TRACK_IDS = [
   "production",
   "battle",
   "music",
+  "gaming",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -137,6 +138,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Music performance on LIVE — formats, performance audio, stamina, setlists, requests, growth, rights-aware repertoire, collabs, and ethical monetization.",
   },
+  {
+    id: "gaming",
+    title: "Gaming LIVE Mastery",
+    lessonInLabel: "Gaming LIVE Mastery",
+    partOfLabel: "StreamerU · Gaming LIVE Mastery",
+    description:
+      "Gaming on LIVE — reliable setups, commentary, chat systems, audio routing, OBS and TikTok LIVE Studio workflows, console/mobile capture, TikFinity discipline, moderation, and signature show design.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -162,6 +171,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   production: "Production",
   battle: "Battle Mastery",
   music: "Music LIVE Mastery",
+  gaming: "Gaming LIVE Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {
