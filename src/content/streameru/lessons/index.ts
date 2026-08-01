@@ -93,6 +93,14 @@ import { lesson as mobileFirstProductionExcellence } from "./mobile-first-produc
 import { lesson as accessibilityBasicsForLiveViewers } from "./accessibility-basics-for-live-viewers";
 import { lesson as troubleshootingUnderPressure } from "./troubleshooting-under-pressure";
 import { lesson as productionCapstoneYourSignatureLook } from "./production-capstone-your-signature-look";
+import { lesson as battleStrategyBeyondBasics } from "./battle-strategy-beyond-basics";
+import { lesson as energyArchitectureForTimedBattles } from "./energy-architecture-for-timed-battles";
+import { lesson as partnerEcosystemsAndReputation } from "./partner-ecosystems-and-reputation";
+import { lesson as clutchHostingAndCrowdTurning } from "./clutch-hosting-and-crowd-turning";
+import { lesson as battleProductionAndOnScreenClarity } from "./battle-production-and-on-screen-clarity";
+import { lesson as battleAnalyticsAndDebriefMastery } from "./battle-analytics-and-debrief-mastery";
+import { lesson as multiBattleNightsAndEventPacing } from "./multi-battle-nights-and-event-pacing";
+import { lesson as battleCapstoneSignatureBattleSystem } from "./battle-capstone-signature-battle-system";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -194,6 +202,14 @@ const LESSONS: ExpandedLesson[] = [
   accessibilityBasicsForLiveViewers,
   troubleshootingUnderPressure,
   productionCapstoneYourSignatureLook,
+  battleStrategyBeyondBasics,
+  energyArchitectureForTimedBattles,
+  partnerEcosystemsAndReputation,
+  clutchHostingAndCrowdTurning,
+  battleProductionAndOnScreenClarity,
+  battleAnalyticsAndDebriefMastery,
+  multiBattleNightsAndEventPacing,
+  battleCapstoneSignatureBattleSystem,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

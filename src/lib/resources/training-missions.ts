@@ -2209,6 +2209,225 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Battle Mastery ——
+
+  "battle-strategy-beyond-basics": {
+    id: "mission-95-matchup",
+    mission_title: "Session: Matchup Strategy",
+    mission_description:
+      "Score next 3 invites; accept or refuse with written rationale.",
+    mission_steps: steps(
+      [
+        "Complete the Matchup Scorecard and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Score next 3 invites; accept or refuse with written rationale.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Matchup Scorecard", href: "/streameru/library/matchup-scorecard" },
+      { label: "Battle Refusal Decision Tree", href: "/streameru/library/battle-refusal-decision-tree" },
+      { label: "Invite Evaluation Checklist", href: "/streameru/library/invite-evaluation-checklist" },
+    ],
+  },
+
+  "energy-architecture-for-timed-battles": {
+    id: "mission-96-energy-map",
+    mission_title: "Session: Battle Energy Architecture",
+    mission_description:
+      "Run one battle/rehearsal from a written energy map without desperate finals.",
+    mission_steps: steps(
+      [
+        "Complete the Battle Energy Map and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run one battle/rehearsal from a written energy map without desperate finals.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Battle Energy Map", href: "/streameru/library/battle-energy-map" },
+      { label: "Round Pacing Card", href: "/streameru/library/round-pacing-card" },
+      { label: "Mid-Battle Reset Scripts", href: "/streameru/library/mid-battle-reset-scripts" },
+    ],
+  },
+
+  "partner-ecosystems-and-reputation": {
+    id: "mission-97-partner-roster",
+    mission_title: "Session: Partner Ecosystem Plan",
+    mission_description:
+      "Build 8–12 name partner pipeline with fairness norms.",
+    mission_steps: steps(
+      [
+        "Complete the Partner Roster Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build 8–12 name partner pipeline with fairness norms.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Partner Roster Planner", href: "/streameru/library/partner-roster-planner" },
+      { label: "Fairness Norms Card", href: "/streameru/library/fairness-norms-card" },
+      { label: "Partner Outreach Script", href: "/streameru/library/partner-outreach-script" },
+    ],
+  },
+
+  "clutch-hosting-and-crowd-turning": {
+    id: "mission-98-ethical-clutch",
+    mission_title: "Session: Ethical Clutch Practice",
+    mission_description:
+      "Practice clutch phrase bank with ethics rules — no guilt lines.",
+    mission_steps: steps(
+      [
+        "Complete the Clutch Phrase Bank and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Practice clutch phrase bank with ethics rules — no guilt lines.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Clutch Phrase Bank", href: "/streameru/library/clutch-phrase-bank" },
+      { label: "Clutch Ethics Rules Card", href: "/streameru/library/clutch-ethics-rules-card" },
+      { label: "Crowd Turning Checklist", href: "/streameru/library/crowd-turning-checklist" },
+    ],
+  },
+
+  "battle-production-and-on-screen-clarity": {
+    id: "mission-99-battle-clarity",
+    mission_title: "Session: Battle Production Clarity",
+    mission_description:
+      "Hit 100% on battle production clarity checklist in battle or rehearsal.",
+    mission_steps: steps(
+      [
+        "Complete the Battle Production Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Hit 100% on battle production clarity checklist in battle or rehearsal.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Battle Production Checklist", href: "/streameru/library/battle-production-checklist" },
+      { label: "Overlay Clarity Card", href: "/streameru/library/overlay-clarity-card" },
+      { label: "Battle Audio/Video Check", href: "/streameru/library/battle-audio-video-check" },
+    ],
+  },
+
+  "battle-analytics-and-debrief-mastery": {
+    id: "mission-100-debrief",
+    mission_title: "Session: Athlete Debrief",
+    mission_description:
+      "Complete debrief that names one behavior change for next battle.",
+    mission_steps: steps(
+      [
+        "Complete the Battle Debrief Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Complete debrief that names one behavior change for next battle.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Battle Debrief Template", href: "/streameru/library/battle-debrief-template" },
+      { label: "Battle Performance Scorecard", href: "/streameru/library/battle-performance-scorecard" },
+      { label: "Battle Improvement Experiment Log", href: "/streameru/library/battle-improvement-experiment-log" },
+    ],
+  },
+
+  "multi-battle-nights-and-event-pacing": {
+    id: "mission-101-event-pace",
+    mission_title: "Session: Multi-Battle Night Plan",
+    mission_description:
+      "Plan multi-battle night with recovery blocks and narrative continuity.",
+    mission_steps: steps(
+      [
+        "Complete the Multi-Battle Night Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not gift totals).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Plan multi-battle night with recovery blocks and narrative continuity.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Multi-Battle Night Planner", href: "/streameru/library/multi-battle-night-planner" },
+      { label: "Recovery Block Card", href: "/streameru/library/recovery-block-card" },
+      { label: "Event Narrative Continuity Sheet", href: "/streameru/library/event-narrative-continuity-sheet" },
+    ],
+  },
+
+  "battle-capstone-signature-battle-system": {
+    id: "mission-102-signature-week",
+    mission_title: "Session: Signature Battle System Capstone",
+    mission_description:
+      "Assemble playbook + week evidence packet for signature battle system.",
+    mission_steps: steps(
+      [
+        "Complete the Signature Battle System Playbook and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the Signature Battle System Playbook + week evidence packet and complete the Battle Week Evidence Checklist.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Assemble playbook + week evidence packet for signature battle system.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Signature Battle System Playbook", href: "/streameru/library/signature-battle-system-playbook" },
+      { label: "Battle Week Evidence Checklist", href: "/streameru/library/battle-week-evidence-checklist" },
+      { label: "Capstone Week Results Review", href: "/streameru/library/capstone-week-results-review" },
+    ],
+  },
+
+
 
 
   "presence-capstone-signature-20-minute-live": {

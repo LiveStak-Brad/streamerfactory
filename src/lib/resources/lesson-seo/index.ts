@@ -11,6 +11,7 @@ import { GROWTH_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/grow
 import { COMMUNITY_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/community-mastery";
 import { PROFESSIONAL_CREATOR_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/professional-creator-mastery";
 import { PRODUCTION_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/production-mastery";
+import { BATTLE_MASTERY_LESSON_SEO } from "@/lib/resources/lesson-seo/packs/battle-mastery";
 import type { LessonSeoPack } from "@/lib/resources/lesson-seo/types";
 
 export type { LessonSeoPack, LessonFaq, LessonInternalLink, LessonContentSuggestion } from "@/lib/resources/lesson-seo/types";
@@ -28,6 +29,7 @@ const ALL_PACKS: LessonSeoPack[] = [
   ...COMMUNITY_MASTERY_LESSON_SEO,
   ...PROFESSIONAL_CREATOR_MASTERY_LESSON_SEO,
   ...PRODUCTION_MASTERY_LESSON_SEO,
+  ...BATTLE_MASTERY_LESSON_SEO,
 ];
 
 const PACKS_BY_SLUG = new Map(ALL_PACKS.map((pack) => [pack.slug, pack]));

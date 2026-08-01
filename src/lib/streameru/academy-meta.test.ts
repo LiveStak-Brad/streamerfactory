@@ -17,12 +17,12 @@ import { STREAMERU_PROGRAM_NAMES, curriculumByProgram } from "@/lib/resources/cu
 describe("StreamerU academy-meta source of truth", () => {
   it("published lesson count matches curriculum SoT", () => {
     expect(PUBLISHED_LESSON_COUNT).toBe(CURRICULUM_TOTAL_LESSONS);
-    expect(PUBLISHED_LESSON_COUNT).toBe(94);
+    expect(PUBLISHED_LESSON_COUNT).toBe(102);
   });
 
-  it("includes Presence then Content Creation Mastery before Growth, then Community, Professional Creator, then Production", () => {
-    expect(getPublishedProgramCount()).toBe(11);
-    expect(getActiveProgramCount()).toBe(11);
+  it("includes Presence then Content Creation before Growth, then Community, Professional, Production, then Battle", () => {
+    expect(getPublishedProgramCount()).toBe(12);
+    expect(getActiveProgramCount()).toBe(12);
     expect(STREAMERU_PROGRAM_NAMES[0]).toBe("Beginner Foundations");
     expect(STREAMERU_PROGRAM_NAMES[4]).toBe("Advanced Creator");
     expect(STREAMERU_PROGRAM_NAMES[5]).toBe("Presence Mastery");
@@ -31,6 +31,7 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(STREAMERU_PROGRAM_NAMES[8]).toBe("Community Mastery");
     expect(STREAMERU_PROGRAM_NAMES[9]).toBe("Professional Creator Mastery");
     expect(STREAMERU_PROGRAM_NAMES[10]).toBe("Production Mastery");
+    expect(STREAMERU_PROGRAM_NAMES[11]).toBe("Battle Mastery");
     const beginner = curriculumByProgram().find((p) => p.programName === "Beginner Foundations");
     expect(beginner?.lessons).toHaveLength(9);
     expect(beginner?.lessons.some((l) => l.slug === "platform-rules-new-live-creators")).toBe(true);
@@ -72,6 +73,10 @@ describe("StreamerU academy-meta source of truth", () => {
     expect(production?.lessons).toHaveLength(10);
     expect(production?.lessons[0]?.slug).toBe("production-decisions-before-gear-purchases");
     expect(production?.lessons[9]?.slug).toBe("production-capstone-your-signature-look");
+    const battle = curriculumByProgram().find((p) => p.programName === "Battle Mastery");
+    expect(battle?.lessons).toHaveLength(8);
+    expect(battle?.lessons[0]?.slug).toBe("battle-strategy-beyond-basics");
+    expect(battle?.lessons[7]?.slug).toBe("battle-capstone-signature-battle-system");
   });
 
   it("planned university scale is roadmap-only and distinct from published", () => {
@@ -81,7 +86,7 @@ describe("StreamerU academy-meta source of truth", () => {
   });
 
   it("exposes release metadata and a finishable study-hours estimate", () => {
-    expect(ACADEMY_RELEASE.version).toBe("1.8");
+    expect(ACADEMY_RELEASE.version).toBe("1.9");
     expect(getPublishedAcademyStudyMinutes()).toBeGreaterThan(60);
     expect(getPublishedAcademyStudyHoursLabel()).toMatch(/\d/);
   });

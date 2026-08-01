@@ -20,6 +20,7 @@
  * 9. Community Mastery — belonging culture, mods, rituals, guests, networking
  * 10. Professional Creator Mastery — creator-side career professionalism
  * 11. Production Mastery — lighting, audio, framing, OBS, mobile, accessibility, triage
+ * 12. Battle Mastery — elite battle strategy specialty (optional)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -55,6 +56,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Community Mastery",
   "Professional Creator Mastery",
   "Production Mastery",
+  "Battle Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -917,6 +919,79 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Production Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
+  },
+  // BATTLE MASTERY (8) — optional specialty after Core Battles + Advanced Creator
+  {
+    globalOrder: 95,
+    slug: "battle-strategy-beyond-basics",
+    title: "Battle Strategy Beyond Basics",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 96,
+    slug: "energy-architecture-for-timed-battles",
+    title: "Energy Architecture for Timed Battles",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 97,
+    slug: "partner-ecosystems-and-reputation",
+    title: "Partner Ecosystems and Reputation",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 98,
+    slug: "clutch-hosting-and-crowd-turning",
+    title: "Clutch Hosting and Crowd Turning",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 99,
+    slug: "battle-production-and-on-screen-clarity",
+    title: "Battle Production and On-Screen Clarity",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 100,
+    slug: "battle-analytics-and-debrief-mastery",
+    title: "Battle Analytics and Debrief Mastery",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 101,
+    slug: "multi-battle-nights-and-event-pacing",
+    title: "Multi-Battle Nights and Event Pacing",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 8,
+  },
+  {
+    globalOrder: 102,
+    slug: "battle-capstone-signature-battle-system",
+    title: "Battle Capstone: Signature Battle System",
+    trackId: "battle",
+    programName: "Battle Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 8,
   },
 ];
 

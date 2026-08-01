@@ -171,6 +171,14 @@ const GOLD_PACK_SLUGS = new Set([
   "accessibility-basics-for-live-viewers",
   "troubleshooting-under-pressure",
   "production-capstone-your-signature-look",
+  "battle-strategy-beyond-basics",
+  "energy-architecture-for-timed-battles",
+  "partner-ecosystems-and-reputation",
+  "clutch-hosting-and-crowd-turning",
+  "battle-production-and-on-screen-clarity",
+  "battle-analytics-and-debrief-mastery",
+  "multi-battle-nights-and-event-pacing",
+  "battle-capstone-signature-battle-system",
 ]);
 
 export function buildStubLessonResources(): LibraryResource[] {

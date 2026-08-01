@@ -116,6 +116,15 @@ import { quiz as accessibilityBasicsForLiveViewers } from "@/lib/assessments/qui
 import { quiz as troubleshootingUnderPressure } from "@/lib/assessments/quizzes/production/troubleshooting-under-pressure";
 import { quiz as productionCapstoneYourSignatureLook } from "@/lib/assessments/quizzes/production/production-capstone-your-signature-look";
 
+import { quiz as battleStrategyBeyondBasics } from "@/lib/assessments/quizzes/battle/battle-strategy-beyond-basics";
+import { quiz as energyArchitectureForTimedBattles } from "@/lib/assessments/quizzes/battle/energy-architecture-for-timed-battles";
+import { quiz as partnerEcosystemsAndReputation } from "@/lib/assessments/quizzes/battle/partner-ecosystems-and-reputation";
+import { quiz as clutchHostingAndCrowdTurning } from "@/lib/assessments/quizzes/battle/clutch-hosting-and-crowd-turning";
+import { quiz as battleProductionAndOnScreenClarity } from "@/lib/assessments/quizzes/battle/battle-production-and-on-screen-clarity";
+import { quiz as battleAnalyticsAndDebriefMastery } from "@/lib/assessments/quizzes/battle/battle-analytics-and-debrief-mastery";
+import { quiz as multiBattleNightsAndEventPacing } from "@/lib/assessments/quizzes/battle/multi-battle-nights-and-event-pacing";
+import { quiz as battleCapstoneSignatureBattleSystem } from "@/lib/assessments/quizzes/battle/battle-capstone-signature-battle-system";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -127,6 +136,7 @@ import { exam as finalGrowth } from "@/lib/assessments/exams/program-growth";
 import { exam as finalCommunity } from "@/lib/assessments/exams/program-community";
 import { exam as finalProfessional } from "@/lib/assessments/exams/program-professional";
 import { exam as finalProduction } from "@/lib/assessments/exams/program-production";
+import { exam as finalBattle } from "@/lib/assessments/exams/program-battle";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -224,6 +234,14 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   accessibilityBasicsForLiveViewers,
   troubleshootingUnderPressure,
   productionCapstoneYourSignatureLook,
+  battleStrategyBeyondBasics,
+  energyArchitectureForTimedBattles,
+  partnerEcosystemsAndReputation,
+  clutchHostingAndCrowdTurning,
+  battleProductionAndOnScreenClarity,
+  battleAnalyticsAndDebriefMastery,
+  multiBattleNightsAndEventPacing,
+  battleCapstoneSignatureBattleSystem,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -238,6 +256,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalCommunity,
   finalProfessional,
   finalProduction,
+  finalBattle,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));
