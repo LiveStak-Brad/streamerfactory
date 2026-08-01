@@ -170,6 +170,8 @@ const moduleDescriptions: Record<string, string> = {
     "Professional multi-guest hosting — conversations, panels, interviews, community rooms, events, talent shows, ethical competitive rooms, moderation, and signature multi-guest LIVE events.",
   "AI Creator Mastery":
     "Responsible AI for creators — mindset, prompts, planning, voice-safe writing, visuals, video/repurposing, safe automation, verified research, ethics/privacy, and an AI Creator Operating System.",
+  "Selling & Influence Mastery":
+    "Ethical selling for creators — trust, buyer psychology, clear value, trust-centered storytelling, objections, natural CTAs, community-safe offers, long-term relationships, reputation, and an Ethical Creator Offer.",
 };
 
 /**
@@ -521,6 +523,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isGaming = program.programName === "Gaming LIVE Mastery";
             const isMultiguest = program.programName === "Multi-Guest LIVE Mastery";
             const isAicreator = program.programName === "AI Creator Mastery";
+            const isSelling = program.programName === "Selling & Influence Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -539,35 +542,47 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isAicreator
+                : isSelling
                   ? {
                       label: "Next steps",
-                      detail: "Optional specialty complete · AI Creator Lab Honors · other Mastery Paths",
+                      detail:
+                        "Optional specialty complete · Selling & Influence Lab Honors · other Mastery Paths",
+                    }
+                  : isAicreator
+                  ? {
+                      label: "Next steps",
+                      detail:
+                        "Selling & Influence Mastery (optional) · AI Creator Lab Honors · other Mastery Paths",
                     }
                   : isMultiguest
                   ? {
                       label: "Next steps",
-                      detail: "AI Creator Mastery (optional) · Multi-Guest LIVE Lab Honors · other Mastery Paths",
+                      detail:
+                        "AI Creator / Selling & Influence Mastery (optional) · Multi-Guest LIVE Lab Honors · other Mastery Paths",
                     }
                   : isGaming
                   ? {
                       label: "Next steps",
-                      detail: "Multi-Guest / AI Creator Mastery (optional) · Gaming LIVE Lab Honors · other Mastery Paths",
+                      detail:
+                        "Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Gaming LIVE Lab Honors · other Mastery Paths",
                     }
                   : isMusic
                   ? {
                       label: "Next steps",
-                      detail: "Gaming / Multi-Guest / AI Creator Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
+                      detail:
+                        "Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
                     }
                   : isBattle
                     ? {
                         label: "Next steps",
-                        detail: "Music / Gaming / Multi-Guest / AI Creator Mastery (optional) · Battle Lab Honors · other Mastery Paths",
+                        detail:
+                          "Music / Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Battle Lab Honors · other Mastery Paths",
                       }
                   : isProduction
                     ? {
                         label: "Next steps",
-                        detail: "Battle / Music / Gaming / Multi-Guest / AI Creator Mastery (optional) · Career Creator path · optional Production Lab Honors",
+                        detail:
+                          "Battle / Music / Gaming / Multi-Guest / AI Creator / Selling & Influence Mastery (optional) · Career Creator path · optional Production Lab Honors",
                       }
                     : isProfessional
                       ? {
@@ -613,6 +628,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                       ? "Multi-Guest LIVE specialty"
                                       : isAicreator
                                         ? "AI Creator specialty"
+                                        : isSelling
+                                          ? "Selling & Influence specialty"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -638,6 +655,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                       ? "optional specialty · Capstone: signature multi-guest LIVE event"
                                       : isAicreator
                                         ? "optional specialty · Capstone: AI Creator Operating System"
+                                        : isSelling
+                                          ? "optional specialty · Capstone: Ethical Creator Offer"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];

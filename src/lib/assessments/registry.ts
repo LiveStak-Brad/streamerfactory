@@ -170,6 +170,16 @@ import { quiz as aiAutomationForCreatorWorkflows } from "@/lib/assessments/quizz
 import { quiz as aiResearchAnalyticsAndDecisionMaking } from "@/lib/assessments/quizzes/aicreator/ai-research-analytics-and-decision-making";
 import { quiz as ethicsPrivacyAndResponsibleAi } from "@/lib/assessments/quizzes/aicreator/ethics-privacy-and-responsible-ai";
 import { quiz as aiCreatorCapstoneOperatingSystem } from "@/lib/assessments/quizzes/aicreator/ai-creator-capstone-operating-system";
+import { quiz as trustIsYourGreatestAsset } from "@/lib/assessments/quizzes/selling/trust-is-your-greatest-asset";
+import { quiz as understandingWhyPeopleBuy } from "@/lib/assessments/quizzes/selling/understanding-why-people-buy";
+import { quiz as communicatingValueClearly } from "@/lib/assessments/quizzes/selling/communicating-value-clearly";
+import { quiz as storytellingThatBuildsTrust } from "@/lib/assessments/quizzes/selling/storytelling-that-builds-trust";
+import { quiz as handlingQuestionsAndObjections } from "@/lib/assessments/quizzes/selling/handling-questions-and-objections";
+import { quiz as callsToActionThatFeelNatural } from "@/lib/assessments/quizzes/selling/calls-to-action-that-feel-natural";
+import { quiz as sellingWithoutDamagingCommunity } from "@/lib/assessments/quizzes/selling/selling-without-damaging-community";
+import { quiz as longTermCustomerRelationships } from "@/lib/assessments/quizzes/selling/long-term-customer-relationships";
+import { quiz as ethicalInfluenceAndReputation } from "@/lib/assessments/quizzes/selling/ethical-influence-and-reputation";
+import { quiz as sellingInfluenceCapstoneEthicalOffer } from "@/lib/assessments/quizzes/selling/selling-influence-capstone-ethical-offer";
 
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
@@ -187,6 +197,7 @@ import { exam as finalMusic } from "@/lib/assessments/exams/program-music";
 import { exam as finalGaming } from "@/lib/assessments/exams/program-gaming";
 import { exam as finalMultiguest } from "@/lib/assessments/exams/program-multiguest";
 import { exam as finalAicreator } from "@/lib/assessments/exams/program-aicreator";
+import { exam as finalSelling } from "@/lib/assessments/exams/program-selling";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -334,6 +345,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   aiResearchAnalyticsAndDecisionMaking,
   ethicsPrivacyAndResponsibleAi,
   aiCreatorCapstoneOperatingSystem,
+  trustIsYourGreatestAsset,
+  understandingWhyPeopleBuy,
+  communicatingValueClearly,
+  storytellingThatBuildsTrust,
+  handlingQuestionsAndObjections,
+  callsToActionThatFeelNatural,
+  sellingWithoutDamagingCommunity,
+  longTermCustomerRelationships,
+  ethicalInfluenceAndReputation,
+  sellingInfluenceCapstoneEthicalOffer,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -353,6 +374,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalGaming,
   finalMultiguest,
   finalAicreator,
+  finalSelling,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

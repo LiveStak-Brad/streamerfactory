@@ -102,6 +102,10 @@ export const PROGRAM_META_BY_NAME: Record<StreamerUProgramName, ProgramMeta> = {
     programKey: "aicreator",
     certificateKey: "cert_ai_creator_mastery",
   },
+  "Selling & Influence Mastery": {
+    programKey: "selling",
+    certificateKey: "cert_selling_influence_mastery",
+  },
 };
 
 export function listSemesterPrograms(): SemesterProgram[] {
@@ -224,6 +228,9 @@ export function certificateDisplayName(certificateKey: string): string {
   }
   if (certificateKey === "cert_ai_creator_mastery") {
     return "AI Creator Mastery Certificate";
+  }
+  if (certificateKey === "cert_selling_influence_mastery") {
+    return "Selling & Influence Mastery Certificate";
   }
   return certificateKey;
 }

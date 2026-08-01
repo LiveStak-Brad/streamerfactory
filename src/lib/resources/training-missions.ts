@@ -3569,6 +3569,249 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Selling & Influence Mastery ——
+  "trust-is-your-greatest-asset": {
+    id: "mission-145-si-01",
+    mission_title: "Session: Trust Audit Session",
+    mission_description: "Audit current trust signals and identify one relationship promise to strengthen.",
+    mission_steps: steps(
+      [
+        "Complete the Trust Audit Worksheet and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Audit current trust signals and identify one relationship promise to strengthen.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Trust Audit Worksheet", href: "/streameru/library/trust-audit-worksheet" },
+      { label: "Trust Signal Checklist", href: "/streameru/library/trust-signal-checklist" },
+      { label: "Relationship Map Starter", href: "/streameru/library/relationship-map-starter" },
+    ],
+  },
+  "understanding-why-people-buy": {
+    id: "mission-146-si-02",
+    mission_title: "Session: Buyer Understanding Session",
+    mission_description: "Map a real audience need, motivation, and source of decision friction without manufacturing pain.",
+    mission_steps: steps(
+      [
+        "Complete the Buyer Motivation Map and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Map a real audience need, motivation, and source of decision friction without manufacturing pain.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Buyer Motivation Map", href: "/streameru/library/buyer-motivation-map" },
+      { label: "Needs Discovery Guide", href: "/streameru/library/needs-discovery-guide" },
+      { label: "Decision Friction Card", href: "/streameru/library/decision-friction-card" },
+    ],
+  },
+  "communicating-value-clearly": {
+    id: "mission-147-si-03",
+    mission_title: "Session: Value Clarity Session",
+    mission_description: "Translate offer features into specific, supportable value for the right customer.",
+    mission_steps: steps(
+      [
+        "Complete the Value Statement Worksheet and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Translate offer features into specific, supportable value for the right customer.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Value Statement Worksheet", href: "/streameru/library/value-statement-worksheet" },
+      { label: "Offer Clarity Framework", href: "/streameru/library/offer-clarity-framework" },
+      { label: "Benefit Translation Card", href: "/streameru/library/benefit-translation-card" },
+    ],
+  },
+  "storytelling-that-builds-trust": {
+    id: "mission-148-si-04",
+    mission_title: "Session: Trust Story Session",
+    mission_description: "Tell a concise customer-centered story with honest proof and no inflated outcome claims.",
+    mission_steps: steps(
+      [
+        "Complete the Trust Story Planner and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Tell a concise customer-centered story with honest proof and no inflated outcome claims.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Trust Story Planner", href: "/streameru/library/trust-story-planner" },
+      { label: "Customer Journey Story Card", href: "/streameru/library/customer-journey-story-card" },
+      { label: "Proof Without Hype Checklist", href: "/streameru/library/proof-without-hype-checklist" },
+    ],
+  },
+  "handling-questions-and-objections": {
+    id: "mission-149-si-05",
+    mission_title: "Session: Objection Listening Session",
+    mission_description: "Answer real questions directly while respecting hesitation and a genuine no.",
+    mission_steps: steps(
+      [
+        "Complete the Objection Response Guide and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Answer real questions directly while respecting hesitation and a genuine no.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Objection Response Guide", href: "/streameru/library/objection-response-guide" },
+      { label: "Question Bank For Creators", href: "/streameru/library/question-bank-for-creators" },
+      { label: "Hesitation Response Card", href: "/streameru/library/hesitation-response-card" },
+    ],
+  },
+  "calls-to-action-that-feel-natural": {
+    id: "mission-150-si-06",
+    mission_title: "Session: Natural Ask Session",
+    mission_description: "Deliver a clear, pressure-free call to action with terms and next steps visible.",
+    mission_steps: steps(
+      [
+        "Complete the Cta Planner and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Deliver a clear, pressure-free call to action with terms and next steps visible.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Cta Planner", href: "/streameru/library/cta-planner" },
+      { label: "Natural Ask Scripts", href: "/streameru/library/natural-ask-scripts" },
+      { label: "Pressure Free Offer Checklist", href: "/streameru/library/pressure-free-offer-checklist" },
+    ],
+  },
+  "selling-without-damaging-community": {
+    id: "mission-151-si-07",
+    mission_title: "Session: Community Trust Session",
+    mission_description: "Plan an offer cadence that protects service, belonging, and audience boundaries.",
+    mission_steps: steps(
+      [
+        "Complete the Community Trust Scorecard and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Plan an offer cadence that protects service, belonging, and audience boundaries.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Community Trust Scorecard", href: "/streameru/library/community-trust-scorecard" },
+      { label: "Offer Cadence Planner", href: "/streameru/library/offer-cadence-planner" },
+      { label: "Sell Vs Serve Balance Card", href: "/streameru/library/sell-vs-serve-balance-card" },
+    ],
+  },
+  "long-term-customer-relationships": {
+    id: "mission-152-si-08",
+    mission_title: "Session: Promise Keeper Session",
+    mission_description: "Complete a useful follow-up and log whether the delivered experience matched the promise.",
+    mission_steps: steps(
+      [
+        "Complete the Customer Follow Up Checklist and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Complete a useful follow-up and log whether the delivered experience matched the promise.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Customer Follow Up Checklist", href: "/streameru/library/customer-follow-up-checklist" },
+      { label: "Lifetime Value Thinking Card", href: "/streameru/library/lifetime-value-thinking-card" },
+      { label: "Promise Keeper Log", href: "/streameru/library/promise-keeper-log" },
+    ],
+  },
+  "ethical-influence-and-reputation": {
+    id: "mission-153-si-09",
+    mission_title: "Session: Reputation Review Session",
+    mission_description: "Review claims, disclosures, incentives, and reputation risks before making an offer.",
+    mission_steps: steps(
+      [
+        "Complete the Ethical Influence Checklist and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      45,
+      [
+        "Run the lesson execution step with a real offer or realistic rehearsal; never use manipulation, manufactured urgency, or deceptive proof.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Review claims, disclosures, incentives, and reputation risks before making an offer.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Ethical Influence Checklist", href: "/streameru/library/ethical-influence-checklist" },
+      { label: "Disclosure Script Bank Selling", href: "/streameru/library/disclosure-script-bank-selling" },
+      { label: "Reputation Risk Scorecard", href: "/streameru/library/reputation-risk-scorecard" },
+    ],
+  },
+  "selling-influence-capstone-ethical-offer": {
+    id: "mission-154-si-10",
+    mission_title: "Session: Ethical Creator Offer Capstone",
+    mission_description: "Assemble and review a complete ethical creator offer with trust, value, proof, choice, delivery, and improvement evidence.",
+    mission_steps: steps(
+      [
+        "Complete the Ethical Creator Offer Dossier and supporting downloads for this lesson.",
+        "Check the work for clear value, honest proof, informed choice, and community trust.",
+      ],
+      40,
+      [
+        "Assemble the Ethical Creator Offer Dossier, Capstone Evidence Checklist Selling Influence, and improvement report.",
+        "Write a two-line note: what the customer could verify and what you will improve.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal: "Assemble and review a complete ethical creator offer with trust, value, proof, choice, delivery, and improvement evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Ethical Creator Offer Dossier", href: "/streameru/library/ethical-creator-offer-dossier" },
+      { label: "Capstone Evidence Checklist Selling Influence", href: "/streameru/library/capstone-evidence-checklist-selling-influence" },
+      { label: "Improvement Report Template Selling", href: "/streameru/library/improvement-report-template-selling" },
+    ],
+  },
+
+
 
 
 

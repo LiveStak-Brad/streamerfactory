@@ -25,6 +25,7 @@
  * 14. Gaming LIVE Mastery — gaming LIVE specialty (optional; after Music LIVE)
  * 15. Multi-Guest LIVE Mastery — multi-guest hosting specialty (optional; after Gaming LIVE)
  * 16. AI Creator Mastery — responsible AI specialty (optional; after Multi-Guest LIVE)
+ * 17. Selling & Influence Mastery — ethical selling specialty (optional; after AI Creator)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -65,6 +66,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Gaming LIVE Mastery",
   "Multi-Guest LIVE Mastery",
   "AI Creator Mastery",
+  "Selling & Influence Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1378,6 +1380,97 @@ export const CURRICULUM: CurriculumLesson[] = [
     title: "AI Creator Capstone: Operating System",
     trackId: "aicreator",
     programName: "AI Creator Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
+  },
+  // SELLING & INFLUENCE MASTERY (10) — optional specialty after AI Creator; Advanced Creator required for certificate
+  {
+    globalOrder: 145,
+    slug: "trust-is-your-greatest-asset",
+    title: "Trust Is Your Greatest Asset",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 146,
+    slug: "understanding-why-people-buy",
+    title: "Understanding Why People Buy",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 147,
+    slug: "communicating-value-clearly",
+    title: "Communicating Value Clearly",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 148,
+    slug: "storytelling-that-builds-trust",
+    title: "Storytelling That Builds Trust",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 149,
+    slug: "handling-questions-and-objections",
+    title: "Handling Questions and Objections",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 150,
+    slug: "calls-to-action-that-feel-natural",
+    title: "Calls to Action That Feel Natural",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 151,
+    slug: "selling-without-damaging-community",
+    title: "Selling Without Damaging Community",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 152,
+    slug: "long-term-customer-relationships",
+    title: "Long-Term Customer Relationships",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 153,
+    slug: "ethical-influence-and-reputation",
+    title: "Ethical Influence & Reputation",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 154,
+    slug: "selling-influence-capstone-ethical-offer",
+    title: "Selling & Influence Capstone: Ethical Creator Offer",
+    trackId: "selling",
+    programName: "Selling & Influence Mastery",
     lessonInProgram: 10,
     lessonsInProgram: 10,
   },

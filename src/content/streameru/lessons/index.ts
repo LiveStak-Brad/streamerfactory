@@ -143,6 +143,16 @@ import { lesson as aiAutomationForCreatorWorkflows } from "./ai-automation-for-c
 import { lesson as aiResearchAnalyticsAndDecisionMaking } from "./ai-research-analytics-and-decision-making";
 import { lesson as ethicsPrivacyAndResponsibleAi } from "./ethics-privacy-and-responsible-ai";
 import { lesson as aiCreatorCapstoneOperatingSystem } from "./ai-creator-capstone-operating-system";
+import { lesson as trustIsYourGreatestAsset } from "./trust-is-your-greatest-asset";
+import { lesson as understandingWhyPeopleBuy } from "./understanding-why-people-buy";
+import { lesson as communicatingValueClearly } from "./communicating-value-clearly";
+import { lesson as storytellingThatBuildsTrust } from "./storytelling-that-builds-trust";
+import { lesson as handlingQuestionsAndObjections } from "./handling-questions-and-objections";
+import { lesson as callsToActionThatFeelNatural } from "./calls-to-action-that-feel-natural";
+import { lesson as sellingWithoutDamagingCommunity } from "./selling-without-damaging-community";
+import { lesson as longTermCustomerRelationships } from "./long-term-customer-relationships";
+import { lesson as ethicalInfluenceAndReputation } from "./ethical-influence-and-reputation";
+import { lesson as sellingInfluenceCapstoneEthicalOffer } from "./selling-influence-capstone-ethical-offer";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -294,6 +304,16 @@ const LESSONS: ExpandedLesson[] = [
   aiResearchAnalyticsAndDecisionMaking,
   ethicsPrivacyAndResponsibleAi,
   aiCreatorCapstoneOperatingSystem,
+  trustIsYourGreatestAsset,
+  understandingWhyPeopleBuy,
+  communicatingValueClearly,
+  storytellingThatBuildsTrust,
+  handlingQuestionsAndObjections,
+  callsToActionThatFeelNatural,
+  sellingWithoutDamagingCommunity,
+  longTermCustomerRelationships,
+  ethicalInfluenceAndReputation,
+  sellingInfluenceCapstoneEthicalOffer,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

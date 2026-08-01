@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.3 (Architecture locked)  
+**Version:** 2.4 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -41,7 +41,7 @@ Use language like:
 | Stretch goal | **171+** | Optional long-horizon capacity — never a public obligation |
 | Future | Unlimited | Add only when a real creator problem remains unsolved |
 
-Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after AI Creator Mastery.
+Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Selling & Influence Mastery.
 
 **Ship order for craft (locked):** Presence → Content Creation → Growth.  
 Creators fail from awkwardness and empty shows before they fail from analytics.
@@ -173,7 +173,6 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Presence Mastery          ★ recommended for everyone
         ├── Content Creation Mastery  ★ recommended for everyone
         ├── Growth Mastery            ★ recommended for everyone
-        ├── Mindset Mastery           ★ recommended for everyone
         ├── Community Mastery
         ├── Production Mastery
         ├── Professional Creator Mastery
@@ -181,12 +180,15 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Music LIVE Mastery*       ○ optional specialty
         ├── Gaming LIVE Mastery*      ○ optional specialty
         ├── Multi-Guest LIVE Mastery* ○ optional specialty
-        └── AI Creator Mastery*       ○ optional specialty
+        ├── AI Creator Mastery*       ○ optional specialty
+        ├── Selling & Influence Mastery* ○ optional specialty
+        └── Mindset Mastery           ★ recommended for everyone
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
 * Gaming LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path.
 * Multi-Guest LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Community Mastery CM-07/CM-08 are foundations this path deepens; Battle Mastery owns competitive match strategy depth.
 * AI Creator Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach responsible AI assistance, not creator replacement.
+* Selling & Influence Mastery: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Teach ethical influence and value communication — never manipulation or TikTok Shop mechanics.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -396,7 +398,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 13. Mindset Mastery
+### 13. Selling & Influence Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Teach creators to communicate value so people confidently choose to support them — through trust, education, listening, and ethical influence — never pressure or manipulation. |
+| **Why it exists** | Creators sell merch, courses, coaching, digital products, events, memberships, services, donations, and sponsorships — then damage community with awkward asks, false urgency, or unclear offers. Core covers gift habits; Professional Creator covers career ops. This path owns LIVE communication of value and ethical influence. |
+| **Who should take it** | Creators who make offers on LIVE or want to without harming trust. **Optional specialty — never required for graduation.** Strongly useful for anyone monetizing beyond casual gifting. |
+| **Recommended order** | After AI Creator Mastery in specialty ship order; after Core; Advanced Creator required before certificate award. Useful alongside Community, Professional Creator, Presence, and Content Creation. |
+| **Prerequisites** | Core Certification. Advanced Creator required before Selling & Influence Mastery Certificate is awarded. |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | Selling & Influence Mastery Certificate |
+| **Skills gained** | Trust-building, buyer psychology literacy, clear value communication, trust-centered storytelling, objection handling, natural CTAs, community-safe selling, long-term customer relationships, ethical influence & reputation, Ethical Creator Offer Capstone. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | Never teach manipulation, false scarcity, fake urgency, guilt gifting, fake testimonials, misleading earnings claims, dark patterns, or high-pressure tactics. **Not TikTok Shop Mastery** — do not teach product catalogs, shop setup, shop compliance, Affiliate Center, product pinning, shop analytics, or merchant onboarding. Mention shops only as channel examples when educationally necessary. Marketing attracts attention; sales helps someone make a confident decision. Professional Creator Mastery owns career ops/money systems; this path owns communication and influence craft. |
+
+---
+
+### 14. Mindset Mastery
 
 | Field | Definition |
 |--------|------------|
@@ -412,7 +431,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 14. Manager College (Internal Only)
+### 15. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -455,7 +474,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, and/or AI Creator Mastery **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, Multi-Guest LIVE, AI Creator, and/or Selling & Influence Mastery **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -486,6 +505,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Gaming LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Multi-Guest LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | AI Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Selling & Influence Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -558,6 +578,7 @@ It is distinct from optional Labs/Honors.
 | Gaming LIVE Mastery | Deliver your **signature gaming LIVE show** |
 | Multi-Guest LIVE Mastery | Deliver your **signature multi-guest LIVE event** |
 | AI Creator Mastery | Build your **AI Creator Operating System** |
+| Selling & Influence Mastery | Build your **Ethical Creator Offer** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -611,6 +632,7 @@ Same pattern for every public Mastery Path.
 | Gaming LIVE Lab | Gaming LIVE Mastery Certificate | Signature gaming show pack / replay excerpt | Gaming LIVE Mastery Honors |
 | Multi-Guest LIVE Lab | Multi-Guest LIVE Mastery Certificate | Signature event pack / replay excerpt | Multi-Guest LIVE Mastery Honors |
 | AI Creator Lab | AI Creator Mastery Certificate | AI Creator OS pack / workflow review | AI Creator Mastery Honors |
+| Selling & Influence Lab | Selling & Influence Mastery Certificate | Ethical Creator Offer pack / communication review | Selling & Influence Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -1881,7 +1903,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 13 — Mindset Mastery (MS) — 8 lessons
+## PATH 13 — Selling & Influence Mastery (SI) — 10 lessons (optional specialty)
+
+### SI-01 — Trust Is Your Greatest Asset
+**Description:** Trust is the asset every offer spends. Build a trust audit, recognize trust signals on LIVE, and map relationships before you ask.  
+**Learning objective:** Complete a trust audit and relationship map that guides when an ask is earned.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Core Certification  
+**Practical outcome:** Trust Audit Worksheet + Trust Signal Checklist + Relationship Map Starter.  
+**Estimated study time:** 30 min  
+**Connections:** Community trust; Presence authenticity; Professional Creator reputation.
+
+### SI-02 — Understanding Why People Buy
+**Description:** People buy to reduce risk, gain identity, solve problems, or support someone they trust — not because a script was loud. Distinguish marketing (attention) from sales (confident decision).  
+**Learning objective:** Map buyer motivations and decision friction for one real offer.  
+**Difficulty:** Intermediate  
+**Prerequisites:** SI-01  
+**Practical outcome:** Buyer Motivation Map + Needs Discovery Guide + Decision Friction Card.  
+**Estimated study time:** 35 min  
+**Connections:** Growth discovery vs this path’s decision help; Core gifting motives (callback only).
+
+### SI-03 — Communicating Value Clearly
+**Description:** Translate features into benefits people feel. Reduce uncertainty with clear offers, plain language, and honest scope.  
+**Learning objective:** Write a value statement and offer clarity framework for one product or service.  
+**Difficulty:** Intermediate  
+**Prerequisites:** SI-02  
+**Practical outcome:** Value Statement Worksheet + Offer Clarity Framework + Benefit Translation Card.  
+**Estimated study time:** 35 min  
+**Connections:** Professional Creator offer design (ops); this path owns spoken/LIVE clarity.
+
+### SI-04 — Storytelling That Builds Trust
+**Description:** Tell customer and creator stories that prove value without hype, fake testimonials, or misleading transformation claims.  
+**Learning objective:** Deliver one trust-building story with honest proof boundaries.  
+**Difficulty:** Intermediate  
+**Prerequisites:** SI-01, SI-03  
+**Practical outcome:** Trust Story Planner + Customer Journey Story Card + Proof Without Hype Checklist.  
+**Estimated study time:** 35 min  
+**Connections:** Presence storytelling craft applied to ethical selling.
+
+### SI-05 — Handling Questions and Objections
+**Description:** Objections are information. Handle pricing questions, hesitation, and “I’ll think about it” with respect — never steamrolling.  
+**Learning objective:** Rehearse respectful responses to three common objections for your offer.  
+**Difficulty:** Intermediate  
+**Prerequisites:** SI-02, SI-03  
+**Practical outcome:** Objection Response Guide + Question Bank for Creators + Hesitation Response Card.  
+**Estimated study time:** 35 min  
+**Connections:** Professional communication; Community conflict calm.
+
+### SI-06 — Calls to Action That Feel Natural
+**Description:** Make asks that fit the conversation. Read buying signals, invite clearly, and refuse false urgency.  
+**Learning objective:** Deliver one natural CTA with a pressure-free offer checklist.  
+**Difficulty:** Intermediate  
+**Prerequisites:** SI-03, SI-05  
+**Practical outcome:** CTA Planner + Natural Ask Scripts + Pressure-Free Offer Checklist.  
+**Estimated study time:** 30 min  
+**Connections:** LIVE pacing; Content Creation segment design.
+
+### SI-07 — Selling Without Damaging Community
+**Description:** Protect belonging culture while you monetize. Balance serve vs sell; set offer cadence; respond when someone says you sell too much.  
+**Learning objective:** Score community trust and plan a community-safe offer cadence.  
+**Difficulty:** Advanced  
+**Prerequisites:** SI-01, SI-06  
+**Practical outcome:** Community Trust Scorecard + Offer Cadence Planner + Sell-vs-Serve Balance Card.  
+**Estimated study time:** 35 min  
+**Connections:** Community Mastery culture; never guilt gifting.
+
+### SI-08 — Long-Term Customer Relationships
+**Description:** Repeat customers and word-of-mouth beat one-time pressure. Follow up, keep promises, handle refunds professionally at a high level.  
+**Learning objective:** Install a follow-up and promise-keeper system for one customer type.  
+**Difficulty:** Advanced  
+**Prerequisites:** SI-07  
+**Practical outcome:** Customer Follow-Up Checklist + Lifetime Value Thinking Card + Promise Keeper Log.  
+**Estimated study time:** 35 min  
+**Connections:** Professional Creator money ops; Community loyalty.
+
+### SI-09 — Ethical Influence & Reputation
+**Description:** Use influence principles (reciprocity, social proof, commitment, authority, scarcity, loss aversion) as decision aids — never as coercion. Disclosure concepts and reputation risk.  
+**Learning objective:** Write an ethical influence checklist and disclosure scripts you will actually use.  
+**Difficulty:** Advanced  
+**Prerequisites:** SI-01 through SI-08 recommended; SI-01 minimum  
+**Practical outcome:** Ethical Influence Checklist + Disclosure Script Bank + Reputation Risk Scorecard.  
+**Estimated study time:** 35 min  
+**Connections:** Core safety honesty; Professional Creator ethics; FTC-style disclosure concepts (version-aware).
+
+### SI-10 — Selling & Influence Capstone: Ethical Creator Offer
+**Description:** Capstone: assemble a complete Ethical Creator Offer proving trust plan, value explanation, stories, objection responses, CTA strategy, replay review, and improvement report.  
+**Learning objective:** Deliver and review an Ethical Creator Offer against the mastery rubric.  
+**Difficulty:** Expert  
+**Prerequisites:** SI-01 through SI-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Ethical Creator Offer Dossier + Capstone Evidence Checklist + Improvement Report.  
+**Estimated study time:** 45 min  
+**Connections:** Specialty diploma elective; optional Selling & Influence Lab / Honors never gates certificate.
+
+---
+
+## PATH 14 — Mindset Mastery (MS) — 8 lessons
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -1957,7 +2073,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 14 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 15 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -2051,15 +2167,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Gaming LIVE Mastery (optional) | 12 | Planned / shipping |
 | Multi-Guest LIVE Mastery (optional) | 10 | Planned / shipping |
 | AI Creator Mastery (optional) | 10 | Planned / shipping |
+| Selling & Influence Mastery (optional) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **152** | Internal planning figure (was 142 before AI Creator) |
+| **Public curriculum plan** | **162** | Internal planning figure (was 152 before Selling & Influence) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **160** | |
+| **Grand total including internal** | **170** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 12 path labs | Optional; never diploma gates |
+| Labs → Honors | 13 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 152 planned · stretch 171+ · future unlimited (problem-gated only).
+**Internal:** 162 planned · stretch 171+ · future unlimited (problem-gated only).
 
 ---
 
@@ -2074,7 +2191,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, Gaming, Multi-Guest, and AI Creator as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, Multi-Guest, AI Creator, and Selling & Influence as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -2150,6 +2267,8 @@ Every planned lesson must answer exactly one question. Samples:
 | MG-01 | When should I open a multi-guest room — and when should I stay solo? |
 | AIC-01 | How do I use AI as an assistant without losing my judgment or voice? |
 | AIC-09 | What privacy and ethics lines will I never cross with AI? |
+| SI-01 | What trust have I earned before I make an offer? |
+| SI-10 | Can I deliver an ethical creator offer that protects choice and reputation? |
 | MS-02 | How do I catch burnout before I quit? |
 | MC-02 | How do I tell what a mentee is actually stuck on? |
 
@@ -2212,6 +2331,13 @@ Every planned lesson must answer exactly one question. Samples:
 4. Internal public plan updated **142 → 152**; Mindset/Manager path numbers shifted to 13/14 only in document order — earlier programs unchanged  
 5. AI Creator never required for graduation; codes use **AIC-** (Advanced Creator remains **AC-**); teach responsible assistance not creator replacement; version-aware tool language; no spam/deepfake/plagiarism/impersonation curricula  
 
+### v2.4 — Selling & Influence Mastery added (fill, do not redesign)
+1. Added **Selling & Influence Mastery** as optional specialty after AI Creator Mastery  
+2. 10 lessons (SI-01–SI-10); Capstone = Ethical Creator Offer  
+3. Optional Selling & Influence Lab → Selling & Influence Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **152 → 162**; Mindset/Manager path numbers shifted to 14/15 only in document order — earlier programs unchanged  
+5. Selling & Influence never required for graduation; codes use **SI-**; teach ethical influence and trust-first communication — never manipulation; not TikTok Shop Mastery (no shop mechanics); marketing vs sales distinction; boundary with Professional Creator Mastery (ops vs communication)  
+
 ---
 
 ## Document Control
@@ -2223,6 +2349,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 2.0 | 2026-07-31 | Architecture locked. Fill the blueprint; do not redesign it. |
 | 2.1 | 2026-07-31 | Gaming LIVE Mastery optional specialty added after Music LIVE; earlier programs preserved. |
 | 2.2 | 2026-07-31 | Multi-Guest LIVE Mastery optional specialty added after Gaming LIVE; earlier programs preserved. |
-| **2.3** | **2026-07-31** | **AI Creator Mastery** optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
+| 2.3 | 2026-07-31 | AI Creator Mastery optional specialty added after Multi-Guest LIVE; earlier programs preserved. |
+| **2.4** | **2026-07-31** | **Selling & Influence Mastery** optional specialty added after AI Creator; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

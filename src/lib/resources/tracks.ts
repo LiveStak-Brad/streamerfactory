@@ -20,6 +20,7 @@ export const TRAINING_TRACK_IDS = [
   "gaming",
   "multiguest",
   "aicreator",
+  "selling",
 ] as const;
 
 export type TrainingTrackId = (typeof TRAINING_TRACK_IDS)[number];
@@ -164,6 +165,14 @@ export const TRAINING_TRACK_SECTIONS: TrainingTrackSection[] = [
     description:
       "Responsible AI for creators — mindset, prompts, planning, voice-safe writing, visuals, video/repurposing, safe automation, verified research, ethics/privacy, and an AI Creator Operating System.",
   },
+  {
+    id: "selling",
+    title: "Selling & Influence Mastery",
+    lessonInLabel: "Selling & Influence Mastery",
+    partOfLabel: "StreamerU · Selling & Influence Mastery",
+    description:
+      "Ethical selling for creators — trust, buyer psychology, clear value, trust-centered storytelling, objections, natural CTAs, community-safe offers, long-term relationships, reputation, and an Ethical Creator Offer.",
+  },
 ];
 
 export function isTrainingTrackId(value: string | null | undefined): value is TrainingTrackId {
@@ -192,6 +201,7 @@ const TRACK_LABELS: Record<TrainingTrackId, string> = {
   gaming: "Gaming LIVE Mastery",
   multiguest: "Multi-Guest LIVE Mastery",
   aicreator: "AI Creator Mastery",
+  selling: "Selling & Influence Mastery",
 };
 
 export function trainingTrackLabel(track: string | null | undefined): string {
