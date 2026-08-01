@@ -73,7 +73,13 @@ export function sanitizeLiveDaysForPeriodNullable(
   return n;
 }
 
-/** Whether an import batch matches the current monthly period (label or date range). */
+/**
+ * Whether an import batch matches the ranking month.
+ *
+ * Exact Backstage period bounds win when present.
+ * A bare "Monthly" label is NOT enough — that used to let the first-month sync
+ * keep matching every later month. Sync time must fall in the ranking window.
+ */
 export function importBatchMatchesRankingPeriod(
   rows: ImportPeriodFields[],
   kind: StatPeriodKind,
@@ -90,15 +96,12 @@ export function importBatchMatchesRankingPeriod(
   }
 
   const rowKind = inferPeriodKindFromLabel(sample?.stat_period_label ?? null);
+  if (rowKind === "weekly") return false;
   if (rowKind && rowKind !== kind) return false;
-  if (rowKind === kind) return true;
 
-  if (!rowKind && batchCreatedAt) {
-    const created = toDateString(new Date(batchCreatedAt));
-    return created >= periodStart && created <= periodEnd;
-  }
-
-  return false;
+  if (!batchCreatedAt) return false;
+  const created = toDateString(new Date(batchCreatedAt));
+  return created >= periodStart && created <= periodEnd;
 }
 
 /** @deprecated Use importBatchMatchesRankingPeriod — kept for tests. */

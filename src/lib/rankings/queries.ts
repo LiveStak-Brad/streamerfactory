@@ -86,14 +86,8 @@ export async function getLeaderboardWithMeta(
   const statKind = periodKindForRanking(kind);
   try {
     const fromImport = await getLeaderboardFromLatestCreatorNetworkImport(kind, anchorDate);
-    if (fromImport?.emptyDiamonds) {
-      return {
-        entries: await seedBoardWithImportAvatars(),
-        syncMeta: null,
-        loadIssue: "empty_diamonds",
-      };
-    }
-    if (fromImport && fromImport.entries.length > 0) {
+    // Prefer any readable diamond sync over the static first-month seed snapshot.
+    if (fromImport && fromImport.entries.length > 0 && !fromImport.emptyDiamonds) {
       return {
         entries: fromImport.entries,
         syncMeta: {
@@ -104,6 +98,14 @@ export async function getLeaderboardWithMeta(
           periodEnd: fromImport.periodEnd,
           statPeriodLabel: fromImport.statPeriodLabel,
         },
+      };
+    }
+
+    if (fromImport?.emptyDiamonds) {
+      return {
+        entries: await seedBoardWithImportAvatars(),
+        syncMeta: null,
+        loadIssue: "empty_diamonds",
       };
     }
 

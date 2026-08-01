@@ -104,7 +104,7 @@ type LoadImportOptions =
   | { mode: "any" }
   | { mode: "period"; periodKind: StatPeriodKind; anchor?: Date };
 
-async function fetchRecentImportBatches(limit = 12) {
+async function fetchRecentImportBatches(limit = 40) {
   const supabase = await getLeaderboardSupabase();
   const { data: batches, error: batchErr } = await supabase
     .from("creator_network_import_batches")
@@ -119,6 +119,10 @@ async function fetchRecentImportBatches(limit = 12) {
   return batches as { id: string; created_at: string; accepted_rows_count: number }[];
 }
 
+function batchHasDiamonds(rows: ImportStatRow[]): boolean {
+  return rows.some((r) => diamondsForRow(r) > 0);
+}
+
 async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImportBatch | null> {
   const batches = await fetchRecentImportBatches();
   if (!batches) return null;
@@ -129,6 +133,11 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
   const { periodStart, periodEnd } =
     periodKind && anchor ? periodBounds(periodKind, anchor) : { periodStart: "", periodEnd: "" };
 
+  /** Newest batch synced during this calendar month (even if stamped period is off). */
+  let sameMonthFallback: LoadedImportBatch | null = null;
+  /** Absolute newest batch with real diamonds — better than first-month seed. */
+  let newestWithDiamonds: LoadedImportBatch | null = null;
+
   for (const batch of batches) {
     const { data: rows, error: rowsErr } = await supabase
       .from("creator_network_member_stats")
@@ -138,6 +147,8 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
     if (rowsErr || !rows?.length) continue;
 
     const typed = rows as ImportStatRow[];
+    if (!batchHasDiamonds(typed)) continue;
+
     if (options.mode === "any") {
       return { batch, rows: typed };
     }
@@ -147,9 +158,19 @@ async function loadImportStatRows(options: LoadImportOptions): Promise<LoadedImp
     ) {
       return { batch, rows: typed };
     }
+
+    const created = batch.created_at.slice(0, 10);
+    if (!sameMonthFallback && created >= periodStart && created <= periodEnd) {
+      sameMonthFallback = { batch, rows: typed };
+    }
+    if (!newestWithDiamonds) {
+      newestWithDiamonds = { batch, rows: typed };
+    }
   }
 
-  return null;
+  // Prefer a sync from this calendar month; never silently resurrect first-month seed
+  // when a later diamond sync exists.
+  return sameMonthFallback ?? newestWithDiamonds;
 }
 
 /** Latest import batch (any period) — used for member directory avatars. */
