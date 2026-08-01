@@ -25,9 +25,26 @@ export const NETWORK_MANAGERS_SEED: readonly NetworkManager[] = [
 
 /**
  * Permanent historical champions before the automated archive pipeline.
- * May / June 2026: champion only. Runner-ups begin July 2026.
+ * May / June 2026: champion only. Runner-ups begin July 2026 (add when verified).
+ * July 2026 was recovered here after month-rollover failed to lock standings.
  */
 export const HISTORICAL_MONTHS_SEED: readonly HallOfFameMonth[] = [
+  {
+    yearMonth: "2026-07",
+    status: "locked",
+    source: "seed",
+    lockedAt: "2026-07-31T23:59:59.000Z",
+    placements: [
+      {
+        place: 1,
+        displayName: "Brad Morris",
+        tiktokUsername: "warrentonjunk",
+        avatarUrl: "/branding/team/brad-morris.png",
+        badge: "Factory Champion",
+        networkLevel: null,
+      },
+    ],
+  },
   {
     yearMonth: "2026-06",
     status: "locked",
