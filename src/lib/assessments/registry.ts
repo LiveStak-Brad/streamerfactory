@@ -149,6 +149,17 @@ import { quiz as verticalLayoutsAlertsSoundboardsAndTikfinity } from "@/lib/asse
 import { quiz as gamingCommunityModerationTroubleshootingAndGrowth } from "@/lib/assessments/quizzes/gaming/gaming-community-moderation-troubleshooting-and-growth";
 import { quiz as gamingLiveCapstoneSignatureShow } from "@/lib/assessments/quizzes/gaming/gaming-live-capstone-signature-show";
 
+import { quiz as whyMultiGuestLiveChangesEverything } from "@/lib/assessments/quizzes/multiguest/why-multi-guest-live-changes-everything";
+import { quiz as designingGreatConversationsForMultiGuestLive } from "@/lib/assessments/quizzes/multiguest/designing-great-conversations-for-multi-guest-live";
+import { quiz as becomingABetterMultiGuestHost } from "@/lib/assessments/quizzes/multiguest/becoming-a-better-multi-guest-host";
+import { quiz as managing24And9BoxLives } from "@/lib/assessments/quizzes/multiguest/managing-2-4-and-9-box-lives";
+import { quiz as guestSelectionAndPreparation } from "@/lib/assessments/quizzes/multiguest/guest-selection-and-preparation";
+import { quiz as multiGuestModerationAndCommunitySafety } from "@/lib/assessments/quizzes/multiguest/multi-guest-moderation-and-community-safety";
+import { quiz as runningBoxBattlesAndCompetitiveRooms } from "@/lib/assessments/quizzes/multiguest/running-box-battles-and-competitive-rooms";
+import { quiz as interviewingCreatorsLikeAProfessional } from "@/lib/assessments/quizzes/multiguest/interviewing-creators-like-a-professional";
+import { quiz as hostingEventsPanelsAndTalentShows } from "@/lib/assessments/quizzes/multiguest/hosting-events-panels-and-talent-shows";
+import { quiz as multiGuestLiveCapstoneSignatureEvent } from "@/lib/assessments/quizzes/multiguest/multi-guest-live-capstone-signature-event";
+
 import { exam as finalBeginner } from "@/lib/assessments/exams/program-beginner";
 import { exam as finalContent } from "@/lib/assessments/exams/program-content";
 import { exam as finalBattles } from "@/lib/assessments/exams/program-battles";
@@ -163,6 +174,7 @@ import { exam as finalProduction } from "@/lib/assessments/exams/program-product
 import { exam as finalBattle } from "@/lib/assessments/exams/program-battle";
 import { exam as finalMusic } from "@/lib/assessments/exams/program-music";
 import { exam as finalGaming } from "@/lib/assessments/exams/program-gaming";
+import { exam as finalMultiguest } from "@/lib/assessments/exams/program-multiguest";
 import { exam as graduation } from "@/lib/assessments/exams/graduation";
 
 const LESSON_QUIZZES: LessonQuiz[] = [
@@ -290,6 +302,16 @@ const LESSON_QUIZZES: LessonQuiz[] = [
   verticalLayoutsAlertsSoundboardsAndTikfinity,
   gamingCommunityModerationTroubleshootingAndGrowth,
   gamingLiveCapstoneSignatureShow,
+  whyMultiGuestLiveChangesEverything,
+  designingGreatConversationsForMultiGuestLive,
+  becomingABetterMultiGuestHost,
+  managing24And9BoxLives,
+  guestSelectionAndPreparation,
+  multiGuestModerationAndCommunitySafety,
+  runningBoxBattlesAndCompetitiveRooms,
+  interviewingCreatorsLikeAProfessional,
+  hostingEventsPanelsAndTalentShows,
+  multiGuestLiveCapstoneSignatureEvent,
 ];
 
 const PROGRAM_FINALS: ProgramFinalExam[] = [
@@ -307,6 +329,7 @@ const PROGRAM_FINALS: ProgramFinalExam[] = [
   finalBattle,
   finalMusic,
   finalGaming,
+  finalMultiguest,
 ];
 
 const QUIZ_BY_SLUG = new Map(LESSON_QUIZZES.map((q) => [q.lessonSlug, q]));

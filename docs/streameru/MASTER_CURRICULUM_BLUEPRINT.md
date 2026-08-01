@@ -3,7 +3,7 @@
 **Document status:** 🔒 **LOCKED educational architecture** — fill the blueprint; do not redesign it  
 **Owner:** Brad Morris (approved) · Head Curriculum Designer (steward)  
 **Date:** July 31, 2026  
-**Version:** 2.0 (Architecture locked)  
+**Version:** 2.2 (Architecture locked)  
 **Scope:** Long-term curriculum that expands from the locked Core Certification (24 lessons)  
 **Out of scope for this document:** Lesson bodies, quizzes, worksheets, missions, code changes
 
@@ -41,7 +41,7 @@ Use language like:
 | Stretch goal | **171+** | Optional long-horizon capacity — never a public obligation |
 | Future | Unlimited | Add only when a real creator problem remains unsolved |
 
-Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Gaming LIVE Mastery.
+Breakdown of the internal planning figure: 24 Core + 8 Advanced Creator + Mastery Paths including optional specialties (+ 8 Manager College internal). See Total Estimated Lesson Count for the current internal plan after Multi-Guest LIVE Mastery.
 
 **Ship order for craft (locked):** Presence → Content Creation → Growth.  
 Creators fail from awkwardness and empty shows before they fail from analytics.
@@ -179,10 +179,12 @@ Advanced Creator (8)  ←  BLACK BELT
         ├── Professional Creator Mastery
         ├── Battle Mastery            ○ optional specialty
         ├── Music LIVE Mastery*       ○ optional specialty
-        └── Gaming LIVE Mastery*      ○ optional specialty
+        ├── Gaming LIVE Mastery*      ○ optional specialty
+        └── Multi-Guest LIVE Mastery* ○ optional specialty
 
 * Music LIVE: Core required; Advanced Creator recommended; music-specific entry allowed after Core for music-first creators (Brad approval).
 * Gaming LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path.
+* Multi-Guest LIVE: Core required; Advanced Creator required before certificate award; optional specialty — never a required graduation path. Community Mastery CM-07/CM-08 are foundations this path deepens; Battle Mastery owns competitive match strategy depth.
 
 Each Mastery Path ends with a Capstone Project (required for certificate).
 After certificate → optional Lab → Mastery Honors (see Capstones + Labs).
@@ -358,7 +360,24 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 11. Mindset Mastery
+### 11. Multi-Guest LIVE Mastery (Optional Specialty)
+
+| Field | Definition |
+|--------|------------|
+| **Purpose** | Specialty path to host engaging, organized, professional Multi-Guest LIVEs — panels, interviews, community discussions, podcast-style shows, events, talent shows, and ethical competitive rooms. |
+| **Why it exists** | Multi-guest formats multiply energy and discovery — and also chaos. Creators need host craft, guest prep, box management, moderation, and event design beyond Community Mastery’s guest/interview foundations (CM-07/CM-08). |
+| **Who should take it** | Creators who host guests, panels, or community rooms. **Optional specialty — never required for graduation.** |
+| **Recommended order** | After Gaming LIVE Mastery in specialty ship order; after Core; Advanced Creator required before certificate award. |
+| **Prerequisites** | Core Certification. Advanced Creator required before Multi-Guest LIVE Certificate is awarded. Community Mastery CM-07/CM-08 recommended foundations (not a hard gate). |
+| **Estimated lesson count** | **10** |
+| **Certificate earned** | Multi-Guest LIVE Mastery Certificate |
+| **Skills gained** | Multi-guest conversation design, host authority, 2/4/9-box room management, guest selection and prep, multi-guest moderation and safety, ethical competitive rooms, professional interviews, panels/events/talent shows, signature multi-guest event production. |
+| **Relationship to graduation** | Optional specialty elective. Counts toward Professional Creator Diploma like other Mastery Paths. Does **not** gate Career Creator or any required path. |
+| **Hard boundaries** | No drama farming, humiliation, or harassment as content strategy. Capacity and layout availability vary by account/region/platform — teach adaptable systems, not guaranteed UI. 2/4/9-box is production shorthand, not a promise of every layout. Do not invent TikTok features. Battle Mastery owns deep LIVE Match / competitive match strategy; this path covers hosting competitive multi-guest rooms ethically without duplicating Battle depth. |
+
+---
+
+### 12. Mindset Mastery
 
 | Field | Definition |
 |--------|------------|
@@ -374,7 +393,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 
 ---
 
-### 12. Manager College (Internal Only)
+### 13. Manager College (Internal Only)
 
 | Field | Definition |
 |--------|------------|
@@ -417,7 +436,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 **Then as needed:**
 5. Community Mastery **or** Production Mastery  
 6. Professional Creator Mastery (when earning consistently / pursuing Career Creator)  
-7. Battle Mastery, Music LIVE, and/or Gaming LIVE **only if those are your craft**
+7. Battle Mastery, Music LIVE, Gaming LIVE, and/or Multi-Guest LIVE **only if those are your craft**
 
 ### Stage E — Career creator
 - Core + Advanced Creator (black belt)  
@@ -446,6 +465,7 @@ Manager College ── internal only (after Core + demonstrated mentoring readin
 | Professional Creator Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Music LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Gaming LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
+| Multi-Guest LIVE Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | Mindset Mastery Certificate | Lessons + quizzes + LIVE missions + Mastery Final + Capstone | Public |
 | **{Path} Mastery Honors** | Optional Lab completed after certificate (see Labs) | Public prestige |
 | **Professional Creator Diploma** | Core + Advanced Creator + any **3** Mastery Certificates (must include **Presence** and at least one of **Content Creation** or **Growth**). **Labs not required.** | Public |
@@ -516,6 +536,7 @@ It is distinct from optional Labs/Honors.
 | Battle Mastery | Document and run your **signature battle system** for one week |
 | Music LIVE Mastery | Deliver your **signature music LIVE show** |
 | Gaming LIVE Mastery | Deliver your **signature gaming LIVE show** |
+| Multi-Guest LIVE Mastery | Deliver your **signature multi-guest LIVE event** |
 | Manager College | Submit **mentor portfolio** (internal) |
 
 ### Portfolio use
@@ -567,6 +588,7 @@ Same pattern for every public Mastery Path.
 | Battle Lab | Battle Mastery Certificate | Battle week pack | Battle Mastery Honors |
 | Music LIVE Lab | Music LIVE Mastery Certificate | Signature show pack | Music LIVE Mastery Honors |
 | Gaming LIVE Lab | Gaming LIVE Mastery Certificate | Signature gaming show pack / replay excerpt | Gaming LIVE Mastery Honors |
+| Multi-Guest LIVE Lab | Multi-Guest LIVE Mastery Certificate | Signature event pack / replay excerpt | Multi-Guest LIVE Mastery Honors |
 
 ### Lab principles (locked)
 - **Labs do NOT gate certificates**  
@@ -609,6 +631,7 @@ Creators fail from freeze / empty presence before they fail from analytics.
 - Battle Mastery (8) — optional  
 - Music LIVE Mastery (10) — optional  
 - Gaming LIVE Mastery (12) — optional (after Music LIVE; never a required graduation path)  
+- Multi-Guest LIVE Mastery (10) — optional (after Gaming LIVE; never a required graduation path)  
 
 ### Phase 6 — Internal quality + optional Labs (Honors)
 - Manager College (8)  
@@ -1647,7 +1670,101 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 11 — Mindset Mastery (MS) — 8 lessons
+## PATH 11 — Multi-Guest LIVE Mastery (MG) — 10 lessons (optional specialty)
+
+### MG-01 — Why Multi-Guest LIVE Changes Everything
+**Description:** Multi-guest formats multiply energy, discovery, and risk. Learn when multi-guest is the right show — and when solo or 1:1 is smarter — without chasing every layout TikTok offers.  
+**Learning objective:** Decide when to use multi-guest LIVE versus solo or 1:1 and define your primary multi-guest purpose.  
+**Difficulty:** Intermediate  
+**Prerequisites:** Core Certification  
+**Practical outcome:** Multi-guest purpose card + go/no-go decision checklist.  
+**Estimated study time:** 25 min  
+**Connections:** Community CM-07 foundations; Content Creation formats.
+
+### MG-02 — Designing Great Conversations for Multi-Guest LIVE
+**Description:** Empty panels die. Design conversation arcs, topic beats, turn-taking, and viewer-inclusion loops that keep energy moving across boxes.  
+**Learning objective:** Build a conversation architecture for a 30–60 minute multi-guest LIVE.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MG-01; Community CM-07 recommended  
+**Practical outcome:** Conversation architecture worksheet + topic beat map.  
+**Estimated study time:** 30 min  
+**Connections:** Community CM-07–CM-08; Presence PR-09.
+
+### MG-03 — Becoming a Better Multi-Guest Host
+**Description:** Host authority is the product: openings, redirects, equal airtime, recovery from dead air, and closing with clarity — without dominating every box.  
+**Learning objective:** Install a host playbook covering open, redirect, balance, and close.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MG-02; Presence PR-02 recommended  
+**Practical outcome:** Multi-guest host playbook + redirect script card.  
+**Estimated study time:** 25 min  
+**Connections:** Presence Mastery; Community guest hosting foundations.
+
+### MG-04 — Managing 2-, 4-, and 9-Box LIVEs
+**Description:** Treat 2/4/9-box as production shorthand for scale — not a promise every layout is available. Manage attention, naming, roles, and visual clarity as guest count grows.  
+**Learning objective:** Create room-management plans for small, medium, and large multi-guest layouts your account can actually use.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MG-03  
+**Practical outcome:** Box-count run-of-show templates + attention map.  
+**Estimated study time:** 30 min  
+**Connections:** Production clarity; platform capacity varies — adaptable systems only.
+
+### MG-05 — Guest Selection and Preparation
+**Description:** Wrong guests ruin good formats. Select for fit, prep agendas, share roles/promo rules, and set exit ramps before anyone joins the room.  
+**Learning objective:** Build a guest selection scorecard and a prep packet you can reuse.  
+**Difficulty:** Intermediate  
+**Prerequisites:** MG-01, MG-03; Community CM-07 recommended  
+**Practical outcome:** Guest selection scorecard + prep packet template.  
+**Estimated study time:** 25 min  
+**Connections:** Community CM-07; Professional Creator networking PC callbacks.
+
+### MG-06 — Multi-Guest Moderation and Community Safety
+**Description:** Multi-guest rooms amplify harassment, pile-ons, and off-topic chaos. Install mod roles, guest conduct norms, and removal protocols that protect culture without drama farming.  
+**Learning objective:** Launch a multi-guest safety system with mod roles, guest rules, and escalation steps.  
+**Difficulty:** Advanced  
+**Prerequisites:** MG-04, MG-05; Community CM-03–CM-05 recommended  
+**Practical outcome:** Multi-guest mod handbook + guest conduct card.  
+**Estimated study time:** 30 min  
+**Connections:** Community moderation; Core safety lessons. Hard boundary: no humiliation content.
+
+### MG-07 — Running Box Battles and Competitive Rooms
+**Description:** Competitive multi-guest rooms need fair framing, energy design, and ethical win conditions — without teaching deep LIVE Match strategy reserved for Battle Mastery.  
+**Learning objective:** Host an ethical competitive multi-guest room with clear rules, pacing, and debrief.  
+**Difficulty:** Advanced  
+**Prerequisites:** MG-03, MG-06; Battle Mastery optional for creators who want match-strategy depth  
+**Practical outcome:** Competitive room run-of-show + fairness rules card.  
+**Estimated study time:** 30 min  
+**Connections:** Battle Mastery owns deep LIVE Match strategy; this lesson stays on hosting craft.
+
+### MG-08 — Interviewing Creators Like a Professional
+**Description:** Interview craft for multi-guest and 1:1 creator interviews: research, question ladders, listening, redirects, highlight moments, and mutual audience value.  
+**Learning objective:** Conduct a structured creator interview segment suitable for multi-guest or featured-guest formats.  
+**Difficulty:** Advanced  
+**Prerequisites:** MG-02, MG-05; Community CM-08 recommended  
+**Practical outcome:** Interview question system + recorded practice segment.  
+**Estimated study time:** 25 min  
+**Connections:** Community CM-08; Presence PR-09; Music MU-08 collab interviews.
+
+### MG-09 — Hosting Events, Panels, and Talent Shows
+**Description:** Scale from casual hangouts to panels, podcast-style discussions, community events, and talent shows with agendas, judges/roles, timing, and viewer journeys.  
+**Learning objective:** Design a full event or panel run-of-show with roles, timing, and audience CTAs.  
+**Difficulty:** Advanced  
+**Prerequisites:** MG-04 through MG-08  
+**Practical outcome:** Event/panel/talent-show run-of-show + role sheet.  
+**Estimated study time:** 35 min  
+**Connections:** Community appreciation events; Content Creation series craft.
+
+### MG-10 — Multi-Guest LIVE Capstone: Signature Event
+**Description:** Capstone: deliver a signature multi-guest LIVE event proving host craft, guest prep, room management, safety, and show design.  
+**Learning objective:** Deliver and review a signature multi-guest LIVE event against the mastery rubric.  
+**Difficulty:** Expert  
+**Prerequisites:** MG-01 through MG-09; Advanced Creator Certificate for path certificate  
+**Practical outcome:** Signature multi-guest event dossier + recorded/documented LIVE + replay review.  
+**Estimated study time:** 40 min  
+**Connections:** Specialty diploma elective; optional Multi-Guest LIVE Lab / Honors never gates certificate.
+
+---
+
+## PATH 12 — Mindset Mastery (MS) — 8 lessons
 
 ### MS-01 — Fear, Judgment, and Going LIVE Anyway
 **Description:** Fear is normal; paralysis is optional. Cognitive tools and exposure ladders for camera fear.  
@@ -1723,7 +1840,7 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 
 ---
 
-## PATH 12 — Manager College (MC) — Internal Only — 8 lessons
+## PATH 13 — Manager College (MC) — Internal Only — 8 lessons
 
 ### MC-01 — The Streamer Factory Mentoring Standard
 **Description:** What “good mentoring” means here: creator-first, StreamerU-aligned, no ego coaching.  
@@ -1815,15 +1932,16 @@ Lessons 1–24 remain as currently published in `curriculum.ts`. No redesign in 
 | Professional Creator Mastery | 10 | Planned |
 | Music LIVE Mastery (optional) | 10 | Planned / shipping |
 | Gaming LIVE Mastery (optional) | 12 | Planned / shipping |
+| Multi-Guest LIVE Mastery (optional) | 10 | Planned / shipping |
 | Mindset Mastery | 8 | Planned |
-| **Public curriculum plan** | **132** | Internal planning figure (was 120 before Gaming) |
+| **Public curriculum plan** | **142** | Internal planning figure (was 132 before Multi-Guest) |
 | Manager College (internal) | 8 | Planned internal |
-| **Grand total including internal** | **140** | |
+| **Grand total including internal** | **150** | |
 | Capstone Projects | 1 per path | Required for certificates |
-| Labs → Honors | 10 path labs | Optional; never diploma gates |
+| Labs → Honors | 11 path labs | Optional; never diploma gates |
 
 **Marketing:** Continuously expanding academy — **no fixed public lesson count.**  
-**Internal:** 132 planned · stretch 171+ · future unlimited (problem-gated only).
+**Internal:** 142 planned · stretch 171+ · future unlimited (problem-gated only).
 
 ---
 
@@ -1838,7 +1956,7 @@ The following are **officially locked**. Future work fills the blueprint; it doe
 | Professional Creator → Career Creator ladder | ✅ Locked |
 | Content Creation Mastery | ✅ Locked |
 | Presence before Growth (ship + recommend order) | ✅ Locked |
-| Battle, Music, and Gaming as optional specialties | ✅ Locked |
+| Battle, Music, Gaming, and Multi-Guest as optional specialties | ✅ Locked |
 | Labs as optional Honors — **not** diploma/certificate gates | ✅ Locked |
 | Capstone Projects required for Mastery certificates | ✅ Locked |
 | Lesson versioning (StreamerU Versions) | ✅ Locked |
@@ -1959,6 +2077,13 @@ Every planned lesson must answer exactly one question. Samples:
 4. Internal public plan updated **120 → 132**; Mindset/Manager path numbers shifted to 11/12 only in document order — earlier programs unchanged  
 5. Gaming never required for graduation; stream-key access never assumed  
 
+### v2.2 — Multi-Guest LIVE Mastery added (fill, do not redesign)
+1. Added **Multi-Guest LIVE Mastery** as optional specialty after Gaming LIVE Mastery  
+2. 10 lessons (MG-01–MG-10); Capstone = signature multi-guest LIVE event  
+3. Optional Multi-Guest LIVE Lab → Multi-Guest LIVE Mastery Honors (never a certificate gate)  
+4. Internal public plan updated **132 → 142**; Mindset/Manager path numbers shifted to 12/13 only in document order — earlier programs unchanged  
+5. Multi-Guest never required for graduation; CM-07/CM-08 foundations deepened; Battle Mastery owns competitive match strategy depth; no drama farming; do not invent TikTok features  
+
 ---
 
 ## Document Control
@@ -1968,6 +2093,7 @@ Every planned lesson must answer exactly one question. Samples:
 | 1.0 | 2026-07-31 | Initial permanent blueprint — curriculum design only |
 | 1.1 | 2026-07-31 | Brad structural revisions |
 | 2.0 | 2026-07-31 | Architecture locked. Fill the blueprint; do not redesign it. |
-| **2.1** | **2026-07-31** | **Gaming LIVE Mastery** optional specialty added after Music LIVE; earlier programs preserved. |
+| 2.1 | 2026-07-31 | Gaming LIVE Mastery optional specialty added after Music LIVE; earlier programs preserved. |
+| **2.2** | **2026-07-31** | **Multi-Guest LIVE Mastery** optional specialty added after Gaming LIVE; earlier programs preserved. |
 
 **End of Master Curriculum Blueprint**

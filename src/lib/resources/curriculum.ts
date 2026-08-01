@@ -23,6 +23,7 @@
  * 12. Battle Mastery — elite battle strategy specialty (optional)
  * 13. Music LIVE Mastery — music performance + technical LIVE specialty (optional)
  * 14. Gaming LIVE Mastery — gaming LIVE specialty (optional; after Music LIVE)
+ * 15. Multi-Guest LIVE Mastery — multi-guest hosting specialty (optional; after Gaming LIVE)
  */
 
 import type { TrainingTrackId } from "@/lib/resources/tracks";
@@ -61,6 +62,7 @@ export const STREAMERU_PROGRAM_NAMES = [
   "Battle Mastery",
   "Music LIVE Mastery",
   "Gaming LIVE Mastery",
+  "Multi-Guest LIVE Mastery",
 ] as const;
 
 export type StreamerUProgramName = (typeof STREAMERU_PROGRAM_NAMES)[number];
@@ -1196,6 +1198,96 @@ export const CURRICULUM: CurriculumLesson[] = [
     programName: "Gaming LIVE Mastery",
     lessonInProgram: 12,
     lessonsInProgram: 12,
+  },
+  {
+    globalOrder: 125,
+    slug: "why-multi-guest-live-changes-everything",
+    title: "Why Multi-Guest LIVE Changes Everything",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 1,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 126,
+    slug: "designing-great-conversations-for-multi-guest-live",
+    title: "Designing Great Conversations for Multi-Guest LIVE",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 2,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 127,
+    slug: "becoming-a-better-multi-guest-host",
+    title: "Becoming a Better Multi-Guest Host",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 3,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 128,
+    slug: "managing-2-4-and-9-box-lives",
+    title: "Managing 2-, 4-, and 9-Box LIVEs",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 4,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 129,
+    slug: "guest-selection-and-preparation",
+    title: "Guest Selection and Preparation",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 5,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 130,
+    slug: "multi-guest-moderation-and-community-safety",
+    title: "Multi-Guest Moderation and Community Safety",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 6,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 131,
+    slug: "running-box-battles-and-competitive-rooms",
+    title: "Running Box Battles and Competitive Rooms",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 7,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 132,
+    slug: "interviewing-creators-like-a-professional",
+    title: "Interviewing Creators Like a Professional",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 8,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 133,
+    slug: "hosting-events-panels-and-talent-shows",
+    title: "Hosting Events, Panels, and Talent Shows",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 9,
+    lessonsInProgram: 10,
+  },
+  {
+    globalOrder: 134,
+    slug: "multi-guest-live-capstone-signature-event",
+    title: "Multi-Guest LIVE Capstone: Signature Event",
+    trackId: "multiguest",
+    programName: "Multi-Guest LIVE Mastery",
+    lessonInProgram: 10,
+    lessonsInProgram: 10,
   },
 ];
 

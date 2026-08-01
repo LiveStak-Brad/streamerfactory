@@ -3025,6 +3025,279 @@ export const TRAINING_MISSIONS_BY_SLUG: Record<string, TrainingMission> = {
     ],
   },
 
+  // —— Multi-Guest LIVE Mastery ——
+
+  "why-multi-guest-live-changes-everything": {
+    id: "mission-125-mg-format",
+    mission_title: "Session: Solo-to-Guest Format Proof",
+    mission_description:
+      "Choose a purposeful multi-guest format with audience promise and solo-to-guest transition plan.",
+    mission_steps: steps(
+      [
+        "Complete the Multi-Guest Format Scorecard and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Choose a purposeful multi-guest format with audience promise and solo-to-guest transition plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Multi-Guest Format Scorecard", href: "/streameru/library/multi-guest-format-scorecard" },
+      { label: "Audience Promise Worksheet", href: "/streameru/library/audience-promise-worksheet" },
+      { label: "Solo-to-Guest Transition Plan", href: "/streameru/library/solo-to-guest-transition-plan" },
+    ],
+  },
+
+  "designing-great-conversations-for-multi-guest-live": {
+    id: "mission-126-mg-conversation",
+    mission_title: "Session: Conversation Design Run",
+    mission_description:
+      "Build a conversation plan with question ladder, segment timing, and listening space.",
+    mission_steps: steps(
+      [
+        "Complete the Conversation Design Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Build a conversation plan with question ladder, segment timing, and listening space.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Conversation Design Planner", href: "/streameru/library/conversation-design-planner" },
+      { label: "Question Bank Starter", href: "/streameru/library/question-bank-starter-multi-guest" },
+      { label: "Segment Timing Map", href: "/streameru/library/segment-timing-map" },
+    ],
+  },
+
+  "becoming-a-better-multi-guest-host": {
+    id: "mission-127-mg-host",
+    mission_title: "Session: Host Leadership Drill",
+    mission_description:
+      "Run a host-led shared segment with openings, speaking order, and transition language.",
+    mission_steps: steps(
+      [
+        "Complete the Host Run Sheet and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Run a host-led shared segment with openings, speaking order, and transition language.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Host Run Sheet", href: "/streameru/library/host-run-sheet" },
+      { label: "Speaking Order Guide", href: "/streameru/library/speaking-order-guide" },
+      { label: "Transition Language Bank", href: "/streameru/library/transition-language-bank" },
+    ],
+  },
+
+  "managing-2-4-and-9-box-lives": {
+    id: "mission-128-mg-boxes",
+    mission_title: "Session: Box Format Operation",
+    mission_description:
+      "Operate a compact, panel, or larger-grid room with readable roles and rotation plan.",
+    mission_steps: steps(
+      [
+        "Complete the Box Format Decision Matrix and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Operate a compact, panel, or larger-grid room with readable roles and rotation plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Box Format Decision Matrix", href: "/streameru/library/box-format-decision-matrix" },
+      { label: "Tile Readability Checklist", href: "/streameru/library/tile-readability-checklist" },
+      { label: "Guest Rotation Planner", href: "/streameru/library/guest-rotation-planner" },
+    ],
+  },
+
+  "guest-selection-and-preparation": {
+    id: "mission-129-mg-guest-prep",
+    mission_title: "Session: Guest Prep Proof",
+    mission_description:
+      "Invite and prepare a consenting guest with invitation, prep brief, and tech check.",
+    mission_steps: steps(
+      [
+        "Complete the Guest Invitation Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Invite and prepare a consenting guest with invitation, prep brief, and tech check.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Guest Invitation Template", href: "/streameru/library/guest-invitation-template" },
+      { label: "Guest Prep Brief", href: "/streameru/library/guest-prep-brief" },
+      { label: "Guest Tech Check Card", href: "/streameru/library/guest-tech-check-card" },
+    ],
+  },
+
+  "multi-guest-moderation-and-community-safety": {
+    id: "mission-130-mg-moderation",
+    mission_title: "Session: Moderation Safety Drill",
+    mission_description:
+      "Install moderator checklist, conflict response, and respectful guest-removal language.",
+    mission_steps: steps(
+      [
+        "Complete the Moderator Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Install moderator checklist, conflict response, and respectful guest-removal language.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Moderator Checklist", href: "/streameru/library/moderator-checklist-multi-guest" },
+      { label: "Conflict Response Guide", href: "/streameru/library/conflict-response-guide" },
+      { label: "Guest Removal Script Card", href: "/streameru/library/guest-removal-script-card" },
+    ],
+  },
+
+  "running-box-battles-and-competitive-rooms": {
+    id: "mission-131-mg-battles",
+    mission_title: "Session: Fair Competitive Room",
+    mission_description:
+      "Host an ethical competitive room with fair-play agreement and recovery plan.",
+    mission_steps: steps(
+      [
+        "Complete the Box Battle Prep Guide and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Host an ethical competitive room with fair-play agreement and recovery plan.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Box Battle Prep Guide", href: "/streameru/library/box-battle-prep-guide" },
+      { label: "Fair-Play Agreement Card", href: "/streameru/library/fair-play-agreement-card" },
+      { label: "Team Communication Plan", href: "/streameru/library/team-communication-plan" },
+    ],
+  },
+
+  "interviewing-creators-like-a-professional": {
+    id: "mission-132-mg-interview",
+    mission_title: "Session: Professional Interview LIVE",
+    mission_description:
+      "Deliver a prepared creator interview with follow-ups and a respectful close.",
+    mission_steps: steps(
+      [
+        "Complete the Interview Planner and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Deliver a prepared creator interview with follow-ups and a respectful close.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Interview Planner", href: "/streameru/library/interview-planner-multi-guest" },
+      { label: "Follow-Up Question Tree", href: "/streameru/library/follow-up-question-tree" },
+      { label: "Interview Closing Script", href: "/streameru/library/interview-closing-script" },
+    ],
+  },
+
+  "hosting-events-panels-and-talent-shows": {
+    id: "mission-133-mg-events",
+    mission_title: "Session: Community Event Facilitation",
+    mission_description:
+      "Produce a structured panel, talent show, or community event with roles and run sheet.",
+    mission_steps: steps(
+      [
+        "Complete the Event Checklist and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      45,
+      [
+        "Run the LIVE / execution step from the lesson mission (execution graded — not viewers, gifts, or rank).",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Produce a structured panel, talent show, or community event with roles and run sheet.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Event Checklist", href: "/streameru/library/event-checklist-multi-guest" },
+      { label: "Panel Planner", href: "/streameru/library/panel-planner" },
+      { label: "Talent-Show Score Sheet", href: "/streameru/library/talent-show-score-sheet" },
+    ],
+  },
+
+  "multi-guest-live-capstone-signature-event": {
+    id: "mission-134-mg-capstone",
+    mission_title: "Session: Signature Multi-Guest Event Capstone",
+    mission_description:
+      "Deliver and review Signature Multi-Guest LIVE Event with full dossier evidence.",
+    mission_steps: steps(
+      [
+        "Complete the Signature Event Dossier Template and supporting downloads for this lesson.",
+        "File pages where Capstone evidence will be assembled later.",
+      ],
+      40,
+      [
+        "Assemble the Signature Event Dossier + Capstone Evidence Checklist Multi-Guest and complete host evaluation.",
+        "Write a two-line note: what you shipped and what you will keep next week.",
+      ],
+      habitDailyByStage("late"),
+    ),
+    mission_goal:
+      "Deliver and review Signature Multi-Guest LIVE Event with full dossier evidence.",
+    links: [
+      { label: "StreamerU hub", href: "/streameru" },
+      { label: "Signature Event Dossier Template", href: "/streameru/library/signature-event-dossier-template" },
+      { label: "Capstone Evidence Checklist Multi-Guest", href: "/streameru/library/capstone-evidence-checklist-multi-guest" },
+      { label: "Host Evaluation Rubric", href: "/streameru/library/host-evaluation-rubric" },
+    ],
+  },
+
+
 
 
 

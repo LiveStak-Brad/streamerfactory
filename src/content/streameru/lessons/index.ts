@@ -123,6 +123,16 @@ import { lesson as mobileGamingLiveWorkflows } from "./mobile-gaming-live-workfl
 import { lesson as verticalLayoutsAlertsSoundboardsAndTikfinity } from "./vertical-layouts-alerts-soundboards-and-tikfinity";
 import { lesson as gamingCommunityModerationTroubleshootingAndGrowth } from "./gaming-community-moderation-troubleshooting-and-growth";
 import { lesson as gamingLiveCapstoneSignatureShow } from "./gaming-live-capstone-signature-show";
+import { lesson as whyMultiGuestLiveChangesEverything } from "./why-multi-guest-live-changes-everything";
+import { lesson as designingGreatConversationsForMultiGuestLive } from "./designing-great-conversations-for-multi-guest-live";
+import { lesson as becomingABetterMultiGuestHost } from "./becoming-a-better-multi-guest-host";
+import { lesson as managing24And9BoxLives } from "./managing-2-4-and-9-box-lives";
+import { lesson as guestSelectionAndPreparation } from "./guest-selection-and-preparation";
+import { lesson as multiGuestModerationAndCommunitySafety } from "./multi-guest-moderation-and-community-safety";
+import { lesson as runningBoxBattlesAndCompetitiveRooms } from "./running-box-battles-and-competitive-rooms";
+import { lesson as interviewingCreatorsLikeAProfessional } from "./interviewing-creators-like-a-professional";
+import { lesson as hostingEventsPanelsAndTalentShows } from "./hosting-events-panels-and-talent-shows";
+import { lesson as multiGuestLiveCapstoneSignatureEvent } from "./multi-guest-live-capstone-signature-event";
 
 /**
  * Expanded lesson bodies registered for override.
@@ -254,6 +264,16 @@ const LESSONS: ExpandedLesson[] = [
   verticalLayoutsAlertsSoundboardsAndTikfinity,
   gamingCommunityModerationTroubleshootingAndGrowth,
   gamingLiveCapstoneSignatureShow,
+  whyMultiGuestLiveChangesEverything,
+  designingGreatConversationsForMultiGuestLive,
+  becomingABetterMultiGuestHost,
+  managing24And9BoxLives,
+  guestSelectionAndPreparation,
+  multiGuestModerationAndCommunitySafety,
+  runningBoxBattlesAndCompetitiveRooms,
+  interviewingCreatorsLikeAProfessional,
+  hostingEventsPanelsAndTalentShows,
+  multiGuestLiveCapstoneSignatureEvent,
 ];
 
 const BY_SLUG = new Map(LESSONS.map((l) => [l.slug, l]));

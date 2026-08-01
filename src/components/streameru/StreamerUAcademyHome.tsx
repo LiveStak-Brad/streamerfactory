@@ -166,6 +166,8 @@ const moduleDescriptions: Record<string, string> = {
     "Music performance on LIVE — formats, performance audio, stamina, setlists, requests, growth, rights-aware repertoire, collabs, and ethical monetization.",
   "Gaming LIVE Mastery":
     "Gaming on LIVE — reliable setups, commentary, chat systems, audio routing, OBS and TikTok LIVE Studio workflows, console/mobile capture, TikFinity discipline, moderation, and signature show design.",
+  "Multi-Guest LIVE Mastery":
+    "Professional multi-guest hosting — conversations, panels, interviews, community rooms, events, talent shows, ethical competitive rooms, moderation, and signature multi-guest LIVE events.",
 };
 
 /**
@@ -515,6 +517,7 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
             const isBattle = program.programName === "Battle Mastery";
             const isMusic = program.programName === "Music LIVE Mastery";
             const isGaming = program.programName === "Gaming LIVE Mastery";
+            const isMultiguest = program.programName === "Multi-Guest LIVE Mastery";
             const status = moduleStatus(
               program.lessons,
               snapshot.completedSlugs,
@@ -533,25 +536,30 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
               },
               nextProgram
                 ? { label: "Next program", detail: nextProgram.programName }
-                : isGaming
+                : isMultiguest
                   ? {
                       label: "Next steps",
-                      detail: "Optional specialty complete · Gaming LIVE Lab Honors · other Mastery Paths",
+                      detail: "Optional specialty complete · Multi-Guest LIVE Lab Honors · other Mastery Paths",
+                    }
+                  : isGaming
+                  ? {
+                      label: "Next steps",
+                      detail: "Multi-Guest LIVE Mastery (optional) · Gaming LIVE Lab Honors · other Mastery Paths",
                     }
                   : isMusic
                   ? {
                       label: "Next steps",
-                      detail: "Gaming LIVE Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
+                      detail: "Gaming / Multi-Guest LIVE Mastery (optional) · Music LIVE Lab Honors · other Mastery Paths",
                     }
                   : isBattle
                     ? {
                         label: "Next steps",
-                        detail: "Music LIVE / Gaming LIVE Mastery (optional) · Battle Lab Honors · other Mastery Paths",
+                        detail: "Music / Gaming / Multi-Guest LIVE Mastery (optional) · Battle Lab Honors · other Mastery Paths",
                       }
                   : isProduction
                     ? {
                         label: "Next steps",
-                        detail: "Battle / Music / Gaming LIVE Mastery (optional) · Career Creator path · optional Production Lab Honors",
+                        detail: "Battle / Music / Gaming / Multi-Guest LIVE Mastery (optional) · Career Creator path · optional Production Lab Honors",
                       }
                     : isProfessional
                       ? {
@@ -593,6 +601,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                   ? "Music LIVE specialty"
                                   : isGaming
                                     ? "Gaming LIVE specialty"
+                                    : isMultiguest
+                                      ? "Multi-Guest LIVE specialty"
                                 : "Career-path progress",
                 detail: isAdvanced
                   ? "how professionals think — recommended before Mastery Paths"
@@ -614,6 +624,8 @@ export function StreamerUAcademyHome({ publishedSlugs }: Props) {
                                   ? "optional specialty · Capstone: signature music LIVE show"
                                   : isGaming
                                     ? "optional specialty · Capstone: signature gaming LIVE show"
+                                    : isMultiguest
+                                      ? "optional specialty · Capstone: signature multi-guest LIVE event"
                                 : "counts toward StreamerU Graduate recognition",
               },
             ];
